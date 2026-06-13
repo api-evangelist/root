@@ -1,0 +1,13 @@
+[
+  {
+    "type": "payment_holiday",
+    "redeemable_from": "2022-06-01",
+    "redeemable_to": "2022-06-30",
+    "reason": "Customer retrenched"
+  },
+  {
+    "type": "ad_hoc",
+    "amount": 2000,
+    "reason": "Customer retrenched"
+  }
+]

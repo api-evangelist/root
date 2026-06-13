@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "application-alteration-hook",
+  "type": "object",
+  "required": [
+    "product_module_definition_alteration_hook_id",
+    "product_module_definition_id",
+    "schema_id",
+    "key",
+    "name",
+    "type",
+    "created_at",
+    "created_by"
+  ],
+  "properties": {
+    "product_module_definition_alteration_hook_id": {
+      "type": "string",
+      "description": "Must be a UUID. Unique identifier of the alteration hook definition."
+    },
+    "product_module_definition_id": {
+      "type": "string",
+      "description": "Must be a UUID. Unique identifier of the product module definition."
+    },
+    "schema_id": {
+      "type": "string",
+      "description": "Must be a UUID. Unique identifier of the schema linked to this alteration hook."
+    },
+    "key": {
+      "type": "string",
+      "description": "The unique key of the alteration hook."
+    },
+    "name": {
+      "type": "string",
+      "description": "The display name of the alteration hook."
+    },
+    "type": {
+      "type": "string",
+      "description": "The alteration hook type."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date/time at which the alteration hook was created."
+    },
+    "created_by": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object indicating the user or API key that created the alteration hook definition."
+    },
+    "productModuleDefinitionSchema": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Optional schema metadata for the alteration hook.",
+      "properties": {
+        "product_module_definition_schema_id": {
+          "type": "string"
+        },
+        "json": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "example": {
+    "product_module_definition_alteration_hook_id": "2cbbc377-e142-4986-8871-29b0a4c23353",
+    "product_module_definition_id": "9b7b43f4-9ab8-4e37-b42b-59d5595f3983",
+    "schema_id": "18f7e13a-f4f4-4b10-86ec-2973dfe77732",
+    "key": "update_cover_amount",
+    "name": "Update cover amount",
+    "type": "application",
+    "created_at": "2026-01-28T09:17:05.101Z",
+    "created_by": {
+      "type": "user",
+      "id": "00000000-0000-0000-0000-000000000001"
+    },
+    "productModuleDefinitionSchema": {
+      "product_module_definition_schema_id": "18f7e13a-f4f4-4b10-86ec-2973dfe77732",
+      "json": {
+        "type": "object",
+        "properties": {
+          "cover_amount": {
+            "type": "integer"
+          }
+        }
+      },
+      "created_at": "2026-01-28T09:15:45.100Z",
+      "created_by": {
+        "type": "user",
+        "id": "00000000-0000-0000-0000-000000000001"
+      },
+      "type": "application_alteration"
+    }
+  }
+}

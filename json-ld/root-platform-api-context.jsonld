@@ -1,0 +1,860 @@
+{
+  "@context": {
+    "@vocab": "https://api.rootplatform.com/v1/insurance/",
+    "schema": "http://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "root": "https://rootplatform.com/vocab/",
+    "alteration-package": {
+      "@id": "root:alteration-package"
+    },
+    "alteration_package_id": {
+      "@id": "root:alteration_package_id"
+    },
+    "product_module_definition_id": {
+      "@id": "root:product_module_definition_id"
+    },
+    "module": {
+      "@id": "root:module"
+    },
+    "created_at": {
+      "@id": "root:created_at",
+      "@type": "xsd:dateTime"
+    },
+    "created_by": {
+      "@id": "root:created_by"
+    },
+    "application-alteration-package": {
+      "@id": "root:application-alteration-package"
+    },
+    "alteration_package_application_id": {
+      "@id": "root:alteration_package_application_id"
+    },
+    "organization_id": {
+      "@id": "root:organization_id"
+    },
+    "monthly_premium": {
+      "@id": "root:monthly_premium"
+    },
+    "currency": {
+      "@id": "root:currency"
+    },
+    "sum_assured": {
+      "@id": "root:sum_assured"
+    },
+    "billing_frequency": {
+      "@id": "root:billing_frequency"
+    },
+    "status": {
+      "@id": "root:status"
+    },
+    "change_description": {
+      "@id": "root:change_description"
+    },
+    "input_data": {
+      "@id": "root:input_data"
+    },
+    "application_id": {
+      "@id": "root:application_id"
+    },
+    "alteration_hook_key": {
+      "@id": "root:alteration_hook_key"
+    },
+    "application-alteration-hook": {
+      "@id": "root:application-alteration-hook"
+    },
+    "product_module_definition_alteration_hook_id": {
+      "@id": "root:product_module_definition_alteration_hook_id"
+    },
+    "schema_id": {
+      "@id": "root:schema_id"
+    },
+    "key": {
+      "@id": "root:key"
+    },
+    "name": {
+      "@id": "root:name"
+    },
+    "type": {
+      "@id": "root:type"
+    },
+    "productModuleDefinitionSchema": {
+      "@id": "root:productModuleDefinitionSchema"
+    },
+    "application": {
+      "@id": "root:application"
+    },
+    "policyholder_id": {
+      "@id": "root:policyholder_id"
+    },
+    "package_name": {
+      "@id": "root:package_name"
+    },
+    "base_premium": {
+      "@id": "root:base_premium",
+      "@type": "xsd:number"
+    },
+    "restricted_data": {
+      "@id": "root:restricted_data"
+    },
+    "billing_day": {
+      "@id": "root:billing_day"
+    },
+    "beneficiaries": {
+      "@id": "root:beneficiaries"
+    },
+    "payment_method_id": {
+      "@id": "root:payment_method_id"
+    },
+    "quote_package_id": {
+      "@id": "root:quote_package_id"
+    },
+    "policy": {
+      "@id": "root:policy"
+    },
+    "policyholder": {
+      "@id": "root:policyholder"
+    },
+    "quote_package": {
+      "@id": "root:quote_package"
+    },
+    "cancelled_at": {
+      "@id": "root:cancelled_at",
+      "@type": "xsd:dateTime"
+    },
+    "reason_cancelled": {
+      "@id": "root:reason_cancelled"
+    },
+    "cancellation_requestor": {
+      "@id": "root:cancellation_requestor"
+    },
+    "cancellation_type": {
+      "@id": "root:cancellation_type"
+    },
+    "attachment": {
+      "@id": "root:attachment"
+    },
+    "file_name": {
+      "@id": "root:file_name"
+    },
+    "description": {
+      "@id": "root:description"
+    },
+    "file_type": {
+      "@id": "root:file_type"
+    },
+    "file_url": {
+      "@id": "root:file_url"
+    },
+    "requested_by": {
+      "@id": "root:requested_by"
+    },
+    "call": {
+      "@id": "root:call"
+    },
+    "call_id": {
+      "@id": "root:call_id"
+    },
+    "claim_id": {
+      "@id": "root:claim_id"
+    },
+    "call_status": {
+      "@id": "root:call_status"
+    },
+    "direction": {
+      "@id": "root:direction"
+    },
+    "from_number": {
+      "@id": "root:from_number"
+    },
+    "to_number": {
+      "@id": "root:to_number"
+    },
+    "topic": {
+      "@id": "root:topic"
+    },
+    "recording_url": {
+      "@id": "root:recording_url"
+    },
+    "call_duration": {
+      "@id": "root:call_duration"
+    },
+    "claim": {
+      "@id": "root:claim"
+    },
+    "claim_number": {
+      "@id": "root:claim_number"
+    },
+    "updated_at": {
+      "@id": "root:updated_at",
+      "@type": "xsd:dateTime"
+    },
+    "policy_id": {
+      "@id": "root:policy_id"
+    },
+    "member_id": {
+      "@id": "root:member_id"
+    },
+    "covered_item_id": {
+      "@id": "root:covered_item_id"
+    },
+    "claim_status": {
+      "@id": "root:claim_status"
+    },
+    "approval_status": {
+      "@id": "root:approval_status"
+    },
+    "claimant": {
+      "@id": "root:claimant"
+    },
+    "incident_type": {
+      "@id": "root:incident_type"
+    },
+    "incident_cause": {
+      "@id": "root:incident_cause"
+    },
+    "incident_date": {
+      "@id": "root:incident_date",
+      "@type": "xsd:dateTime"
+    },
+    "assigned_to": {
+      "@id": "root:assigned_to"
+    },
+    "app_data": {
+      "@id": "root:app_data"
+    },
+    "module_data": {
+      "@id": "root:module_data"
+    },
+    "requested_amount": {
+      "@id": "root:requested_amount"
+    },
+    "granted_amount": {
+      "@id": "root:granted_amount"
+    },
+    "rejection_reason": {
+      "@id": "root:rejection_reason"
+    },
+    "member": {
+      "@id": "root:member"
+    },
+    "user_group": {
+      "@id": "root:user_group"
+    },
+    "block_states": {
+      "@id": "root:block_states"
+    },
+    "complaint": {
+      "@id": "root:complaint"
+    },
+    "complaint_id": {
+      "@id": "root:complaint_id"
+    },
+    "complaint_number": {
+      "@id": "root:complaint_number"
+    },
+    "complaint_status": {
+      "@id": "root:complaint_status"
+    },
+    "complainant": {
+      "@id": "root:complainant"
+    },
+    "daily-frequency": {
+      "@id": "root:daily-frequency"
+    },
+    "time_of_day": {
+      "@id": "root:time_of_day"
+    },
+    "data-export-run-log-item": {
+      "@id": "root:data-export-run-log-item"
+    },
+    "data_export_run_id": {
+      "@id": "root:data_export_run_id"
+    },
+    "level": {
+      "@id": "root:level"
+    },
+    "content": {
+      "@id": "root:content"
+    },
+    "data-export-run": {
+      "@id": "root:data-export-run"
+    },
+    "scheduled_data_export_id": {
+      "@id": "root:scheduled_data_export_id"
+    },
+    "completed_at": {
+      "@id": "root:completed_at",
+      "@type": "xsd:dateTime"
+    },
+    "file_id": {
+      "@id": "root:file_id"
+    },
+    "data-store-entity": {
+      "@id": "root:data-store-entity"
+    },
+    "data_store_entity_id": {
+      "@id": "root:data_store_entity_id"
+    },
+    "data": {
+      "@id": "root:data"
+    },
+    "updated_by": {
+      "@id": "root:updated_by"
+    },
+    "data_store": {
+      "@id": "root:data_store"
+    },
+    "data-store": {
+      "@id": "root:data-store"
+    },
+    "data_store_id": {
+      "@id": "root:data_store_id"
+    },
+    "fulfillment-request": {
+      "@id": "root:fulfillment-request"
+    },
+    "fulfillment_request_id": {
+      "@id": "root:fulfillment_request_id"
+    },
+    "fulfillment_type_id": {
+      "@id": "root:fulfillment_type_id"
+    },
+    "fulfillment_type": {
+      "@id": "root:fulfillment_type"
+    },
+    "fulfillment_data": {
+      "@id": "root:fulfillment_data"
+    },
+    "environment": {
+      "@id": "root:environment"
+    },
+    "finalized_at": {
+      "@id": "root:finalized_at",
+      "@type": "xsd:dateTime"
+    },
+    "finalized_by": {
+      "@id": "root:finalized_by"
+    },
+    "https-adapter": {
+      "@id": "root:https-adapter"
+    },
+    "url": {
+      "@id": "root:url"
+    },
+    "headers": {
+      "@id": "root:headers"
+    },
+    "batch_size": {
+      "@id": "root:batch_size",
+      "@type": "xsd:number"
+    },
+    "stream_request": {
+      "@id": "root:stream_request",
+      "@type": "xsd:boolean"
+    },
+    "lead": {
+      "@id": "root:lead"
+    },
+    "lead_id": {
+      "@id": "root:lead_id"
+    },
+    "id": {
+      "@id": "root:id"
+    },
+    "date_of_birth": {
+      "@id": "root:date_of_birth"
+    },
+    "gender": {
+      "@id": "root:gender"
+    },
+    "first_name": {
+      "@id": "root:first_name"
+    },
+    "middle_name": {
+      "@id": "root:middle_name"
+    },
+    "last_name": {
+      "@id": "root:last_name"
+    },
+    "email": {
+      "@id": "root:email"
+    },
+    "cellphone": {
+      "@id": "root:cellphone"
+    },
+    "phone_other": {
+      "@id": "root:phone_other"
+    },
+    "address": {
+      "@id": "root:address"
+    },
+    "monthly-frequency": {
+      "@id": "root:monthly-frequency"
+    },
+    "day_of_month": {
+      "@id": "root:day_of_month",
+      "@type": "xsd:number"
+    },
+    "note": {
+      "@id": "root:note"
+    },
+    "text": {
+      "@id": "root:text"
+    },
+    "notification-email-data": {
+      "@id": "root:notification-email-data"
+    },
+    "from_email": {
+      "@id": "root:from_email"
+    },
+    "from_name": {
+      "@id": "root:from_name"
+    },
+    "reply_to_email": {
+      "@id": "root:reply_to_email"
+    },
+    "subject": {
+      "@id": "root:subject"
+    },
+    "html": {
+      "@id": "root:html"
+    },
+    "attachments": {
+      "@id": "root:attachments"
+    },
+    "to": {
+      "@id": "root:to"
+    },
+    "notification": {
+      "@id": "root:notification"
+    },
+    "notification_id": {
+      "@id": "root:notification_id"
+    },
+    "notification_type": {
+      "@id": "root:notification_type"
+    },
+    "linked_entities": {
+      "@id": "root:linked_entities"
+    },
+    "channel": {
+      "@id": "root:channel"
+    },
+    "provider": {
+      "@id": "root:provider"
+    },
+    "status_updates": {
+      "@id": "root:status_updates"
+    },
+    "notification-other-data": {
+      "@id": "root:notification-other-data"
+    },
+    "content_type": {
+      "@id": "root:content_type"
+    },
+    "notification-sms-data": {
+      "@id": "root:notification-sms-data"
+    },
+    "payment": {
+      "@id": "root:payment"
+    },
+    "payment_id": {
+      "@id": "root:payment_id"
+    },
+    "amount": {
+      "@id": "root:amount"
+    },
+    "external_ref": {
+      "@id": "root:external_ref"
+    },
+    "customer_ref": {
+      "@id": "root:customer_ref"
+    },
+    "billing_date": {
+      "@id": "root:billing_date",
+      "@type": "xsd:dateTime"
+    },
+    "payment_date": {
+      "@id": "root:payment_date",
+      "@type": "xsd:dateTime"
+    },
+    "action_date": {
+      "@id": "root:action_date",
+      "@type": "xsd:dateTime"
+    },
+    "payment_method": {
+      "@id": "root:payment_method"
+    },
+    "payment_type": {
+      "@id": "root:payment_type"
+    },
+    "premium_type": {
+      "@id": "root:premium_type"
+    },
+    "failure_reason": {
+      "@id": "root:failure_reason"
+    },
+    "retry_of": {
+      "@id": "root:retry_of"
+    },
+    "retry_number": {
+      "@id": "root:retry_number"
+    },
+    "net_amount": {
+      "@id": "root:net_amount",
+      "@type": "xsd:number"
+    },
+    "collection_type": {
+      "@id": "root:collection_type"
+    },
+    "charges": {
+      "@id": "root:charges"
+    },
+    "raw_response": {
+      "@id": "root:raw_response"
+    },
+    "payment-response": {
+      "@id": "root:payment-response"
+    },
+    "payment-batch": {
+      "@id": "root:payment-batch"
+    },
+    "payment_batch_id": {
+      "@id": "root:payment_batch_id"
+    },
+    "process_date": {
+      "@id": "root:process_date",
+      "@type": "xsd:dateTime"
+    },
+    "payment_method_type": {
+      "@id": "root:payment_method_type"
+    },
+    "billing_config_id": {
+      "@id": "root:billing_config_id"
+    },
+    "submitted_at": {
+      "@id": "root:submitted_at",
+      "@type": "xsd:dateTime"
+    },
+    "submitted_by": {
+      "@id": "root:submitted_by"
+    },
+    "num_payments": {
+      "@id": "root:num_payments",
+      "@type": "xsd:number"
+    },
+    "num_reviewed": {
+      "@id": "root:num_reviewed",
+      "@type": "xsd:number"
+    },
+    "total_value": {
+      "@id": "root:total_value",
+      "@type": "xsd:number"
+    },
+    "external_reference": {
+      "@id": "root:external_reference"
+    },
+    "payment-create": {
+      "@id": "root:payment-create"
+    },
+    "failure_action": {
+      "@id": "root:failure_action"
+    },
+    "failure_code": {
+      "@id": "root:failure_code"
+    },
+    "payment-coupon": {
+      "@id": "root:payment-coupon"
+    },
+    "payment_coupon_id": {
+      "@id": "root:payment_coupon_id"
+    },
+    "redeemable_from": {
+      "@id": "root:redeemable_from",
+      "@type": "xsd:dateTime"
+    },
+    "redeemable_to": {
+      "@id": "root:redeemable_to",
+      "@type": "xsd:dateTime"
+    },
+    "reason": {
+      "@id": "root:reason"
+    },
+    "payment-update": {
+      "@id": "root:payment-update"
+    },
+    "policy_number": {
+      "@id": "root:policy_number"
+    },
+    "billing_amount": {
+      "@id": "root:billing_amount",
+      "@type": "xsd:number"
+    },
+    "balance": {
+      "@id": "root:balance",
+      "@type": "xsd:number"
+    },
+    "next_billing_date": {
+      "@id": "root:next_billing_date",
+      "@type": "xsd:dateTime"
+    },
+    "covered_people": {
+      "@id": "root:covered_people"
+    },
+    "claim_ids": {
+      "@id": "root:claim_ids"
+    },
+    "complaint_ids": {
+      "@id": "root:complaint_ids"
+    },
+    "start_date": {
+      "@id": "root:start_date",
+      "@type": "xsd:dateTime"
+    },
+    "end_date": {
+      "@id": "root:end_date",
+      "@type": "xsd:dateTime"
+    },
+    "current_version": {
+      "@id": "root:current_version"
+    },
+    "schedule_file_id": {
+      "@id": "root:schedule_file_id"
+    },
+    "policy_schedule_uri": {
+      "@id": "root:policy_schedule_uri"
+    },
+    "terms_file_id": {
+      "@id": "root:terms_file_id"
+    },
+    "terms_uri": {
+      "@id": "root:terms_uri"
+    },
+    "supplementary_terms_files": {
+      "@id": "root:supplementary_terms_files"
+    },
+    "policy_welcome_letter_file_id": {
+      "@id": "root:policy_welcome_letter_file_id"
+    },
+    "policy_welcome_letter_uri": {
+      "@id": "root:policy_welcome_letter_uri"
+    },
+    "policy_certificate_file_id": {
+      "@id": "root:policy_certificate_file_id"
+    },
+    "policy_certificate_uri": {
+      "@id": "root:policy_certificate_uri"
+    },
+    "policy_anniversary_file_id": {
+      "@id": "root:policy_anniversary_file_id"
+    },
+    "schedule_versions": {
+      "@id": "root:schedule_versions"
+    },
+    "scheme_type": {
+      "@id": "root:scheme_type"
+    },
+    "status_updated_at": {
+      "@id": "root:status_updated_at",
+      "@type": "xsd:dateTime"
+    },
+    "title": {
+      "@id": "root:title"
+    },
+    "initials": {
+      "@id": "root:initials"
+    },
+    "company_name": {
+      "@id": "root:company_name"
+    },
+    "registration_number": {
+      "@id": "root:registration_number"
+    },
+    "date_of_establishment": {
+      "@id": "root:date_of_establishment"
+    },
+    "company_website_url": {
+      "@id": "root:company_website_url"
+    },
+    "contact_position": {
+      "@id": "root:contact_position"
+    },
+    "subsidiary_companies": {
+      "@id": "root:subsidiary_companies"
+    },
+    "policy_ids": {
+      "@id": "root:policy_ids"
+    },
+    "policies": {
+      "@id": "root:policies"
+    },
+    "quote-package": {
+      "@id": "root:quote-package"
+    },
+    "suggested_premium": {
+      "@id": "root:suggested_premium",
+      "@type": "xsd:number"
+    },
+    "s3-adapter": {
+      "@id": "root:s3-adapter"
+    },
+    "region": {
+      "@id": "root:region"
+    },
+    "bucket_name": {
+      "@id": "root:bucket_name"
+    },
+    "bucket_path": {
+      "@id": "root:bucket_path"
+    },
+    "secret_access_key": {
+      "@id": "root:secret_access_key"
+    },
+    "access_key_id": {
+      "@id": "root:access_key_id"
+    },
+    "scheduled-data-export": {
+      "@id": "root:scheduled-data-export"
+    },
+    "frequency": {
+      "@id": "root:frequency"
+    },
+    "adapter": {
+      "@id": "root:adapter"
+    },
+    "export_type": {
+      "@id": "root:export_type"
+    },
+    "data_range": {
+      "@id": "root:data_range"
+    },
+    "latest_run": {
+      "@id": "root:latest_run"
+    },
+    "sftp-adapter": {
+      "@id": "root:sftp-adapter"
+    },
+    "host": {
+      "@id": "root:host"
+    },
+    "port": {
+      "@id": "root:port",
+      "@type": "xsd:number"
+    },
+    "path": {
+      "@id": "root:path"
+    },
+    "username": {
+      "@id": "root:username"
+    },
+    "password": {
+      "@id": "root:password"
+    },
+    "webhook": {
+      "@id": "root:webhook"
+    },
+    "webhook_id": {
+      "@id": "root:webhook_id"
+    },
+    "secret": {
+      "@id": "root:secret"
+    },
+    "verification_token": {
+      "@id": "root:verification_token"
+    },
+    "subscriptions": {
+      "@id": "root:subscriptions"
+    },
+    "priority": {
+      "@id": "root:priority",
+      "@type": "xsd:number"
+    },
+    "enabled": {
+      "@id": "root:enabled",
+      "@type": "xsd:boolean"
+    },
+    "user_group_id": {
+      "@id": "root:user_group_id"
+    },
+    "webhook-queue-event": {
+      "@id": "root:webhook-queue-event"
+    },
+    "webhook_queue_event_id": {
+      "@id": "root:webhook_queue_event_id"
+    },
+    "subscription": {
+      "@id": "root:subscription"
+    },
+    "attempts_count": {
+      "@id": "root:attempts_count",
+      "@type": "xsd:number"
+    },
+    "body": {
+      "@id": "root:body"
+    },
+    "last_attempt_at": {
+      "@id": "root:last_attempt_at",
+      "@type": "xsd:dateTime"
+    },
+    "last_response_code": {
+      "@id": "root:last_response_code",
+      "@type": "xsd:number"
+    },
+    "last_response_time_millis": {
+      "@id": "root:last_response_time_millis",
+      "@type": "xsd:number"
+    },
+    "weekly-frequency": {
+      "@id": "root:weekly-frequency"
+    },
+    "day_of_week": {
+      "@id": "root:day_of_week"
+    },
+    "number": {
+      "@id": "root:number"
+    },
+    "country": {
+      "@id": "root:country"
+    },
+    "policyholder-request": {
+      "@id": "root:policyholder-request"
+    },
+    "payment-details": {
+      "@id": "root:payment-details"
+    },
+    "details": {
+      "@id": "root:details"
+    },
+    "payment-method": {
+      "@id": "root:payment-method"
+    },
+    "bank_details": {
+      "@id": "root:bank_details"
+    },
+    "card": {
+      "@id": "root:card"
+    },
+    "banv_status": {
+      "@id": "root:banv_status"
+    },
+    "blocked_reason": {
+      "@id": "root:blocked_reason"
+    },
+    "collection_module_definition_id": {
+      "@id": "root:collection_module_definition_id"
+    },
+    "collection_module_key": {
+      "@id": "root:collection_module_key"
+    },
+    "collection_module": {
+      "@id": "root:collection_module"
+    },
+    "secret-keys": {
+      "@id": "root:secret-keys"
+    },
+    "secret_key_id": {
+      "@id": "root:secret_key_id"
+    }
+  }
+}

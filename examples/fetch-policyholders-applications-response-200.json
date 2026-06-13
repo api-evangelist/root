@@ -1,0 +1,38 @@
+[
+  {
+    "application_id": "59a10cb0-8f7a-4c7b-8deb-a863474891dd",
+    "policyholder_id": "bf1ada91-eecb-4f47-9bfa-1258bb1e0055",
+    "package_name": "Theft + comprehensive",
+    "sum_assured": 1199900,
+    "monthly_premium": 50000,
+    "base_premium": 14999,
+    "module": {
+      "type": "root_gadgets",
+      "make": "Apple",
+      "model": "iPhone 6S 64GB LTE",
+      "serial_number": "1234567890"
+    },
+    "created_at": "2017-10-05T18:40:47.281Z",
+    "created_by": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "type": "user"
+    },
+    "currency": "ZAR",
+    "product_module_definition_id": "3c8112fc-5bf4-4d2c-ba25-361a76149ed2",
+    "billing_frequency": "monthly",
+    "billing_month": null,
+    "billing_day": 1,
+    "status": "active",
+    "type": null,
+    "beneficiaries": [
+      {
+        "beneficiary_id": "15c0cba9-c579-45cc-bb9c-5cde4c79350c",
+        "policyholder_id": "bd72f916-6952-444c-9b33-3e29db5cbe8b",
+        "percentage": 100,
+        "relationship": "policyholder"
+      }
+    ],
+    "quote_package_id": "338b0dc9-6a78-4baa-bf73-239690e3e201",
+    "input_data": {}
+  }
+]

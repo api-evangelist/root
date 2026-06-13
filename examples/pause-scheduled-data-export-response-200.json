@@ -1,0 +1,24 @@
+{
+  "scheduled_data_export_id": "4ab082f2-864e-4bcf-bc17-75664a25f2e1",
+  "environment": "sandbox",
+  "created_at": "2019-03-15T09:55:13.627Z",
+  "created_by": {
+    "type": "api_key",
+    "id": "313f7511-c16a-4fdb-ba49-25a80a9b571c",
+    "owner_id": "da20903b-7f0d-4318-96bd-6df78514e2fd"
+  },
+  "status": "paused",
+  "name": "Daily policies export",
+  "frequency": {
+    "type": "daily",
+    "time_of_day": "09:00"
+  },
+  "adapter": {
+    "type": "sftp",
+    "host": "localhost",
+    "username": "someuser",
+    "path": "/some/path/"
+  },
+  "export_type": "policy_export",
+  "data_range": "since_last_run"
+}

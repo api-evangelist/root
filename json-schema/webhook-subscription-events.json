@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "webhook-subscription-events",
+  "type": "array",
+  "description": "An array of events that this webhook should subscribe to. If you want to  subscribe to an event not listed here, please submit an idea on  our [product roadmap portal](https://portal.productboard.com/root-platform/) describing your use case.",
+  "items": {
+    "$ref": "#/components/schemas/webhook-subscription-event"
+  }
+}

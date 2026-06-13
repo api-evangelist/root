@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "https-adapter",
+  "type": "object",
+  "required": [
+    "type",
+    "url"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The type of adapter. In this case, `https`."
+    },
+    "url": {
+      "type": "string",
+      "description": "The HTTPS URL to send the export file to."
+    },
+    "headers": {
+      "type": "string",
+      "description": "The HTTP headers for the request."
+    },
+    "batch_size": {
+      "type": "integer",
+      "description": "The number of entities to include per request, if streaming is disabled. Defaults to `10000` if not provided."
+    },
+    "stream_request": {
+      "type": "boolean",
+      "description": "Indicates whether the request should be batched (`false`) or streamed in one request (`true`)."
+    }
+  }
+}

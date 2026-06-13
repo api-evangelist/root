@@ -1,0 +1,15 @@
+{
+  "type": "company",
+  "first_name": "Allister",
+  "last_name": "Smith",
+  "email": "allister@testco.com",
+  "company_name": "Test Co",
+  "registration_number": "12398734A",
+  "date_of_establishment": "19880202",
+  "company_website_url": "www.testco.co.za",
+  "contact_position": "Engineer",
+  "subsidiary_companies": [
+    "Subsidiary Inc"
+  ],
+  "cellphone": "+27821234567"
+}

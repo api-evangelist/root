@@ -1,0 +1,79 @@
+[
+  {
+    "notification_id": "dccdd659-0a42-4df2-9d02-5df9f98a2433",
+    "organization_id": "00000000-0000-0000-0000-000000000001",
+    "channel": "email",
+    "notification_type": "claim_received",
+    "provider": "root_mandrill",
+    "created_at": "2022-06-21T08:39:24.293Z",
+    "created_by": {
+      "type": "user",
+      "id": "00000000-0000-0000-0000-000000000001"
+    },
+    "status": "queued",
+    "status_updates": [
+      {
+        "status": "queued",
+        "createdAt": "2022-06-21T08:39:24.293Z"
+      }
+    ],
+    "linked_entities": {
+      "policy_id": "11111112-0000-0000-0000-000000000008",
+      "policyholder_id": "00000000-0000-0000-0000-000000000004",
+      "claim_id": "535e439c-3d75-43cc-b706-3a0b05dec894"
+    },
+    "data": {
+      "to": [
+        {
+          "name": "Tim",
+          "type": "to",
+          "email": "tim@smith.com"
+        }
+      ],
+      "html": "<div>hello</div>",
+      "subject": "Claim #F0BABAC137E6 received",
+      "from_name": "Policy Administration System",
+      "from_email": "no-reply@policy@adminsystem.com",
+      "attachments": []
+    }
+  },
+  {
+    "notification_id": "43c13dc8-2c19-402c-bb70-a7deb56b9f38",
+    "organization_id": "00000000-0000-0000-0000-000000000001",
+    "channel": "sms",
+    "notification_type": "policy_issued",
+    "provider": "root_clickatell",
+    "created_at": "2022-06-23T07:59:53.261Z",
+    "created_by": {
+      "type": "user",
+      "id": "6f852057-b381-4ab0-a53d-93a6c2ec6f26"
+    },
+    "status": "delivered",
+    "status_updates": [
+      {
+        "status": "queued",
+        "createdAt": "2022-06-23T07:59:53.261Z"
+      },
+      {
+        "status": "sent",
+        "createdAt": "2022-06-23T07:59:54.000Z",
+        "description": "Delivered to gateway (003)"
+      },
+      {
+        "status": "delivered",
+        "createdAt": "2022-06-23T07:59:57.000Z",
+        "description": "Received by recipient (004)"
+      }
+    ],
+    "linked_entities": {
+      "policy_id": "b338a75b-207e-4b6c-8649-4c0ebfe39d8b",
+      "policyholder_id": "b5b10383-0b50-4965-8bff-addb2001c5d1"
+    },
+    "data": {
+      "to": [
+        "+27811231234"
+      ],
+      "content": "Congratulations! Your  Cover has been activated from 01/06/2022."
+    }
+  }
+]

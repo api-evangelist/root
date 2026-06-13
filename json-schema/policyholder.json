@@ -1,0 +1,269 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "policyholder",
+  "type": "object",
+  "required": [
+    "policyholder_id",
+    "type",
+    "id",
+    "first_name",
+    "last_name",
+    "policy_ids",
+    "created_at",
+    "app_data",
+    "created_by"
+  ],
+  "properties": {
+    "policyholder_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the policyholder."
+    },
+    "type": {
+      "type": "string",
+      "description": "The policyholder type.",
+      "enum": [
+        "individual",
+        "company"
+      ]
+    },
+    "id": {
+      "type": "object",
+      "description": "(Individual policyholders only) Object containing policyholder's identification information.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The id type of the policyholder.",
+          "enum": [
+            "id",
+            "passport",
+            "email",
+            "cellphone",
+            "custom"
+          ]
+        },
+        "number": {
+          "type": "string",
+          "description": "The ID or passport number."
+        },
+        "country": {
+          "type": "string",
+          "description": "The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the id/passport number."
+        },
+        "expiration_date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "(Individual policyholders only) The expiration date of the policyholder's passport."
+        }
+      },
+      "required": [
+        "type",
+        "number",
+        "country"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "description": "The policyholders's title.",
+      "enum": [
+        "mr",
+        "mrs",
+        "miss",
+        "mx",
+        "sir",
+        "dr",
+        "adv",
+        "ms",
+        "prof"
+      ]
+    },
+    "date_of_birth": {
+      "type": "string",
+      "description": "(Individual policyholders only) The policyholder's date of birth in the format YYYYMMDD."
+    },
+    "gender": {
+      "type": "string",
+      "description": "Null is allowed. (Individual policyholders only) The policyholder's gender.",
+      "enum": [
+        "male",
+        "female"
+      ]
+    },
+    "initials": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. The policyholder or primary contact's initials."
+    },
+    "first_name": {
+      "type": "string",
+      "description": "The policyholder or primary contact's legal first name."
+    },
+    "middle_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. The policyholder or primary contact's legal middle name."
+    },
+    "last_name": {
+      "type": "string",
+      "description": "The policyholder or primary contact's legal last name."
+    },
+    "company_name": {
+      "type": "string",
+      "description": "(Company policyholders only) The name of the company that the policyholder represents."
+    },
+    "registration_number": {
+      "type": "string",
+      "description": "(Company policyholders only) The company's registration number."
+    },
+    "date_of_establishment": {
+      "type": "string",
+      "description": "(Company policyholders only) The company's date of establishment in the format YYYYMMDD."
+    },
+    "company_website_url": {
+      "type": "string",
+      "description": "(Company policyholders only) The company's website URL."
+    },
+    "contact_position": {
+      "type": "string",
+      "description": "(Company policyholders only) The position or role of the primary contact at the company."
+    },
+    "subsidiary_companies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "(Company policyholders only) An array of subsidiary company names."
+    },
+    "email": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. The policyholder or primary contact's contact email address."
+    },
+    "cellphone": {
+      "$ref": "#/components/schemas/cellphone-string"
+    },
+    "phone_other": {
+      "$ref": "#/components/schemas/cellphone-string"
+    },
+    "policy_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "An array of ids of the policies linked to this policyholder."
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/policy"
+      },
+      "description": "An array of full [policy objects](#policy) owned by the policyholder. This is currently only included when [fetching all policyholders](#list-all-policyholders) or [fetching an individual policyholder](#retrieve-a-policyholder) with `?include=policies`."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the policyholder was created."
+    },
+    "app_data": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object containing additional custom data for the policy holder.",
+      "additionalProperties": true
+    },
+    "created_by": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object indicating the user or API key that created the policyholder. See [Authentication](#client-apps)."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the policyholder was last updated."
+    },
+    "address": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. The policyholder's physical address. See below for more details.",
+      "properties": {
+        "line_1": {
+          "type": "string",
+          "description": "First line of the policyholder's address."
+        },
+        "line_2": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "`null` is allowed. Optional second line of the policyholder's address."
+        },
+        "suburb": {
+          "type": "string",
+          "description": "The policyholder's suburb."
+        },
+        "city": {
+          "type": "string",
+          "description": "The policyholder's city."
+        },
+        "country": {
+          "type": "string",
+          "description": "The policyholder's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format."
+        },
+        "area_code": {
+          "type": "string",
+          "description": "The policyholder's area code must be 4 characters long for South African addresses."
+        }
+      },
+      "required": [
+        "line_1",
+        "city",
+        "country",
+        "area_code"
+      ]
+    }
+  },
+  "example": {
+    "policyholder_id": "bf1ada91-eecb-4f47-9bfa-1258bb1e0055",
+    "type": "individual",
+    "initials": "E",
+    "first_name": "Erlich",
+    "middle_name": "Aviato",
+    "last_name": "Bachman",
+    "id": {
+      "type": "id",
+      "number": "6801015800084",
+      "country": "ZA"
+    },
+    "date_of_birth": "19680101",
+    "gender": "male",
+    "email": "erlich@aviato.com",
+    "cellphone": "+27821234567",
+    "phone_other": "+27124101337",
+    "created_at": "2017-10-12T15:47:34.281Z",
+    "app_data": {
+      "company": "Aviato"
+    },
+    "policy_ids": [],
+    "created_by": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "type": "user"
+    },
+    "address": {
+      "line_1": "5230 Penfield Avenue",
+      "suburb": "Woodland Hills",
+      "city": "Los Angeles",
+      "country": "US",
+      "area_code": "CA 91364"
+    }
+  }
+}

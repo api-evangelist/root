@@ -1,0 +1,145 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "notification",
+  "type": "object",
+  "required": [
+    "notification_id",
+    "notification_type",
+    "linked_entities",
+    "channel",
+    "provider",
+    "created_at",
+    "created_by",
+    "status",
+    "status_updates"
+  ],
+  "properties": {
+    "notification_id": {
+      "type": "string",
+      "description": "The identifier of the notification."
+    },
+    "organization_id": {
+      "type": "string",
+      "description": "The identifier of the organization."
+    },
+    "notification_type": {
+      "type": "string",
+      "description": "Indicates the type of notification (e.g., policy_issued)."
+    },
+    "linked_entities": {
+      "type": "object",
+      "description": "Indicates which entities the notification is linked to.",
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "description": "The identifier of the policy."
+        }
+      }
+    },
+    "channel": {
+      "type": "string",
+      "description": "The channel used for the notification. Channels available include `email`, `sms` or `other`."
+    },
+    "provider": {
+      "type": "string",
+      "description": "Indicates how the notification was generated. Whether it was `external`, `root_standard` or `root_webhooks`."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Time at which the notification was created."
+    },
+    "created_by": {
+      "type": "object",
+      "description": "An object indicating the user or API key that created the notification. See [Authentication](#client-apps)."
+    },
+    "status": {
+      "type": "string",
+      "description": "The current status of the notification.",
+      "enum": [
+        "queued",
+        "sent",
+        "delivered",
+        "rejected",
+        "opened",
+        "unknown_error"
+      ]
+    },
+    "status_updates": {
+      "type": "array",
+      "description": "An array of status update information for the notification.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "The status that the notification was updated to.",
+            "enum": [
+              "queued",
+              "sent",
+              "delivered",
+              "rejected",
+              "opened",
+              "unknown_error"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the status update was created."
+          },
+          "description": {
+            "type": "string",
+            "description": "An optional detailed description of the status update."
+          }
+        },
+        "required": [
+          "status",
+          "createdAt"
+        ]
+      }
+    },
+    "data": {
+      "$ref": "#/components/schemas/notification-data"
+    }
+  },
+  "example": {
+    "notification_id": "43c13dc8-2c19-402c-bb70-a7deb56b9f38",
+    "organization_id": "4ce6ad99-9576-4d28-84ba-c30d2d536cbe",
+    "channel": "sms",
+    "notification_type": "policy_issued",
+    "provider": "root_clickatell",
+    "created_at": "2022-06-23T07:59:53.261Z",
+    "created_by": {
+      "type": "user",
+      "id": "6f852057-b381-4ab0-a53d-93a6c2ec6f26"
+    },
+    "status": "delivered",
+    "status_updates": [
+      {
+        "status": "queued",
+        "createdAt": "2022-06-23T07:59:53.261Z"
+      },
+      {
+        "status": "sent",
+        "createdAt": "2022-06-23T07:59:54.000Z",
+        "description": "Delivered to gateway (003)"
+      },
+      {
+        "status": "delivered",
+        "createdAt": "2022-06-23T07:59:57.000Z",
+        "description": "Received by recipient (004)"
+      }
+    ],
+    "linked_entities": {
+      "policy_id": "b338a75b-207e-4b6c-8649-4c0ebfe39d8b",
+      "policyholder_id": "b5b10383-0b50-4965-8bff-addb2001c5d1"
+    },
+    "data": {
+      "to": [
+        "+27811231234"
+      ],
+      "content": "Congratulations! Your  Cover has been activated from 01/06/2022."
+    }
+  }
+}

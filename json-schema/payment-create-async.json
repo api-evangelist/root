@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "payment-create-async",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/payment-create"
+    },
+    {
+      "type": "object",
+      "required": [
+        "policy_id"
+      ],
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "description": "Id of the policy the payment is for. Must be UUID."
+        }
+      },
+      "example": {
+        "status": "successful",
+        "description": "Monthly premium",
+        "payment_type": "premium",
+        "amount": 1800,
+        "payment_date": "2022-09-08T00:00:00Z",
+        "external_reference": "B",
+        "collection_type": "debit_order_same_day",
+        "policy_id": "6ae5329f-d286-4d64-9345-af93eb03520c"
+      }
+    }
+  ]
+}

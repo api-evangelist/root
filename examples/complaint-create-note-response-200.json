@@ -1,0 +1,10 @@
+{
+  "type": "text_note_created",
+  "complaint_id": "02ca3e8b-2033-4d91-9869-b1080052dc10",
+  "created_at": "2022-10-16T10:12:02.872Z",
+  "requested_by": {
+    "type": "user",
+    "id": "00000000-0000-0000-0000-000000000001"
+  },
+  "text": "Customer spoke to Erlich previously"
+}

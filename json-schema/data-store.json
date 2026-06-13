@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "data-store",
+  "type": "object",
+  "required": [
+    "data_store_id",
+    "key",
+    "name",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "schema"
+  ],
+  "properties": {
+    "data_store_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the data store."
+    },
+    "organization_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the organization the data store belongs to."
+    },
+    "key": {
+      "type": "string",
+      "description": "The unique key of the data store."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the data store."
+    },
+    "description": {
+      "type": "string",
+      "description": "The description of the data store."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the data store was created."
+    },
+    "created_by": {
+      "type": "object",
+      "description": "An object indicating the user or API key that created the data store. See [Authentication](#client-apps)."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the data store was last updated."
+    },
+    "updated_by": {
+      "type": "object",
+      "description": "An object indicating the user or API key that last updated the data store. See [Authentication](#client-apps)."
+    },
+    "schema": {
+      "type": "object",
+      "description": "An object for which the the schema for data store entities will be base off of.",
+      "properties": {
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The keys from the data store properties that are mandatory, when creating data store entities."
+        },
+        "properties": {
+          "type": "object",
+          "description": "The data to which the data store columns are created from. See below for more details."
+        }
+      },
+      "required": [
+        "required",
+        "properties"
+      ]
+    }
+  },
+  "example": {
+    "data_store_id": "6e91fe74-aa56-4b4e-8f68-636d23d5706f",
+    "organization_id": "952bfef5-7517-47ff-bf41-08c5a66c52db",
+    "key": "devices",
+    "name": "Devices",
+    "description": "Devices data store",
+    "schema": {
+      "async": true,
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "price"
+      ]
+    },
+    "created_by": {
+      "type": "api_key",
+      "id": "313f7511-c16a-4fdb-ba49-25a80a9b571c",
+      "owner_id": "da20903b-7f0d-4318-96bd-6df78514e2fd"
+    },
+    "created_at": "2021-01-29T13:12:00.968Z",
+    "updated_by": {
+      "type": "api_key",
+      "id": "313f7511-c16a-4fdb-ba49-25a80a9b571c",
+      "owner_id": "da20903b-7f0d-4318-96bd-6df78514e2fd"
+    },
+    "updated_at": "2021-01-29T13:12:00.968Z"
+  }
+}

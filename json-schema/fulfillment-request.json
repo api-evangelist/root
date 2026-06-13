@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "fulfillment-request",
+  "type": "object",
+  "required": [
+    "fulfillment_request_id",
+    "fulfillment_type_id",
+    "policy_id",
+    "claim_id",
+    "status",
+    "fulfillment_data",
+    "created_at",
+    "created_by",
+    "environment"
+  ],
+  "properties": {
+    "fulfillment_request_id": {
+      "type": "string",
+      "description": "Must be a UUID. The fulfillment request ID."
+    },
+    "fulfillment_type_id": {
+      "type": "string",
+      "description": "Must be a UUID. The fulfillment type ID."
+    },
+    "fulfillment_type": {
+      "type": "object",
+      "description": "The fulfillment type object containing type details.",
+      "properties": {
+        "fulfillment_type_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The unique identifier of the fulfillment type."
+        },
+        "key": {
+          "type": "string",
+          "description": "The key identifier of the fulfillment type."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the fulfillment type."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the fulfillment type."
+        }
+      }
+    },
+    "policy_id": {
+      "type": "string",
+      "description": "Must be a UUID. The ID of the policy linked to the claim."
+    },
+    "claim_id": {
+      "type": "string",
+      "description": "Must be a UUID. The ID of the claim linked to the fulfillment request."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "rejected",
+        "successful"
+      ],
+      "description": "A string indicating the status of the fulfillment request."
+    },
+    "fulfillment_data": {
+      "type": "object",
+      "description": "The fulfillment data as specified in the fulfillment type."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the fulfillment request was created."
+    },
+    "created_by": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "An object indicating the user or API key that created the fulfillment request. See [Authentication](https://docs.rootplatform.com/reference/getting-started-1#created_by-field)."
+    },
+    "environment": {
+      "type": "string",
+      "enum": [
+        "sandbox",
+        "production"
+      ],
+      "description": "Whether the payout request was created in Root's sandbox or production environment."
+    },
+    "finalized_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the fulfillment request was finalized."
+    },
+    "finalized_by": {
+      "type": "object",
+      "description": "An object indicating the user or API key that finalized the fulfillment request. See [Authentication](https://docs.rootplatform.com/reference/getting-started-1#created_by-field)."
+    }
+  },
+  "example": {
+    "fulfillment_request_id": "8f8b3469-82e9-4d5b-bcc5-f200af095a79",
+    "fulfillment_type_id": "ad044686-6b6f-4ce6-878f-143039243f11",
+    "fulfillment_type": {
+      "fulfillment_type_id": "ad044686-6b6f-4ce6-878f-143039243f11",
+      "key": "repatriation",
+      "name": "Repatriation",
+      "description": "Cover for repatriation of remains"
+    },
+    "policy_id": "2800a20b-ce92-4463-a0de-75cd76d8bf22",
+    "claim_id": "80f8e67a-15e5-417c-9d29-dfc31a5b92bb",
+    "status": "pending",
+    "fulfillment_data": {
+      "amount": "100000",
+      "customer_account_number": "02870611321"
+    },
+    "created_at": "2022-06-07T12:52:55.014Z",
+    "created_by": {
+      "type": "user",
+      "id": "99ff4c56-577c-11e9-b47c-a3d0f3abd20c"
+    },
+    "environment": "sandbox"
+  }
+}

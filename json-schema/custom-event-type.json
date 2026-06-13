@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "custom-event-type",
+  "type": "string",
+  "description": "The type of custom event. Must match the type on the Root management dashboard.",
+  "enum": [
+    "policy",
+    "payment_method",
+    "payment",
+    "claim"
+  ]
+}

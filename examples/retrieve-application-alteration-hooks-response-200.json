@@ -1,0 +1,32 @@
+[
+  {
+    "product_module_definition_alteration_hook_id": "2cbbc377-e142-4986-8871-29b0a4c23353",
+    "product_module_definition_id": "9b7b43f4-9ab8-4e37-b42b-59d5595f3983",
+    "schema_id": "18f7e13a-f4f4-4b10-86ec-2973dfe77732",
+    "key": "update_cover_amount",
+    "name": "Update cover amount",
+    "type": "application",
+    "created_at": "2026-01-28T09:17:05.101Z",
+    "created_by": {
+      "type": "user",
+      "id": "00000000-0000-0000-0000-000000000001"
+    },
+    "productModuleDefinitionSchema": {
+      "product_module_definition_schema_id": "18f7e13a-f4f4-4b10-86ec-2973dfe77732",
+      "json": {
+        "type": "object",
+        "properties": {
+          "cover_amount": {
+            "type": "integer"
+          }
+        }
+      },
+      "created_at": "2026-01-28T09:15:45.100Z",
+      "created_by": {
+        "type": "user",
+        "id": "00000000-0000-0000-0000-000000000001"
+      },
+      "type": "application_alteration"
+    }
+  }
+]

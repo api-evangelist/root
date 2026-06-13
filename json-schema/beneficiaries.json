@@ -1,0 +1,150 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "beneficiaries",
+  "type": "array",
+  "description": "`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some product modules may require adding beneficiaries to a policy for claims to be processed.",
+  "items": {
+    "type": "object",
+    "description": "Details for a single beneficiary.",
+    "required": [
+      "beneficiary_id",
+      "relationship",
+      "percentage"
+    ],
+    "properties": {
+      "beneficiary_id": {
+        "type": "string",
+        "description": "Must be a UUID. The unique identifier of the beneficiary."
+      },
+      "policyholder_id": {
+        "type": "string",
+        "description": "Must be a UUID. The unique identifier of the policyholder. Only relevant if `relationship` is `policyholder`."
+      },
+      "type": {
+        "type": "string",
+        "description": "The type of beneficiary.",
+        "enum": [
+          "individual",
+          "company"
+        ],
+        "default": "individual"
+      },
+      "first_name": {
+        "type": "string",
+        "description": "The beneficiary's first name."
+      },
+      "last_name": {
+        "type": "string",
+        "description": "The beneficiary's last name."
+      },
+      "title": {
+        "type": "string",
+        "description": "The beneficiary's title.",
+        "enum": [
+          "mr",
+          "mrs",
+          "miss",
+          "mx",
+          "sir",
+          "dr",
+          "adv",
+          "ms",
+          "prof"
+        ]
+      },
+      "gender": {
+        "type": "string",
+        "description": "The beneficiary's gender.",
+        "enum": [
+          "male",
+          "female"
+        ]
+      },
+      "id": {
+        "type": "object",
+        "description": "(Individual beneficiaries only) The beneficiary's identification number, type and country.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The beneficiary's identification type.",
+            "enum": [
+              "id",
+              "passport",
+              "custom"
+            ]
+          },
+          "number": {
+            "type": "string",
+            "description": "Depending on the type selected, either an ID number, passport number or custom identifier."
+          },
+          "country": {
+            "type": "string",
+            "description": "The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`."
+          }
+        },
+        "required": [
+          "type",
+          "number",
+          "country"
+        ]
+      },
+      "date_of_birth": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date",
+        "description": "`null` is allowed. The beneficiary's date of birth."
+      },
+      "percentage": {
+        "type": "integer",
+        "description": "An integer representing the percentage of a claim payout that the beneficiary should receive. Note that the percentages across all beneficiaries should add up to 100%."
+      },
+      "cellphone": {
+        "$ref": "#/components/schemas/cellphone-string"
+      },
+      "email": {
+        "type": "string",
+        "description": "The beneficiary's email address."
+      },
+      "relationship": {
+        "$ref": "#/components/schemas/beneficiary-relationship"
+      },
+      "company_name": {
+        "type": "string",
+        "description": "The name of the company that the beneficiary represents. Required when `type = company`."
+      },
+      "registration_number": {
+        "type": "string",
+        "description": "The company's registration number. Required when `type = company`."
+      },
+      "payment_details": {
+        "$ref": "#/components/schemas/payment-details"
+      }
+    },
+    "example": {
+      "first_name": "Jared",
+      "last_name": "Dunn",
+      "id": {
+        "type": "id",
+        "number": "8704094800082",
+        "country": "ZA"
+      },
+      "percentage": 100,
+      "relationship": "cousin_or_relative"
+    }
+  },
+  "example": [
+    {
+      "first_name": "Jared",
+      "last_name": "Dunn",
+      "id": {
+        "type": "id",
+        "number": "8704094800082",
+        "country": "ZA"
+      },
+      "percentage": 100,
+      "relationship": "cousin_or_relative"
+    }
+  ]
+}

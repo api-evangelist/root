@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "quote-package",
+  "type": "object",
+  "description": "Quote packages are designed to be low-fidelity and fast to generate,  and are used to generate and display new quotes rapidly on a customer-facing front-end.  They expire after one week. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide  and the [quote hook](https://docs.rootplatform.com/docs/quote-hook) guide for more details.",
+  "required": [
+    "quote_package_id",
+    "package_name",
+    "sum_assured",
+    "base_premium",
+    "suggested_premium",
+    "module",
+    "created_at",
+    "currency",
+    "billing_frequency",
+    "product_module_definition_id"
+  ],
+  "properties": {
+    "quote_package_id": {
+      "type": "string",
+      "description": "Must be a UUID. Unique identifier of the quote package."
+    },
+    "package_name": {
+      "type": "string",
+      "description": "The package name."
+    },
+    "sum_assured": {
+      "type": "integer",
+      "description": "The maximum insured value in cents."
+    },
+    "base_premium": {
+      "type": "integer",
+      "description": "The combined risk and platform fee in cents. `monthly_premium` should be calculated from this."
+    },
+    "suggested_premium": {
+      "type": "integer",
+      "description": "The suggested `monthly_premium` amount in cents. This is the total premium for display to the customer."
+    },
+    "module": {
+      "type": "object",
+      "description": "Custom, product-specific information saved to the quote for later reference.  These parameters are set in the [quote hook](https://docs.rootplatform.com/docs/quote-hook) in the product module code.",
+      "additionalProperties": true
+    },
+    "restricted_data": {
+      "type": "object",
+      "description": "Optional restricted product-specific information saved to the quote. This field is only returned when the requestee has access to restricted quote module data.",
+      "additionalProperties": true
+    },
+    "input_data": {
+      "type": "object",
+      "description": "Quote input parameters as received over the [create a quote](https://docs.rootplatform.com/reference/getting-a-quote-2) endpoint.",
+      "additionalProperties": true
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date/time at which the quote package was created."
+    },
+    "currency": {
+      "type": "string",
+      "description": "The currency used for the quote package, in [ISO 4217] (https://en.wikipedia.org/wiki/ISO_4217) format."
+    },
+    "billing_frequency": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "yearly",
+        "once_off"
+      ],
+      "description": "The frequency at which the policy will be billed. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency."
+    },
+    "product_module_definition_id": {
+      "type": "string",
+      "description": "Must be a UUID. Unique identifier of the product module definition associated with this quote package. If a policy is issued from this quote, this product module definition will be associated with the policy."
+    }
+  },
+  "example": {
+    "quote_package_id": "3822b8fb-43e7-43f7-94ad-63e94e6ce1e3",
+    "package_name": "Theft + comprehensive",
+    "sum_assured": 1199900,
+    "base_premium": 14999,
+    "suggested_premium": 18749,
+    "module": {
+      "type": "root_gadgets",
+      "make": "Apple",
+      "model": "iPhone 6S 64GB LTE"
+    },
+    "restricted_data": {
+      "internal_commission_bps": 2500
+    },
+    "created_at": "2023-02-03T11:17:09.747Z",
+    "currency": "ZAR",
+    "billing_frequency": "monthly",
+    "product_module_definition_id": "4889a9e0-d5f9-4971-8ac2-2175a9d15477"
+  }
+}

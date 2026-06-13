@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "scheduled-data-export",
+  "type": "object",
+  "required": [
+    "scheduled_data_export_id",
+    "environment",
+    "created_at",
+    "created_by",
+    "status",
+    "name",
+    "frequency",
+    "adapter",
+    "export_type",
+    "data_range"
+  ],
+  "properties": {
+    "scheduled_data_export_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the scheduled data export."
+    },
+    "environment": {
+      "type": "string",
+      "description": "The dataset used by the scheduled data export. Either `sandbox` or `production`."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the scheduled data export was created."
+    },
+    "created_by": {
+      "type": "object",
+      "description": "An object indicating the user or API key that created the scheduled data export. See [Authentication](#client-apps)."
+    },
+    "status": {
+      "type": "string",
+      "description": "The current status of the scheduled data export. One of `active`, `paused`, or `archived`."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the scheduled data export."
+    },
+    "frequency": {
+      "type": "object",
+      "description": "The frequency at which the scheduled data export runs. See below for more details.",
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/daily-frequency"
+        },
+        {
+          "$ref": "#/components/schemas/weekly-frequency"
+        },
+        {
+          "$ref": "#/components/schemas/monthly-frequency"
+        }
+      ]
+    },
+    "adapter": {
+      "type": "object",
+      "description": "The adapter used to send the export once it's compiled. See below for more details.",
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/sftp-adapter"
+        },
+        {
+          "$ref": "#/components/schemas/https-adapter"
+        },
+        {
+          "$ref": "#/components/schemas/s3-adapter"
+        }
+      ]
+    },
+    "export_type": {
+      "type": "string",
+      "description": "The type of scheduled data export. Only `policy_export` is currently supported."
+    },
+    "data_range": {
+      "type": "string",
+      "description": "The range used to capture data for the export. One of `today`, `week_to_date`, `month_to_date`, `since_last_run`, or `full`."
+    },
+    "latest_run": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "The latest run for the scheduled data export, if one exists. See below for more details."
+    }
+  },
+  "example": {
+    "scheduled_data_export_id": "4ab082f2-864e-4bcf-bc17-75664a25f2e1",
+    "environment": "sandbox",
+    "created_at": "2019-03-15T09:55:13.627Z",
+    "created_by": {
+      "type": "api_key",
+      "id": "313f7511-c16a-4fdb-ba49-25a80a9b571c",
+      "owner_id": "da20903b-7f0d-4318-96bd-6df78514e2fd"
+    },
+    "status": "active",
+    "name": "Daily policies export",
+    "frequency": {
+      "type": "daily",
+      "time_of_day": "09:00"
+    },
+    "adapter": {
+      "type": "sftp",
+      "host": "localhost",
+      "username": "someuser",
+      "path": "/some/path/"
+    },
+    "export_type": "policy_export",
+    "data_range": "since_last_run"
+  }
+}

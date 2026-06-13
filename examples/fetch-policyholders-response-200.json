@@ -1,0 +1,33 @@
+[
+  {
+    "policyholder_id": "bf1ada91-eecb-4f47-9bfa-1258bb1e0055",
+    "type": "individual",
+    "initials": "E",
+    "first_name": "Erlich",
+    "last_name": "Bachman",
+    "id": {
+      "type": "id",
+      "number": "6801015800084",
+      "country": "ZA"
+    },
+    "date_of_birth": "19680101",
+    "email": "erlich@aviato.com",
+    "cellphone": null,
+    "phone_other": null,
+    "created_at": "2017-10-12T15:47:34.281Z",
+    "app_data": {
+      "company": "Aviato"
+    },
+    "created_by": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "type": "user"
+    },
+    "address": {
+      "line_1": "5230 Penfield Avenue",
+      "suburb": "Woodland Hills",
+      "city": "Los Angeles",
+      "country": "US",
+      "area_code": "91364"
+    }
+  }
+]

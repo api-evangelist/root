@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "payment-update",
+  "type": "object",
+  "required": [
+    "payment_id",
+    "status"
+  ],
+  "properties": {
+    "payment_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the payment."
+    },
+    "status": {
+      "$ref": "#/components/schemas/payment-status"
+    },
+    "failure_reason": {
+      "type": "string",
+      "description": "Required if `status` is `failed`. A description of the reason the payment failed."
+    },
+    "failure_action": {
+      "$ref": "#/components/schemas/failure-action"
+    },
+    "failure_code": {
+      "type": "string",
+      "description": "The failure error code. Required if `status` is `failed`."
+    }
+  },
+  "example": {
+    "payment_id": "96e06845-6d37-4dca-8859-9d8ed27dcf58",
+    "status": "failed",
+    "failure_code": "08",
+    "failure_reason": "Account closed",
+    "failure_action": "block_payment_method"
+  }
+}

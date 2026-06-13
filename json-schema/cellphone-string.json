@@ -1,0 +1,10 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "cellphone-string",
+  "type": [
+    "string",
+    "null"
+  ],
+  "description": "`null` and `\"\"` allowed. String containing the cellphone number in international format.",
+  "example": "+27821234567"
+}

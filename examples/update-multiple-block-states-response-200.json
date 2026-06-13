@@ -1,0 +1,15 @@
+{
+  "free_text_block_nested_non_collapsible": {
+    "type": "input.text",
+    "value": "Freetext"
+  },
+  "example_radio_block": {
+    "type": "radio",
+    "option_key": "single",
+    "option_value": "Single"
+  },
+  "example_date_block": {
+    "type": "input.date",
+    "value": "2023-03-10T08:51:17.000Z"
+  }
+}

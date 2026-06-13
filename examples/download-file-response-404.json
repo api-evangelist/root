@@ -1,0 +1,7 @@
+{
+  "error": {
+    "type": "not_found_error",
+    "message": "Attachment not found",
+    "more_info": "https://docs.rootplatform.com/reference/errors"
+  }
+}

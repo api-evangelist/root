@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "premium-type",
+  "type": "string",
+  "description": "The type of the payment being created.Required when `payment_type` is premium or reversal, optional when `payment_type` is premium_refund, forbidden otherwise.",
+  "enum": [
+    "recurring",
+    "arrears",
+    "ad_hoc",
+    "pro_rata",
+    "cover_period",
+    "collection_request",
+    "manual_eft",
+    "premium_refund"
+  ]
+}

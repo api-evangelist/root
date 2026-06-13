@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "payment-charge-type",
+  "type": "string",
+  "description": "Variable charges are applied as a proportion of the total payment amount. Fixed charges are applied as an absolute currency value in cents. The `balance` is the balance of the payment total after all charges have been applied.",
+  "enum": [
+    "fixed",
+    "variable",
+    "balance"
+  ]
+}

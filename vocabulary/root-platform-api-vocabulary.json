@@ -1,0 +1,951 @@
+{
+  "title": "Root Platform API Vocabulary",
+  "description": "Key terms and concepts from the Root Platform API",
+  "source": "https://api.rootplatform.com/v1/docs/insurance/openapi",
+  "terms": [
+    {
+      "term": "alteration-package",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "alteration_package_id",
+        "product_module_definition_id",
+        "module",
+        "created_at",
+        "created_by"
+      ]
+    },
+    {
+      "term": "alteration-packages",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "application-alteration-package",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "alteration_package_application_id",
+        "organization_id",
+        "created_at",
+        "created_by",
+        "module",
+        "monthly_premium",
+        "currency",
+        "sum_assured",
+        "billing_frequency",
+        "status"
+      ]
+    },
+    {
+      "term": "application-alteration-packages",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "application-alteration-hook",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "product_module_definition_alteration_hook_id",
+        "product_module_definition_id",
+        "schema_id",
+        "key",
+        "name",
+        "type",
+        "created_at",
+        "created_by",
+        "productModuleDefinitionSchema"
+      ]
+    },
+    {
+      "term": "application-alteration-hooks",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "application",
+      "type": "schema",
+      "description": "An application represents a \"draft\" policy, with all information captured and validated. Applications persist on Root (they do not expire), and can be reviewed and managed on the Root management dashboard. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [application hook](https://docs.rootplatform.com/docs/application-hook) guide for more details.",
+      "properties": [
+        "application_id",
+        "policyholder_id",
+        "product_module_definition_id",
+        "status",
+        "package_name",
+        "sum_assured",
+        "base_premium",
+        "monthly_premium",
+        "module",
+        "restricted_data"
+      ]
+    },
+    {
+      "term": "applications",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "attachment",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "file_name",
+        "description",
+        "file_type",
+        "file_url",
+        "created_at",
+        "requested_by",
+        "type"
+      ]
+    },
+    {
+      "term": "attachments",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "call",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "call_id",
+        "policyholder_id",
+        "policyholder",
+        "claim_id",
+        "created_at",
+        "call_status",
+        "direction",
+        "from_number",
+        "to_number",
+        "topic"
+      ]
+    },
+    {
+      "term": "calls",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "claim",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "claim_id",
+        "claim_number",
+        "created_at",
+        "updated_at",
+        "policy_id",
+        "policyholder_id",
+        "member_id",
+        "covered_item_id",
+        "claim_status",
+        "approval_status"
+      ]
+    },
+    {
+      "term": "claims",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "complaint",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "complaint_id",
+        "complaint_number",
+        "created_at",
+        "policy_id",
+        "policyholder_id",
+        "member_id",
+        "complaint_status",
+        "app_data",
+        "created_by",
+        "complainant"
+      ]
+    },
+    {
+      "term": "complaints",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "daily-frequency",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "time_of_day"
+      ]
+    },
+    {
+      "term": "data-export-run-log-item",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "data_export_run_id",
+        "created_at",
+        "level",
+        "content"
+      ]
+    },
+    {
+      "term": "data-export-run-log-items",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "data-export-run",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "data_export_run_id",
+        "scheduled_data_export_id",
+        "created_at",
+        "completed_at",
+        "status",
+        "file_id"
+      ]
+    },
+    {
+      "term": "data-export-runs",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "data-store-entity",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "data_store_entity_id",
+        "organization_id",
+        "data",
+        "created_by",
+        "created_at",
+        "updated_at",
+        "updated_by",
+        "data_store"
+      ]
+    },
+    {
+      "term": "data-store-entities",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "data-store",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "data_store_id",
+        "organization_id",
+        "key",
+        "name",
+        "description",
+        "created_at",
+        "created_by",
+        "updated_at",
+        "updated_by",
+        "schema"
+      ]
+    },
+    {
+      "term": "data-stores",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "fulfillment-request",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "fulfillment_request_id",
+        "fulfillment_type_id",
+        "fulfillment_type",
+        "policy_id",
+        "claim_id",
+        "status",
+        "fulfillment_data",
+        "created_at",
+        "created_by",
+        "environment"
+      ]
+    },
+    {
+      "term": "https-adapter",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "type",
+        "url",
+        "headers",
+        "batch_size",
+        "stream_request"
+      ]
+    },
+    {
+      "term": "lead",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "lead_id",
+        "type",
+        "id",
+        "date_of_birth",
+        "gender",
+        "first_name",
+        "middle_name",
+        "last_name",
+        "email",
+        "cellphone"
+      ]
+    },
+    {
+      "term": "leads",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "monthly-frequency",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "time_of_day",
+        "day_of_month"
+      ]
+    },
+    {
+      "term": "note",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "text",
+        "created_at"
+      ]
+    },
+    {
+      "term": "notes",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "notification-data",
+      "type": "schema",
+      "description": "An object containing additional data depending on whether the notification channel is `email`, `sms`, or `other`.",
+      "properties": []
+    },
+    {
+      "term": "notification-email-data",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "from_email",
+        "from_name",
+        "reply_to_email",
+        "subject",
+        "html",
+        "attachments",
+        "to"
+      ]
+    },
+    {
+      "term": "notification",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "notification_id",
+        "organization_id",
+        "notification_type",
+        "linked_entities",
+        "channel",
+        "provider",
+        "created_at",
+        "created_by",
+        "status",
+        "status_updates"
+      ]
+    },
+    {
+      "term": "notifications",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "notification-other-data",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "to",
+        "content",
+        "content_type",
+        "app_data"
+      ]
+    },
+    {
+      "term": "notification-sms-data",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "to",
+        "content",
+        "content_type",
+        "app_data"
+      ]
+    },
+    {
+      "term": "custom-event-type",
+      "type": "schema",
+      "description": "The type of custom event. Must match the type on the Root management dashboard.",
+      "properties": []
+    },
+    {
+      "term": "payment",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "payment_id",
+        "policy_id",
+        "payment_method_id",
+        "status",
+        "amount",
+        "description",
+        "external_ref",
+        "customer_ref",
+        "created_at",
+        "created_by"
+      ]
+    },
+    {
+      "term": "payment-response",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "payment_id",
+        "policy_id",
+        "payment_method_id",
+        "status",
+        "amount",
+        "description",
+        "external_ref",
+        "created_at",
+        "created_by",
+        "updated_at"
+      ]
+    },
+    {
+      "term": "payment-batch",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "organization_id",
+        "payment_batch_id",
+        "status",
+        "action_date",
+        "process_date",
+        "payment_type",
+        "payment_method_type",
+        "billing_config_id",
+        "submitted_at",
+        "submitted_by"
+      ]
+    },
+    {
+      "term": "payment-batches",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "payment-create",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "status",
+        "payment_method_id",
+        "payment_type",
+        "premium_type",
+        "amount",
+        "description",
+        "payment_date",
+        "finalized_at",
+        "collection_type",
+        "billing_date"
+      ]
+    },
+    {
+      "term": "payment-create-async",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "payment-creates-async-array",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "payment-coupon",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "payment_coupon_id",
+        "policy_id",
+        "status",
+        "type",
+        "redeemable_from",
+        "redeemable_to",
+        "amount",
+        "reason",
+        "payment_date",
+        "billing_date"
+      ]
+    },
+    {
+      "term": "payment-coupons",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "payment-update",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "payment_id",
+        "status",
+        "failure_reason",
+        "failure_action",
+        "failure_code"
+      ]
+    },
+    {
+      "term": "payment-updates",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "payment-charge-type",
+      "type": "schema",
+      "description": "Variable charges are applied as a proportion of the total payment amount. Fixed charges are applied as an absolute currency value in cents. The `balance` is the balance of the payment total after all charges have been applied.",
+      "properties": []
+    },
+    {
+      "term": "payment-status",
+      "type": "schema",
+      "description": "The status to which to create the payment.",
+      "properties": []
+    },
+    {
+      "term": "payment-type",
+      "type": "schema",
+      "description": "The type of the payment being created.",
+      "properties": []
+    },
+    {
+      "term": "premium-type",
+      "type": "schema",
+      "description": "The type of the payment being created.Required when `payment_type` is premium or reversal, optional when `payment_type` is premium_refund, forbidden otherwise.",
+      "properties": []
+    },
+    {
+      "term": "collection-type",
+      "type": "schema",
+      "description": "The collection type of the payment being created.",
+      "properties": []
+    },
+    {
+      "term": "failure-action",
+      "type": "schema",
+      "description": "The additional action to perform when processing a failed payment. `block_payment_method`: Set the payment method's verification status to `blocked`, and do not generate a retry. `block_retry`: Do not generate a retry payment (even if enabled in the [product module settings](doc:billing-settings)). `allow_retry`: Generate a retry payment (if enabled in the [product module settings](doc:billing-settings)). **Note:** The payment method will be blocked after 4 consecutive failed payments regardless. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#consecutive-failed-payments-allowed) guide for more details on the number of consecutive payments allowed. This field will be required if `status` is `failed`, forbidden otherwise.\n",
+      "properties": []
+    },
+    {
+      "term": "actor-type",
+      "type": "schema",
+      "description": "The actor who created the record.",
+      "properties": []
+    },
+    {
+      "term": "policy",
+      "type": "schema",
+      "description": "Policies are issued from applications, and represent binding insurance agreements. Parameters stored on the policy can be referenced in custom notifications, policy documents, data exports and external integrations. <br/><br/> See the [issuing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook) guide for more details.",
+      "properties": [
+        "policy_id",
+        "policy_number",
+        "status",
+        "policyholder_id",
+        "package_name",
+        "sum_assured",
+        "monthly_premium",
+        "billing_amount",
+        "balance",
+        "billing_day"
+      ]
+    },
+    {
+      "term": "policy-status",
+      "type": "schema",
+      "description": "The policy status. See the [managing policies](https://docs.rootplatform.com/docs/policy-administration#policy-lifecycle) guide for more details on the policy lifecycle.",
+      "properties": []
+    },
+    {
+      "term": "policies",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "policyholder",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "policyholder_id",
+        "type",
+        "id",
+        "title",
+        "date_of_birth",
+        "gender",
+        "initials",
+        "first_name",
+        "middle_name",
+        "last_name"
+      ]
+    },
+    {
+      "term": "policyholders",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "quote-package",
+      "type": "schema",
+      "description": "Quote packages are designed to be low-fidelity and fast to generate,  and are used to generate and display new quotes rapidly on a customer-facing front-end.  They expire after one week. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide  and the [quote hook](https://docs.rootplatform.com/docs/quote-hook) guide for more details.",
+      "properties": [
+        "quote_package_id",
+        "package_name",
+        "sum_assured",
+        "base_premium",
+        "suggested_premium",
+        "module",
+        "restricted_data",
+        "input_data",
+        "created_at",
+        "currency"
+      ]
+    },
+    {
+      "term": "quote-packages",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "s3-adapter",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "type",
+        "region",
+        "bucket_name",
+        "bucket_path",
+        "secret_access_key",
+        "access_key_id"
+      ]
+    },
+    {
+      "term": "scheduled-data-export",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "scheduled_data_export_id",
+        "environment",
+        "created_at",
+        "created_by",
+        "status",
+        "name",
+        "frequency",
+        "adapter",
+        "export_type",
+        "data_range"
+      ]
+    },
+    {
+      "term": "scheduled-data-exports",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "sftp-adapter",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "type",
+        "host",
+        "port",
+        "path",
+        "username",
+        "password"
+      ]
+    },
+    {
+      "term": "webhook",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "webhook_id",
+        "organization_id",
+        "environment",
+        "name",
+        "description",
+        "secret",
+        "verification_token",
+        "url",
+        "subscriptions",
+        "priority"
+      ]
+    },
+    {
+      "term": "webhooks",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "webhook-queue-event",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "webhook_queue_event_id",
+        "organization_id",
+        "environment",
+        "webhook_id",
+        "created_at",
+        "status",
+        "subscription",
+        "url",
+        "attempts_count",
+        "body"
+      ]
+    },
+    {
+      "term": "webhook-subscription-event",
+      "type": "schema",
+      "description": "The key identifying the subscription event.",
+      "properties": []
+    },
+    {
+      "term": "webhook-subscription-events",
+      "type": "schema",
+      "description": "An array of events that this webhook should subscribe to. If you want to  subscribe to an event not listed here, please submit an idea on  our [product roadmap portal](https://portal.productboard.com/root-platform/) describing your use case.",
+      "properties": []
+    },
+    {
+      "term": "weekly-frequency",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "time_of_day",
+        "day_of_week"
+      ]
+    },
+    {
+      "term": "cellphone",
+      "type": "schema",
+      "description": "`null` and `\"\"` allowed. Object containing the cellphone number in national format, and the corresponding alpha 2 country code.",
+      "properties": [
+        "number",
+        "country"
+      ]
+    },
+    {
+      "term": "cellphone-string",
+      "type": "schema",
+      "description": "`null` and `\"\"` allowed. String containing the cellphone number in international format.",
+      "properties": []
+    },
+    {
+      "term": "beneficiaries-request",
+      "type": "schema",
+      "description": "`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some modules may require adding beneficiaries to a policy for claims to be processed.",
+      "properties": []
+    },
+    {
+      "term": "beneficiaries",
+      "type": "schema",
+      "description": "`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some product modules may require adding beneficiaries to a policy for claims to be processed.",
+      "properties": []
+    },
+    {
+      "term": "policyholder-request",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "type",
+        "id",
+        "date_of_birth",
+        "gender",
+        "initials",
+        "title",
+        "first_name",
+        "middle_name",
+        "last_name",
+        "email"
+      ]
+    },
+    {
+      "term": "bank-name",
+      "type": "schema",
+      "description": "The name of the bank",
+      "properties": []
+    },
+    {
+      "term": "payment-details",
+      "type": "schema",
+      "description": "Details of the account into which the payout should be made.",
+      "properties": [
+        "type",
+        "details"
+      ]
+    },
+    {
+      "term": "beneficiary-relationship",
+      "type": "schema",
+      "description": "The beneficiary's relationship to the policyholder.",
+      "properties": []
+    },
+    {
+      "term": "payment-method",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "payment_method_id",
+        "type",
+        "created_at",
+        "updated_at",
+        "organization_id",
+        "policyholder_id",
+        "policyholder",
+        "policies",
+        "bank_details",
+        "card"
+      ]
+    },
+    {
+      "term": "secret-keys",
+      "type": "schema",
+      "description": "",
+      "properties": [
+        "secret_key_id",
+        "organization_id",
+        "environment",
+        "description",
+        "type",
+        "key",
+        "created_at",
+        "created_by",
+        "updated_at",
+        "updated_by"
+      ]
+    },
+    {
+      "term": "secret-keys-list",
+      "type": "schema",
+      "description": "",
+      "properties": []
+    },
+    {
+      "term": "Quotes",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Policyholders",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Applications",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Policies",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Payments",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Claims",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Calls",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Complaints",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Notifications",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Leads",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Data stores",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Data exports",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Webhooks",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Embed",
+      "type": "tag",
+      "description": ""
+    },
+    {
+      "term": "Files",
+      "type": "tag",
+      "description": ""
+    }
+  ]
+}

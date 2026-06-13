@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "daily-frequency",
+  "type": "object",
+  "required": [
+    "time_of_day"
+  ],
+  "properties": {
+    "time_of_day": {
+      "type": "string",
+      "description": "The time of day to run the export, in `HH:mm` format."
+    }
+  }
+}

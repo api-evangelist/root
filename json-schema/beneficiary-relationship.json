@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "beneficiary-relationship",
+  "type": "string",
+  "description": "The beneficiary's relationship to the policyholder.",
+  "enum": [
+    "main_member",
+    "spouse",
+    "parent",
+    "son",
+    "daughter",
+    "aunt_or_uncle",
+    "grandparent",
+    "cousin_or_relative",
+    "brother",
+    "sister",
+    "employer",
+    "policyholder",
+    "credit_provider",
+    "cessionary",
+    "estate",
+    "trust",
+    "guardian_fund",
+    "funeral_parlour",
+    "son_in_law",
+    "daughter_in_law",
+    "mother_in_law",
+    "father_in_law",
+    "grandchild",
+    "niece_or_nephew",
+    "other"
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "payment-batch",
+  "type": "object",
+  "required": [
+    "organization_id",
+    "payment_batch_id",
+    "status",
+    "action_date",
+    "process_date",
+    "payment_type",
+    "payment_method_type",
+    "billing_config_id",
+    "submitted_at",
+    "submitted_by",
+    "created_at",
+    "failure_reason",
+    "num_payments",
+    "num_reviewed",
+    "total_value",
+    "external_reference",
+    "updated_at",
+    "updated_by"
+  ],
+  "properties": {
+    "organization_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the organization."
+    },
+    "payment_batch_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the payment batch."
+    },
+    "status": {
+      "type": "string",
+      "description": "The payment batch status, one of [`pending`, `submitting`, `submitted`, 'accepted', `failed`, `archived`]."
+    },
+    "action_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the payments in the batch will strike the accounts."
+    },
+    "process_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the batch should be processed & submitted by."
+    },
+    "payment_type": {
+      "type": "string",
+      "description": "The payment collection type, one of [`debit_order_same_day`, `debit_order_two_day`, `debit_order_naedo` (deprecated), `debit_order_debicheck`, `card`, `external`, `other`]."
+    },
+    "payment_method_type": {
+      "type": "string",
+      "description": "The payment method type, one of [`debit_order`, `card`, `eft`, `external`]."
+    },
+    "billing_config_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the billing config to be used when processing this batch."
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the batch was submitted."
+    },
+    "submitted_by": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object indicating the user or API key that submitted the batch. See [Authentication](#client-apps)."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the batch was created."
+    },
+    "failure_reason": {
+      "type": "string",
+      "description": "A description of the reason the payment batch failed."
+    },
+    "num_payments": {
+      "type": "integer",
+      "description": "The number of payments included in this batch."
+    },
+    "num_reviewed": {
+      "type": "integer",
+      "description": "The number of payments in this batch that have been reviewed."
+    },
+    "total_value": {
+      "type": "integer",
+      "description": "The total amount of premium, in cents, of the all the payments in this batch."
+    },
+    "external_reference": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "External reference used for identifying the batch."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the batch was updated."
+    },
+    "updated_by": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object indicating the user or API key that updated the batch. See [Authentication](#client-apps)."
+    }
+  },
+  "example": {
+    "payment_batch_id": "00000000-0000-0000-0000-000000000001",
+    "organization_id": "00000000-0000-0000-0000-000000000001",
+    "status": "submitted",
+    "action_date": "2021-09-29T09:36:43.560Z",
+    "process_date": "2021-09-29T09:36:43.560Z",
+    "payment_type": "debit_order_same_day",
+    "payment_method_type": "debit_order",
+    "billing_config_id": "00000000-0000-0000-0000-000000000003",
+    "submitted_at": "2021-10-07T07:38:00.117Z",
+    "submitted_by": {
+      "type": "api_key",
+      "id": "420df14d-b09d-4d89-84a8-8e3118c9ca23",
+      "owner_id": "00000000-0000-0000-0000-000000000001"
+    },
+    "created_at": "2021-09-29T09:36:43.560Z",
+    "failure_reason": null,
+    "num_payments": 10,
+    "num_reviewed": 0,
+    "total_value": 1000000,
+    "external_reference": "ABCDE12345",
+    "updated_at": "2021-10-07T07:38:00.117Z",
+    "updated_by": {
+      "type": "api_key",
+      "id": "420df14d-b09d-4d89-84a8-8e3118c9ca23",
+      "owner_id": "00000000-0000-0000-0000-000000000001"
+    }
+  }
+}

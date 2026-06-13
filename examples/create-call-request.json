@@ -1,0 +1,13 @@
+{
+  "policyholder_id": "8349345c-a6c5-4bf9-8ebb-6bbfc1628715",
+  "claim_id": "673b8081-9668-4136-97cc-6ae0debda083",
+  "direction": "outbound",
+  "from": "0721234567",
+  "to": "0821234567",
+  "topic": "general",
+  "call_duration": 72,
+  "call_status": "completed",
+  "recording_file_name": "Recording0001.mp3",
+  "recording_file_type": "audio/mpeg",
+  "recording_base64_string": "//uUZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAAT"
+}

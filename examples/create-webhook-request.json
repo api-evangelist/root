@@ -1,0 +1,9 @@
+{
+  "name": "Example webhook",
+  "description": "A webhook for receiving various events",
+  "verification_token": "459106913AF9",
+  "url": "http://your.url.here",
+  "subscriptions": [
+    "policyholder_created"
+  ]
+}

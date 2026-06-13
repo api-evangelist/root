@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "payment-coupon",
+  "type": "object",
+  "required": [
+    "payment_coupon_id",
+    "policy_id",
+    "status",
+    "type",
+    "created_at",
+    "created_by"
+  ],
+  "properties": {
+    "payment_coupon_id": {
+      "type": "string",
+      "description": "Must be a UUID. Object ID of the payment coupon."
+    },
+    "policy_id": {
+      "type": "string",
+      "description": "Must be a UUID. Object ID of the policy."
+    },
+    "status": {
+      "type": "string",
+      "description": "A string indicating the status of the payment coupon. Possible values include `pending`, `redeemed`, or `cancelled`."
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "ad_hoc",
+        "payment_holiday"
+      ],
+      "description": "The type of the payment coupon."
+    },
+    "redeemable_from": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date from which the coupon can be redeemed. Required when creating `payment_holiday` coupons."
+    },
+    "redeemable_to": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date by which the coupon must be redeemed. Required when creating `payment_holiday` coupons."
+    },
+    "amount": {
+      "type": "integer",
+      "description": "The amount, in cents, that represents the value of the coupon once redeemed. Required when creating `ad_hoc` coupons."
+    },
+    "reason": {
+      "type": "string",
+      "description": "The reason for the payment coupon being granted."
+    },
+    "payment_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date the payment coupon was redeemed."
+    },
+    "billing_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The billing date of the payment the payment coupon repalces."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the policy was created."
+    },
+    "created_by": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "An object indicating the user or API key that created the policy. See [Authentication](#client-apps)."
+    }
+  },
+  "example": {
+    "payment_coupon_id": "307286b9-bbaa-4096-9ccf-fcbe596ea0a8",
+    "policy_id": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+    "status": "pending",
+    "type": "payment_holiday",
+    "redeemable_from": "2022-06-01T00:00:00.000Z",
+    "redeemable_to": "2022-06-30T00:00:00.000Z",
+    "reason": "Customer retrenched",
+    "created_at": "2020-08-04T09:14:21.451Z",
+    "created_by": {
+      "type": "api_key",
+      "id": "420df14d-b09d-4d89-84a8-8e3118c9ca23",
+      "owner_id": "00000000-0000-0000-0000-000000000001"
+    }
+  }
+}

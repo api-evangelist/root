@@ -1,0 +1,7 @@
+{
+  "error": {
+    "type": "authorization_error",
+    "message": "This feature is only available in the sandbox environment.",
+    "more_info": "https://docs.rootplatform.com/reference/errors"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "webhook",
+  "type": "object",
+  "required": [
+    "webhook_id",
+    "name",
+    "secret",
+    "url",
+    "subscriptions",
+    "environment",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "webhook_id": {
+      "type": "string",
+      "description": "The unique identifier of the webhook."
+    },
+    "organization_id": {
+      "type": "string",
+      "description": "The unique identifier of the organization the webhook belongs to."
+    },
+    "environment": {
+      "type": "string",
+      "description": "The environment associated with the webhook.",
+      "enum": [
+        "sandbox",
+        "production"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": "The webhook name."
+    },
+    "description": {
+      "type": "string",
+      "description": "An optional description for the webhook."
+    },
+    "secret": {
+      "type": "string",
+      "description": "The auto-generated webhook secret, used to verify the payload (see the [introduction](ref:webhooks) for more details)."
+    },
+    "verification_token": {
+      "type": "string",
+      "description": "An optional token to set on the webhook, used as an additional verification step for the payload (see the [introduction](ref:webhooks) for more details)."
+    },
+    "url": {
+      "type": "string",
+      "description": "The URL that the webhook will `POST` payloads to."
+    },
+    "subscriptions": {
+      "$ref": "#/components/schemas/webhook-subscription-events"
+    },
+    "priority": {
+      "type": "integer",
+      "description": "The priority of the webhook. Attempts for a webhook with lower value will be prioritized over a higher value."
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Whether the webhook is enabled or not. If `false`, all queue events are marked as `failed` without being attempted."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the webhook was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the webhook was last updated."
+    },
+    "user_group_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The unique identifier of the user group associated with the webhook. When set, only events from entities belonging to this user group will trigger the webhook."
+    }
+  },
+  "example": {
+    "webhook_id": "274b2899-7957-464b-a609-49939039cd49",
+    "organization_id": "3f4b2899-7957-464b-a609-49939039cd49",
+    "name": "Example webhook",
+    "description": "A webhook for receiving various events",
+    "secret": "B3a8y1WotX7glI7OxZhX5EAd_6UJ7YEvTJBNQzano4dHjntn9_5AlyPg-dzpX76A",
+    "enabled": true,
+    "verification_token": "459106913AF9",
+    "url": "http://your.url.here",
+    "subscriptions": [
+      "policyholder_created"
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "policy_id": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+  "policy_number": "POL12345",
+  "status": "active",
+  "policyholder_id": "bf3ab7ce-064d-43b7-811d-0ecd9aca3daf",
+  "package_name": "Basic Coverage",
+  "sum_assured": 1000000,
+  "billing_day": 15
+}

@@ -1,0 +1,21 @@
+[
+  {
+    "data_export_run_id": "34233912-c91f-4dc9-bfed-c10d16be26af",
+    "scheduled_data_export_id": "4ab082f2-864e-4bcf-bc17-75664a25f2e1",
+    "created_at": "2019-03-09T08:07:59.044Z",
+    "completed_at": "2019-03-09T08:08:02.178Z",
+    "status": "complete",
+    "file_id": "74ce9562-4242-11e9-904a-7b14ba20f082",
+    "triggered_by": {
+      "type": "api_key",
+      "id": "313f7511-c16a-4fdb-ba49-25a80a9b571c",
+      "owner_id": "da20903b-7f0d-4318-96bd-6df78514e2fd"
+    },
+    "to": "2019-03-09T08:07:59.044Z",
+    "data_range": "today",
+    "environment": "sandbox",
+    "export_type": "policy_export",
+    "name": "Daily policies export",
+    "type": "once_off"
+  }
+]

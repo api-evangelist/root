@@ -1,0 +1,28 @@
+[
+  {
+    "alteration_package_id": "f4397823-db4a-4d6a-a06b-08e1a2a3172c",
+    "sum_assured": 1199900,
+    "monthly_premium": 14999,
+    "billing_frequency": "monthly",
+    "created_at": "2017-10-12T15:47:34.281Z",
+    "status": "pending",
+    "input_data": {
+      "type": "root_gadgets",
+      "make": "Apple",
+      "model": "iPhone 6S 64GB LTE"
+    },
+    "change_description": "Updating device",
+    "product_module_definition_id": "9b7b43f4-9ab8-4e37-b42b-59d5595f3983",
+    "policy_id": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+    "product_module_definition_alteration_hook_id": "2cbbc377-e142-4986-8871-29b0a4c23353",
+    "created_by": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "type": "user"
+    },
+    "module": {
+      "type": "root_gadgets",
+      "make": "Apple",
+      "model": "iPhone 6S 64GB LTE"
+    }
+  }
+]

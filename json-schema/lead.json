@@ -1,0 +1,209 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "lead",
+  "type": "object",
+  "required": [
+    "lead_id",
+    "type",
+    "first_name",
+    "last_name",
+    "created_at",
+    "created_by"
+  ],
+  "properties": {
+    "lead_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the lead."
+    },
+    "type": {
+      "type": "string",
+      "description": "The lead's entity type, either `individual` or `company`."
+    },
+    "id": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. Object containing the lead's identification number, type and country.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Either `id` or `passport`."
+        },
+        "number": {
+          "type": "string",
+          "description": "The ID or passport number."
+        },
+        "country": {
+          "type": "string",
+          "description": "The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the id/passport number."
+        },
+        "expiration_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "`null` is allowed. The expiration date of the lead's passport."
+        }
+      },
+      "required": [
+        "type",
+        "number",
+        "country"
+      ]
+    },
+    "date_of_birth": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "`null` is allowed. The lead's date of birth."
+    },
+    "gender": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. The lead's gender (`male` or `female`)."
+    },
+    "first_name": {
+      "type": "string",
+      "description": "The lead's legal first name."
+    },
+    "middle_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. The lead's legal middle name."
+    },
+    "last_name": {
+      "type": "string",
+      "description": "The lead's legal last name."
+    },
+    "email": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. The lead's contact email address."
+    },
+    "cellphone": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. The lead's contact cellphone number."
+    },
+    "phone_other": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. The lead's alternative phone number."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the lead was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the lead was updated."
+    },
+    "updated_by": {
+      "type": "object",
+      "description": "An object indicating the user or API key that updated the lead. See [Authentication](#client-apps)."
+    },
+    "app_data": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object containing additional custom data for the lead.",
+      "additionalProperties": true
+    },
+    "created_by": {
+      "type": "object",
+      "description": "An object indicating the user or API key that created the lead. See [Authentication](#client-apps)."
+    },
+    "address": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. The lead's physical address. See below for more details.",
+      "properties": {
+        "line_1": {
+          "type": "string",
+          "description": "First line of the lead's address."
+        },
+        "line_2": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "`null` is allowed. Optional second line of the lead's address."
+        },
+        "suburb": {
+          "type": "string",
+          "description": "The lead's suburb."
+        },
+        "city": {
+          "type": "string",
+          "description": "The lead's city."
+        },
+        "country": {
+          "type": "string",
+          "description": "The lead's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format."
+        },
+        "area_code": {
+          "type": "string",
+          "description": "The lead's area code, must be 4 characters long."
+        }
+      },
+      "required": [
+        "line_1",
+        "suburb",
+        "city",
+        "country",
+        "area_code"
+      ]
+    }
+  },
+  "example": {
+    "lead_id": "bf1ada91-eecb-4f47-9bfa-1258bb1e0055",
+    "type": "individual",
+    "first_name": "Erlich",
+    "middle_name": "Aviato",
+    "last_name": "Bachman",
+    "id": {
+      "type": "id",
+      "number": "6801015800084",
+      "country": "ZA"
+    },
+    "date_of_birth": "1968-01-01",
+    "gender": "male",
+    "email": "erlich@aviato.com",
+    "cellphone": null,
+    "phone_other": null,
+    "created_at": "2017-10-12T15:47:34.281Z",
+    "app_data": {
+      "company": "Aviato"
+    },
+    "created_by": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "type": "user"
+    },
+    "address": {
+      "line_1": "5230 Penfield Avenue",
+      "suburb": "Woodland Hills",
+      "city": "Los Angeles",
+      "country": "US",
+      "area_code": "CA 91364"
+    }
+  }
+}

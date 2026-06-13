@@ -1,0 +1,15 @@
+{
+  "payment_coupon_id": "3ae7c7fe-42b5-459f-b4b4-7a30b9e1cbf4",
+  "policy_id": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+  "status": "cancelled",
+  "type": "payment_holiday",
+  "redeemable_from": "2022-06-01T00:00:00.000Z",
+  "redeemable_to": "2022-06-30T00:00:00.000Z",
+  "reason": "Customer retrenched",
+  "created_at": "2020-08-04T09:14:21.451Z",
+  "created_by": {
+    "type": "api_key",
+    "id": "420df14d-b09d-4d89-84a8-8e3118c9ca23",
+    "owner_id": "00000000-0000-0000-0000-000000000001"
+  }
+}

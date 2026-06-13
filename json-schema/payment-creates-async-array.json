@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "payment-creates-async-array",
+  "type": "array",
+  "items": {
+    "$ref": "#/components/schemas/payment-create-async"
+  },
+  "example": [
+    {
+      "policy_id": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+      "status": "successful",
+      "amount": 6000,
+      "description": "Monthly premium",
+      "payment_date": "2022-09-08T00:00:00Z",
+      "payment_type": "premium",
+      "external_reference": 202209086000,
+      "collection_type": "debit_order_same_day",
+      "premium_type": "recurring"
+    },
+    {
+      "policy_id": "2b012979-e2a2-45d3-b5fe-729f825d96ce",
+      "status": "processing",
+      "amount": 4500,
+      "description": "Monthly premium",
+      "payment_date": "2022-09-08T00:00:00Z",
+      "payment_type": "premium",
+      "external_reference": 202209084500,
+      "collection_type": "debit_order_same_day",
+      "premium_type": "recurring"
+    }
+  ]
+}

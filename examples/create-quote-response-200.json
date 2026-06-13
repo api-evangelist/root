@@ -1,0 +1,28 @@
+[
+  {
+    "package_name": "Theft + comprehensive",
+    "sum_assured": 1199900,
+    "base_premium": 14999,
+    "suggested_premium": 18749,
+    "created_at": "2017-10-12T15:47:34.281Z",
+    "quote_package_id": "f4397823-db4a-4d6a-a06b-08e1a2a3172c",
+    "module": {
+      "type": "root_gadgets",
+      "make": "Apple",
+      "model": "iPhone 6S 64GB LTE"
+    }
+  },
+  {
+    "package_name": "Theft only",
+    "sum_assured": 1199900,
+    "base_premium": 5000,
+    "suggested_premium": 6250,
+    "created_at": "2017-10-12T15:47:34.281Z",
+    "quote_package_id": "5d8606c7-3cf9-4167-b65a-937384dea73e",
+    "module": {
+      "type": "root_gadgets",
+      "make": "Apple",
+      "model": "iPhone 6S 64GB LTE"
+    }
+  }
+]

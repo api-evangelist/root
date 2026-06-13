@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "payment-create",
+  "type": "object",
+  "required": [
+    "amount",
+    "status",
+    "description",
+    "payment_type",
+    "payment_date",
+    "collection_type",
+    "payment_method_id"
+  ],
+  "properties": {
+    "status": {
+      "$ref": "#/components/schemas/payment-status"
+    },
+    "payment_method_id": {
+      "type": "string",
+      "description": "Payment method id of the payment being created. Must be a UUID."
+    },
+    "payment_type": {
+      "$ref": "#/components/schemas/payment-type"
+    },
+    "premium_type": {
+      "$ref": "#/components/schemas/premium-type"
+    },
+    "amount": {
+      "type": "number",
+      "description": "The payment amount. Required when `retry_of` is not provided; otherwise forbidden."
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the payment being submitted. Required when `retry_of` is not provided; otherwise forbidden."
+    },
+    "payment_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the payment was created."
+    },
+    "finalized_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the payment was finalized. Required when `status` is `failed` or `successful`."
+    },
+    "collection_type": {
+      "$ref": "#/components/schemas/collection-type"
+    },
+    "billing_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the payment should be processed."
+    },
+    "external_reference": {
+      "type": "string",
+      "description": "Unique external reference of the payment."
+    },
+    "retry_of": {
+      "type": "string",
+      "description": "Original payment id of the payment being retried. Must be a UUID."
+    },
+    "failure_reason": {
+      "type": "string",
+      "description": "A description of the reason the payment failed. Required if `status` is `failed`, forbidden otherwise."
+    },
+    "failure_action": {
+      "$ref": "#/components/schemas/failure-action"
+    },
+    "failure_code": {
+      "type": "string",
+      "description": "Optional if `status` is `failed`, forbidden otherwise. The failure error code."
+    }
+  },
+  "example": {
+    "status": "successful",
+    "description": "Monthly premium",
+    "payment_type": "premium",
+    "premium_type": "pro_rata",
+    "amount": 1800,
+    "payment_date": "2022-09-08T00:00:00Z",
+    "external_reference": "B23423",
+    "collection_type": "debit_order_same_day",
+    "finalized_at": "2022-09-08T00:00:00Z",
+    "billing_date": "2022-09-08T00:00:00Z"
+  }
+}

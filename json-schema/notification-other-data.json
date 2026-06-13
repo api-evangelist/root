@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "notification-other-data",
+  "type": "object",
+  "required": [
+    "to",
+    "content",
+    "content_type"
+  ],
+  "properties": {
+    "to": {
+      "type": "string",
+      "description": "An array containing phone numbers that the notification was sent to."
+    },
+    "content": {
+      "type": "string",
+      "description": "Content for the SMS notification."
+    },
+    "content_type": {
+      "type": "string",
+      "description": "Whether it was `text` or `html`."
+    },
+    "app_data": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object containing additional custom data for the SMS notification.",
+      "additionalProperties": true
+    }
+  }
+}

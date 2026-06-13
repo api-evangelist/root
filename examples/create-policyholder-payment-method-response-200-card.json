@@ -1,0 +1,12 @@
+{
+  "payment_method_id": "e0b7b222-772f-47ac-b08d-c7ba38aa1b25",
+  "type": "card",
+  "card": {
+    "bin": 217339,
+    "holder": "NB FLOOR",
+    "brand": "VISA",
+    "expiry_month": "09",
+    "expiry_year": "2025",
+    "last_4_digits": "9766"
+  }
+}

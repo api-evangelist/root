@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "monthly-frequency",
+  "type": "object",
+  "required": [
+    "time_of_day",
+    "day_of_month"
+  ],
+  "properties": {
+    "time_of_day": {
+      "type": "string",
+      "description": "The time of day to run the export, in `HH:mm` format."
+    },
+    "day_of_month": {
+      "type": "integer",
+      "description": "The day of month to run the export on, from `1` to `31`. *Note:* if the day of month falls after month end (i.e., on the 31st in a month with only 30 days), the export will be run on the last day of the month."
+    }
+  }
+}

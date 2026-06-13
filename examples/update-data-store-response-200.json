@@ -1,0 +1,28 @@
+{
+  "data_store_id": "6e91fe74-aa56-4b4e-8f68-636d23d5706f",
+  "organization_id": "952bfef5-7517-47ff-bf41-08c5a66c52db",
+  "key": "devices",
+  "schema": {
+    "async": true,
+    "properties": {
+      "cellphone_name": {
+        "type": "string"
+      },
+      "price": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "cellphone_name",
+      "price"
+    ]
+  },
+  "description": "Devices data store",
+  "name": "devices",
+  "updated_at": "2021-01-28T06:51:08.370Z",
+  "updated_by": {
+    "type": "api_key",
+    "id": "420df14d-b09d-4d89-84a8-8e3118c9ca23",
+    "owner_id": "da20903b-7f0d-4318-96bd-6df78514e2fd"
+  }
+}

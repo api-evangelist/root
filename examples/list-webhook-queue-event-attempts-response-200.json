@@ -1,0 +1,32 @@
+[
+  {
+    "webhook_attempt_id": "456f7890-a12b-34c5-d678-901234567890",
+    "organization_id": "2f26d0e1-9158-4685-83e8-1660c27e4c3f",
+    "webhook_queue_event_id": "234e5678-f90c-23e4-b567-537725285111",
+    "environment": "production",
+    "created_at": "2024-04-01T12:00:02Z",
+    "attempted_at": "2024-04-01T12:00:02Z",
+    "success": false,
+    "result": {
+      "type": "response",
+      "status": 500,
+      "body": "{\"error\": \"Internal server error\"}",
+      "headers": "{\"content-type\": \"application/json\", \"x-request-id\": \"efgh5678\"}"
+    }
+  },
+  {
+    "webhook_attempt_id": "123e4567-e89b-12d3-a456-426614174000",
+    "organization_id": "2f26d0e1-9158-4685-83e8-1660c27e4c3f",
+    "webhook_queue_event_id": "234e5678-f90c-23e4-b567-537725285111",
+    "environment": "production",
+    "created_at": "2024-04-01T12:00:07Z",
+    "attempted_at": "2024-04-01T12:00:07Z",
+    "success": true,
+    "result": {
+      "type": "response",
+      "status": 200,
+      "body": "{\"message\": \"Webhook received successfully\"}",
+      "headers": "{\"content-type\": \"application/json\", \"x-request-id\": \"abcd1234\"}"
+    }
+  }
+]

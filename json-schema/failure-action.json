@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "failure-action",
+  "type": "string",
+  "enum": [
+    "block_payment_method",
+    "block_retry",
+    "allow_retry"
+  ],
+  "description": "The additional action to perform when processing a failed payment. `block_payment_method`: Set the payment method's verification status to `blocked`, and do not generate a retry. `block_retry`: Do not generate a retry payment (even if enabled in the [product module settings](doc:billing-settings)). `allow_retry`: Generate a retry payment (if enabled in the [product module settings](doc:billing-settings)). **Note:** The payment method will be blocked after 4 consecutive failed payments regardless. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#consecutive-failed-payments-allowed) guide for more details on the number of consecutive payments allowed. This field will be required if `status` is `failed`, forbidden otherwise.\n"
+}

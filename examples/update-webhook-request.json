@@ -1,0 +1,7 @@
+{
+  "name": "Policyholder created",
+  "description": "Policyholder created event",
+  "subscriptions": [
+    "policyholder_created"
+  ]
+}

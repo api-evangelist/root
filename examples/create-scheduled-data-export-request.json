@@ -1,0 +1,17 @@
+{
+  "name": "Daily policies export",
+  "environment": "sandbox",
+  "export_type": "policy_export",
+  "data_range": "since_last_run",
+  "frequency": {
+    "type": "daily",
+    "time_of_day": "09:00"
+  },
+  "adapter": {
+    "type": "sftp",
+    "host": "127.0.0.1",
+    "username": "someuser",
+    "password": "somepassword",
+    "path": "/some/path/"
+  }
+}

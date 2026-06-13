@@ -1,0 +1,178 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "payment-response",
+  "type": "object",
+  "properties": {
+    "payment_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the payment."
+    },
+    "policy_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the policy linked to the payment."
+    },
+    "payment_method_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the payment method used to make the payment."
+    },
+    "status": {
+      "$ref": "#/components/schemas/payment-status"
+    },
+    "amount": {
+      "type": "number",
+      "description": "The payment amount as an integer in cents."
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the payment."
+    },
+    "external_ref": {
+      "type": "string",
+      "description": "Unique external reference of the payment."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the payment was created."
+    },
+    "created_by": {
+      "type": "object",
+      "description": "An object indicating the user or API key that created the policyholder.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the actor."
+        },
+        "type": {
+          "$ref": "#/components/schemas/actor-type"
+        },
+        "owner_id": {
+          "type": "string",
+          "description": "The related organisation's UUID."
+        }
+      }
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the payment was last updated."
+    },
+    "payment_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The target date for the payment to go off the customer\u2019s card or bank account. Typically the same as `billing_date`, but may be earlier or later if `billing_date` falls on a bank holiday or Sunday."
+    },
+    "action_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date that the system first attempts to collect the payment from the customer's card or bank account. Typically the same as the `payment_date`, but can be earlier for certain payment methods."
+    },
+    "billing_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the payment should be processed."
+    },
+    "payment_method": {
+      "description": "`null` is allowed. The payment method used for the payment.",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/components/schemas/payment-method"
+        }
+      ]
+    },
+    "payment_type": {
+      "$ref": "#/components/schemas/payment-type"
+    },
+    "premium_type": {
+      "$ref": "#/components/schemas/premium-type"
+    },
+    "app_data": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object containing additional custom data for the payment.",
+      "additionalProperties": true
+    },
+    "failure_reason": {
+      "type": "string",
+      "description": "The reason the payment failed.\n"
+    },
+    "currency": {
+      "type": "string",
+      "description": "Three-digit currency code for the payment. E.g. `ZAR` or `GBP`"
+    },
+    "retry_of": {
+      "type": "string",
+      "description": "Must be a UUID. Only relevant for retry payments. Original payment id of the payment being retried."
+    },
+    "finalized_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date the payment update was finalized."
+    },
+    "collection_type": {
+      "$ref": "#/components/schemas/collection-type"
+    },
+    "policyholder": {
+      "description": "`null` is allowed. The policyholder the payment is linked to.",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/components/schemas/policyholder"
+        }
+      ]
+    },
+    "policy": {
+      "description": "`null` is allowed. The policy the payment is linked to.",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/components/schemas/policy"
+        }
+      ]
+    },
+    "charges": {
+      "type": "array",
+      "description": "Whenever a premium payment is created (including reversals), a breakdown of the payment amount is calculated according to the charges stored on the policy.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/payment-charge-type"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the charge."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the charge."
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The charged amount. Required when type is `fixed` or `variable`. Either a proportion of the total premium (if `type` is `variable`), or a currency amount in cents (if `type` is `fixed`)."
+          },
+          "calculated": {
+            "type": "integer",
+            "description": "The final calculated charge amount."
+          }
+        }
+      }
+    },
+    "raw_response": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object containing additional custom data for the payment."
+    }
+  }
+}

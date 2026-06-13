@@ -1,0 +1,17 @@
+{
+  "schema": {
+    "type": "object",
+    "properties": {
+      "cellphone_name": {
+        "type": "string"
+      },
+      "price": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "cellphone_name",
+      "price"
+    ]
+  }
+}

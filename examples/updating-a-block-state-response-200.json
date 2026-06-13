@@ -1,0 +1,7 @@
+{
+  "example_radio_block": {
+    "type": "radio",
+    "option_key": "married",
+    "option_value": "Married"
+  }
+}

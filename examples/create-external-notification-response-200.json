@@ -1,0 +1,42 @@
+{
+  "notification_id": "ff693e05-244a-4b48-97fa-237ebafc4c29",
+  "organization_id": "2f26d0e1-9158-4685-83e8-1660c27e4c3f",
+  "channel": "email",
+  "notification_type": "policy_issued",
+  "provider": "external",
+  "created_at": "2022-06-23T08:38:30.703Z",
+  "created_by": {
+    "type": "api_key",
+    "id": "95d369a6-93c0-4687-9506-86f1659a6d3e",
+    "owner_id": "2f26d0e1-9158-4685-83e8-1660c27e4c3f"
+  },
+  "status": "sent",
+  "status_updates": [
+    {
+      "status": "sent",
+      "created_at": "2023-02-15T09:49:45.503Z"
+    }
+  ],
+  "linked_entities": {
+    "policy_id": "3d292076-a531-4028-988e-e863b04d8497"
+  },
+  "data": {
+    "from_email": "erlich@aviato.com",
+    "from_name": "Erlich Bachman",
+    "reply_to_email": "erlich@aviato.com",
+    "subject": "Hello",
+    "html": "<div>hello</div>",
+    "to": [
+      {
+        "name": "Dinesh",
+        "email": "dinesh@piedpiper.com"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "AviatoS3Script.pdf",
+        "type": "application/pdf"
+      }
+    ]
+  }
+}

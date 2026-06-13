@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "payment-details",
+  "type": "object",
+  "description": "Details of the account into which the payout should be made.",
+  "required": [
+    "type",
+    "details"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The type of account into which the payout should be made.  For a beneficiary, this must be `eft`.",
+      "enum": [
+        "eft",
+        "card"
+      ]
+    },
+    "details": {
+      "type": "object",
+      "description": "The bank account details.",
+      "required": [
+        "bank_name",
+        "branch_code",
+        "account_type",
+        "account_number"
+      ],
+      "properties": {
+        "bank_name": {
+          "$ref": "#/components/schemas/bank-name"
+        },
+        "branch_code": {
+          "type": "string",
+          "description": "The branch code for the account."
+        },
+        "account_type": {
+          "type": "string",
+          "description": "The account type.",
+          "enum": [
+            "cheque_account",
+            "savings"
+          ]
+        },
+        "account_number": {
+          "type": "string",
+          "description": "The account number."
+        }
+      }
+    }
+  }
+}

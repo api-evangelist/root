@@ -1,0 +1,250 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "payment-method",
+  "type": "object",
+  "required": [
+    "payment_method_id",
+    "type",
+    "created_at",
+    "organization_id",
+    "policyholder_id"
+  ],
+  "properties": {
+    "payment_method_id": {
+      "type": "string",
+      "description": "Must be a UUID. The Unique identifier for the payment method."
+    },
+    "type": {
+      "type": "string",
+      "description": "The payment method type. Except for external payment methods, must be one of `debit_order`, `card`, `eft`, `collection_module`. For external payment methods, will correspond to the custom `key` field."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time at which the payment method was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time at which the payment method was last updated."
+    },
+    "organization_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the related organisation."
+    },
+    "policyholder_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the policyholder the payment method is linked to."
+    },
+    "policyholder": {
+      "$ref": "#/components/schemas/policyholder",
+      "description": "The policyholder object linked to the payment method. Only included when `?include=policyholder` is specified."
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/policy"
+      },
+      "description": "An array of policy objects linked to the payment method. Only included when `?include=policies` is specified."
+    },
+    "bank_details": {
+      "type": "object",
+      "description": "Required if `type` is `debit_order`. Bank details for the debit order.",
+      "required": [
+        "account_holder",
+        "bank",
+        "branch_code",
+        "account_number",
+        "account_type"
+      ],
+      "properties": {
+        "account_holder": {
+          "type": "string",
+          "description": "Name of account holder."
+        },
+        "account_holder_identification": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "`null` is allowed. An object containing the identification details of the account holder.",
+          "required": [
+            "type",
+            "number",
+            "country"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "The type of identity document.",
+              "enum": [
+                "id",
+                "passport"
+              ]
+            },
+            "number": {
+              "type": "string",
+              "description": "The identity document number."
+            },
+            "country": {
+              "type": "string",
+              "description": "The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the identification document."
+            },
+            "expiration_date": {
+              "type": "string",
+              "format": "date-time",
+              "description": "The expiration date of the lead's passport."
+            }
+          }
+        },
+        "bank": {
+          "$ref": "#/components/schemas/bank-name"
+        },
+        "branch_code": {
+          "type": "string",
+          "description": "Branch code for bank account."
+        },
+        "account_number": {
+          "type": "string",
+          "description": "Bank account number."
+        },
+        "account_type": {
+          "type": "string",
+          "description": "Bank account type.",
+          "enum": [
+            "cheque",
+            "savings"
+          ]
+        },
+        "banv_status": {
+          "type": "string",
+          "description": "The [bank account verification status](doc:account-verification-banvavs#reporting-on-payment-methods).",
+          "enum": [
+            "pending",
+            "processing",
+            "verified",
+            "failed_verification",
+            "blocked"
+          ]
+        },
+        "blocked_reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The reason the payment method is blocked. Only relevant if `banv_status` is `blocked`."
+        },
+        "banv_response": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The response received when bank account verification was attempted."
+        },
+        "payment_method_id": {
+          "type": "string",
+          "description": "Must be a UUID. The unique identifier of the payment method."
+        }
+      }
+    },
+    "card": {
+      "type": "object",
+      "description": "Details of the payment card. Required if `type` is `card`.",
+      "required": [
+        "bin",
+        "holder",
+        "brand",
+        "expiry_month",
+        "expiry_year",
+        "last_4_digits"
+      ],
+      "properties": {
+        "bin": {
+          "type": "string",
+          "description": "The bank identification number."
+        },
+        "holder": {
+          "type": "string",
+          "description": "The name of the cardholder."
+        },
+        "brand": {
+          "type": "string",
+          "description": "The brand of the card."
+        },
+        "expiry_month": {
+          "type": "string",
+          "description": "The month of the card's exiry date."
+        },
+        "expiry_year": {
+          "type": "string",
+          "description": "The year of the card's exiry date."
+        },
+        "last_4_digits": {
+          "type": "string",
+          "description": "The last four digits of the card number."
+        },
+        "registration": {
+          "type": "string",
+          "description": "The registration ID of the card."
+        }
+      }
+    },
+    "external_reference": {
+      "type": "string",
+      "description": "The external identifier of the payment method. Required if `type` is `external`."
+    },
+    "banv_status": {
+      "type": "string",
+      "description": "The [bank account verification status](doc:account-verification-banvavs#reporting-on-payment-methods). Only relevant if `type` is `external`.",
+      "enum": [
+        "pending",
+        "processing",
+        "verified",
+        "failed_verification",
+        "blocked"
+      ]
+    },
+    "blocked_reason": {
+      "type": "string",
+      "description": "The reason the payment method is blocked. Only relevant if `banv_status` is `blocked` and `type` is `external`."
+    },
+    "collection_module_definition_id": {
+      "type": "string",
+      "description": "The unique identifier of the collection module definition that the payment method is linked to. Only relevant if `type` is `collection_module`."
+    },
+    "collection_module_key": {
+      "type": "string",
+      "description": "The key of the collection module that the payment method is linked to. Only relevant if `type` is `collection_module`."
+    },
+    "module": {
+      "type": "object",
+      "description": "Custom module-specific data for collection module payment methods. Only relevant if `type` is `collection_module`.",
+      "additionalProperties": true
+    },
+    "collection_module": {
+      "type": "object",
+      "description": "The collection module object linked to the payment method. Only included when `?include=collection_module` is specified and `type` is `collection_module`.",
+      "additionalProperties": true
+    },
+    "updated_by": {
+      "type": "object",
+      "description": "An object indicating the user or API key that last updated the payment method. Only relevant if `type` is `collection_module`."
+    }
+  },
+  "example": {
+    "payment_method_id": "e0b7b222-772f-47ac-b08d-c7ba38aa1b25",
+    "type": "debit_order",
+    "organization_id": "952bfef5-7517-47ff-bf41-08c5a66c52db",
+    "policyholder_id": "f91f4ea4-9c6d-459e-998b-a5711cbd8895",
+    "created_at": "2021-01-29T13:12:00.968Z",
+    "updated_at": "2021-01-29T13:12:00.968Z",
+    "bank_details": {
+      "account_holder": "Erlich Bachman",
+      "bank": "absa",
+      "branch_code": "12345",
+      "account_number": "123456789",
+      "account_type": "cheque",
+      "banv_status": "pending"
+    }
+  }
+}

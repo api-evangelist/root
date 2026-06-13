@@ -1,0 +1,13 @@
+{
+  "payment_method_id": "e0b7b222-772f-47ac-b08d-c7ba38aa1b25",
+  "type": "debit_order",
+  "bank_details": {
+    "first_name": "Erlich",
+    "last_name": "Bachman",
+    "bank": "absa",
+    "branch_code": "12345",
+    "account_number": "123456789",
+    "account_type": "cheque",
+    "banv_status": "pending"
+  }
+}

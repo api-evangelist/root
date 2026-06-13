@@ -1,0 +1,396 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "policy",
+  "type": "object",
+  "description": "Policies are issued from applications, and represent binding insurance agreements. Parameters stored on the policy can be referenced in custom notifications, policy documents, data exports and external integrations. <br/><br/> See the [issuing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook) guide for more details.",
+  "required": [
+    "policy_id",
+    "policy_number",
+    "status",
+    "policyholder_id",
+    "package_name",
+    "monthly_premium",
+    "billing_amount",
+    "balance",
+    "currency",
+    "billing_day",
+    "billing_frequency",
+    "next_billing_date",
+    "covered_people",
+    "base_premium",
+    "claim_ids",
+    "complaint_ids",
+    "start_date",
+    "end_date",
+    "policy_schedule_uri",
+    "terms_uri",
+    "schedule_versions",
+    "created_at",
+    "module",
+    "app_data",
+    "created_by",
+    "scheme_type",
+    "charges",
+    "supplementary_terms_files"
+  ],
+  "properties": {
+    "policy_id": {
+      "type": "string",
+      "description": "Must be a UUID. Object ID of the policy."
+    },
+    "policy_number": {
+      "type": "string",
+      "description": "A shorter, human-readable policy identifier. This typically used in policy documents and customer notifications for ease of reference."
+    },
+    "status": {
+      "$ref": "#/components/schemas/policy-status"
+    },
+    "policyholder_id": {
+      "type": "string",
+      "description": "Must be a UUID. The system identifier of the policy's policyholder."
+    },
+    "package_name": {
+      "type": "string",
+      "description": "The insurance package name."
+    },
+    "sum_assured": {
+      "type": "integer",
+      "description": "The amount, in cents, of the maximum value insured."
+    },
+    "monthly_premium": {
+      "type": "integer",
+      "description": "The total monthly premium, in cents, that will be billed to the policyholder."
+    },
+    "billing_amount": {
+      "type": "integer",
+      "description": "The amount, in cents, that will be billed on the next billing run."
+    },
+    "balance": {
+      "type": "integer",
+      "description": "The amount, in cents, that is owed on the policy. If the policyholder makes an adhoc payment to the policy, the amount is credited to this balance. If the policyholder defaults on a payment, it is subtracted from the balance. If the balance is found negative during the next billing run, the amount is added to the monthly premium, else the monthly premium is subtracted from the balance and the remainder is charged."
+    },
+    "billing_day": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "`null` is allowed. The day of month on which the policy is billed. Should be between 1 and 31, or `null`. If it falls on a day that does not exist in the month (for example, 31 in February) the policy will be billed on the last day of the month. Setting this value to 31 will ensure that the policy is billed on the last day of every month."
+    },
+    "billing_frequency": {
+      "type": "string",
+      "description": "The frequency at which the policy is billed. One of [`monthly`, `yearly`, `once_off`]. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency."
+    },
+    "next_billing_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The next date the policy is due to be billed."
+    },
+    "currency": {
+      "type": "string",
+      "description": "The currency code of the policy."
+    },
+    "beneficiaries": {
+      "description": "An array of beneficiaries, or \"null\".",
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/beneficiaries"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "covered_people": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object"
+      },
+      "description": "`null` is allowed. An array of covered people added to the policy."
+    },
+    "base_premium": {
+      "type": "integer",
+      "description": "The amount, in cents, of the minimum allowed monthly premium fee. This includes risk pricing and platform fees."
+    },
+    "claim_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "An array of claim ids of the claims linked to the policy."
+    },
+    "complaint_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "An array of complaint ids of the complaints linked to the policy."
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Once the policy reaches its start date, cover commences and regular collection attempts can run against the policy (provided it has an `active` status). See the [Managing policies](https://docs.rootplatform.com/docs/policy-administration#policy-lifecycle) guide for more details on the policy lifecycle."
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the policy reaches its end date, its status will change to `expired`. Cover and collections will cease. Policies with no end date do not expire."
+    },
+    "current_version": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "`null` is allowed. The current policy schedule version."
+    },
+    "schedule_file_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. Object ID of the policy document."
+    },
+    "policy_schedule_uri": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "URI to the policy document in PDF format."
+    },
+    "terms_file_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. Attachment ID of the policy terms document."
+    },
+    "terms_uri": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "URI to the terms document in PDF format."
+    },
+    "supplementary_terms_files": {
+      "type": "array",
+      "description": "Supplementary terms files associated with the policy.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "supplementary_terms_file_id": {
+            "type": "string",
+            "description": "Attachment ID of the supplementary terms document."
+          },
+          "type": {
+            "type": "string",
+            "description": "The supplementary terms file type, as specified in the product module settings."
+          },
+          "uri": {
+            "type": "string",
+            "description": "URI to the supplementary terms document in PDF format."
+          }
+        }
+      }
+    },
+    "policy_welcome_letter_file_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. Object ID of the welcome letter."
+    },
+    "policy_welcome_letter_uri": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. URI to the welcome letter in PDF format."
+    },
+    "policy_certificate_file_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. Object ID of the policy certificate."
+    },
+    "policy_certificate_uri": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. URI to the certificate in PDF format."
+    },
+    "policy_anniversary_file_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "`null` is allowed. Object ID of the policy anniversary document."
+    },
+    "schedule_versions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "description": "The policy schedule version number."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date the policy schedule version was created."
+          }
+        }
+      },
+      "description": "The policy schedule versions for the policy. A new policy schedule version is typically created when the policy is updated."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the policy was created."
+    },
+    "module": {
+      "type": "object",
+      "description": "Custom, product-specific fields stored against the policy. These parameters are set in the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook) in the product module code. They can be referenced in policy documents, data exports and external integrations.",
+      "additionalProperties": true
+    },
+    "restricted_data": {
+      "type": "object",
+      "description": "Optional restricted product-specific information saved to the policy. This field is only returned when the requestee has access to restricted policy module data.",
+      "additionalProperties": true
+    },
+    "app_data": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object containing additional custom data for the policy.",
+      "additionalProperties": true
+    },
+    "created_by": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object indicating the user or API key that created the policy."
+    },
+    "scheme_type": {
+      "type": "string",
+      "description": "Indicates the policy scheme type, being either `individual` or `group`."
+    },
+    "payment_method_id": {
+      "type": "string",
+      "description": "Must be a UUID. The ID of the policy's payment method, if set."
+    },
+    "status_updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date indicating when the policy status was last updated."
+    },
+    "charges": {
+      "type": "array",
+      "description": "Whenever a premium payment is created (including reversals), a breakdown of the payment amount is calculated according to the charges stored on the policy. This allows the premium breakdown to be referenced in policy documents and disclosures, and in the policy's payment data. See the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook#charges-and-commissions) guide for more details on charges and commissions.",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "name"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/payment-charge-type"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the charge."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the charge."
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The charged amount. Required when type is `fixed` or `variable`. Either a proportion of the total premium (if `type` is `variable`), or a currency amount in cents (if `type` is `fixed`)."
+          }
+        }
+      }
+    }
+  },
+  "example": {
+    "policy_id": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+    "policy_number": "1HFCT1CDBJ",
+    "policyholder_id": "bf3ab7ce-064d-43b7-811d-0ecd9aca3daf",
+    "status": "active",
+    "package_name": "Theft + comprehensive",
+    "sum_assured": 1199900,
+    "base_premium": 14999,
+    "monthly_premium": 50000,
+    "balance": 0,
+    "currency": "ZAR",
+    "billing_amount": 50000,
+    "billing_day": 1,
+    "billing_frequency": "monthly",
+    "covered_people": [],
+    "start_date": "2017-10-05T00:00:00.000Z",
+    "end_date": "2018-10-05T00:00:00.000Z",
+    "current_version": 1,
+    "schedule_file_id": "c85f1d4e-f09b-11ed-a05b-0242ac120003",
+    "policy_schedule_uri": "https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/schedule/schedule_latest.pdf",
+    "terms_file_id": "68c8b6e6-f484-11ed-a05b-0242ac120003",
+    "terms_uri": "https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/terms/terms.pdf",
+    "supplementary_terms_files": [
+      {
+        "supplementary_terms_file_id": "c414342a-7ea4-4a16-be68-d152aa5fce68",
+        "type": "client-conduct",
+        "uri": "https://sandbox.root.co.za/v1/files/download/a7bc326f-640e-4b43-9909-7a6c8be17e37"
+      }
+    ],
+    "policy_welcome_letter_file_id": "d0864e70-f09b-11ed-a05b-0242ac120003",
+    "policy_welcome_letter_uri": "https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/welcome-letter/welcome_letter.pdf",
+    "policy_certificate_file_id": "1e527606-f09c-11ed-a05b-0242ac120003",
+    "policy_certificate_uri": "https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/certificate/certificate.pdf",
+    "policy_anniversary_file_id": "7e6d32c4-f484-11ed-a05b-0242ac120003",
+    "schedule_versions": [
+      {
+        "version": 1,
+        "created_at": "2017-10-05T18:40:47.281Z"
+      }
+    ],
+    "created_at": "2017-10-05T18:40:47.281Z",
+    "module": {
+      "type": "root_gadgets",
+      "make": "Apple",
+      "model": "iPhone 6S 64GB LTE",
+      "serial_number": "1234567890"
+    },
+    "restricted_data": {
+      "internal_commission_bps": 1500
+    },
+    "app_data": {
+      "gadget_colour": "Space Grey"
+    },
+    "created_by": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "type": "user"
+    },
+    "scheme_type": "individual",
+    "payment_method_id": "e0b7b222-772f-47ac-b08d-c7ba38aa1b25",
+    "charges": [],
+    "beneficiaries": [
+      {
+        "first_name": "Jared",
+        "last_name": "Dunn",
+        "id": {
+          "type": "id",
+          "number": "8704094800082",
+          "country": "ZA"
+        },
+        "percentage": 100,
+        "relationship": "cousin_or_relative"
+      }
+    ]
+  }
+}

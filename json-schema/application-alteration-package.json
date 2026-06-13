@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "application-alteration-package",
+  "type": "object",
+  "required": [
+    "alteration_package_application_id",
+    "organization_id",
+    "created_at",
+    "created_by",
+    "module",
+    "application_id",
+    "alteration_hook_key"
+  ],
+  "properties": {
+    "alteration_package_application_id": {
+      "type": "string",
+      "description": "Must be a UUID. Unique identifier of the application alteration package."
+    },
+    "organization_id": {
+      "type": "string",
+      "description": "Must be a UUID. Unique identifier of the organization."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date/time at which the application alteration package was created."
+    },
+    "created_by": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object indicating the user or API key that created the application alteration package. See [Authentication](#client-apps)."
+    },
+    "module": {
+      "type": "object",
+      "description": "Custom module-specific fields stored against the application alteration package. See [product modules](doc:product-modules-overview) for more details.",
+      "additionalProperties": true
+    },
+    "monthly_premium": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "Null is allowed. The monthly premium amount in cents."
+    },
+    "currency": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Null is allowed. The currency code for premium values."
+    },
+    "sum_assured": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "Null is allowed. The sum assured amount in cents."
+    },
+    "billing_frequency": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Null is allowed. The billing frequency to be applied."
+    },
+    "status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Null is allowed. The status of the application alteration package."
+    },
+    "change_description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Null is allowed. Description of the change being applied."
+    },
+    "input_data": {
+      "type": "object",
+      "description": "The input data received when creating the alteration package.",
+      "additionalProperties": true
+    },
+    "application_id": {
+      "type": "string",
+      "description": "Must be a UUID. Unique identifier of the related application."
+    },
+    "alteration_hook_key": {
+      "type": "string",
+      "description": "The identifier of the alteration hook used to create this package."
+    }
+  },
+  "example": {
+    "alteration_package_application_id": "2d200d5c-477c-4c90-b305-e8f445f4d8e5",
+    "organization_id": "00000000-0000-0000-0000-000000000001",
+    "created_at": "2026-01-28T09:17:05.101Z",
+    "created_by": {
+      "type": "api_key",
+      "id": "420df14d-b09d-4d89-84a8-8e3118c9ca23",
+      "owner_id": "00000000-0000-0000-0000-000000000001"
+    },
+    "module": {
+      "package_name": "Funeral Cover",
+      "suggested_premium": 17500,
+      "base_premium": 16000,
+      "cover_amount": 25000000
+    },
+    "monthly_premium": 17500,
+    "currency": "ZAR",
+    "sum_assured": 25000000,
+    "billing_frequency": "monthly",
+    "status": "pending",
+    "change_description": "Updating cover amount before issuing policy",
+    "input_data": {
+      "cover_amount": 25000000,
+      "spouse_cover": true
+    },
+    "application_id": "bf1ada91-eecb-4f47-9bfa-1258bb1e0055",
+    "alteration_hook_key": "update_cover_amount"
+  }
+}

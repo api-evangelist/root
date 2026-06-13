@@ -1,0 +1,236 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "beneficiaries-request",
+  "type": "array",
+  "description": "`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some modules may require adding beneficiaries to a policy for claims to be processed.",
+  "items": {
+    "type": "object",
+    "required": [
+      "first_name",
+      "last_name",
+      "percentage",
+      "relationship"
+    ],
+    "properties": {
+      "type": {
+        "type": "string",
+        "description": "The type of beneficiary to be created.",
+        "enum": [
+          "individual",
+          "company"
+        ],
+        "default": "individual"
+      },
+      "first_name": {
+        "type": "string",
+        "description": "The beneficiary's first name."
+      },
+      "last_name": {
+        "type": "string",
+        "description": "The beneficiary's last name."
+      },
+      "title": {
+        "type": "string",
+        "description": "The beneficiary's title.",
+        "enum": [
+          "mr",
+          "mrs",
+          "miss",
+          "mx",
+          "sir",
+          "dr",
+          "adv",
+          "ms",
+          "prof"
+        ]
+      },
+      "gender": {
+        "type": "string",
+        "description": "The beneficiary's gender.",
+        "enum": [
+          "male",
+          "female"
+        ]
+      },
+      "id": {
+        "type": "object",
+        "description": "(Individual beneficiaries only) Object containing beneficiary's identification number, type and country.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The beneficiary's identification type.",
+            "enum": [
+              "id",
+              "passport",
+              "custom"
+            ]
+          },
+          "number": {
+            "type": "string",
+            "description": "Depending on the type selected, either an ID number, passport number or custom identifier."
+          },
+          "country": {
+            "type": "string",
+            "description": "The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`."
+          }
+        },
+        "required": [
+          "type",
+          "number",
+          "country"
+        ]
+      },
+      "date_of_birth": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date",
+        "description": "`null` is allowed. An optional string containing the beneficiary's date of birth."
+      },
+      "percentage": {
+        "type": "integer",
+        "description": "An integer representing the percentage of a claim payout that the beneficiary should receive. Note that the percentages across all beneficiaries should add up to 100%."
+      },
+      "cellphone": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/cellphone"
+          },
+          {
+            "$ref": "#/components/schemas/cellphone-string"
+          }
+        ]
+      },
+      "email": {
+        "type": "string",
+        "description": "The beneficiary's email address."
+      },
+      "relationship": {
+        "$ref": "#/components/schemas/beneficiary-relationship"
+      },
+      "company_name": {
+        "type": "string",
+        "description": "The name of the company that the beneficiary represents. Required when `type = company`."
+      },
+      "registration_number": {
+        "type": "string",
+        "description": "The company's registration number. Required when `type = company`."
+      },
+      "payment_details": {
+        "$ref": "#/components/schemas/payment-details"
+      },
+      "policyholder_id": {
+        "type": "string",
+        "description": "Must be a UUID. The unique identifier of an existing policyholder to link as a beneficiary."
+      },
+      "address": {
+        "type": "object",
+        "description": "The beneficiary's physical address.",
+        "properties": {
+          "line_1": {
+            "type": "string",
+            "description": "First line of the beneficiary's address."
+          },
+          "line_2": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "`null` is allowed. Optional second line of the beneficiary's address."
+          },
+          "suburb": {
+            "type": "string",
+            "description": "The beneficiary's suburb."
+          },
+          "city": {
+            "type": "string",
+            "description": "The beneficiary's city."
+          },
+          "country": {
+            "type": "string",
+            "description": "The beneficiary's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format."
+          },
+          "area_code": {
+            "type": "string",
+            "description": "The beneficiary's area code."
+          }
+        },
+        "required": [
+          "line_1",
+          "city",
+          "country",
+          "area_code"
+        ]
+      }
+    },
+    "example": {
+      "first_name": "Jared",
+      "last_name": "Dunn",
+      "id": {
+        "type": "id",
+        "number": "8704094800082",
+        "country": "ZA"
+      },
+      "percentage": 100,
+      "relationship": "cousin_or_relative",
+      "payment_details": {
+        "type": "eft",
+        "details": {
+          "bank_name": "absa",
+          "branch_code": "632005",
+          "account_number": "23234342424",
+          "account_type": "cheque_account"
+        }
+      }
+    }
+  },
+  "example": [
+    {
+      "first_name": "Mary",
+      "last_name": "Yang",
+      "percentage": 90,
+      "title": "mrs",
+      "gender": "female",
+      "id": {
+        "type": "id",
+        "number": "9504014800082",
+        "country": "ZA"
+      },
+      "email": "mary@piedpiper.com",
+      "relationship": "spouse",
+      "cellphone": "+27821234567",
+      "payment_details": {
+        "type": "eft",
+        "details": {
+          "account_number": "01304055557",
+          "account_type": "cheque_account",
+          "bank_name": "nedbank",
+          "branch_code": "20177778"
+        }
+      },
+      "type": "individual"
+    },
+    {
+      "first_name": "Erlich",
+      "last_name": "Aviatio",
+      "percentage": 10,
+      "title": "mr",
+      "email": "erlich@aviatio.com",
+      "relationship": "other",
+      "cellphone": "+27783456578",
+      "payment_details": {
+        "type": "eft",
+        "details": {
+          "account_number": "546767819",
+          "account_type": "cheque_account",
+          "bank_name": "investec",
+          "branch_code": "201507"
+        }
+      },
+      "company_name": "Pied Piper",
+      "registration_number": "CC1234",
+      "type": "company"
+    }
+  ]
+}

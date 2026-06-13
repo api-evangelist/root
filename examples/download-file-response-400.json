@@ -1,0 +1,7 @@
+{
+  "error": {
+    "type": "invalid_request_error",
+    "message": "Missing organization ID.",
+    "more_info": "https://docs.rootplatform.com/reference/errors"
+  }
+}

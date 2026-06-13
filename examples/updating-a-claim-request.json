@@ -1,0 +1,9 @@
+{
+  "incident_type": "Theft",
+  "incident_cause": "Device stolen during burglary",
+  "incident_date": "2017-10-16T10:12:02.872Z",
+  "app_data": {
+    "key3": "value3"
+  },
+  "requested_amount": 13000000
+}

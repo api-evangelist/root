@@ -1,0 +1,25 @@
+{
+  "type": "individual",
+  "id": {
+    "type": "id",
+    "number": "6801015800084",
+    "country": "ZA"
+  },
+  "initials": "E",
+  "first_name": "Erlich",
+  "middle_name": "Aviato",
+  "last_name": "Bachman",
+  "email": "erlich@avaito.com",
+  "cellphone": "+27821234567",
+  "phone_other": "+27124101337",
+  "app_data": {
+    "company": "Aviato"
+  },
+  "address": {
+    "line_1": "5230 Penfield Avenue",
+    "suburb": "Woodland Hills",
+    "city": "Los Angeles",
+    "country": "US",
+    "area_code": "91364"
+  }
+}

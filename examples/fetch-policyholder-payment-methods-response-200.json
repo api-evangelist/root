@@ -1,0 +1,22 @@
+[
+  {
+    "payment_method_id": "e0b7b222-772f-47ac-b08d-c7ba38aa1b25",
+    "type": "debit_order",
+    "bank_details": {
+      "first_name": "Erlich",
+      "last_name": "Bachman",
+      "bank": "absa",
+      "branch_code": "12345",
+      "account_number": "123456789",
+      "banv_response": {
+        "account_number": "0000000000000",
+        "flags": "N",
+        "id_number": "8902165145086",
+        "initials": "s",
+        "name": "dube",
+        "reference": "58196226-b9a1-4b8d-82bb-3ea5322790e2",
+        "result": "A/c doesn't exist"
+      }
+    }
+  }
+]

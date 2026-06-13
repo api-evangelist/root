@@ -1,0 +1,41 @@
+[
+  {
+    "type": "call_completed",
+    "call_id": "d3d13c48-4dc3-4816-8d01-de3215878225",
+    "created_at": "2023-02-03T12:05:00.000Z",
+    "requested_by": {
+      "type": "system",
+      "id": "00000000-0000-0000-0000-000000000000"
+    }
+  },
+  {
+    "type": "recording_added",
+    "call_id": "d3d13c48-4dc3-4816-8d01-de3215878225",
+    "created_at": "2023-02-03T12:04:30.000Z",
+    "requested_by": {
+      "type": "system",
+      "id": "00000000-0000-0000-0000-000000000000"
+    },
+    "recording_url": "https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83/Recording0001.mp3"
+  },
+  {
+    "type": "call_answered",
+    "call_id": "d3d13c48-4dc3-4816-8d01-de3215878225",
+    "created_at": "2023-02-03T12:00:15.000Z",
+    "requested_by": {
+      "type": "system",
+      "id": "00000000-0000-0000-0000-000000000000"
+    }
+  },
+  {
+    "type": "outbound_call_started",
+    "call_id": "d3d13c48-4dc3-4816-8d01-de3215878225",
+    "created_at": "2023-02-03T12:00:00.000Z",
+    "requested_by": {
+      "type": "user",
+      "id": "00000000-0000-0000-0000-000000000001"
+    },
+    "from": "0721234567",
+    "to": "0821234567"
+  }
+]

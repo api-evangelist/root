@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "notification-email-data",
+  "type": "object",
+  "required": [
+    "subject",
+    "html",
+    "attachments",
+    "to"
+  ],
+  "properties": {
+    "from_email": {
+      "type": "string",
+      "description": "Email address of who sent the email notification."
+    },
+    "from_name": {
+      "type": "string",
+      "description": "Name of who sent the email notification."
+    },
+    "reply_to_email": {
+      "type": "string",
+      "description": "Recipient of who to respond to for the email notification."
+    },
+    "subject": {
+      "type": "string",
+      "description": "Email subject."
+    },
+    "html": {
+      "type": "string",
+      "description": "The HTML structure of the email body."
+    },
+    "attachments": {
+      "type": "array",
+      "description": "An array of objects containing a list of `type` and `name` pairs for the attachments on the email notification.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Whether the file is a document or image."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the file"
+          }
+        }
+      }
+    },
+    "to": {
+      "type": "array",
+      "description": "An array of objects containing a list of `email` and `name` pairs of the recipients of the email notification.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The desired recipient's email."
+          },
+          "name": {
+            "type": "string",
+            "description": "The recipient's name."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "debit_order",
+  "bank_details": {
+    "account_holder": "Erlich Bachman",
+    "account_holder_identification": {
+      "type": "id",
+      "number": "7701014800086",
+      "country": "ZA"
+    },
+    "bank": "absa",
+    "branch_code": "12345",
+    "account_number": "123456789",
+    "account_type": "cheque"
+  },
+  "policy_ids": [
+    "9e0c897f-bc68-4225-b13a-57599062ea0a"
+  ],
+  "billing_day": 23
+}

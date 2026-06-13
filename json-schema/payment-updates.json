@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "payment-updates",
+  "type": "array",
+  "items": {
+    "$ref": "#/components/schemas/payment-update"
+  },
+  "example": [
+    {
+      "payment_id": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+      "status": "successful"
+    },
+    {
+      "payment_id": "bd0c2ab2-4bf9-4786-9d90-0588fdff2600",
+      "status": "processing"
+    },
+    {
+      "payment_id": "0463e674-ff1b-475d-901b-c37b01ab1ef6",
+      "status": "failed",
+      "failure_reason": "Not provided for",
+      "failure_action": "block_retry"
+    },
+    {
+      "payment_id": "96e06845-6d37-4dca-8859-9d8ed27dcf58",
+      "status": "failed",
+      "failure_reason": "Account closed",
+      "failure_action": "block_payment_method"
+    }
+  ]
+}

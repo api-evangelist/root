@@ -1,0 +1,13 @@
+{
+  "webhook_id": "274b2899-7957-464b-a609-49939039cd49",
+  "organization_id": "34b2899-7957-464b-a609-49939039cd49",
+  "name": "Claim opened",
+  "description": "Claim opened event",
+  "secret": "B3a8y1WotX7glI7OxZhX5EAd_6UJ7YEvTJBNQzano4dHjntn9_5AlyPg-dzpX76A",
+  "verification_token": "459106913AF9",
+  "url": "http://yoururlhere.com",
+  "enabled": true,
+  "subscriptions": [
+    "claim_opened"
+  ]
+}

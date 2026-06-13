@@ -1,0 +1,42 @@
+[
+  {
+    "claim_id": "d3d13c48-4dc3-4816-8d01-de3215878225",
+    "claim_number": "D2F69D1CA322",
+    "created_at": "2021-05-21T08:14:42.034Z",
+    "claim_status": "pending_payout",
+    "claimant": {
+      "first_name": "Erlich",
+      "last_name": "Bachman",
+      "email": "erlich@aviato.com",
+      "relationship": "main_member"
+    },
+    "approval_status": "approved",
+    "policy_id": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+    "policyholder_id": "c36b5448-643b-4aad-8932-34904b2da3d9",
+    "incident_type": null,
+    "incident_cause": null,
+    "app_data": null,
+    "module_data": {
+      "key": "value"
+    },
+    "requested_amount": 2621800,
+    "rejection_reason": null,
+    "created_by": {
+      "type": "user",
+      "id": "00000000-0000-0000-0000-000000000001"
+    },
+    "currency": "ZAR",
+    "block_states": {
+      "checkbox_block": {
+        "type": "checkbox"
+      },
+      "currency_amount": {
+        "type": "input.currency"
+      },
+      "free_text_block": {
+        "type": "input.text"
+      }
+    },
+    "updated_at": "2021-05-21T08:15:42.437Z"
+  }
+]

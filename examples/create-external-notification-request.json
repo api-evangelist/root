@@ -1,0 +1,27 @@
+{
+  "channel": "email",
+  "status": "sent",
+  "notification_type": "policy_issued",
+  "linked_entities": {
+    "policy_id": "3d292076-a531-4028-988e-e863b04d8497"
+  },
+  "data": {
+    "from_email": "erlich@aviato.com",
+    "from_name": "Erlich Bachman",
+    "reply_to_email": "erlich@aviato.com",
+    "subject": "Hello",
+    "html": "<div>hello</div>",
+    "to": [
+      {
+        "name": "Dinesh",
+        "email": "dinesh@piedpiper.com"
+      }
+    ],
+    "attachments": [
+      {
+        "type": "application/pdf",
+        "name": "AviatoS3Script.pdf"
+      }
+    ]
+  }
+}

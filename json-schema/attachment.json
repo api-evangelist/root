@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "attachment",
+  "type": "object",
+  "required": [
+    "file_name",
+    "description",
+    "file_type",
+    "file_url",
+    "created_at",
+    "requested_by"
+  ],
+  "properties": {
+    "file_name": {
+      "type": "string",
+      "description": "The name of the file (with file extension)."
+    },
+    "description": {
+      "type": "string",
+      "description": "A tag describing what the document is about (e.g. affidavit, etc.)."
+    },
+    "file_type": {
+      "type": "string",
+      "description": "The mime type of the attachment (e.g. image/png)."
+    },
+    "file_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "The URL to download the attachment file."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Time at which the attachment was created."
+    },
+    "requested_by": {
+      "type": "object",
+      "description": "An object indicating the user or API key that created the attachment. See [Authentication](#client-apps).",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of the creator (e.g., user, api_key)."
+        },
+        "id": {
+          "type": "string",
+          "description": "The identifier of the creator."
+        },
+        "owner_id": {
+          "type": "string",
+          "description": "The identifier of the owner (only present for API key requests)."
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "type": {
+      "type": "string",
+      "description": "The event type associated with the attachment (e.g., attachment_created). This field is only present when the attachment is returned as part of an event."
+    }
+  },
+  "example": {
+    "file_name": "report.pdf",
+    "file_type": "application/pdf",
+    "file_url": "https://sandbox.rootplatform.com/v1/files/download/00000000-0000-0000-0000-000000000001",
+    "description": "quote",
+    "type": "attachment_created",
+    "created_at": "2025-11-10T14:33:50.095Z",
+    "requested_by": {
+      "type": "api_key",
+      "id": "00000000-0000-0000-0000-000000000001",
+      "owner_id": "00000000-0000-0000-0000-000000000001"
+    }
+  }
+}

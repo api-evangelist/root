@@ -1,0 +1,262 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "claim",
+  "type": "object",
+  "required": [
+    "claim_id",
+    "created_at",
+    "claim_status",
+    "approval_status",
+    "created_by"
+  ],
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the claim."
+    },
+    "claim_number": {
+      "type": "string",
+      "description": "A human-readable claim reference number."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp at which the claim was opened."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp at which the claim was last updated."
+    },
+    "policy_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Must be a UUID. The identifier of the [policy](ref:policy) attached to this claim. May be `null` if no policy is linked yet."
+    },
+    "policyholder_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Must be a UUID. The identifier of the [policyholder](ref:policyholder) for this claim. May be `null` if no policyholder is linked yet."
+    },
+    "member_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Must be a UUID. The identifier of the member for this claim. Only used for group scheme policies. May be `null`."
+    },
+    "covered_item_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Must be a UUID. The identifier of the covered item that this claim is against. Required if the policy supports covered items."
+    },
+    "claim_status": {
+      "type": "string",
+      "description": "The current status of the claim.",
+      "enum": [
+        "open",
+        "in_review",
+        "acknowledged",
+        "pending_payout",
+        "paid_out",
+        "closed"
+      ]
+    },
+    "approval_status": {
+      "type": "string",
+      "description": "The approval decision status of the claim.",
+      "enum": [
+        "pending",
+        "approved",
+        "repudiated",
+        "no_claim",
+        "goodwill"
+      ]
+    },
+    "claimant": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "An object containing the claimant's details. `null` if no claimant is specified.",
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "description": "The first name of the claimant."
+        },
+        "last_name": {
+          "type": "string",
+          "description": "The last name of the claimant."
+        },
+        "id_number": {
+          "type": "string",
+          "description": "The ID number of the claimant."
+        },
+        "cellphone": {
+          "type": "string",
+          "description": "The cellphone number of the claimant."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the claimant."
+        },
+        "relationship": {
+          "type": "string",
+          "description": "The relationship of the claimant to the policyholder."
+        }
+      }
+    },
+    "incident_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A description of the incident type."
+    },
+    "incident_cause": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A description of the cause of the incident."
+    },
+    "incident_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date on which the incident occurred."
+    },
+    "assigned_to": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Must be a UUID. The identifier of the user to whom this claim is assigned."
+    },
+    "app_data": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "An object containing additional custom data for the claim.",
+      "additionalProperties": true
+    },
+    "module_data": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "An object containing data populated by the product module.",
+      "additionalProperties": true
+    },
+    "requested_amount": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The requested payout amount (in cents) for the claim."
+    },
+    "granted_amount": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The granted payout amount (in cents) for the claim."
+    },
+    "rejection_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The reason for claim rejection, if applicable."
+    },
+    "currency": {
+      "type": "string",
+      "description": "The currency code for monetary amounts (e.g., `ZAR`, `USD`)."
+    },
+    "created_by": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "An object indicating the user or API key that created the claim. See [Authentication](https://docs.rootplatform.com/reference/getting-started-1#created_by-field)."
+    },
+    "policyholder": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "The [policyholder](ref:policyholder) object. Only included when `include=policyholder` query parameter is specified."
+    },
+    "policy": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "The [policy](ref:policy) object. Only included when `include=policy` query parameter is specified."
+    },
+    "member": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "The member object for group scheme policies. Only included when available."
+    },
+    "user_group": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "The user group object. Only included when `include=user_group` query parameter is specified."
+    },
+    "block_states": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "An object containing the current state of claim blocks (dynamic form fields).",
+      "additionalProperties": true
+    }
+  },
+  "example": {
+    "claim_id": "d3d13c48-4dc3-4816-8d01-de3215878225",
+    "claim_number": "D33B754ADA8F",
+    "created_at": "2017-10-16T10:12:02.872Z",
+    "updated_at": "2017-10-16T10:15:02.872Z",
+    "policy_id": "8349345c-a6c5-4bf9-8ebb-6bbfc1628715",
+    "policyholder_id": "00000000-0000-0000-0000-000000000004",
+    "member_id": "673b8081-9668-4136-97cc-6ae0debda083",
+    "covered_item_id": "9dc39b57-cdc7-48f9-a303-d7c4f0421a0c",
+    "claim_status": "open",
+    "approval_status": "pending",
+    "claimant": {
+      "first_name": "Erlich",
+      "last_name": "Aviato",
+      "email": "erlich@aviato.com",
+      "cellphone": "0821234567",
+      "relationship": "main_member"
+    },
+    "incident_type": "Theft",
+    "incident_cause": "Device stolen during burglary",
+    "incident_date": "2017-10-15T08:00:00.000Z",
+    "app_data": {
+      "key1": "value 1",
+      "key2": "value 2"
+    },
+    "requested_amount": 13000000,
+    "granted_amount": null,
+    "currency": "ZAR",
+    "created_by": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "type": "user"
+    }
+  }
+}

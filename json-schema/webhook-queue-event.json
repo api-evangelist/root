@@ -1,0 +1,131 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "webhook-queue-event",
+  "type": "object",
+  "required": [
+    "webhook_queue_event_id",
+    "organization_id",
+    "environment",
+    "webhook_id",
+    "created_at",
+    "status",
+    "url",
+    "subscription",
+    "attempts_count"
+  ],
+  "properties": {
+    "webhook_queue_event_id": {
+      "type": "string",
+      "description": "The identifier of the webhook queue event."
+    },
+    "organization_id": {
+      "type": "string",
+      "description": "The identifier of the organization."
+    },
+    "environment": {
+      "type": "string",
+      "description": "The environment in which the queue event occurred.",
+      "enum": [
+        "production",
+        "sandbox"
+      ]
+    },
+    "webhook_id": {
+      "type": "string",
+      "description": "The identifier of the webhook associated with this queue event."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the webhook queue event was created."
+    },
+    "status": {
+      "type": "string",
+      "description": "The current status of the webhook queue event.",
+      "enum": [
+        "queued",
+        "successful",
+        "failed"
+      ]
+    },
+    "subscription": {
+      "description": "The subscription event type for this webhook queue event.",
+      "$ref": "#/components/schemas/webhook-subscription-event"
+    },
+    "url": {
+      "type": "string",
+      "description": "The URL to which the webhook queue event will be sent via `POST`."
+    },
+    "attempts_count": {
+      "type": "integer",
+      "description": "The number of attempts made to process this webhook queue event."
+    },
+    "body": {
+      "type": "object",
+      "description": "The payload body of the webhook queue event.",
+      "properties": {
+        "webhook_id": {
+          "type": "string",
+          "description": "The unique ID of the webhook."
+        },
+        "event": {
+          "type": "object",
+          "description": "The event data - see [webhook subscriptions](ref:webhooks#available-subscriptions) for available event types."
+        },
+        "verification_token": {
+          "type": "string",
+          "description": "An optional verification token as provided during creating a webhook."
+        },
+        "environment": {
+          "type": "string",
+          "enum": [
+            "sandbox",
+            "production"
+          ],
+          "description": "The dataset used by the webhook. Either sandbox or production."
+        }
+      },
+      "required": [
+        "webhook_id",
+        "event",
+        "environment"
+      ]
+    },
+    "last_attempt_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp of the last attempt to process this webhook queue event."
+    },
+    "last_response_code": {
+      "type": "integer",
+      "description": "The HTTP response code from the last attempt to process this webhook queue event."
+    },
+    "last_response_time_millis": {
+      "type": "integer",
+      "description": "The response time of the last attempt to send the webhook queue event to the URL in milliseconds."
+    }
+  },
+  "example": {
+    "webhook_queue_event_id": "123e4567-e89b-12d3-a456-426614174000",
+    "organization_id": "2f26d0e1-9158-4685-83e8-1660c27e4c3f",
+    "environment": "production",
+    "webhook_id": "274b2899-7957-464b-a609-49939039cd49",
+    "created_at": "2023-04-01T12:00:00Z",
+    "status": "queued",
+    "subscription": "policy_issued",
+    "attempts_count": 1,
+    "last_attempt_at": "2023-04-01T12:00:02Z",
+    "last_response_code": 500,
+    "last_response_time_millis": 123,
+    "body": {
+      "webhook_id": "274b2899-7957-464b-a609-49939039cd49",
+      "event": {
+        "type": "policy_issued",
+        "policy_id": "abc123"
+      },
+      "verification_token": "optional_token_123",
+      "environment": "production"
+    },
+    "url": "http://yoururlhere.com"
+  }
+}

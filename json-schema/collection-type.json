@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "collection-type",
+  "type": "string",
+  "description": "The collection type of the payment being created.",
+  "enum": [
+    "debit_order_same_day",
+    "debit_order_two_day",
+    "debit_order_one_day",
+    "debit_order_debicheck",
+    "card",
+    "external",
+    "collection_module",
+    "other"
+  ]
+}

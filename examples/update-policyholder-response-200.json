@@ -1,0 +1,31 @@
+{
+  "policyholder_id": "bf1ada91-eecb-4f47-9bfa-1258bb1e0055",
+  "type": "individual",
+  "initials": "E",
+  "first_name": "Erlich",
+  "last_name": "Bachman",
+  "id": {
+    "type": "id",
+    "number": "6801015800084",
+    "country": "GB"
+  },
+  "date_of_birth": "19680101",
+  "email": "erlich@piedpiper.com",
+  "cellphone": "+27821234567",
+  "phone_other": "+27124101337",
+  "created_at": "2017-10-12T15:47:34.281Z",
+  "app_data": {
+    "company": "Pied Piper"
+  },
+  "created_by": {
+    "id": "00000000-0000-0000-0000-000000000001",
+    "type": "user"
+  },
+  "address": {
+    "line_1": "5230 Penfield Avenue",
+    "suburb": "Woodland Hills",
+    "city": "Los Angeles",
+    "country": "US",
+    "area_code": "CA 91364"
+  }
+}

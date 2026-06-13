@@ -1,0 +1,7 @@
+{
+  "payment_method_key": "my_external_payment_method",
+  "external_reference": "EXT-REF-12345",
+  "policy_ids": [
+    "9e0c897f-bc68-4225-b13a-57599062ea0a"
+  ]
+}

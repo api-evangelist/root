@@ -1,0 +1,19 @@
+{
+  "id": "cf092eb9-02c6-4a2d-b43b-4aff83b45fe4",
+  "policy_id": "e2081077-9b88-4129-aa40-f1b58e23cb91",
+  "payment_method_id": "c8cde24d-5495-46b8-9a12-190ebcda9963",
+  "status": "pending",
+  "mandate_reference": null,
+  "external_reference": null,
+  "failure_reasons": null,
+  "failure_codes": null,
+  "contract_reference": "1F51FD2E442207",
+  "installment_occurance": "RCUR",
+  "frequency": "MNTH",
+  "amount": 34500,
+  "max_collection_amount": 69000,
+  "collection_day": 1,
+  "first_collection_amount": null,
+  "created_at": "2021-07-22T13:18:15.975Z",
+  "updated_at": "2021-07-22T13:18:15.975Z"
+}

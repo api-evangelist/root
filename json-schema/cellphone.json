@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "cellphone",
+  "type": [
+    "object",
+    "null"
+  ],
+  "description": "`null` and `\"\"` allowed. Object containing the cellphone number in national format, and the corresponding alpha 2 country code.",
+  "properties": {
+    "number": {
+      "type": "string",
+      "description": "The cellphone number."
+    },
+    "country": {
+      "type": "string",
+      "description": "The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the cellphone number."
+    }
+  },
+  "required": [
+    "number",
+    "country"
+  ],
+  "example": {
+    "number": "0821234567",
+    "country": "ZA"
+  }
+}

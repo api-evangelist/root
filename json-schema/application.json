@@ -1,0 +1,208 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "application",
+  "type": "object",
+  "description": "An application represents a \"draft\" policy, with all information captured and validated. Applications persist on Root (they do not expire), and can be reviewed and managed on the Root management dashboard. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [application hook](https://docs.rootplatform.com/docs/application-hook) guide for more details.",
+  "required": [
+    "application_id",
+    "policyholder_id",
+    "product_module_definition_id",
+    "status",
+    "package_name",
+    "sum_assured",
+    "base_premium",
+    "monthly_premium",
+    "module",
+    "created_at",
+    "created_by",
+    "billing_day"
+  ],
+  "properties": {
+    "application_id": {
+      "type": "string",
+      "description": "Must be a UUID. Unique identifier of the application."
+    },
+    "policyholder_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the policyholder linked to the application."
+    },
+    "product_module_definition_id": {
+      "type": "string",
+      "description": "Must be a UUID. Unique identifier of the product module definition associated with the application. Determined by the product module definition associated with the quote from which the application was created."
+    },
+    "status": {
+      "description": "The status of the application. One of `pending`, `issued`, or `cancelled`.",
+      "type": "string",
+      "enum": [
+        "pending",
+        "issued",
+        "cancelled"
+      ]
+    },
+    "package_name": {
+      "type": "string",
+      "description": "The package name."
+    },
+    "sum_assured": {
+      "type": "integer",
+      "description": "The maximum insured value in cents."
+    },
+    "base_premium": {
+      "type": "integer",
+      "description": "The combined risk and platform fee in cents. `monthly_premium` is calculated from this."
+    },
+    "monthly_premium": {
+      "type": "integer",
+      "description": "The total monthly premium, in cents, of the application. This is the total premium that will be billed to the policyholder after the policy is issued."
+    },
+    "module": {
+      "type": "object",
+      "description": "Custom, product-specific information saved to the application for later reference. These parameters are set in the [application hook](https://docs.rootplatform.com/docs/application-hook) in the product module code.",
+      "additionalProperties": true
+    },
+    "restricted_data": {
+      "type": "object",
+      "description": "Optional restricted product-specific information saved to the application. This field is only returned when the requestee has access to restricted application module data.",
+      "additionalProperties": true
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date at which the quote package was created.."
+    },
+    "created_by": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object indicating the user or API key that created the application."
+    },
+    "billing_day": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "`null` is allowed. The day of month on which the policy to write will be billed on. Should be between 1 and 31, or `null`. If it falls on a day that does not exist in the month (for example, 31 in February) the policy to be written will be billed on the last day of that month. Setting this value to 31 will ensure that the policy to be written will be billed on the last day of every month."
+    },
+    "currency": {
+      "type": "string",
+      "description": "The currency used for the quote package, in [ISO 4217] (https://en.wikipedia.org/wiki/ISO_4217) format."
+    },
+    "billing_frequency": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "yearly",
+        "once_off"
+      ],
+      "description": "The frequency at which the policy will be billed. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency."
+    },
+    "beneficiaries": {
+      "$ref": "#/components/schemas/beneficiaries"
+    },
+    "input_data": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Application input parameters as received over the [create an application](https://docs.rootplatform.com/reference/create-an-application) endpoint.",
+      "additionalProperties": true
+    },
+    "payment_method_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the payment method linked to the application."
+    },
+    "type": {
+      "type": "string",
+      "description": "The type of the application. One of `requote` or `new_policy`.",
+      "enum": [
+        "requote",
+        "new_policy"
+      ]
+    },
+    "quote_package_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the quote package from which the application was created."
+    },
+    "policy": {
+      "$ref": "#/components/schemas/policy",
+      "description": "The policy object linked to the application. Only included when `?include=policy` is specified."
+    },
+    "policyholder": {
+      "$ref": "#/components/schemas/policyholder",
+      "description": "The policyholder object linked to the application. Only included when `?include=policyholder` is specified."
+    },
+    "quote_package": {
+      "$ref": "#/components/schemas/quote-package",
+      "description": "The quote package object from which the application was created. Only included when `?include=quote_package` is specified."
+    },
+    "cancelled_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the application was cancelled, if applicable."
+    },
+    "reason_cancelled": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Reason the application was cancelled."
+    },
+    "cancellation_requestor": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Whether the customer (`client`) or insurer (`insurer`) initiated cancellation."
+    },
+    "cancellation_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Cancellation reason code. Defaults are platform-defined; a product module may override allowed values when configured."
+    }
+  },
+  "example": {
+    "application_id": "02e2ce3b-a235-48ea-8415-c58440f631bd",
+    "policyholder_id": "246ee082-9f88-44b7-b51c-22a1f1a9a19e",
+    "payment_method_id": "7c3e8f2a-1d4b-5e6f-9a0b-c1d2e3f4a5b6",
+    "package_name": "Theft + comprehensive",
+    "sum_assured": 1199900,
+    "monthly_premium": 16999,
+    "base_premium": 16999,
+    "module": {
+      "make": "Apple",
+      "type": "root_gadgets",
+      "model": "iPhone 6S 64GB LTE",
+      "serial_number": "0123456789"
+    },
+    "restricted_data": {
+      "underwriting_score": 85
+    },
+    "created_at": "2023-02-03T11:17:49.009Z",
+    "created_by": {
+      "type": "api_key",
+      "id": "b6565862-cc6e-4563-85d3-659894338cda",
+      "owner_id": "e17f06ce-2a6a-4864-b826-19a83270eab4"
+    },
+    "currency": "ZAR",
+    "product_module_definition_id": "4889a9e0-d5f9-4971-8ac2-2175a9d15477",
+    "billing_frequency": "monthly",
+    "billing_day": 1,
+    "status": "pending",
+    "type": "new_policy",
+    "beneficiaries": [
+      {
+        "beneficiary_id": "cd444567-10d5-47f5-a0cc-34e262266359",
+        "policyholder_id": "246ee082-9f88-44b7-b51c-22a1f1a9a19e",
+        "percentage": 100,
+        "relationship": "policyholder"
+      }
+    ],
+    "quote_package_id": "3822b8fb-43e7-43f7-94ad-63e94e6ce1e3"
+  }
+}

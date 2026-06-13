@@ -1,0 +1,295 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "payment",
+  "type": "object",
+  "required": [
+    "payment_id",
+    "policy_id",
+    "payment_method_id",
+    "status",
+    "amount",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "payment_date",
+    "action_date",
+    "billing_date",
+    "policy",
+    "policyholder",
+    "payment_method",
+    "payment_type",
+    "currency",
+    "retry_number",
+    "app_data",
+    "raw_response"
+  ],
+  "properties": {
+    "payment_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the payment."
+    },
+    "policy_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identified of the policy the payment is linked to."
+    },
+    "payment_method_id": {
+      "type": "string",
+      "description": "Must be a UUID. The unique identifier of the payment method used to make the payment."
+    },
+    "status": {
+      "$ref": "#/components/schemas/payment-status"
+    },
+    "amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "The payment amount as an integer in cents."
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the payment."
+    },
+    "external_ref": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Unique external reference of the payment."
+    },
+    "customer_ref": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Customer reference for the payment."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the payment was created."
+    },
+    "created_by": {
+      "type": "object",
+      "description": "An object indicating the user or API key that created the policyholder.",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the actor."
+        },
+        "type": {
+          "$ref": "#/components/schemas/actor-type"
+        },
+        "owner_id": {
+          "type": "string",
+          "description": "The related organisation's UUID."
+        }
+      }
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the payment was last updated."
+    },
+    "billing_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The customer's chosen payment date, as specified using the `billing_day` property on the policy."
+    },
+    "payment_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The target date for the payment to go off the customer\u2019s card or bank account. Typically the same as `billing_date`, but may be earlier or later if `billing_date` falls on a bank holiday or Sunday."
+    },
+    "action_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date that the system first attempts to collect the payment from the customer's card or bank account. Typically the same as the `payment_date`, but can be earlier for certain payment methods."
+    },
+    "payment_method": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/payment-method"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "payment_type": {
+      "$ref": "#/components/schemas/payment-type"
+    },
+    "premium_type": {
+      "$ref": "#/components/schemas/premium-type"
+    },
+    "app_data": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "`null` is allowed. An object containing additional custom data for the payment.",
+      "additionalProperties": true
+    },
+    "failure_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The reason the payment failed.\n"
+    },
+    "currency": {
+      "type": "string",
+      "description": "Three-digit currency code for the payment. E.g. `ZAR` or `GBP`"
+    },
+    "retry_of": {
+      "type": "string",
+      "description": "Must be a UUID. Only relevant for retry payments. Original payment id of the payment being retried."
+    },
+    "retry_number": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "`null` is allowed. Only relevant for retry payments. The number of times the payment has been retried (including the current retry payment).\n"
+    },
+    "net_amount": {
+      "type": "number",
+      "description": "Integer in cents. The payment amount net of any charges."
+    },
+    "finalized_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date the payment update was finalized."
+    },
+    "finalized_by": {
+      "type": "object",
+      "description": "`null` is allowed. An object indicating the user or API key that finalized the payment.",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the actor e.g. user"
+        },
+        "type": {
+          "$ref": "#/components/schemas/actor-type"
+        },
+        "owner_id": {
+          "type": "string",
+          "description": "The related organisation's UUID"
+        }
+      }
+    },
+    "collection_type": {
+      "$ref": "#/components/schemas/collection-type"
+    },
+    "policyholder": {
+      "description": "`null` is allowed. The policyholder linked to the payment.",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/components/schemas/policyholder"
+        }
+      ]
+    },
+    "policy": {
+      "description": "`null` is allowed. The policy the payment is linked to.",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/components/schemas/policy"
+        }
+      ]
+    },
+    "charges": {
+      "type": "array",
+      "description": "Whenever a premium payment is created (including reversals), a breakdown of the payment amount is calculated according to the charges stored on the policy.",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "name",
+          "description",
+          "amount",
+          "calculated"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/payment-charge-type"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the charge."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the charge."
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The charged amount. Required when type is `fixed` or `variable`. Either a proportion of the total premium (if `type` is `variable`), or a currency amount in cents (if `type` is `fixed`)."
+          },
+          "calculated": {
+            "type": "integer",
+            "description": "The final calculated charge amount."
+          }
+        }
+      }
+    },
+    "raw_response": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The raw response from upstream providers."
+    }
+  },
+  "example": [
+    {
+      "payment_id": "c9625104-c8da-45e2-972f-baf3037bce6b",
+      "policy_id": "07f9b73e-d16d-4a5a-8463-44ee62de4da3",
+      "payment_method_id": "ff80fa5b-6daf-4c3c-9ca1-bb442a796aa6",
+      "status": "failed",
+      "amount": 100,
+      "description": "monthly_premium",
+      "external_ref": "ExternalSystem00001",
+      "customer_ref": null,
+      "created_at": "2022-10-28T14:17:21.441Z",
+      "created_by": {
+        "type": "api_key",
+        "id": "312d8c45-eb3a-4f18-a952-c358fb94abdc",
+        "owner_id": "cb8a0648-9186-454d-bf1f-6d82b3b82894"
+      },
+      "updated_at": "2022-10-28T14:17:38.798Z",
+      "payment_date": "2022-10-26T00:00:00.000Z",
+      "action_date": "2022-10-26T00:00:00.000Z",
+      "billing_date": "2022-10-26T00:00:00.000Z",
+      "policy": null,
+      "policyholder": null,
+      "payment_method": null,
+      "payment_type": "premium",
+      "premium_type": "recurring",
+      "failure_reason": "Account Closed",
+      "currency": "ZAR",
+      "retry_number": 0,
+      "finalized_at": "2022-10-28T14:17:38.798Z",
+      "finalized_by": {
+        "type": "api_key",
+        "id": "312d8c45-eb3a-4f18-a952-c358fb94abdc",
+        "owner_id": "cb8a0648-9186-454d-bf1f-6d82b3b82894"
+      },
+      "collection_type": "debit_order_two_day",
+      "app_data": {},
+      "charges": [],
+      "raw_response": null
+    }
+  ]
+}

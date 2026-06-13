@@ -1,0 +1,36 @@
+{
+  "policy_id": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+  "policy_number": "1HFCT1CDBJ",
+  "policyholder_id": "bf3ab7ce-064d-43b7-811d-0ecd9aca3daf",
+  "package_name": "Theft + comprehensive",
+  "status": "active",
+  "sum_assured": 1199900,
+  "base_premium": 14999,
+  "monthly_premium": 50000,
+  "billing_amount": 50000,
+  "billing_day": 7,
+  "billing_frequency": "monthly",
+  "start_date": "2017-10-05T00:00:00.000Z",
+  "end_date": "2018-10-05T00:00:00.000Z",
+  "policy_schedule_uri": "https://sandbox.root.co.za/v1/files/13ab24b3-beed-4f71-aa8f-ad87dc43c6e6",
+  "terms_uri": "https://sandbox.root.co.za/v1/files/52f57736-d473-4bce-aa06-cf43d98279e2",
+  "policy_welcome_letter_uri": "https://sandbox.root.co.za/v1/files/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+  "created_at": "2017-10-05T18:40:47.281Z",
+  "module": {
+    "type": "root_gadgets",
+    "make": "Apple",
+    "model": "iPhone 6S 64GB LTE",
+    "serial_number": "1234567890"
+  },
+  "app_data": {
+    "gadget_color": "Space Grey",
+    "has_screen_cover": true
+  },
+  "created_by": {
+    "id": "00000000-0000-0000-0000-000000000001",
+    "type": "user"
+  },
+  "scheme_type": "individual",
+  "payment_method_id": "e0b7b222-772f-47ac-b08d-c7ba38aa1b25",
+  "charges": []
+}

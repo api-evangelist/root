@@ -1,0 +1,31 @@
+{
+  "payment_id": "bf1ada91-eecb-4f47-9bfa-1258bb1e0055",
+  "policy_id": "2b012979-e2a2-45d3-b5fe-729f825d96ce",
+  "payment_method_id": "f4863a40-a6b1-4a4b-b734-62ae0370cd70",
+  "status": "successful",
+  "amount": 6000,
+  "description": "Monthly premium for August",
+  "customer_ref": "ABCDEFGHIJ",
+  "created_at": "2022-10-12T15:47:34.281Z",
+  "created_by": {
+    "id": "00000000-0000-0000-0000-000000000001",
+    "type": "user"
+  },
+  "updated_at": "2022-10-12T15:47:34.281Z",
+  "payment_date": "2022-10-12T00:00:00.000Z",
+  "action_date": "2022-10-12T00:00:00.000Z",
+  "policy": null,
+  "policyholder": null,
+  "payment_method": null,
+  "payment_type": "premium",
+  "currency": "ZAR",
+  "finalized_at": "2022-09-19T12:47:57.546Z",
+  "finalized_by": {
+    "type": "api_key",
+    "id": "420df14d-b09d-4d89-84a8-8e3118c9ca23",
+    "owner_id": "00000000-0000-0000-0000-000000000001"
+  },
+  "app_data": null,
+  "charges": [],
+  "raw_response": null
+}

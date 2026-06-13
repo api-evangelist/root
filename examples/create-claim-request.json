@@ -1,0 +1,19 @@
+{
+  "policy_id": "8349345c-a6c5-4bf9-8ebb-6bbfc1628715",
+  "member_id": "673b8081-9668-4136-97cc-6ae0debda083",
+  "covered_item_id": "9dc39b57-cdc7-48f9-a303-d7c4f0421a0c",
+  "incident_type": "Theft",
+  "incident_cause": "Device stolen during burglary",
+  "incident_date": "2017-10-16T10:12:02.872Z",
+  "app_data": {
+    "key1": "value 1",
+    "key2": "value 2"
+  },
+  "claimant": {
+    "first_name": "Erlich",
+    "last_name": "Aviato",
+    "email": "erlich@aviato.com",
+    "cellphone": "0821234567"
+  },
+  "requested_amount": 13000000
+}

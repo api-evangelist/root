@@ -1,0 +1,35 @@
+{
+  "data_store_id": "6e91fe74-aa56-4b4e-8f68-636d23d5706f",
+  "organization_id": "952bfef5-7517-47ff-bf41-08c5a66c52db",
+  "key": "devices",
+  "schema": {
+    "type": "object",
+    "async": true,
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "price": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "name",
+      "price"
+    ]
+  },
+  "description": "Devices data store",
+  "name": "devices",
+  "created_at": "2021-01-29T13:12:00.968Z",
+  "created_by": {
+    "type": "api_key",
+    "id": "420df14d-b09d-4d89-84a8-8e3118c9ca23",
+    "owner_id": "00000000-0000-0000-0000-000000000001"
+  },
+  "updated_at": "2021-01-29T13:12:00.968Z",
+  "updated_by": {
+    "type": "api_key",
+    "id": "420df14d-b09d-4d89-84a8-8e3118c9ca23",
+    "owner_id": "00000000-0000-0000-0000-000000000001"
+  }
+}

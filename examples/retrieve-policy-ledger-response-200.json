@@ -1,0 +1,86 @@
+[
+  {
+    "entry_id": "2c08dbe1-56ab-4b2e-9290-a1fcb5564772",
+    "organization_id": "00000000-0000-0000-0000-000000000001",
+    "policy_id": "7ac6fb97-50de-470a-b9dd-bf85806470a5",
+    "created_at": "2021-11-29T12:48:40.185Z",
+    "description": "Coupon redeemed",
+    "currency": "ZAR",
+    "amount": 1000,
+    "balance": -479899,
+    "payment_coupon_id": "95bdd7d3-1465-4449-bb06-059b4c31e9cf",
+    "payment": null,
+    "payment_coupon": {
+      "payment_coupon_id": "95bdd7d3-1465-4449-bb06-059b4c31e9cf",
+      "policy_id": "7ac6fb97-50de-470a-b9dd-bf85806470a5",
+      "status": "redeemed",
+      "amount": 1000,
+      "reason": "Eish no money",
+      "payment_date": "2021-11-29T00:00:00.000Z",
+      "billing_date": "2021-11-29T00:00:00.000Z",
+      "created_at": "2021-11-29T12:48:17.440Z",
+      "created_by": {
+        "type": "api_key",
+        "id": "afa9a490-fc62-4001-bde2-b1d6e2cae133",
+        "owner_id": "00000000-0000-0000-0000-000000000001"
+      }
+    }
+  },
+  {
+    "entry_id": "d6f0a27f-c1ff-4a4f-a67f-15470caff6b8",
+    "organization_id": "00000000-0000-0000-0000-000000000001",
+    "policy_id": "7ac6fb97-50de-470a-b9dd-bf85806470a5",
+    "created_at": "2021-11-29T12:48:18.307Z",
+    "description": "Adjustment for billing day change",
+    "currency": "ZAR",
+    "amount": -900,
+    "balance": -480899,
+    "payment": null,
+    "payment_coupon": null
+  },
+  {
+    "entry_id": "4b572b57-f552-4c24-a9c1-344c218bd68b",
+    "organization_id": "00000000-0000-0000-0000-000000000001",
+    "policy_id": "7ac6fb97-50de-470a-b9dd-bf85806470a5",
+    "created_at": "2021-11-29T12:48:16.485Z",
+    "description": "Monthly premium",
+    "currency": "ZAR",
+    "amount": 20000,
+    "balance": -470000,
+    "payment_id": "a7e625ad-7b9d-4021-b8e8-a49a5b376dec",
+    "payment": {
+      "payment_id": "a7e625ad-7b9d-4021-b8e8-a49a5b376dec",
+      "policy_id": "7ac6fb97-50de-470a-b9dd-bf85806470a5",
+      "status": "successful",
+      "amount": 20000,
+      "description": "Monthly premium",
+      "external_ref": "ABCDE",
+      "created_at": "2021-11-29T12:48:16.479Z",
+      "created_by": {
+        "type": "api_key",
+        "id": "afa9a490-fc62-4001-bde2-b1d6e2cae133",
+        "owner_id": "00000000-0000-0000-0000-000000000001"
+      },
+      "updated_at": "2021-11-29T12:48:16.479Z",
+      "payment_date": "2021-05-03T00:00:00.000Z",
+      "action_date": "2021-05-03T00:00:00.000Z",
+      "policy": null,
+      "policyholder": null,
+      "payment_method": null,
+      "payment_type": "premium",
+      "premium_type": null,
+      "failure_reason": null,
+      "currency": "ZAR",
+      "finalized_at": "2021-11-29T12:48:16.479Z",
+      "finalized_by": {
+        "type": "api_key",
+        "id": "afa9a490-fc62-4001-bde2-b1d6e2cae133",
+        "owner_id": "00000000-0000-0000-0000-000000000001"
+      },
+      "collection_type": null,
+      "app_data": {},
+      "charges": []
+    },
+    "payment_coupon": null
+  }
+]

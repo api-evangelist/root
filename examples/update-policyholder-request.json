@@ -1,0 +1,20 @@
+{
+  "id": {
+    "type": "id",
+    "number": "6801015800084",
+    "country": "GB"
+  },
+  "cellphone": "+27821234567",
+  "phone_other": "+27124101337",
+  "email": "erlich@piedpiper.com",
+  "app_data": {
+    "company": "Pied Piper"
+  },
+  "address": {
+    "line_1": "5230 Penfield Avenue",
+    "suburb": "Woodland Hills",
+    "city": "Los Angeles",
+    "country": "US",
+    "area_code": "CA 91364"
+  }
+}
