@@ -1,0 +1,49 @@
+name: Root Insurance API Rate Limits
+description: Root Platform and Bind API rate limit policies. Root does not publish specific rate limit thresholds publicly; limits are enforced per API key and environment. Contact Root support or consult your account agreement for exact limits.
+url: https://docs.rootplatform.com/
+enforced: true
+publicly_documented: false
+
+environments:
+  - name: Sandbox
+    base_url: https://sandbox.rootplatform.com/
+    description: Testing environment with no real policy or payment effects. Rate limits may be lower than production to encourage managed testing.
+    throttling: per-api-key
+
+  - name: Production
+    base_url: https://api.rootplatform.com/
+    description: Live environment for real insurance operations. Rate limits governed by plan agreement.
+    throttling: per-api-key
+
+bind_api_environments:
+  - name: Sandbox
+    base_url: https://sandbox.joinroot.com/bind_api/v3/
+    description: Bind API sandbox for embedded insurance testing.
+
+  - name: Production
+    base_url: https://production.joinroot.com/bind_api/v3/
+    description: Bind API production environment.
+
+policies:
+  - name: API Key Throttling
+    description: All requests are authenticated via HTTP Basic auth using API keys. Rate limiting is applied per API key.
+    scope: per-api-key
+
+  - name: Idempotency Support
+    description: The API supports idempotency keys to safely retry requests without duplicate operations.
+    header: Idempotency-Key
+
+  - name: Error Handling
+    description: Standard HTTP status codes are returned. 429 Too Many Requests indicates rate limit has been exceeded.
+    retry_guidance: Use exponential backoff when receiving 429 responses.
+
+  - name: Prefill Latency
+    description: The Bind API prefill endpoint is asynchronous and may take up to 35 seconds to return third-party data. This is not a rate limit but an SLA consideration.
+    endpoint: POST /bind_api/v3/quoting/quote/{quote_id}/prefill
+    max_latency_seconds: 35
+
+notes:
+  - Exact rate limit thresholds (requests per minute/hour) are not publicly disclosed by Root.
+  - Limits are likely specified in partner agreements and enterprise contracts.
+  - For production rate limit details, contact Root Platform support or your account manager.
+  - Status page for real-time API availability: https://status.rootplatform.com/

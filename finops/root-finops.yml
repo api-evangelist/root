@@ -1,0 +1,86 @@
+name: Root Insurance API FinOps
+description: Financial operations guidance for teams integrating with Root Insurance APIs. Covers cost drivers, optimization strategies, and billing considerations for both the Root Platform and Root Bind API.
+url: https://rootplatform.com/plans
+
+cost_model:
+  type: modular-usage-based-plus-revenue-share
+  description: Root Platform charges based on which modules are activated and usage volume. Bind API integrations typically involve revenue-share or referral fee arrangements. No self-serve pricing is published; all costs require a sales agreement.
+  pricing_contact: hello@rootplatform.com
+  partnership_contact: https://www.joinroot.com/partnerships/
+
+modules:
+  - name: Quote and Bind
+    description: API-driven quoting and policy issuance. Cost scales with quote volume and bound policies.
+    cost_driver: quote_volume, bound_policy_count
+
+  - name: Policy Administration
+    description: Policy lifecycle management including amendments, cancellations, and reinstatements.
+    cost_driver: active_policy_count
+
+  - name: Claims
+    description: Claims intake, processing, assessment, and payout management.
+    cost_driver: claims_volume
+
+  - name: Collections
+    description: Premium collection including debit orders, batch payments, and coupon management.
+    cost_driver: collection_transaction_volume
+
+  - name: Data Exports
+    description: Scheduled and on-demand data exports for analytics and reporting.
+    cost_driver: export_volume, data_store_size
+
+infrastructure_options:
+  - name: Multi-Tenant (Standard)
+    description: Shared infrastructure with lower base cost. Suitable for most partners.
+    relative_cost: lower
+
+  - name: Private Stack (Premium)
+    description: Dedicated infrastructure with higher cost. Suitable for high-volume or compliance-sensitive deployments.
+    relative_cost: higher
+
+optimization_strategies:
+  - name: Use Sandbox for Development
+    description: Conduct all integration testing in the sandbox environment (sandbox.rootplatform.com) to avoid any production costs during development.
+    impact: high
+
+  - name: Implement Idempotency Keys
+    description: Use idempotency keys on all mutating requests to avoid duplicate operations that could generate unintended policy or payment events.
+    impact: medium
+
+  - name: Cache Quote Responses
+    description: Where business logic allows, cache quote responses to reduce repeated API calls for the same customer session.
+    impact: medium
+
+  - name: Optimize Prefill Usage
+    description: The Bind API prefill is an asynchronous third-party data fetch. Only trigger prefill when needed (after minimum required fields are collected) to avoid unnecessary third-party data costs.
+    impact: medium
+
+  - name: Webhook-Driven Architecture
+    description: Subscribe to webhooks for policy and payment events rather than polling the API, reducing unnecessary API calls and associated costs.
+    impact: medium
+
+  - name: Module Activation
+    description: Only activate Root Platform modules that are actively used in your product. The modular pricing model means unused modules do not incur costs.
+    impact: high
+
+billing_resources:
+  - name: Root Platform Plans Page
+    url: https://rootplatform.com/plans
+    description: Overview of modular pricing structure and infrastructure options.
+
+  - name: Root Platform Contact
+    url: https://rootplatform.com/contact
+    description: Contact page for pricing inquiries and demo scheduling.
+
+  - name: Root Partnership Inquiries
+    url: https://www.joinroot.com/partnerships/
+    description: For Bind API revenue-share and embedded insurance partnership pricing.
+
+  - name: Root Status Page
+    url: https://status.rootplatform.com/
+    description: Monitor API availability to understand operational continuity for cost planning.
+
+notes:
+  - Root does not publish self-serve pricing. All cost details require a sales conversation.
+  - Bind API partners typically operate under revenue-share models where Root earns on bound policies.
+  - Root Platform infrastructure hosting costs are bundled into the plan agreement, not billed separately per API call.

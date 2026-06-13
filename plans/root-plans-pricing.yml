@@ -1,0 +1,73 @@
+name: Root Insurance Plans and Pricing
+description: Root Insurance pricing is usage-based and contact-driven for both the Root Platform (B2B insurance infrastructure) and the Root Bind API (embedded insurance). No self-serve public pricing tiers are published; all plans require a sales engagement.
+url: https://rootplatform.com/plans
+plans:
+
+  - name: Platform Standard
+    description: Multi-tenant shared infrastructure for building and operating insurance products. Includes policy administration, quoting, claims, and collections modules.
+    type: commercial
+    pricing_model: modular-usage-based
+    contact_required: true
+    contact_url: https://rootplatform.com/contact
+    features:
+      - Quote and bind module
+      - Policy administration module
+      - Claims module
+      - Collections module
+      - REST API access
+      - Sandbox environment
+      - Webhook event subscriptions
+      - Data exports and analytics
+      - Customer notification templates
+    infrastructure: multi-tenant
+
+  - name: Platform Private Stack
+    description: Dedicated instance of the Root Platform for insurers and distributors requiring isolation, custom SLAs, or higher throughput. Premium tier.
+    type: commercial
+    pricing_model: custom-enterprise
+    contact_required: true
+    contact_url: https://rootplatform.com/contact
+    features:
+      - All Standard features
+      - Dedicated infrastructure
+      - Custom SLAs
+      - Root Private Stack deployment
+      - Enhanced data residency controls
+    infrastructure: dedicated
+
+  - name: Bind API - Hosted Experience
+    description: Embedded auto insurance integration where Root hosts the quoting and purchase flow. Partners collect customer info, Root generates a bridge link, and customers complete the transaction on Root-hosted pages.
+    type: commercial
+    pricing_model: revenue-share
+    contact_required: true
+    contact_url: https://www.joinroot.com/partnerships/
+    features:
+      - Quote generation API
+      - Root-hosted checkout experience
+      - Prefill integration
+      - Webhook notifications
+      - Sandbox testing environment
+    implementation: hosted
+
+  - name: Bind API - Fully Embedded
+    description: Full API suite for partners who want to control the entire quoting, checkout, and policy servicing experience within their own application.
+    type: commercial
+    pricing_model: revenue-share
+    contact_required: true
+    contact_url: https://www.joinroot.com/partnerships/
+    features:
+      - Full quoting API (create, update, bind)
+      - Prefill data retrieval
+      - Policy servicing endpoints
+      - Payment collection
+      - Webhook integration
+      - White-label branding support
+      - Sandbox and production environments
+    implementation: fully-embedded
+
+notes:
+  - Pricing for both Platform and Bind API plans requires direct engagement with Root's sales team.
+  - Root Platform pricing is modular — customers pay only for the modules and add-ons they use.
+  - Bind API partnerships are structured as revenue-share or referral arrangements.
+  - Contact email for platform inquiries: hello@rootplatform.com
+  - Contact page for partnership inquiries: https://www.joinroot.com/partnerships/

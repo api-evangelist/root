@@ -1,0 +1,90 @@
+aid: root
+name: Root Insurance
+description: Root Insurance is a usage-based auto insurance company that prices policies primarily based on driving behavior captured via smartphone telematics. Root provides a REST API platform for insurers, MGAs, and distribution partners to build, embed, and operate insurance products — covering quoting, policy administration, claims processing, premium collections, and data management. The Root Bind API enables partners to embed auto insurance quoting and checkout directly into their applications.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/root/refs/heads/main/apis.yml
+created: '2026-06-13'
+modified: '2026-06-13'
+specificationVersion: '0.19'
+type: Index
+tags:
+  - Insurance
+  - Auto Insurance
+  - Telematics
+  - Embedded Insurance
+  - Policy Administration
+  - Claims
+  - Usage-Based Insurance
+  - InsurTech
+apis:
+  - aid: root:root-platform-api
+    name: Root Platform API
+    description: The Root Platform REST API enables insurers, MGAs, and distribution partners to build and operate full insurance products. Capabilities include application management, quote generation, policy issuance and lifecycle management, claims processing, premium collections, policyholder management, webhooks, and data exports.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.rootplatform.com/docs/overview
+    baseURL: https://api.rootplatform.com/
+    tags:
+      - Insurance Platform
+      - Policy Management
+      - Claims
+      - Quotes
+      - Collections
+      - Webhooks
+    properties:
+      - type: Documentation
+        url: https://docs.rootplatform.com/docs/overview
+      - type: OpenAPI
+        url: https://api.rootplatform.com/v1/docs/insurance/openapi
+      - type: Authentication
+        url: https://docs.rootplatform.com/reference/getting-started-1
+      - type: Sandbox
+        url: https://sandbox.rootplatform.com/
+      - type: StatusPage
+        url: https://status.rootplatform.com/
+
+  - aid: root:root-bind-api
+    name: Root Bind API
+    description: The Root Bind API enables distribution partners to embed auto insurance quoting, checkout, and servicing within their own applications. Supports both a hosted experience (Root-managed checkout) and a fully embedded experience where partners control the entire customer journey through Root's APIs.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://root-bind-api.readme.io/docs/embedded-insurance-101
+    baseURL: https://production.joinroot.com/bind_api/v3/
+    tags:
+      - Embedded Insurance
+      - Auto Insurance
+      - Quote and Bind
+      - Partner API
+      - Telematics
+    properties:
+      - type: Documentation
+        url: https://root-bind-api.readme.io/docs/getting-started
+      - type: GettingStarted
+        url: https://root-bind-api.readme.io/docs/getting-started
+      - type: Sandbox
+        url: https://sandbox.joinroot.com/bind_api/v3/
+
+common:
+  - type: Website
+    url: https://www.joinroot.com/
+  - type: Documentation
+    url: https://docs.rootplatform.com/
+  - type: GitHubOrg
+    url: https://github.com/Root-App
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/rootinsurance
+  - type: Blog
+    url: https://blog.joinroot.com/
+  - type: Pricing
+    url: https://rootplatform.com/plans
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+  - type: X
+    url: https://x.com/joinroot
+  - type: Plans
+    url: plans/root-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/root-rate-limits.yml
+  - type: FinOps
+    url: finops/root-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
