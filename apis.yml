@@ -1,7 +1,7 @@
 aid: root
 name: Root Insurance
 description: Root Insurance is a usage-based auto insurance company that prices policies primarily based on driving behavior captured via smartphone telematics. Root provides a REST API platform for insurers, MGAs, and distribution partners to build, embed, and operate insurance products — covering quoting, policy administration, claims processing, premium collections, and data management. The Root Bind API enables partners to embed auto insurance quoting and checkout directly into their applications.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/root/refs/heads/main/apis.yml
 created: '2026-06-13'
 modified: '2026-06-13'
@@ -20,7 +20,7 @@ apis:
   - aid: root:root-platform-api
     name: Root Platform API
     description: The Root Platform REST API enables insurers, MGAs, and distribution partners to build and operate full insurance products. Capabilities include application management, quote generation, policy issuance and lifecycle management, claims processing, premium collections, policyholder management, webhooks, and data exports.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.rootplatform.com/docs/overview
     baseURL: https://api.rootplatform.com/
     tags:
@@ -45,7 +45,7 @@ apis:
   - aid: root:root-bind-api
     name: Root Bind API
     description: The Root Bind API enables distribution partners to embed auto insurance quoting, checkout, and servicing within their own applications. Supports both a hosted experience (Root-managed checkout) and a fully embedded experience where partners control the entire customer journey through Root's APIs.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://root-bind-api.readme.io/docs/embedded-insurance-101
     baseURL: https://production.joinroot.com/bind_api/v3/
     tags:
