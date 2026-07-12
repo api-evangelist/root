@@ -63,6 +63,12 @@ apis:
         url: https://sandbox.joinroot.com/bind_api/v3/
 
 common:
+  - type: VulnerabilityDisclosure
+    url: security/root-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/root-domain-security.yml
+  - type: Authentication
+    url: authentication/root-authentication.yml
   - type: Website
     url: https://www.joinroot.com/
   - type: Documentation
