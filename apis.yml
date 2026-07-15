@@ -63,6 +63,8 @@ apis:
         url: https://sandbox.joinroot.com/bind_api/v3/
 
 common:
+  - type: AgenticAccess
+    url: agentic-access/root-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/root-vulnerability-disclosure.yml
   - type: DomainSecurity
