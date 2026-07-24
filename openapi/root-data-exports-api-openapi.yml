@@ -1,0 +1,901 @@
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Root Applications Data exports API
+  description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
+  termsOfService: https://rootplatform.com/about
+  contact:
+    name: Root support team
+    url: https://rootplatform.com/contact
+    email: support@root.co.za
+servers:
+- url: https://sandbox.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - sandbox
+- url: https://api.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - production
+- url: https://sandbox.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - sandbox
+- url: https://api.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - production
+security:
+- basicAuth: []
+tags:
+- name: Data exports
+paths:
+  /data-export-runs:
+    get:
+      operationId: fetch-data-export-runs
+      summary: List data export runs
+      tags:
+      - Data exports
+      x-additional-tags:
+      - Data export runs
+      parameters:
+      - name: template_id
+        in: query
+        description: Must be a UUID. An optional list of data export template ID's.
+        required: false
+        schema:
+          type: string
+      - name: data_source
+        in: query
+        required: false
+        description: The data source of the data export run.
+        schema:
+          type: string
+          enum:
+          - applications
+          - claims
+          - complaints
+          - debicheck_mandates
+          - fulfillment_requests
+          - notifications
+          - payment_methods
+          - payment_coupons
+          - payments
+          - payout_requests
+          - policies
+          - policy_charges
+          - policy_premiums
+          - policyholders
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/data-export-runs'
+              example:
+              - data_export_run_id: 34233912-c91f-4dc9-bfed-c10d16be26af
+                scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+                created_at: '2019-03-09T08:07:59.044Z'
+                completed_at: '2019-03-09T08:08:02.178Z'
+                status: complete
+                file_id: 74ce9562-4242-11e9-904a-7b14ba20f082
+                triggered_by:
+                  type: api_key
+                  id: 313f7511-c16a-4fdb-ba49-25a80a9b571c
+                  owner_id: da20903b-7f0d-4318-96bd-6df78514e2fd
+                to: '2019-03-09T08:07:59.044Z'
+                data_range: today
+                environment: sandbox
+                export_type: policy_export
+                name: Daily policies export
+                type: once_off
+  /data-export-runs/{data_export_run_id}:
+    get:
+      operationId: retrieve-data-export-run
+      summary: Retrieve a run
+      tags:
+      - Data exports
+      x-additional-tags:
+      - Data export runs
+      parameters:
+      - name: data_export_run_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [data export run](ref:retrieve-data-export-run).
+        required: true
+        schema:
+          type: string
+          example: 34233912-c91f-4dc9-bfed-c10d16be26af
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/data-export-run'
+              example:
+                data_export_run_id: 34233912-c91f-4dc9-bfed-c10d16be26af
+                scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+                created_at: '2019-03-09T08:07:59.044Z'
+                completed_at: '2019-03-09T08:08:02.178Z'
+                status: complete
+                file_id: 74ce9562-4242-11e9-904a-7b14ba20f082
+  /data-export-runs/{data_export_run_id}/log-items:
+    get:
+      operationId: fetch-data-export-run-log
+      summary: Retrieve a run log
+      tags:
+      - Data exports
+      x-additional-tags:
+      - Data export runs
+      parameters:
+      - name: data_export_run_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [data export run](ref:retrieve-data-export-run).
+        required: true
+        schema:
+          type: string
+          example: 34233912-c91f-4dc9-bfed-c10d16be26af
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/data-export-run-log-items'
+              example:
+              - data_export_run_id: 34233912-c91f-4dc9-bfed-c10d16be26af
+                created_at: '2019-03-09T08:07:59.075Z'
+                level: info
+                content: Creating policy export file
+  /scheduled-data-exports:
+    get:
+      operationId: fetch-scheduled-data-exports
+      summary: List all scheduled data exports
+      tags:
+      - Data exports
+      x-additional-tags:
+      - Scheduled data exports
+      parameters:
+      - name: include
+        in: query
+        description: An optional semicolon-separated list of underlying objects to include, e.g. `?include=latest_run`. Currently, only `latest_run` is supported, which will include the latest run for the scheduled data export.
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduled-data-exports'
+              example:
+              - scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+                environment: sandbox
+                created_at: '2019-03-15T09:55:13.627Z'
+                created_by:
+                  type: api_key
+                  id: 313f7511-c16a-4fdb-ba49-25a80a9b571c
+                  owner_id: da20903b-7f0d-4318-96bd-6df78514e2fd
+                status: active
+                name: Daily policies export
+                frequency:
+                  type: daily
+                  time_of_day: 09:00
+                adapter:
+                  type: sftp
+                  host: localhost
+                  username: someuser
+                  path: /some/path/
+                export_type: policy_export
+                data_range: since_last_run
+    post:
+      operationId: create-scheduled-data-export
+      summary: Create a scheduled data export
+      description: 'The following adapters are supported for scheduled data exports:'
+      tags:
+      - Data exports
+      x-additional-tags:
+      - Scheduled data exports
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - environment
+              - name
+              - frequency
+              - adapter
+              - export_type
+              - data_range
+              properties:
+                environment:
+                  type: string
+                  description: The dataset used by the scheduled data export. Either `sandbox` or `production`.
+                name:
+                  type: string
+                  description: The name of the scheduled data export.
+                frequency:
+                  type: object
+                  description: The frequency at which the scheduled data export runs. See [available frequencies](ref:scheduled-data-export) for more details.
+                  oneOf:
+                  - $ref: '#/components/schemas/daily-frequency'
+                  - $ref: '#/components/schemas/weekly-frequency'
+                  - $ref: '#/components/schemas/monthly-frequency'
+                adapter:
+                  type: object
+                  description: The adapter used to send the export once it's compiled. See below for more details.
+                  oneOf:
+                  - $ref: '#/components/schemas/sftp-adapter'
+                  - $ref: '#/components/schemas/https-adapter'
+                  - $ref: '#/components/schemas/s3-adapter'
+                export_type:
+                  type: string
+                  description: The type of scheduled data export. Only `policy_export` is currently supported.
+                data_range:
+                  type: string
+                  description: The range used to capture data for the export. One of `today`, `week_to_date`, `month_to_date`, `since_last_run`, or `full`.
+              example:
+                name: Daily policies export
+                environment: sandbox
+                export_type: policy_export
+                data_range: since_last_run
+                frequency:
+                  type: daily
+                  time_of_day: 09:00
+                adapter:
+                  type: sftp
+                  host: 127.0.0.1
+                  username: someuser
+                  password: somepassword
+                  path: /some/path/
+            example:
+              name: Daily policies export
+              environment: sandbox
+              export_type: policy_export
+              data_range: since_last_run
+              frequency:
+                type: daily
+                time_of_day: 09:00
+              adapter:
+                type: sftp
+                host: 127.0.0.1
+                username: someuser
+                password: somepassword
+                path: /some/path/
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduled-data-export'
+              example:
+                scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+                environment: sandbox
+                created_at: '2019-03-15T09:55:13.627Z'
+                created_by:
+                  type: api_key
+                  id: 313f7511-c16a-4fdb-ba49-25a80a9b571c
+                  owner_id: da20903b-7f0d-4318-96bd-6df78514e2fd
+                status: active
+                name: Daily policies export
+                frequency:
+                  type: daily
+                  time_of_day: 09:00
+                adapter:
+                  type: sftp
+                  host: localhost
+                  username: someuser
+                  path: /some/path/
+                export_type: policy_export
+                data_range: since_last_run
+  /scheduled-data-exports/{scheduled_data_export_id}:
+    get:
+      operationId: retrieve-scheduled-data-export
+      summary: Retrieve a scheduled data export
+      tags:
+      - Data exports
+      x-additional-tags:
+      - Scheduled data exports
+      parameters:
+      - name: scheduled_data_export_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - name: include
+        in: query
+        description: An optional semicolon-separated list of underlying objects to include, e.g. `?include=latest_run`. Currently, only `latest_run` is supported, which will include the latest run for the scheduled data export.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduled-data-export'
+              example:
+                scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+                environment: sandbox
+                created_at: '2019-03-15T09:55:13.627Z'
+                created_by:
+                  type: api_key
+                  id: 313f7511-c16a-4fdb-ba49-25a80a9b571c
+                  owner_id: da20903b-7f0d-4318-96bd-6df78514e2fd
+                status: active
+                name: Daily policies export
+                frequency:
+                  type: daily
+                  time_of_day: 09:00
+                adapter:
+                  type: sftp
+                  host: localhost
+                  username: someuser
+                  path: /some/path/
+                export_type: policy_export
+                data_range: since_last_run
+    patch:
+      operationId: update-scheduled-data-export
+      summary: Update a scheduled data export
+      description: 'The following adapters are supported for scheduled data exports:'
+      tags:
+      - Data exports
+      x-additional-tags:
+      - Scheduled data exports
+      parameters:
+      - name: scheduled_data_export_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export).
+        required: true
+        schema:
+          type: string
+          example: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: The name of the scheduled data export.
+                adapter:
+                  type: object
+                  description: The adapter used to send the export once it's compiled. See below for more details.
+                environment:
+                  type: string
+                  description: The dataset used by the scheduled export. Either `sandbox` or `production`.
+                frequency:
+                  type: object
+                  description: The frequency at which the scheduled export runs. See [available frequencies](ref:scheduled-data-export) for more details.
+                data_range:
+                  type: string
+                  description: The range used to capture data for the export. One of `today`, `week_to_date`, `month_to_date`, `since_last_run`, or `full`.
+              example:
+                name: Daily policies export
+                adapter:
+                  type: sftp
+                  host: 127.0.0.1
+                  port: 22
+                  username: someuser
+                  password: somepassword
+                  path: /some/path/
+                environment: production
+                data_range: full
+                export_type: custom_export
+                template_id: 00000000-0000-0000-0000-000000000002
+                frequency:
+                  type: daily
+                  time_of_day: '11:00'
+            example:
+              name: Daily policies export
+              adapter:
+                type: sftp
+                host: 127.0.0.1
+                port: 22
+                username: someuser
+                password: somepassword
+                path: /some/path/
+              environment: production
+              data_range: full
+              export_type: custom_export
+              template_id: 00000000-0000-0000-0000-000000000002
+              frequency:
+                type: daily
+                time_of_day: '11:00'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduled-data-export'
+              example:
+                scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+                environment: production
+                created_at: '2019-03-15T09:55:13.627Z'
+                created_by:
+                  type: api_key
+                  id: 313f7511-c16a-4fdb-ba49-25a80a9b571c
+                  owner_id: da20903b-7f0d-4318-96bd-6df78514e2fd
+                status: active
+                name: Daily policies export
+                frequency:
+                  type: daily
+                  time_of_day: '11:00'
+                adapter:
+                  type: sftp
+                  host: localhost
+                  username: someuser
+                  path: /some/path/
+                export_type: policy_export
+                data_range: full
+  /scheduled-data-exports/{scheduled_data_export_id}/archive:
+    post:
+      operationId: archive-scheduled-data-export
+      summary: Archive a scheduled data export
+      tags:
+      - Data exports
+      x-additional-tags:
+      - Scheduled data exports
+      parameters:
+      - name: scheduled_data_export_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export).
+        required: true
+        schema:
+          type: string
+          example: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduled-data-export'
+              example:
+                scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+                environment: sandbox
+                created_at: '2019-03-15T09:55:13.627Z'
+                created_by:
+                  type: api_key
+                  id: 313f7511-c16a-4fdb-ba49-25a80a9b571c
+                  owner_id: da20903b-7f0d-4318-96bd-6df78514e2fd
+                status: archived
+                name: Daily policies export
+                frequency:
+                  type: daily
+                  time_of_day: 09:00
+                adapter:
+                  type: sftp
+                  host: localhost
+                  username: someuser
+                  path: /some/path/
+                export_type: policy_export
+                data_range: since_last_run
+  /scheduled-data-exports/{scheduled_data_export_id}/pause:
+    post:
+      operationId: pause-scheduled-data-export
+      summary: Pause a scheduled data export
+      tags:
+      - Data exports
+      x-additional-tags:
+      - Scheduled data exports
+      parameters:
+      - name: scheduled_data_export_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export).
+        required: true
+        schema:
+          type: string
+          example: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduled-data-export'
+              example:
+                scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+                environment: sandbox
+                created_at: '2019-03-15T09:55:13.627Z'
+                created_by:
+                  type: api_key
+                  id: 313f7511-c16a-4fdb-ba49-25a80a9b571c
+                  owner_id: da20903b-7f0d-4318-96bd-6df78514e2fd
+                status: paused
+                name: Daily policies export
+                frequency:
+                  type: daily
+                  time_of_day: 09:00
+                adapter:
+                  type: sftp
+                  host: localhost
+                  username: someuser
+                  path: /some/path/
+                export_type: policy_export
+                data_range: since_last_run
+  /scheduled-data-exports/{scheduled_data_export_id}/resume:
+    post:
+      operationId: resume-scheduled-data-export
+      summary: Resume a scheduled data export
+      tags:
+      - Data exports
+      x-additional-tags:
+      - Scheduled data exports
+      parameters:
+      - name: scheduled_data_export_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export).
+        required: true
+        schema:
+          type: string
+          example: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduled-data-export'
+              example:
+                scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+                environment: sandbox
+                created_at: '2019-03-15T09:55:13.627Z'
+                created_by:
+                  type: api_key
+                  id: 313f7511-c16a-4fdb-ba49-25a80a9b571c
+                  owner_id: da20903b-7f0d-4318-96bd-6df78514e2fd
+                status: active
+                name: Daily policies export
+                frequency:
+                  type: daily
+                  time_of_day: 09:00
+                adapter:
+                  type: sftp
+                  host: localhost
+                  username: someuser
+                  path: /some/path/
+                export_type: policy_export
+                data_range: since_last_run
+  /scheduled-data-exports/{scheduled_data_export_id}/trigger:
+    post:
+      operationId: trigger-scheduled-data-export
+      summary: Trigger an adhoc run
+      description: Action a scheduled data export immediately regardless of the specified time.
+      tags:
+      - Data exports
+      x-additional-tags:
+      - Scheduled data exports
+      parameters:
+      - name: scheduled_data_export_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export).
+        required: true
+        schema:
+          type: string
+          example: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduled-data-export'
+              example:
+                scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+                environment: sandbox
+                created_at: '2019-03-15T09:55:13.627Z'
+                created_by:
+                  type: api_key
+                  id: 313f7511-c16a-4fdb-ba49-25a80a9b571c
+                  owner_id: da20903b-7f0d-4318-96bd-6df78514e2fd
+                status: active
+                name: Daily policies export
+                frequency:
+                  type: daily
+                  time_of_day: 09:00
+                adapter:
+                  type: sftp
+                  host: localhost
+                  username: someuser
+                  path: /some/path/
+                export_type: policy_export
+                data_range: since_last_run
+components:
+  schemas:
+    weekly-frequency:
+      type: object
+      required:
+      - time_of_day
+      - day_of_week
+      properties:
+        time_of_day:
+          type: string
+          description: The time of day to run the export, in `HH:mm` format.
+        day_of_week:
+          type: string
+          description: The day of week to run the export. One of `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, or `sunday`.
+    data-export-run-log-item:
+      type: object
+      required:
+      - data_export_run_id
+      - created_at
+      - level
+      - content
+      properties:
+        data_export_run_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the data export run.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the data export run was created.
+        level:
+          type: string
+          description: The level of the log item. One of `info`, `warn`, or `error`.
+        content:
+          type: string
+          description: The log item text.
+      example:
+        data_export_run_id: 34233912-c91f-4dc9-bfed-c10d16be26af
+        created_at: '2019-03-09T08:07:59.075Z'
+        level: info
+        content: Creating policy export file
+    s3-adapter:
+      type: object
+      required:
+      - type
+      - region
+      - bucket_name
+      - secret_access_key
+      - access_key_id
+      properties:
+        type:
+          type: string
+          description: The type of adapter. In this case, `s3`.
+        region:
+          type: string
+          description: The S3 bucket region.
+        bucket_name:
+          type: string
+          description: The name of the S3 bucket.
+        bucket_path:
+          type: string
+          description: The path of the S3 bucket to store the resulting export to, with a trailing slash. This is used to generate a bucket key e.g. `folder/subfolder/`.
+        secret_access_key:
+          type: string
+          description: An AWS secret access key with permission to read from and write to the bucket.
+        access_key_id:
+          type: string
+          description: An AWS access key ID with permission to read from and write to the bucket.
+    scheduled-data-exports:
+      type: array
+      items:
+        $ref: '#/components/schemas/scheduled-data-export'
+    https-adapter:
+      type: object
+      required:
+      - type
+      - url
+      properties:
+        type:
+          type: string
+          description: The type of adapter. In this case, `https`.
+        url:
+          type: string
+          description: The HTTPS URL to send the export file to.
+        headers:
+          type: string
+          description: The HTTP headers for the request.
+        batch_size:
+          type: integer
+          description: The number of entities to include per request, if streaming is disabled. Defaults to `10000` if not provided.
+        stream_request:
+          type: boolean
+          description: Indicates whether the request should be batched (`false`) or streamed in one request (`true`).
+    daily-frequency:
+      type: object
+      required:
+      - time_of_day
+      properties:
+        time_of_day:
+          type: string
+          description: The time of day to run the export, in `HH:mm` format.
+    monthly-frequency:
+      type: object
+      required:
+      - time_of_day
+      - day_of_month
+      properties:
+        time_of_day:
+          type: string
+          description: The time of day to run the export, in `HH:mm` format.
+        day_of_month:
+          type: integer
+          description: The day of month to run the export on, from `1` to `31`. *Note:* if the day of month falls after month end (i.e., on the 31st in a month with only 30 days), the export will be run on the last day of the month.
+    data-export-run-log-items:
+      type: array
+      items:
+        $ref: '#/components/schemas/data-export-run-log-item'
+    scheduled-data-export:
+      type: object
+      required:
+      - scheduled_data_export_id
+      - environment
+      - created_at
+      - created_by
+      - status
+      - name
+      - frequency
+      - adapter
+      - export_type
+      - data_range
+      properties:
+        scheduled_data_export_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the scheduled data export.
+        environment:
+          type: string
+          description: The dataset used by the scheduled data export. Either `sandbox` or `production`.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the scheduled data export was created.
+        created_by:
+          type: object
+          description: An object indicating the user or API key that created the scheduled data export. See [Authentication](#client-apps).
+        status:
+          type: string
+          description: The current status of the scheduled data export. One of `active`, `paused`, or `archived`.
+        name:
+          type: string
+          description: The name of the scheduled data export.
+        frequency:
+          type: object
+          description: The frequency at which the scheduled data export runs. See below for more details.
+          oneOf:
+          - $ref: '#/components/schemas/daily-frequency'
+          - $ref: '#/components/schemas/weekly-frequency'
+          - $ref: '#/components/schemas/monthly-frequency'
+        adapter:
+          type: object
+          description: The adapter used to send the export once it's compiled. See below for more details.
+          oneOf:
+          - $ref: '#/components/schemas/sftp-adapter'
+          - $ref: '#/components/schemas/https-adapter'
+          - $ref: '#/components/schemas/s3-adapter'
+        export_type:
+          type: string
+          description: The type of scheduled data export. Only `policy_export` is currently supported.
+        data_range:
+          type: string
+          description: The range used to capture data for the export. One of `today`, `week_to_date`, `month_to_date`, `since_last_run`, or `full`.
+        latest_run:
+          type:
+          - object
+          - 'null'
+          description: The latest run for the scheduled data export, if one exists. See below for more details.
+      example:
+        scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+        environment: sandbox
+        created_at: '2019-03-15T09:55:13.627Z'
+        created_by:
+          type: api_key
+          id: 313f7511-c16a-4fdb-ba49-25a80a9b571c
+          owner_id: da20903b-7f0d-4318-96bd-6df78514e2fd
+        status: active
+        name: Daily policies export
+        frequency:
+          type: daily
+          time_of_day: 09:00
+        adapter:
+          type: sftp
+          host: localhost
+          username: someuser
+          path: /some/path/
+        export_type: policy_export
+        data_range: since_last_run
+    sftp-adapter:
+      type: object
+      required:
+      - type
+      - host
+      - path
+      properties:
+        type:
+          type: string
+          description: The type of adapter. In this case, `sftp`.
+        host:
+          type: string
+          description: The SFTP IP address or hostname.
+        port:
+          type: number
+          description: The port number to connect to on the host. Defaults to `22` if not provided.
+        path:
+          type: string
+          description: The path on the server to store the resulting export in.
+        username:
+          type: string
+          description: The username to use when authenticating on the SFTP server. Defaults to anonymous authentication if not provided.
+        password:
+          type: string
+          description: The password to use when authenticating on the SFTP server. Defaults to anonymous authentication if not provided.
+    data-export-runs:
+      type: array
+      items:
+        $ref: '#/components/schemas/data-export-run'
+    data-export-run:
+      type: object
+      required:
+      - data_export_run_id
+      - scheduled_data_export_id
+      - created_at
+      - status
+      properties:
+        data_export_run_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the data export run.
+        scheduled_data_export_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the scheduled data export that the run belongs to.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the data export run was created.
+        completed_at:
+          type: string
+          format: date-time
+          description: The time at which the data export run completed.
+        status:
+          type: string
+          description: The current status of the data export run. One of `in_progress`, `failed`, or `complete`.
+        file_id:
+          type:
+          - string
+          - 'null'
+          description: The file created during the run, if successful.
+      example:
+        data_export_run_id: 34233912-c91f-4dc9-bfed-c10d16be26af
+        scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+        created_at: '2019-03-09T08:07:59.044Z'
+        completed_at: '2019-03-09T08:08:02.178Z'
+        status: complete
+        file_id: 74ce9562-4242-11e9-904a-7b14ba20f082
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

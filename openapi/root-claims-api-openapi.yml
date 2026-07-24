@@ -1,0 +1,3062 @@
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Root Applications Claims API
+  description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
+  termsOfService: https://rootplatform.com/about
+  contact:
+    name: Root support team
+    url: https://rootplatform.com/contact
+    email: support@root.co.za
+servers:
+- url: https://sandbox.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - sandbox
+- url: https://api.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - production
+- url: https://sandbox.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - sandbox
+- url: https://api.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - production
+security:
+- basicAuth: []
+tags:
+- name: Claims
+paths:
+  /claims:
+    post:
+      operationId: create-claim
+      summary: Create a claim
+      description: Creates a new claim. The claim can optionally be linked to a policy, member, or covered item. A claimant can be specified with contact details.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Create
+      parameters:
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                policy_id:
+                  type:
+                  - string
+                  - 'null'
+                  description: Must be a UUID. The identifier of the [policy](ref:policy) on which the claim is being made.
+                member_id:
+                  type:
+                  - string
+                  - 'null'
+                  description: Must be a UUID. The identifier of the member for this claim. Only used for group scheme policies.
+                covered_item_id:
+                  type:
+                  - string
+                  - 'null'
+                  description: Must be a UUID. The identifier of the covered item that this claim is against. Required if the policy supports covered items.
+                assigned_to_user_id:
+                  type:
+                  - string
+                  - 'null'
+                  description: Must be a UUID. The identifier of the user to assign this claim to.
+                incident_type:
+                  type:
+                  - string
+                  - 'null'
+                  description: A description of the incident type.
+                incident_cause:
+                  type:
+                  - string
+                  - 'null'
+                  description: A description of the cause of the incident.
+                incident_date:
+                  type:
+                  - string
+                  - 'null'
+                  format: date-time
+                  description: The date on which the incident occurred.
+                app_data:
+                  type:
+                  - object
+                  - 'null'
+                  description: An object containing additional custom data for the claim.
+                  additionalProperties: true
+                claimant:
+                  type: object
+                  description: Object containing claimant's details. At least one of `email` or `cellphone` must be provided.
+                  properties:
+                    first_name:
+                      type: string
+                      description: The first name of the claimant.
+                    last_name:
+                      type: string
+                      description: The last name of the claimant.
+                    email:
+                      type: string
+                      description: The claimant's email address. Required if `cellphone` is not provided.
+                    cellphone:
+                      oneOf:
+                      - $ref: '#/components/schemas/cellphone'
+                      - $ref: '#/components/schemas/cellphone-string'
+                      description: The claimant's cellphone number. Required if `email` is not provided.
+                    id_number:
+                      type: string
+                      description: The ID number of the claimant.
+                    relationship:
+                      type: string
+                      description: The relationship of the claimant to the policyholder.
+                  required:
+                  - first_name
+                  - last_name
+                requested_amount:
+                  type: integer
+                  description: The requested payout amount (in cents) for the claim.
+            example:
+              policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+              member_id: 673b8081-9668-4136-97cc-6ae0debda083
+              covered_item_id: 9dc39b57-cdc7-48f9-a303-d7c4f0421a0c
+              incident_type: Theft
+              incident_cause: Device stolen during burglary
+              incident_date: '2017-10-16T10:12:02.872Z'
+              app_data:
+                key1: value 1
+                key2: value 2
+              claimant:
+                first_name: Erlich
+                last_name: Aviato
+                email: erlich@aviato.com
+                cellphone: 0821234567
+              requested_amount: 13000000
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                claim_number: D33B754ADA8F
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:12:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                covered_item_id: 9dc39b57-cdc7-48f9-a303-d7c4f0421a0c
+                claim_status: open
+                approval_status: pending
+                currency: ZAR
+                app_data:
+                  key1: value 1
+                  key2: value 2
+                claimant:
+                  first_name: Erlich
+                  last_name: Aviato
+                  email: erlich@aviato.com
+                  cellphone: 0821234567
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+    get:
+      operationId: fetch-claims
+      summary: List all claims
+      description: Returns a paginated list of claims for the organization. Use the query parameters to filter claims by status, policy, policyholder, and more. Use the `include` parameter to include related objects in the response.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      - name: claim_status
+        in: query
+        description: Filter by claim status. Accepts multiple values.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - open
+            - in_review
+            - acknowledged
+            - pending_payout
+            - paid_out
+            - closed
+        style: form
+        explode: false
+        example: open,in_review
+      - name: approval_status
+        in: query
+        description: Filter by approval status. Accepts multiple values.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - pending
+            - approved
+            - repudiated
+            - no_claim
+            - goodwill
+        style: form
+        explode: false
+        example: pending,approved
+      - name: search
+        in: query
+        description: Search claims by claim number, claimant name, or other searchable fields.
+        required: false
+        schema:
+          type: string
+        example: D33B754
+      - name: policyholder_id
+        in: query
+        description: Must be a UUID. Filter claims by policyholder ID.
+        required: false
+        schema:
+          type: string
+        example: 00000000-0000-0000-0000-000000000004
+      - name: product_module_id
+        in: query
+        description: Must be a UUID. Filter claims by product module ID.
+        required: false
+        schema:
+          type: string
+        example: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+      - name: policy_id
+        in: query
+        description: Must be a UUID. Filter claims by policy ID.
+        required: false
+        schema:
+          type: string
+        example: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+      - name: created_by
+        in: query
+        description: Must be a UUID. Filter claims by the ID of the user or API key that created them.
+        required: false
+        schema:
+          type: string
+        example: 00000000-0000-0000-0000-000000000001
+      - name: created_by_type
+        in: query
+        description: Filter claims by the type of entity that created them.
+        required: false
+        schema:
+          type: string
+          enum:
+          - user
+          - api_key
+        example: user
+      - name: assigned_to
+        in: query
+        description: Must be a UUID. Filter claims by the user they are assigned to.
+        required: false
+        schema:
+          type: string
+        example: 00000000-0000-0000-0000-000000000001
+      - name: user_group_id
+        in: query
+        description: Must be a UUID. Filter claims by user group ID.
+        required: false
+        schema:
+          type: string
+        example: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+        example: policy,policyholder
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-Total-Count:
+              description: The total number of claims matching the query.
+              schema:
+                type: integer
+                example: 42
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claims'
+              example:
+              - claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                claim_number: D33B754ADA8F
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                claim_status: open
+                approval_status: pending
+                claimant:
+                  first_name: Erlich
+                  last_name: Aviato
+                  email: erlich@aviato.com
+                currency: ZAR
+                app_data:
+                  key1: value 1
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+              - claim_id: cf5f074e-e09f-4d85-bc2d-07cfcae63f30
+                claim_number: CF5F074EDA8F
+                created_at: '2017-10-14T11:09:55.332Z'
+                updated_at: '2017-10-14T12:00:00.000Z'
+                policy_id: 76096ff5-f4ed-47e2-8ac0-de16ba095508
+                policyholder_id: 00000000-0000-0000-0000-000000000005
+                covered_item_id: 9dc39b57-cdc7-48f9-a303-d7c4f0421a0c
+                claim_status: closed
+                approval_status: approved
+                currency: ZAR
+                requested_amount: 2000000
+                granted_amount: 1870000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}:
+    get:
+      operationId: retrieve-a-claim
+      summary: Retrieve a claim
+      tags:
+      - Claims
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                claim_number: D33B754ADA8F
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                covered_item_id: 9dc39b57-cdc7-48f9-a303-d7c4f0421a0c
+                claim_status: open
+                approval_status: pending
+                currency: ZAR
+                app_data:
+                  key1: value 1
+                  key2: value 2
+                claimant:
+                  first_name: Erlich
+                  last_name: Aviato
+                  email: erlich@aviato.com
+                requested_amount: 13000000
+                granted_amount: 9400000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+    patch:
+      operationId: updating-a-claim
+      summary: Update a claim
+      tags:
+      - Claims
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: claim_id
+        in: path
+        description: The unique identifier of the [claim](ref:claim)
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                incident_type:
+                  type: string
+                  description: A description of the incident type.
+                incident_cause:
+                  type: string
+                  description: A description of the cause of the incident.
+                incident_date:
+                  type: string
+                  format: date-time
+                  description: The date on the which the incident occurred.
+                app_data:
+                  type:
+                  - object
+                  - 'null'
+                  description: '`null` is allowed. An object containing additional custom data for the claim.'
+                  additionalProperties: true
+                requested_amount:
+                  type: integer
+                  description: The requested payout amount (in cents) for the claim.
+              example:
+                incident_type: Theft
+                incident_cause: Device stolen during burglary
+                incident_date: '2017-10-16T10:12:02.872Z'
+                app_data:
+                  key3: value3
+                requested_amount: 13000000
+            example:
+              incident_type: Theft
+              incident_cause: Device stolen during burglary
+              incident_date: '2017-10-16T10:12:02.872Z'
+              app_data:
+                key3: value3
+              requested_amount: 13000000
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                created_at: '2017-10-16T10:12:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                covered_item_id: 9dc39b57-cdc7-48f9-a303-d7c4f0421a0c
+                claim_status: open
+                approval_status: pending
+                app_data:
+                  key3: value 3
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/acknowledge-approved:
+    post:
+      operationId: acknowledge-approved
+      summary: Acknowledge approval
+      description: Acknowledges a claim approval decision, transitioning the claim to pending payout.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Supervisor decision
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: A reason for acknowledging the approval.
+            example:
+              reason: Claim meets approval criteria.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: pending_payout
+                approval_status: approved
+                claim_number: D33B754ADA8F
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/acknowledge-goodwill:
+    post:
+      operationId: acknowledge-goodwill
+      summary: Acknowledge goodwill
+      description: Acknowledges a goodwill claim decision, transitioning the claim to pending payout.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Supervisor decision
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: A reason for acknowledging the goodwill decision.
+            example:
+              reason: Claim meets goodwill criteria.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                covered_item_id: 9dc39b57-cdc7-48f9-a303-d7c4f0421a0c
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: pending_payout
+                approval_status: goodwill
+                claim_number: D33B754ADA8F
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/acknowledge-no-claim:
+    post:
+      operationId: acknowledge-no-claim
+      summary: Acknowledge no claim
+      description: Acknowledges a no-claim decision, finalizing the claim as no-claim.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Supervisor decision
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: A reason for acknowledging the no-claim decision.
+            example:
+              reason: Claim is inside the waiting period.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                claim_number: D33B754ADA8F
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                covered_item_id: 9dc39b57-cdc7-48f9-a303-d7c4f0421a0c
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: acknowledged
+                approval_status: no_claim
+                rejection_reason: Claim is within waiting period
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/acknowledge-repudiated:
+    post:
+      operationId: acknowledge-repudiated
+      summary: Acknowledge repudiation
+      description: Acknowledges a claim repudiation decision, finalizing the claim as repudiated.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Supervisor decision
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: A reason for acknowledging the repudiation.
+            example:
+              reason: Claim is not covered under the terms and conditions of the policy.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                covered_item_id: 9dc39b57-cdc7-48f9-a303-d7c4f0421a0c
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: acknowledged
+                approval_status: repudiated
+                claim_number: D33B754ADA8F
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/approve:
+    post:
+      operationId: approve-claim
+      summary: Approve claim
+      description: Approves a claim and optionally specifies payees for the payout. Multiple payees can be specified to split the payout amount.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Assessor decision
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: A reason for the claim approval decision.
+                assigned_to_user_id:
+                  type: string
+                  description: Must be a UUID. The identifier of the user to assign this claim to.
+                payee:
+                  type: array
+                  description: An array of payee objects specifying who should receive the payout.
+                  items:
+                    type: object
+                    required:
+                    - id
+                    - amount
+                    - type
+                    properties:
+                      id:
+                        type: string
+                        description: Must be a UUID. The ID of the beneficiary or policyholder to be paid out.
+                      amount:
+                        type: integer
+                        description: The amount in cents to be paid to the beneficiary or policyholder.
+                      type:
+                        type: string
+                        description: The type of payee.
+                        enum:
+                        - policyholder
+                        - beneficiary
+            example:
+              reason: Claim meets the approval criteria.
+              payee:
+              - id: 00000000-0000-0000-0000-000000000004
+                amount: 13000000
+                type: policyholder
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                claim_number: D33B754ADA8F
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: in_review
+                approval_status: approved
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/attachments:
+    get:
+      operationId: retrieve-claim-attachments
+      summary: List claim attachments
+      description: Returns a paginated list of attachments for a claim.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `embedding`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - embedding
+        style: form
+        explode: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/attachments'
+              example:
+                attachment_id: 1dc7b3c6-a921-11ed-bad6-736a4495dd42
+                file_name: report.pdf
+                file_type: application/pdf
+                file_url: http://yoururlhere/report.pdf
+                description: Police Report
+                created_at: '2022-01-31T11:25:23.427Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+    post:
+      operationId: claim-create-attachment
+      summary: Create an attachment
+      tags:
+      - Claims
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: claim_id
+        in: path
+        description: The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - file_name
+              - description
+              - file_base64
+              - file_type
+              properties:
+                file_name:
+                  type: string
+                  description: The name of the file (with file extension).
+                description:
+                  type: string
+                  description: A tag describing what the document is about (e.g. affidavit, etc.).
+                file_base64:
+                  type: string
+                  description: The raw file bytes encoded as a base 64 string. Limited to a maximum of 4 MB in size.
+                file_type:
+                  type: string
+                  description: The mime type of the attachment (e.g. image/png).
+                labels:
+                  type: array
+                  items:
+                    type: string
+                  description: Optional array of labels to categorize the attachment.
+                enable_ai_search:
+                  type: boolean
+                  default: false
+                  description: Whether to enable AI search indexing for this attachment.
+              example:
+                file_name: report.pdf
+                file_type: application/pdf
+                description: Police Report
+                file_base64: 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CmVuZG9iagoKOSAwIG9iago8PC9UeXBlL0ZvbnQvU3VidHlwZS9UcnVlVHlwZS9CYXNlRm9udC9CQUFBQUErQXJpYWwtQm9sZE1UCi9GaXJzdENoYXIgMAovTGFzdENoYXIgMTEKL1dpZHRoc1s3NTAgNzIyIDYxMCA4ODkgNTU2IDI3NyA2NjYgNjEwIDMzMyAyNzcgMjc3IDU1NiBdCi9Gb250RGVzY3JpcHRvciA3IDAgUgovVG9Vbmljb2RlIDggMCBSCj4+CmVuZG9iagoKMTAgMCBvYmoKPDwKL0YxIDkgMCBSCj4+CmVuZG9iagoKMTEgMCBvYmoKPDwvRm9udCAxMCAwIFIKL1Byb2NTZXRbL1BERi9UZXh0XT4+CmVuZG9iagoKMSAwIG9iago8PC9UeXBlL1BhZ2UvUGFyZW50IDQgMCBSL1Jlc291cmNlcyAxMSAwIFIvTWVkaWFCb3hbMCAwIDU5NSA4NDJdL0dyb3VwPDwvUy9UcmFuc3BhcmVuY3kvQ1MvRGV2aWNlUkdCL0kgdHJ1ZT4+L0NvbnRlbnRzIDIgMCBSPj4KZW5kb2JqCgoxMiAwIG9iago8PC9Db3VudCAxL0ZpcnN0IDEzIDAgUi9MYXN0IDEzIDAgUgo+PgplbmRvYmoKCjEzIDAgb2JqCjw8L1RpdGxlPEZFRkYwMDQ0MDA3NTAwNkQwMDZEMDA3OTAwMjAwMDUwMDA0NDAwNDYwMDIwMDA2NjAwNjkwMDZDMDA2NT4KL0Rlc3RbMSAwIFIvWFlaIDU2LjcgNzczLjMgMF0vUGFyZW50IDEyIDAgUj4+CmVuZG9iagoKNCAwIG9iago8PC9UeXBlL1BhZ2VzCi9SZXNvdXJjZXMgMTEgMCBSCi9NZWRpYUJveFsgMCAwIDU5NSA4NDIgXQovS2lkc1sgMSAwIFIgXQovQ291bnQgMT4+CmVuZG9iagoKMTQgMCBvYmoKPDwvVHlwZS9DYXRhbG9nL1BhZ2VzIDQgMCBSCi9PdXRsaW5lcyAxMiAwIFIKPj4KZW5kb2JqCgoxNSAwIG9iago8PC9BdXRob3I8RkVGRjAwNDUwMDc2MDA2MTAwNkUwMDY3MDA2NTAwNkMwMDZGMDA3MzAwMjAwMDU2MDA2QzAwNjEwMDYzMDA2ODAwNkYwMDY3MDA2OTAwNjEwMDZFMDA2RTAwNjkwMDczPgovQ3JlYXRvcjxGRUZGMDA1NzAwNzIwMDY5MDA3NDAwNjUwMDcyPgovUHJvZHVjZXI8RkVGRjAwNEYwMDcwMDA2NTAwNkUwMDRGMDA2NjAwNjYwMDY5MDA2MzAwNjUwMDJFMDA2RjAwNzIwMDY3MDAyMDAwMzIwMDJFMDAzMT4KL0NyZWF0aW9uRGF0ZShEOjIwMDcwMjIzMTc1NjM3KzAyJzAwJyk+PgplbmRvYmoKCnhyZWYKMCAxNgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMTE5OTcgMDAwMDAgbiAKMDAwMDAwMDAxOSAwMDAwMCBuIAowMDAwMDAwMjI0IDAwMDAwIG4gCjAwMDAwMTIzMzAgMDAwMDAgbiAKMDAwMDAwMDI0NCAwMDAwMCBuIAowMDAwMDExMTU0IDAwMDAwIG4gCjAwMDAwMTExNzYgMDAwMDAgbiAKMDAwMDAxMTM2OCAwMDAwMCBuIAowMDAwMDExNzA5IDAwMDAwIG4gCjAwMDAwMTE5MTAgMDAwMDAgbiAKMDAwMDAxMTk0MyAwMDAwMCBuIAowMDAwMDEyMTQwIDAwMDAwIG4gCjAwMDAwMTIxOTYgMDAwMDAgbiAKMDAwMDAxMjQyOSAwMDAwMCBuIAowMDAwMDEyNDk0IDAwMDAwIG4gCnRyYWlsZXIKPDwvU2l6ZSAxNi9Sb290IDE0IDAgUgovSW5mbyAxNSAwIFIKL0lEIFsgPEY3RDc3QjNEMjJCOUY5MjgyOUQ0OUZGNUQ3OEI4RjI4Pgo8RjdENzdCM0QyMkI5RjkyODI5RDQ5RkY1RDc4QjhGMjg+IF0KPj4Kc3RhcnR4cmVmCjEyNzg3CiUlRU9GCg==
+            example:
+              file_name: report.pdf
+              file_type: application/pdf
+              description: Police Report
+              file_base64: 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CmVuZG9iagoKOSAwIG9iago8PC9UeXBlL0ZvbnQvU3VidHlwZS9UcnVlVHlwZS9CYXNlRm9udC9CQUFBQUErQXJpYWwtQm9sZE1UCi9GaXJzdENoYXIgMAovTGFzdENoYXIgMTEKL1dpZHRoc1s3NTAgNzIyIDYxMCA4ODkgNTU2IDI3NyA2NjYgNjEwIDMzMyAyNzcgMjc3IDU1NiBdCi9Gb250RGVzY3JpcHRvciA3IDAgUgovVG9Vbmljb2RlIDggMCBSCj4+CmVuZG9iagoKMTAgMCBvYmoKPDwKL0YxIDkgMCBSCj4+CmVuZG9iagoKMTEgMCBvYmoKPDwvRm9udCAxMCAwIFIKL1Byb2NTZXRbL1BERi9UZXh0XT4+CmVuZG9iagoKMSAwIG9iago8PC9UeXBlL1BhZ2UvUGFyZW50IDQgMCBSL1Jlc291cmNlcyAxMSAwIFIvTWVkaWFCb3hbMCAwIDU5NSA4NDJdL0dyb3VwPDwvUy9UcmFuc3BhcmVuY3kvQ1MvRGV2aWNlUkdCL0kgdHJ1ZT4+L0NvbnRlbnRzIDIgMCBSPj4KZW5kb2JqCgoxMiAwIG9iago8PC9Db3VudCAxL0ZpcnN0IDEzIDAgUi9MYXN0IDEzIDAgUgo+PgplbmRvYmoKCjEzIDAgb2JqCjw8L1RpdGxlPEZFRkYwMDQ0MDA3NTAwNkQwMDZEMDA3OTAwMjAwMDUwMDA0NDAwNDYwMDIwMDA2NjAwNjkwMDZDMDA2NT4KL0Rlc3RbMSAwIFIvWFlaIDU2LjcgNzczLjMgMF0vUGFyZW50IDEyIDAgUj4+CmVuZG9iagoKNCAwIG9iago8PC9UeXBlL1BhZ2VzCi9SZXNvdXJjZXMgMTEgMCBSCi9NZWRpYUJveFsgMCAwIDU5NSA4NDIgXQovS2lkc1sgMSAwIFIgXQovQ291bnQgMT4+CmVuZG9iagoKMTQgMCBvYmoKPDwvVHlwZS9DYXRhbG9nL1BhZ2VzIDQgMCBSCi9PdXRsaW5lcyAxMiAwIFIKPj4KZW5kb2JqCgoxNSAwIG9iago8PC9BdXRob3I8RkVGRjAwNDUwMDc2MDA2MTAwNkUwMDY3MDA2NTAwNkMwMDZGMDA3MzAwMjAwMDU2MDA2QzAwNjEwMDYzMDA2ODAwNkYwMDY3MDA2OTAwNjEwMDZFMDA2RTAwNjkwMDczPgovQ3JlYXRvcjxGRUZGMDA1NzAwNzIwMDY5MDA3NDAwNjUwMDcyPgovUHJvZHVjZXI8RkVGRjAwNEYwMDcwMDA2NTAwNkUwMDRGMDA2NjAwNjYwMDY5MDA2MzAwNjUwMDJFMDA2RjAwNzIwMDY3MDAyMDAwMzIwMDJFMDAzMT4KL0NyZWF0aW9uRGF0ZShEOjIwMDcwMjIzMTc1NjM3KzAyJzAwJyk+PgplbmRvYmoKCnhyZWYKMCAxNgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMTE5OTcgMDAwMDAgbiAKMDAwMDAwMDAxOSAwMDAwMCBuIAowMDAwMDAwMjI0IDAwMDAwIG4gCjAwMDAwMTIzMzAgMDAwMDAgbiAKMDAwMDAwMDI0NCAwMDAwMCBuIAowMDAwMDExMTU0IDAwMDAwIG4gCjAwMDAwMTExNzYgMDAwMDAgbiAKMDAwMDAxMTM2OCAwMDAwMCBuIAowMDAwMDExNzA5IDAwMDAwIG4gCjAwMDAwMTE5MTAgMDAwMDAgbiAKMDAwMDAxMTk0MyAwMDAwMCBuIAowMDAwMDEyMTQwIDAwMDAwIG4gCjAwMDAwMTIxOTYgMDAwMDAgbiAKMDAwMDAxMjQyOSAwMDAwMCBuIAowMDAwMDEyNDk0IDAwMDAwIG4gCnRyYWlsZXIKPDwvU2l6ZSAxNi9Sb290IDE0IDAgUgovSW5mbyAxNSAwIFIKL0lEIFsgPEY3RDc3QjNEMjJCOUY5MjgyOUQ0OUZGNUQ3OEI4RjI4Pgo8RjdENzdCM0QyMkI5RjkyODI5RDQ5RkY1RDc4QjhGMjg+IF0KPj4Kc3RhcnR4cmVmCjEyNzg3CiUlRU9GCg==
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    description: The event type.
+                    example: attachment_created
+                  claim_id:
+                    type: string
+                    format: uuid
+                    description: The unique identifier of the claim.
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: The date and time when the event was created.
+                  requested_by:
+                    type: object
+                    description: The user or API key that requested the action.
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                        - user
+                        - api_key
+                      id:
+                        type: string
+                        format: uuid
+                      owner_id:
+                        type: string
+                        format: uuid
+                  file_name:
+                    type: string
+                    description: The name of the file.
+                  file_type:
+                    type: string
+                    description: The mime type of the attachment.
+                  file_url:
+                    type: string
+                    description: The URL to access the uploaded file.
+                  description:
+                    type: string
+                    description: A description of the attachment.
+              example:
+                type: attachment_created
+                claim_id: d8e72dda-431a-4834-a1f6-10579de4a796
+                created_at: '2022-01-31T11:25:23.427Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+                  owner_id: 00000000-0000-0000-0000-000000000001
+                file_name: report.pdf
+                file_type: application/pdf
+                file_url: https://yoururlhere/report.pdf
+                description: Police Report
+  /claims/{claim_id}/attachments/{attachment_id}/archive:
+    post:
+      operationId: claim-archive-attachment
+      summary: Archive an attachment
+      tags:
+      - Claims
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: claim_id
+        in: path
+        description: The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - name: attachment_id
+        in: path
+        description: The unique identifier of the attachment.
+        required: true
+        schema:
+          type: string
+          example: c1cace2a-634a-4848-bde8-d2c60322e7e8
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  event_type:
+                    type: string
+                  claim_id:
+                    type: string
+                  created_at:
+                    type: string
+                  requested_by:
+                    type: object
+              example:
+                event_type: attachment_archived
+                claim_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                created_at: '2017-10-13T09:37:48.947Z'
+                requested_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/blocks:
+    patch:
+      operationId: update-multiple-block-states
+      summary: Update multiple block states
+      description: '**Note:** This endpoint is product module specific and depends on the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference) defined for the product module.'
+      tags:
+      - Claims
+      x-additional-tags:
+      - Blocks
+      parameters:
+      - name: claim_id
+        in: path
+        description: The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      requestBody:
+        description: The blocks referenced in the request body must be defined in the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference) for the product module.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                required:
+                - key
+                - block_state
+                properties:
+                  key:
+                    type: string
+                    description: The unique identifier of the block in the claims blocks schema.
+                  block_state:
+                    type: object
+                    description: The shape of the block state depends on the type of claims block. Read more [here](doc:claims-blocks-reference).
+                    additionalProperties: true
+              example:
+              - key: free_text_block_nested_non_collapsible
+                block_state:
+                  type: input.text
+                  value: Freetext
+              - key: example_radio_block
+                block_state:
+                  type: radio
+                  option_key: single
+                  option_value: Single
+              - key: example_date_block
+                block_state:
+                  type: input.date
+                  value: '2023-03-10T08:51:17.000Z'
+      responses:
+        '200':
+          description: Success </br></br> The complete, updated block states. The keys of this object are product module specific, and will match the keys of the blocks defined in the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference).
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                free_text_block_nested_non_collapsible:
+                  type: input.text
+                  value: Freetext
+                example_radio_block:
+                  type: radio
+                  option_key: single
+                  option_value: Single
+                example_date_block:
+                  type: input.date
+                  value: '2023-03-10T08:51:17.000Z'
+  /claims/{claim_id}/block-states/{block_key}:
+    get:
+      operationId: retrieve-a-block-state
+      summary: Retrieve a block state
+      description: '**Note:** This endpoint is product module specific and depends on the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference) defined for the product module.'
+      tags:
+      - Claims
+      x-additional-tags:
+      - Blocks
+      parameters:
+      - name: claim_id
+        in: path
+        description: The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: block_key
+        in: path
+        description: The unique identifier of the block defined in the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference).
+        required: true
+        schema:
+          type: string
+          example: example_radio_block
+      responses:
+        '200':
+          description: Success </br></br> The updated state of the individual block. The shape of this object depends on the type of claims block. Read more [here](doc:claims-blocks-reference).
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                type: radio
+                option_key: married
+                option_value: Married
+  /claims/{claim_id}/blocks/{block_key}:
+    patch:
+      operationId: updating-a-block-state
+      summary: Update a block state
+      description: '**Note:** This endpoint is product module specific and depends on the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference) defined for the product module.'
+      tags:
+      - Claims
+      x-additional-tags:
+      - Blocks
+      parameters:
+      - name: claim_id
+        in: path
+        description: The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: block_key
+        in: path
+        description: The unique identifier of the block defined in the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference).
+        required: true
+        schema:
+          type: string
+          example: example_radio_block
+      requestBody:
+        description: The block state. The shape of the block state depends on the claims block type. Read more [here](doc:claims-blocks-reference).
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  enum:
+                  - input.text
+                  - input.currency
+                  - input.paragraph
+                  - radio
+                  - input.date
+                  - checkbox
+                  - input.number
+                  - input.time
+                  - payout_request
+                  - fulfillment_request
+                  - annuity_request
+                  - markdown
+                  - dropdown
+                  - heading
+                  - divider
+                  - alert
+                  - group
+              required:
+              - type
+              additionalProperties: true
+              example:
+                type: radio
+                option_key: married
+                option_value: Married
+            example:
+              type: radio
+              option_key: married
+              option_value: Married
+      responses:
+        '200':
+          description: Success </br></br> The complete, updated block states. The keys of this object are product module specific, and will match the keys of the blocks defined in the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference).
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                example_radio_block:
+                  type: radio
+                  option_key: married
+                  option_value: Married
+  /claims/{claim_id}/do-not-acknowledge-approved:
+    post:
+      operationId: do-not-acknowledge-approved
+      summary: Do not acknowledge approval
+      description: Rejects the claim approval decision, returning the claim to review status.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Supervisor decision
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  description: A reason for not acknowledging the claim approval.
+                assigned_to_user_id:
+                  type: string
+                  description: Must be a UUID. The identifier of the user to reassign this claim to.
+            example:
+              reason: Claim does not meet the approval criteria.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: in_review
+                approval_status: pending
+                claim_number: D33B754ADA8F
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/do-not-acknowledge-goodwill:
+    post:
+      operationId: do-not-acknowledge-goodwill
+      summary: Do not acknowledge goodwill
+      description: Rejects the goodwill claim decision, returning the claim to review status.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Supervisor decision
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  description: A reason for not acknowledging the goodwill decision.
+                assigned_to_user_id:
+                  type: string
+                  description: Must be a UUID. The identifier of the user to reassign this claim to.
+            example:
+              reason: Claim does not meet the goodwill criteria.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: in_review
+                approval_status: pending
+                claim_number: D33B754ADA8F
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/do-not-acknowledge-no-claim:
+    post:
+      operationId: do-not-acknowledge-no-claim
+      summary: Do not acknowledge no claim
+      description: Rejects the no-claim decision, returning the claim to review status.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Supervisor decision
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  description: A reason for not acknowledging the no-claim decision.
+                assigned_to_user_id:
+                  type: string
+                  description: Must be a UUID. The identifier of the user to reassign this claim to.
+            example:
+              reason: Claim meets approval criteria.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: in_review
+                approval_status: pending
+                claim_number: D33B754ADA8F
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/do-not-acknowledge-repudiated:
+    post:
+      operationId: do-not-acknowledge-repudiated
+      summary: Do not acknowledge repudiation
+      description: Rejects the claim repudiation decision, returning the claim to review status.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Supervisor decision
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  description: A reason for not acknowledging the repudiation.
+                assigned_to_user_id:
+                  type: string
+                  description: Must be a UUID. The identifier of the user to reassign this claim to.
+            example:
+              reason: Claim meets approval criteria.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: in_review
+                approval_status: pending
+                claim_number: D33B754ADA8F
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/goodwill:
+    post:
+      operationId: goodwill-claim
+      summary: Goodwill claim
+      description: Marks a claim as goodwill, indicating a payout will be made even though the claim may not fully meet approval criteria. Multiple payees can be specified.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Assessor decision
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  description: A reason for the goodwill decision.
+                assigned_to_user_id:
+                  type: string
+                  description: Must be a UUID. The identifier of the user to assign this claim to.
+                payee:
+                  type: array
+                  description: An array of payee objects specifying who should receive the payout.
+                  items:
+                    type: object
+                    required:
+                    - id
+                    - amount
+                    - type
+                    properties:
+                      id:
+                        type: string
+                        description: Must be a UUID. The ID of the beneficiary or policyholder to be paid out.
+                      amount:
+                        type: integer
+                        description: The amount in cents to be paid to the beneficiary or policyholder.
+                      type:
+                        type: string
+                        description: The type of payee.
+                        enum:
+                        - policyholder
+                        - beneficiary
+            example:
+              reason: Claim granted as goodwill gesture.
+              payee:
+              - id: 00000000-0000-0000-0000-000000000004
+                amount: 13000000
+                type: policyholder
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                claim_number: D33B754ADA8F
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: in_review
+                approval_status: goodwill
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/no-claim:
+    post:
+      operationId: no-claim
+      summary: No claim
+      description: Marks a claim as "no claim", indicating the incident does not warrant a claim or the claim has been withdrawn.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Assessor decision
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  description: A reason for the no claim decision.
+                assigned_to_user_id:
+                  type: string
+                  description: Must be a UUID. The identifier of the user to assign this claim to.
+            example:
+              reason: Claim does not meet the approval criteria.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                claim_number: D33B754ADA8F
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: in_review
+                approval_status: no_claim
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/notes:
+    get:
+      operationId: retrieve-claim-notes
+      summary: List claim notes
+      tags:
+      - Claims
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: claim_id
+        in: path
+        description: The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notes'
+              example:
+              - text: Customer spoke to Erlich previously
+                created_at: '2018-05-25T08:51:20.317Z'
+                requested_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+    post:
+      operationId: claim-add-note
+      summary: Add a note
+      tags:
+      - Claims
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: claim_id
+        in: path
+        description: The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - text
+              properties:
+                text:
+                  type: string
+                  description: A string of text for the note.
+              example:
+                text: Customer spoke to Erlich previously
+            example:
+              text: Customer spoke to Erlich previously
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/note'
+              example:
+                text: Customer spoke to Erlich previously
+                type: text_note_created
+                claim_id: d8e72dda-431a-4834-a1f6-10579de4a796
+                created_at: '2022-10-16T10:12:02.872Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+  /claims/{claim_id}/policy:
+    post:
+      operationId: claim-link-policy
+      summary: Link a policy
+      description: Links a claim to a policy. Optionally, a member or covered item can also be specified for group scheme policies or policies with covered items.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - policy_id
+              properties:
+                policy_id:
+                  type: string
+                  description: Must be a UUID. The identifier of the [policy](ref:policy) under which the claim is being made.
+                member_id:
+                  type:
+                  - string
+                  - 'null'
+                  description: Must be a UUID. The identifier of the group scheme member under which the claim is being made. Only applicable for group scheme policies.
+                covered_item_id:
+                  type:
+                  - string
+                  - 'null'
+                  description: Must be a UUID. The identifier of the covered item that this claim is against. Only applicable if the policy supports covered items.
+            example:
+              policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+              member_id: 673b8081-9668-4136-97cc-6ae0debda083
+              covered_item_id: 9dc39b57-cdc7-48f9-a303-d7c4f0421a0c
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                claim_number: D33B754ADA8F
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                covered_item_id: 9dc39b57-cdc7-48f9-a303-d7c4f0421a0c
+                claim_status: open
+                approval_status: pending
+                currency: ZAR
+                app_data:
+                  key1: value 1
+                  key2: value 2
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/fulfillment-requests/{fulfillment_request_id}/approve:
+    patch:
+      operationId: approve-fulfillment-request
+      summary: Approve a fulfillment request
+      tags:
+      - Claims
+      x-additional-tags:
+      - Fulfillment requests
+      parameters:
+      - $ref: '#/components/parameters/fulfillment_request_id'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fulfillment-request'
+              example:
+                fulfillment_request_id: f84b3856-1358-4e12-bcf6-6732bc8b9522
+                fulfillment_type_id: ad044686-6b6f-4ce6-878f-143039243f11
+                policy_id: e2eb02eb-632b-4c12-8527-8a3b60212445
+                claim_id: 25983c09-0913-494f-908b-592d5b2ebd8b
+                status: successful
+                fulfillment_data:
+                  amount: '10000'
+                  customer_account_number: 0122036478871
+                created_at: '2022-05-26T09:31:09.709Z'
+                created_by:
+                  type: user
+                  id: 99ff4c56-577c-11e9-b47c-a3d0f3abd20c
+                environment: sandbox
+                finalized_at: '2022-05-26T09:33:19.000Z'
+                finalized_by:
+                  type: user
+                  id: 99ff4c56-577c-11e9-b47c-a3d0f3abd20c
+  /claims/fulfillment-requests/{fulfillment_request_id}/reject:
+    patch:
+      operationId: reject-a-fulfillment-request
+      summary: Reject a fulfillment request
+      tags:
+      - Claims
+      x-additional-tags:
+      - Fulfillment requests
+      parameters:
+      - $ref: '#/components/parameters/fulfillment_request_id'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fulfillment-request'
+              example:
+                fulfillment_request_id: f84b3856-1358-4e12-bcf6-6732bc8b9522
+                fulfillment_type_id: ad044686-6b6f-4ce6-878f-143039243f11
+                policy_id: e2eb02eb-632b-4c12-8527-8a3b60212445
+                claim_id: 25983c09-0913-494f-908b-592d5b2ebd8b
+                status: rejected
+                fulfillment_data:
+                  amount: '10000'
+                  customer_account_number: 0122036478331
+                created_at: '2022-05-26T09:31:09.709Z'
+                created_by:
+                  type: user
+                  id: 99ff4c56-577c-11e9-b47c-a3d0f3abd20c
+                environment: sandbox
+                finalized_at: '2022-05-26T09:33:19.000Z'
+                finalized_by:
+                  type: user
+                  id: 99ff4c56-577c-11e9-b47c-a3d0f3abd20c
+  /claims/{claim_id}/repudiate:
+    post:
+      operationId: repudiate-claim
+      summary: Repudiate claim
+      description: Repudiates a claim, indicating the claim is not valid and no payout will be made.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Assessor decision
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  description: A reason for the repudiation decision.
+                assigned_to_user_id:
+                  type: string
+                  description: Must be a UUID. The identifier of the user to assign this claim to.
+            example:
+              reason: Claim is not covered under the terms and conditions of the policy.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                claim_number: D33B754ADA8F
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: in_review
+                approval_status: repudiated
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                rejection_reason: Claim is not covered under the terms and conditions of the policy.
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/send-to-review:
+    post:
+      operationId: send-to-review
+      summary: Send claim to review
+      description: Transitions a claim to the review stage. Optionally assign the claim to a specific user for review.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assigned_to_user_id:
+                  type: string
+                  description: Must be a UUID. The identifier of the user to assign this claim to for review.
+            example:
+              assigned_to_user_id: 00000000-0000-0000-0000-000000000002
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                claim_number: D33B754ADA8F
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: in_review
+                approval_status: pending
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/close:
+    post:
+      operationId: close-claim
+      summary: Close claim
+      description: Closes a claim, indicating the claim process is complete.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  description: A reason for closing the claim.
+            example:
+              reason: Claim finalized.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                claim_number: D33B754ADA8F
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: closed
+                approval_status: approved
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/reopen:
+    post:
+      operationId: reopen-claim
+      summary: Reopen claim
+      description: Reopens a previously closed claim, returning it to an open state.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: claim_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [claim](ref:claim).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+        style: form
+        explode: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  description: A reason for reopening the claim.
+            example:
+              reason: Claim erroneously closed.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                claim_number: D33B754ADA8F
+                created_at: '2017-10-16T10:12:02.872Z'
+                updated_at: '2017-10-16T10:15:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 00000000-0000-0000-0000-000000000004
+                claim_status: open
+                approval_status: approved
+                currency: ZAR
+                claimant:
+                  email: erlich@aviato.com
+                  first_name: Erlich
+                  last_name: Aviato
+                  relationship: main_member
+                requested_amount: 13000000
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /claims/{claim_id}/claimant:
+    patch:
+      operationId: update-claimant
+      summary: Update claimant
+      description: Updates the claimant information for a specific claim.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: claim_id
+        in: path
+        description: The unique identifier of the claim.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - name: include
+        in: query
+        description: A comma-separated list of related resources to include in the response.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  description: The first name of the claimant.
+                last_name:
+                  type: string
+                  description: The last name of the claimant.
+                id_number:
+                  type: string
+                  description: The ID number of the claimant.
+                email:
+                  type: string
+                  format: email
+                  description: The email address of the claimant. At least one of email or cellphone is required.
+                cellphone:
+                  type: string
+                  description: The cellphone number of the claimant. At least one of email or cellphone is required.
+                relationship:
+                  type: string
+                  description: The relationship of the claimant to the policyholder.
+            example:
+              first_name: John
+              last_name: Doe
+              id_number: '9001015000000'
+              email: john.doe@example.com
+              cellphone: '+27821234567'
+              relationship: spouse
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                claim_number: CLM-000001
+                claim_status: open
+                approval_status: pending
+                policy_id: 80f8e67a-15e5-417c-9d29-dfc31a5b92bb
+                policyholder_id: 2800a20b-ce92-4463-a0de-75cd76d8bf22
+                claimant:
+                  first_name: John
+                  last_name: Doe
+                  id_number: '9001015000000'
+                  email: john.doe@example.com
+                  cellphone: '+27821234567'
+                  relationship: spouse
+                created_at: '2022-01-31T11:25:23.427Z'
+                updated_at: '2022-01-31T12:00:00.000Z'
+  /claims/{claim_id}/events:
+    get:
+      operationId: get-claim-events
+      summary: List claim events
+      description: Returns a list of events for a specific claim.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - name: claim_id
+        in: path
+        description: The unique identifier of the claim.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: The type of the claim event.
+                      enum:
+                      - claim_opened
+                      - sent_to_review
+                      - sent_to_capture
+                      - claim_approved
+                      - claim_repudiated
+                      - claim_goodwill
+                      - claim_no_claim
+                      - claim_acknowledged
+                      - claim_not_acknowledged
+                      - claim_closed
+                      - claim_reopened
+                      - claimant_updated
+                      - claim_updated
+                      - attachment_created
+                      - note_created
+                      - note_updated
+                      - fulfillment_request_created
+                      - fulfillment_request_rejected
+                      - fulfillment_request_successful
+                      - payout_request_created
+                      - payout_request_successful
+                      - payout_request_failed
+                      - payout_request_cancelled
+                      - annuity_request_created
+                      - annuity_request_updated
+                      - annuity_request_cancelled
+                      - claim_paid_out
+                      - claim_block_state_updated
+                      - assignment_created
+                      - assignment_removed
+                      - linked_to_policy
+                    claim_id:
+                      type: string
+                      format: uuid
+                      description: The unique identifier of the claim.
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: The date and time when the event was created.
+                    requested_by:
+                      type: object
+                      description: The user or API key that requested the action.
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - user
+                          - api_key
+                        id:
+                          type: string
+                          format: uuid
+                        owner_id:
+                          type: string
+                          format: uuid
+              example:
+              - type: claim_opened
+                claim_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                created_at: '2022-01-31T11:25:23.427Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+                  owner_id: 00000000-0000-0000-0000-000000000001
+              - type: sent_to_review
+                claim_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                created_at: '2022-01-31T12:30:00.000Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+                  owner_id: 00000000-0000-0000-0000-000000000001
+              - type: claim_approved
+                claim_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                created_at: '2022-02-01T10:00:00.000Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+                  owner_id: 00000000-0000-0000-0000-000000000001
+  /claims/{claim_id}/paid-out:
+    post:
+      operationId: paid-out-claim
+      summary: Mark claim as paid out
+      description: Marks an approved claim as paid out, indicating that all payments have been made.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: claim_id
+        in: path
+        description: The unique identifier of the claim.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - name: include
+        in: query
+        description: A comma-separated list of related resources to include in the response.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                claim_number: CLM-000001
+                claim_status: paid_out
+                approval_status: approved
+                policy_id: 80f8e67a-15e5-417c-9d29-dfc31a5b92bb
+                policyholder_id: 2800a20b-ce92-4463-a0de-75cd76d8bf22
+                created_at: '2022-01-31T11:25:23.427Z'
+                updated_at: '2022-02-15T10:00:00.000Z'
+  /claims/{claim_id}/send-to-capture:
+    post:
+      operationId: send-to-capture
+      summary: Send claim to capture
+      description: Sends a claim to the capture stage for additional information gathering.
+      tags:
+      - Claims
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: claim_id
+        in: path
+        description: The unique identifier of the claim.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - name: include
+        in: query
+        description: A comma-separated list of related resources to include in the response.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - user_group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assigned_to_user_id:
+                  type: string
+                  format: uuid
+                  description: The unique identifier of the user to assign the claim to.
+            example:
+              assigned_to_user_id: 00000000-0000-0000-0000-000000000001
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim'
+              example:
+                claim_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                claim_number: CLM-000001
+                claim_status: open
+                approval_status: pending
+                policy_id: 80f8e67a-15e5-417c-9d29-dfc31a5b92bb
+                policyholder_id: 2800a20b-ce92-4463-a0de-75cd76d8bf22
+                assigned_to: 00000000-0000-0000-0000-000000000001
+                created_at: '2022-01-31T11:25:23.427Z'
+                updated_at: '2022-01-31T12:00:00.000Z'
+  /payout-requests/{payout_request_id}:
+    patch:
+      operationId: update-a-payout-request
+      summary: Update a payout request
+      tags:
+      - Claims
+      x-additional-tags:
+      - Payout requests
+      parameters:
+      - name: payout_request_id
+        in: path
+        description: Must be a UUID. The unique identifier of the payout request.
+        required: true
+        schema:
+          type: string
+          example: 02f94351-94c8-40a4-ace1-97d7fe4b7a9a
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - status
+              properties:
+                status:
+                  type: string
+                  description: The status of the payout request. This must be one of [`pending`, `processing`, `completed`, `rejected`].
+                reason:
+                  type: string
+                  description: A string describing why the payout request is being rejected. This is required when the status is `rejected`, and forbidden otherwise.
+                proof_of_payment:
+                  type: object
+                  description: Object containing the proof of payment for a successfully completed payout request. This is optional when the status is `completed`, and forbidden otherwise.
+                  properties:
+                    file_name:
+                      type: string
+                      description: The name of the file (with file extension).
+                    description:
+                      type: string
+                      description: A tag describing what the document is about (e.g. affidavit, etc.).
+                    file_base64:
+                      type: string
+                      description: The raw file bytes encoded as a base 64 string. Limited to a maximum of 4 MB in size.
+                    file_type:
+                      type: string
+                      description: The mime type of the attachment (e.g. image/png).
+                  required:
+                  - file_name
+                  - description
+                  - file_base64
+                  - file_type
+              example:
+                status: rejected
+                reason: Rejected as part of testing
+            example:
+              status: rejected
+              reason: Rejected as part of testing
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payout_request_id:
+                    type: string
+                  created_at:
+                    type: string
+                  created_by:
+                    type: object
+                  status:
+                    type: string
+                  rejection_reason:
+                    type: string
+                  type:
+                    type: string
+                  amount:
+                    type: string
+                  description:
+                    type: string
+                  finalized_at:
+                    type: string
+                  finalized_by:
+                    type: object
+                  claim_id:
+                    type: string
+                  policy_id:
+                    type: string
+                  policyholder_id:
+                    type: string
+                  payee:
+                    type: object
+              example:
+                payout_request_id: 02f94351-94c8-40a4-ace1-97d7fe4b7a9a
+                created_at: '2022-01-31T13:55:27.717Z'
+                created_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+                status: rejected
+                rejection_reason: Rejected as part of testing
+                type: claim_payout
+                amount: '2500000'
+                description: 'Monetary payout to be actioned on approval of claim AAD65AF5CDC5 '
+                finalized_at: '2022-01-31T13:56:16.208Z'
+                finalized_by:
+                  type: api_key
+                  id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
+                  owner_id: 00000000-0000-0000-0000-000000000001
+                claim_id: 63bdffce-2ffb-41f7-8c71-c85711ec4c2c
+                policy_id: 39cf9f0a-2363-476e-a718-7c9b4a408e6a
+                policyholder_id: 9c27fb39-bcc6-4ccf-a5f1-c6352cbc24f0
+                payee:
+                  beneficiary_id: 25348c7b-620d-41c3-803d-7daebc7599a1
+                  policyholder_id: 9c27fb39-bcc6-4ccf-a5f1-c6352cbc24f0
+                  percentage: 100
+                  payment_details:
+                    type: eft
+                    details:
+                      bank_name: ABSA
+                      branch_code: '12345'
+                      account_type: cheque_account
+                      account_number: '123456789'
+                  relationship: other
+components:
+  parameters:
+    fulfillment_request_id:
+      name: fulfillment_request_id
+      in: path
+      description: Must be a UUID. The unique identifier of the fulfillment request.
+      required: true
+      schema:
+        type: string
+        example: f84b3856-1358-4e12-bcf6-6732bc8b9522
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
+  schemas:
+    claim:
+      type: object
+      required:
+      - claim_id
+      - created_at
+      - claim_status
+      - approval_status
+      - created_by
+      properties:
+        claim_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the claim.
+        claim_number:
+          type: string
+          description: A human-readable claim reference number.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp at which the claim was opened.
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp at which the claim was last updated.
+        policy_id:
+          type:
+          - string
+          - 'null'
+          description: Must be a UUID. The identifier of the [policy](ref:policy) attached to this claim. May be `null` if no policy is linked yet.
+        policyholder_id:
+          type:
+          - string
+          - 'null'
+          description: Must be a UUID. The identifier of the [policyholder](ref:policyholder) for this claim. May be `null` if no policyholder is linked yet.
+        member_id:
+          type:
+          - string
+          - 'null'
+          description: Must be a UUID. The identifier of the member for this claim. Only used for group scheme policies. May be `null`.
+        covered_item_id:
+          type:
+          - string
+          - 'null'
+          description: Must be a UUID. The identifier of the covered item that this claim is against. Required if the policy supports covered items.
+        claim_status:
+          type: string
+          description: The current status of the claim.
+          enum:
+          - open
+          - in_review
+          - acknowledged
+          - pending_payout
+          - paid_out
+          - closed
+        approval_status:
+          type: string
+          description: The approval decision status of the claim.
+          enum:
+          - pending
+          - approved
+          - repudiated
+          - no_claim
+          - goodwill
+        claimant:
+          type:
+          - object
+          - 'null'
+          description: An object containing the claimant's details. `null` if no claimant is specified.
+          properties:
+            first_name:
+              type: string
+              description: The first name of the claimant.
+            last_name:
+              type: string
+              description: The last name of the claimant.
+            id_number:
+              type: string
+              description: The ID number of the claimant.
+            cellphone:
+              type: string
+              description: The cellphone number of the claimant.
+            email:
+              type: string
+              description: The email address of the claimant.
+            relationship:
+              type: string
+              description: The relationship of the claimant to the policyholder.
+        incident_type:
+          type:
+          - string
+          - 'null'
+          description: A description of the incident type.
+        incident_cause:
+          type:
+          - string
+          - 'null'
+          description: A description of the cause of the incident.
+        incident_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date on which the incident occurred.
+        assigned_to:
+          type:
+          - string
+          - 'null'
+          description: Must be a UUID. The identifier of the user to whom this claim is assigned.
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: An object containing additional custom data for the claim.
+          additionalProperties: true
+        module_data:
+          type:
+          - object
+          - 'null'
+          description: An object containing data populated by the product module.
+          additionalProperties: true
+        requested_amount:
+          type:
+          - integer
+          - 'null'
+          description: The requested payout amount (in cents) for the claim.
+        granted_amount:
+          type:
+          - integer
+          - 'null'
+          description: The granted payout amount (in cents) for the claim.
+        rejection_reason:
+          type:
+          - string
+          - 'null'
+          description: The reason for claim rejection, if applicable.
+        currency:
+          type: string
+          description: The currency code for monetary amounts (e.g., `ZAR`, `USD`).
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: An object indicating the user or API key that created the claim. See [Authentication](https://docs.rootplatform.com/reference/getting-started-1#created_by-field).
+        policyholder:
+          type:
+          - object
+          - 'null'
+          description: The [policyholder](ref:policyholder) object. Only included when `include=policyholder` query parameter is specified.
+        policy:
+          type:
+          - object
+          - 'null'
+          description: The [policy](ref:policy) object. Only included when `include=policy` query parameter is specified.
+        member:
+          type:
+          - object
+          - 'null'
+          description: The member object for group scheme policies. Only included when available.
+        user_group:
+          type:
+          - object
+          - 'null'
+          description: The user group object. Only included when `include=user_group` query parameter is specified.
+        block_states:
+          type:
+          - object
+          - 'null'
+          description: An object containing the current state of claim blocks (dynamic form fields).
+          additionalProperties: true
+      example:
+        claim_id: d3d13c48-4dc3-4816-8d01-de3215878225
+        claim_number: D33B754ADA8F
+        created_at: '2017-10-16T10:12:02.872Z'
+        updated_at: '2017-10-16T10:15:02.872Z'
+        policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+        policyholder_id: 00000000-0000-0000-0000-000000000004
+        member_id: 673b8081-9668-4136-97cc-6ae0debda083
+        covered_item_id: 9dc39b57-cdc7-48f9-a303-d7c4f0421a0c
+        claim_status: open
+        approval_status: pending
+        claimant:
+          first_name: Erlich
+          last_name: Aviato
+          email: erlich@aviato.com
+          cellphone: 0821234567
+          relationship: main_member
+        incident_type: Theft
+        incident_cause: Device stolen during burglary
+        incident_date: '2017-10-15T08:00:00.000Z'
+        app_data:
+          key1: value 1
+          key2: value 2
+        requested_amount: 13000000
+        granted_amount: null
+        currency: ZAR
+        created_by:
+          id: 00000000-0000-0000-0000-000000000001
+          type: user
+    attachments:
+      type: array
+      items:
+        $ref: '#/components/schemas/attachment'
+    notes:
+      type: array
+      items:
+        $ref: '#/components/schemas/note'
+    claims:
+      type: array
+      items:
+        $ref: '#/components/schemas/claim'
+    note:
+      type: object
+      required:
+      - text
+      - created_at
+      properties:
+        text:
+          type: string
+          description: A string of text for the note.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the attachment was created.
+      example:
+        text: Customer spoke to Erlich previously
+        created_at: '2022-10-16T10:12:02.872Z'
+        requested_by:
+          type: user
+          id: 00000000-0000-0000-0000-000000000001
+    cellphone:
+      type:
+      - object
+      - 'null'
+      description: '`null` and `""` allowed. Object containing the cellphone number in national format, and the corresponding alpha 2 country code.'
+      properties:
+        number:
+          type: string
+          description: The cellphone number.
+        country:
+          type: string
+          description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the cellphone number.
+      required:
+      - number
+      - country
+      example:
+        number: 0821234567
+        country: ZA
+    attachment:
+      type: object
+      required:
+      - file_name
+      - description
+      - file_type
+      - file_url
+      - created_at
+      - requested_by
+      properties:
+        file_name:
+          type: string
+          description: The name of the file (with file extension).
+        description:
+          type: string
+          description: A tag describing what the document is about (e.g. affidavit, etc.).
+        file_type:
+          type: string
+          description: The mime type of the attachment (e.g. image/png).
+        file_url:
+          type: string
+          format: uri
+          description: The URL to download the attachment file.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the attachment was created.
+        requested_by:
+          type: object
+          description: An object indicating the user or API key that created the attachment. See [Authentication](#client-apps).
+          properties:
+            type:
+              type: string
+              description: The type of the creator (e.g., user, api_key).
+            id:
+              type: string
+              description: The identifier of the creator.
+            owner_id:
+              type: string
+              description: The identifier of the owner (only present for API key requests).
+          required:
+          - type
+        type:
+          type: string
+          description: The event type associated with the attachment (e.g., attachment_created). This field is only present when the attachment is returned as part of an event.
+      example:
+        file_name: report.pdf
+        file_type: application/pdf
+        file_url: https://sandbox.rootplatform.com/v1/files/download/00000000-0000-0000-0000-000000000001
+        description: quote
+        type: attachment_created
+        created_at: '2025-11-10T14:33:50.095Z'
+        requested_by:
+          type: api_key
+          id: 00000000-0000-0000-0000-000000000001
+          owner_id: 00000000-0000-0000-0000-000000000001
+    fulfillment-request:
+      type: object
+      required:
+      - fulfillment_request_id
+      - fulfillment_type_id
+      - policy_id
+      - claim_id
+      - status
+      - fulfillment_data
+      - created_at
+      - created_by
+      - environment
+      properties:
+        fulfillment_request_id:
+          type: string
+          description: Must be a UUID. The fulfillment request ID.
+        fulfillment_type_id:
+          type: string
+          description: Must be a UUID. The fulfillment type ID.
+        fulfillment_type:
+          type: object
+          description: The fulfillment type object containing type details.
+          properties:
+            fulfillment_type_id:
+              type: string
+              format: uuid
+              description: The unique identifier of the fulfillment type.
+            key:
+              type: string
+              description: The key identifier of the fulfillment type.
+            name:
+              type: string
+              description: The name of the fulfillment type.
+            description:
+              type: string
+              description: A description of the fulfillment type.
+        policy_id:
+          type: string
+          description: Must be a UUID. The ID of the policy linked to the claim.
+        claim_id:
+          type: string
+          description: Must be a UUID. The ID of the claim linked to the fulfillment request.
+        status:
+          type: string
+          enum:
+          - pending
+          - rejected
+          - successful
+          description: A string indicating the status of the fulfillment request.
+        fulfillment_data:
+          type: object
+          description: The fulfillment data as specified in the fulfillment type.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the fulfillment request was created.
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: An object indicating the user or API key that created the fulfillment request. See [Authentication](https://docs.rootplatform.com/reference/getting-started-1#created_by-field).
+        environment:
+          type: string
+          enum:
+          - sandbox
+          - production
+          description: Whether the payout request was created in Root's sandbox or production environment.
+        finalized_at:
+          type: string
+          format: date-time
+          description: The time at which the fulfillment request was finalized.
+        finalized_by:
+          type: object
+          description: An object indicating the user or API key that finalized the fulfillment request. See [Authentication](https://docs.rootplatform.com/reference/getting-started-1#created_by-field).
+      example:
+        fulfillment_request_id: 8f8b3469-82e9-4d5b-bcc5-f200af095a79
+        fulfillment_type_id: ad044686-6b6f-4ce6-878f-143039243f11
+        fulfillment_type:
+          fulfillment_type_id: ad044686-6b6f-4ce6-878f-143039243f11
+          key: repatriation
+          name: Repatriation
+          description: Cover for repatriation of remains
+        policy_id: 2800a20b-ce92-4463-a0de-75cd76d8bf22
+        claim_id: 80f8e67a-15e5-417c-9d29-dfc31a5b92bb
+        status: pending
+        fulfillment_data:
+          amount: '100000'
+          customer_account_number: 02870611321
+        created_at: '2022-06-07T12:52:55.014Z'
+        created_by:
+          type: user
+          id: 99ff4c56-577c-11e9-b47c-a3d0f3abd20c
+        environment: sandbox
+    cellphone-string:
+      type:
+      - string
+      - 'null'
+      description: '`null` and `""` allowed. String containing the cellphone number in international format.'
+      example: '+27821234567'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

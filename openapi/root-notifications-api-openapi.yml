@@ -1,0 +1,676 @@
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Root Applications Notifications API
+  description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
+  termsOfService: https://rootplatform.com/about
+  contact:
+    name: Root support team
+    url: https://rootplatform.com/contact
+    email: support@root.co.za
+servers:
+- url: https://sandbox.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - sandbox
+- url: https://api.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - production
+- url: https://sandbox.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - sandbox
+- url: https://api.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - production
+security:
+- basicAuth: []
+tags:
+- name: Notifications
+paths:
+  /custom-notification-events/{custom_event_key}/trigger:
+    post:
+      operationId: trigger-custom-notification-event
+      summary: Trigger a custom notification event
+      description: 'Queue a custom notification request (or first queue policy documents to be generated if there are email attachments). A `200 (Success)` response does not indicate that the notification was sent successfully. Please refer to the [custom notification events](doc:custom-notification-events) guide.
+
+        '
+      tags:
+      - Notifications
+      x-additional-tags:
+      - Endpoints
+      parameters:
+      - name: custom_event_key
+        in: path
+        description: The key identifiying the custom notification event.
+        required: true
+        schema:
+          type: string
+          example: policyholder_birthday
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - custom_event_type
+              properties:
+                custom_event_type:
+                  $ref: '#/components/schemas/custom-event-type'
+                policy_id:
+                  type: string
+                  description: The UUID of the policy for which the event should be triggered. Required if `custom_event_type` is `policy` or `payment_method`.
+                payment_id:
+                  type: string
+                  description: The UUID of the payment for which the event should be triggered. Required if `custom_event_type` is `payment`.
+                claim_id:
+                  type: string
+                  description: The UUID of the claim for which the event should be triggered. Required if `custom_event_type` is `claim`.
+              example:
+                custom_event_type: policy
+                policy_id: 21e26db0-e620-4472-ba21-886208f99b54
+      responses:
+        '200':
+          description: Success
+  /notifications:
+    get:
+      operationId: fetch-notifications
+      summary: List all notifications
+      tags:
+      - Notifications
+      x-additional-tags:
+      - Endpoints
+      parameters:
+      - name: channel
+        in: query
+        description: Either `email`, `sms` or `other`. If omitted defaults to fetching notifications across all channels.
+        required: false
+        schema:
+          type: string
+      - name: provider
+        in: query
+        description: Either `root_standard`, `external` or `root_webhooks`. If omitted defaults to fetching notifications across all providers.
+        required: false
+        schema:
+          type: string
+      - name: policy_id
+        in: query
+        description: The unique identifier for the policy to filter by.
+        required: false
+        schema:
+          type: string
+      - name: policyholder_id
+        in: query
+        description: The unique identifier for the policyholder to filter by.
+        required: false
+        schema:
+          type: string
+      - name: claim_id
+        in: query
+        description: The unique identifier for the claim to filter by.
+        required: false
+        schema:
+          type: string
+      - name: exclude_types
+        in: query
+        description: Optionally exclude notification types from the returned results.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notifications'
+              example:
+              - notification_id: dccdd659-0a42-4df2-9d02-5df9f98a2433
+                organization_id: 00000000-0000-0000-0000-000000000001
+                channel: email
+                notification_type: claim_received
+                provider: root_mandrill
+                created_at: '2022-06-21T08:39:24.293Z'
+                created_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+                status: queued
+                status_updates:
+                - status: queued
+                  createdAt: '2022-06-21T08:39:24.293Z'
+                linked_entities:
+                  policy_id: 11111112-0000-0000-0000-000000000008
+                  policyholder_id: 00000000-0000-0000-0000-000000000004
+                  claim_id: 535e439c-3d75-43cc-b706-3a0b05dec894
+                data:
+                  to:
+                  - name: Tim
+                    type: to
+                    email: tim@smith.com
+                  html: <div>hello</div>
+                  subject: 'Claim #F0BABAC137E6 received'
+                  from_name: Policy Administration System
+                  from_email: no-reply@policy@adminsystem.com
+                  attachments: []
+              - notification_id: 43c13dc8-2c19-402c-bb70-a7deb56b9f38
+                organization_id: 00000000-0000-0000-0000-000000000001
+                channel: sms
+                notification_type: policy_issued
+                provider: root_clickatell
+                created_at: '2022-06-23T07:59:53.261Z'
+                created_by:
+                  type: user
+                  id: 6f852057-b381-4ab0-a53d-93a6c2ec6f26
+                status: delivered
+                status_updates:
+                - status: queued
+                  createdAt: '2022-06-23T07:59:53.261Z'
+                - status: sent
+                  createdAt: '2022-06-23T07:59:54.000Z'
+                  description: Delivered to gateway (003)
+                - status: delivered
+                  createdAt: '2022-06-23T07:59:57.000Z'
+                  description: Received by recipient (004)
+                linked_entities:
+                  policy_id: b338a75b-207e-4b6c-8649-4c0ebfe39d8b
+                  policyholder_id: b5b10383-0b50-4965-8bff-addb2001c5d1
+                data:
+                  to:
+                  - '+27811231234'
+                  content: Congratulations! Your  Cover has been activated from 01/06/2022.
+    post:
+      operationId: create-external-notification
+      summary: Create an external notification
+      tags:
+      - Notifications
+      x-additional-tags:
+      - Endpoints
+      description: Create a notification with provider of `external`. If you use an integration external to Root to send notifications to end customers, you can use this endpoint to record the notification on Root and link it to the relevant entities (such as a policy or claim).
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - channel
+              - status
+              - notification_type
+              - linked_entities
+              - data
+              properties:
+                channel:
+                  type: string
+                  description: The channel over which the notification is sent.
+                  enum:
+                  - email
+                  - sms
+                  - other
+                status:
+                  type: string
+                  description: The status of the notification.
+                  enum:
+                  - sent
+                  - rejected
+                failure_reason:
+                  type: string
+                  description: Forbidden if `status` is not `rejected`. The reason for the notification failure.
+                notification_type:
+                  type: string
+                  description: The event the notification is linked to.
+                  enum:
+                  - payment_failure_1st
+                  - payment_failure_4th
+                  - payment_failure_15th
+                  - payment_failure_debit_order
+                  - payment_success_debit_order
+                  - payment_success_external
+                  - payment_failure_eft
+                  - payment_failure_on_demand_cover_period
+                  - payment_failure_on_demand_monthly
+                  - payment_failure_card
+                  - payment_failure_external
+                  - payment_reversal
+                  - payment_method_blocked
+                  - payment_method_failed_verification
+                  - payment_method_updated
+                  - policy_issued
+                  - beneficiaries_updated
+                  - covered_people_updated
+                  - debit_orders_activated
+                  - eft_activated
+                  - policy_policyholder_updated
+                  - policy_cancelled
+                  - policy_lapsed
+                  - policy_not_taken_up
+                  - policy_expired
+                  - policy_updated
+                  - first_premium_payment
+                  - sum_assured_updated
+                  - policy_requoted
+                  - policy_reactivated
+                  - policy_anniversary
+                  - external_payments_activated
+                  - alteration_package_applied
+                  - claim_approved_beneficiary
+                  - claim_approved
+                  - claim_received
+                  - claim_repudiated
+                  - claim_linked_to_policy
+                  - claim_sent_to_review
+                  - claim_decision_review
+                  - claim_sent_to_review_claimant
+                  - send_application_pdf_to_policyholder
+                  - complaint_received
+                  - custom
+                  - custom_event
+                linked_entities:
+                  description: Entities linked to the notification.
+                  type: object
+                  required:
+                  - policy_id
+                  properties:
+                    policy_id:
+                      type: string
+                      description: Must be a UUID. The unique identifier of the policy linked to the notification.
+                data:
+                  $ref: '#/components/schemas/notification-data'
+              example:
+                channel: email
+                status: sent
+                notification_type: policy_issued
+                linked_entities:
+                  policy_id: 3d292076-a531-4028-988e-e863b04d8497
+                data:
+                  from_email: erlich@aviato.com
+                  from_name: Erlich Bachman
+                  reply_to_email: erlich@aviato.com
+                  subject: Hello
+                  html: <div>hello</div>
+                  to:
+                  - name: Dinesh
+                    email: dinesh@piedpiper.com
+                  attachments:
+                  - type: application/pdf
+                    name: AviatoS3Script.pdf
+            example:
+              channel: email
+              status: sent
+              notification_type: policy_issued
+              linked_entities:
+                policy_id: 3d292076-a531-4028-988e-e863b04d8497
+              data:
+                from_email: erlich@aviato.com
+                from_name: Erlich Bachman
+                reply_to_email: erlich@aviato.com
+                subject: Hello
+                html: <div>hello</div>
+                to:
+                - name: Dinesh
+                  email: dinesh@piedpiper.com
+                attachments:
+                - type: application/pdf
+                  name: AviatoS3Script.pdf
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notification'
+              example:
+                notification_id: ff693e05-244a-4b48-97fa-237ebafc4c29
+                organization_id: 2f26d0e1-9158-4685-83e8-1660c27e4c3f
+                channel: email
+                notification_type: policy_issued
+                provider: external
+                created_at: '2022-06-23T08:38:30.703Z'
+                created_by:
+                  type: api_key
+                  id: 95d369a6-93c0-4687-9506-86f1659a6d3e
+                  owner_id: 2f26d0e1-9158-4685-83e8-1660c27e4c3f
+                status: sent
+                status_updates:
+                - status: sent
+                  created_at: '2023-02-15T09:49:45.503Z'
+                linked_entities:
+                  policy_id: 3d292076-a531-4028-988e-e863b04d8497
+                data:
+                  from_email: erlich@aviato.com
+                  from_name: Erlich Bachman
+                  reply_to_email: erlich@aviato.com
+                  subject: Hello
+                  html: <div>hello</div>
+                  to:
+                  - name: Dinesh
+                    email: dinesh@piedpiper.com
+                  attachments:
+                  - name: AviatoS3Script.pdf
+                    type: application/pdf
+  /notifications/{notification_id}:
+    get:
+      operationId: retrieve-a-notification
+      summary: Retrieve a notification
+      tags:
+      - Notifications
+      x-additional-tags:
+      - Endpoints
+      parameters:
+      - name: notification_id
+        in: path
+        description: The unique identifier of the [notification](ref:notification).
+        required: true
+        schema:
+          type: string
+          example: 43c13dc8-2c19-402c-bb70-a7deb56b9f38
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notification'
+    patch:
+      operationId: update-external-notification
+      summary: Update an external notification
+      tags:
+      - Notifications
+      x-additional-tags:
+      - Endpoints
+      description: Update the status of a notification with provider of `external`.
+      parameters:
+      - name: notification_id
+        in: path
+        description: Must be a UUID. The unique identifier of the notification to update.
+        required: true
+        schema:
+          type: string
+          example: 3ac406c1-b5f4-4850-a615-d4bb2b951039
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - queued
+                  - sent
+                  - delivered
+                  - rejected
+                  - opened
+                  - unknown_error
+                  description: The new status of the notification.
+                status_update_description:
+                  type: string
+                  description: A description of or reason for the update to the notification status. This will be stored as part of the `status_updates` array on the [notification object](ref:notification).
+              example:
+                status: rejected
+                status_update_description: Hard bounce - invalid mailbox.
+            example:
+              status: rejected
+              status_update_description: Hard bounce - invalid mailbox.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notification'
+              example:
+                notification_id: ff693e05-244a-4b48-97fa-237ebafc4c29
+                organization_id: 2f26d0e1-9158-4685-83e8-1660c27e4c3f
+                channel: email
+                notification_type: policy_issued
+                provider: external
+                created_at: '2022-06-23T08:38:30.703Z'
+                created_by:
+                  type: api_key
+                  id: 95d369a6-93c0-4687-9506-86f1659a6d3e
+                  owner_id: 2f26d0e1-9158-4685-83e8-1660c27e4c3f
+                status: rejected
+                status_updates:
+                - status: queued
+                  created_at: '2023-02-15T09:48:04.799Z'
+                - status: rejected
+                  created_at: '2023-02-15T09:49:45.503Z'
+                  description: Hard bounce - invalid mailbox.
+                linked_entities:
+                  policy_id: 3d292076-a531-4028-988e-e863b04d8497
+                data:
+                  from_email: erlich@aviato.com
+                  from_name: Erlich Bachman
+                  reply_to_email: erlich@aviato.com
+                  subject: Hello
+                  html: <div>hello</div>
+                  to:
+                  - name: Dinesh
+                    email: dinesh@piedpiper.com
+                  attachments:
+                  - name: AviatoS3Script.pdf
+                    type: application/pdf
+components:
+  schemas:
+    custom-event-type:
+      type: string
+      description: The type of custom event. Must match the type on the Root management dashboard.
+      enum:
+      - policy
+      - payment_method
+      - payment
+      - claim
+    notification-other-data:
+      type: object
+      required:
+      - to
+      - content
+      - content_type
+      properties:
+        to:
+          type: string
+          description: An array containing phone numbers that the notification was sent to.
+        content:
+          type: string
+          description: Content for the SMS notification.
+        content_type:
+          type: string
+          description: Whether it was `text` or `html`.
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the SMS notification.'
+          additionalProperties: true
+    notification-email-data:
+      type: object
+      required:
+      - subject
+      - html
+      - attachments
+      - to
+      properties:
+        from_email:
+          type: string
+          description: Email address of who sent the email notification.
+        from_name:
+          type: string
+          description: Name of who sent the email notification.
+        reply_to_email:
+          type: string
+          description: Recipient of who to respond to for the email notification.
+        subject:
+          type: string
+          description: Email subject.
+        html:
+          type: string
+          description: The HTML structure of the email body.
+        attachments:
+          type: array
+          description: An array of objects containing a list of `type` and `name` pairs for the attachments on the email notification.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Whether the file is a document or image.
+              name:
+                type: string
+                description: The name of the file
+        to:
+          type: array
+          description: An array of objects containing a list of `email` and `name` pairs of the recipients of the email notification.
+          items:
+            type: object
+            properties:
+              email:
+                type: string
+                description: The desired recipient's email.
+              name:
+                type: string
+                description: The recipient's name.
+    notification:
+      type: object
+      required:
+      - notification_id
+      - notification_type
+      - linked_entities
+      - channel
+      - provider
+      - created_at
+      - created_by
+      - status
+      - status_updates
+      properties:
+        notification_id:
+          type: string
+          description: The identifier of the notification.
+        organization_id:
+          type: string
+          description: The identifier of the organization.
+        notification_type:
+          type: string
+          description: Indicates the type of notification (e.g., policy_issued).
+        linked_entities:
+          type: object
+          description: Indicates which entities the notification is linked to.
+          properties:
+            policy_id:
+              type: string
+              description: The identifier of the policy.
+        channel:
+          type: string
+          description: The channel used for the notification. Channels available include `email`, `sms` or `other`.
+        provider:
+          type: string
+          description: Indicates how the notification was generated. Whether it was `external`, `root_standard` or `root_webhooks`.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the notification was created.
+        created_by:
+          type: object
+          description: An object indicating the user or API key that created the notification. See [Authentication](#client-apps).
+        status:
+          type: string
+          description: The current status of the notification.
+          enum:
+          - queued
+          - sent
+          - delivered
+          - rejected
+          - opened
+          - unknown_error
+        status_updates:
+          type: array
+          description: An array of status update information for the notification.
+          items:
+            type: object
+            properties:
+              status:
+                type: string
+                description: The status that the notification was updated to.
+                enum:
+                - queued
+                - sent
+                - delivered
+                - rejected
+                - opened
+                - unknown_error
+              createdAt:
+                type: string
+                format: date-time
+                description: Time at which the status update was created.
+              description:
+                type: string
+                description: An optional detailed description of the status update.
+            required:
+            - status
+            - createdAt
+        data:
+          $ref: '#/components/schemas/notification-data'
+      example:
+        notification_id: 43c13dc8-2c19-402c-bb70-a7deb56b9f38
+        organization_id: 4ce6ad99-9576-4d28-84ba-c30d2d536cbe
+        channel: sms
+        notification_type: policy_issued
+        provider: root_clickatell
+        created_at: '2022-06-23T07:59:53.261Z'
+        created_by:
+          type: user
+          id: 6f852057-b381-4ab0-a53d-93a6c2ec6f26
+        status: delivered
+        status_updates:
+        - status: queued
+          createdAt: '2022-06-23T07:59:53.261Z'
+        - status: sent
+          createdAt: '2022-06-23T07:59:54.000Z'
+          description: Delivered to gateway (003)
+        - status: delivered
+          createdAt: '2022-06-23T07:59:57.000Z'
+          description: Received by recipient (004)
+        linked_entities:
+          policy_id: b338a75b-207e-4b6c-8649-4c0ebfe39d8b
+          policyholder_id: b5b10383-0b50-4965-8bff-addb2001c5d1
+        data:
+          to:
+          - '+27811231234'
+          content: Congratulations! Your  Cover has been activated from 01/06/2022.
+    notification-sms-data:
+      type: object
+      required:
+      - to
+      - content
+      properties:
+        to:
+          type: array
+          items:
+            type: string
+          description: An array containing phone numbers that the notification was sent to.
+        content:
+          type: string
+          description: Content for the SMS notification.
+        content_type:
+          type: string
+          description: Whether it was `text` or `html`.
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the SMS notification.'
+          additionalProperties: true
+    notification-data:
+      type: object
+      description: An object containing additional data depending on whether the notification channel is `email`, `sms`, or `other`.
+      oneOf:
+      - $ref: '#/components/schemas/notification-email-data'
+      - $ref: '#/components/schemas/notification-sms-data'
+      - $ref: '#/components/schemas/notification-other-data'
+    notifications:
+      type: array
+      items:
+        $ref: '#/components/schemas/notification'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

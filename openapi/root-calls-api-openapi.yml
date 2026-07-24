@@ -1,0 +1,515 @@
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Root Applications Calls API
+  description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
+  termsOfService: https://rootplatform.com/about
+  contact:
+    name: Root support team
+    url: https://rootplatform.com/contact
+    email: support@root.co.za
+servers:
+- url: https://sandbox.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - sandbox
+- url: https://api.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - production
+- url: https://sandbox.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - sandbox
+- url: https://api.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - production
+security:
+- basicAuth: []
+tags:
+- name: Calls
+paths:
+  /calls:
+    get:
+      operationId: fetch-calls
+      summary: List all calls
+      description: Returns a paginated list of calls for the organization. Use the `include` parameter to include the related policyholder object.
+      tags:
+      - Calls
+      x-additional-tags:
+      - Endpoints
+      parameters:
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      - name: call_status
+        in: query
+        description: Filter by call status. Accepts multiple values.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - initiated
+            - ringing
+            - in-progress
+            - completed
+            - busy
+            - no-answer
+        style: form
+        explode: false
+        example: completed,busy
+      - name: include
+        in: query
+        description: 'A comma-separated list of related objects to include in the response. Valid values: `policyholder`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policyholder
+        style: form
+        explode: false
+        example: policyholder
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-Total-Count:
+              description: The total number of calls matching the query.
+              schema:
+                type: integer
+                example: 42
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/calls'
+              example:
+              - call_id: 0ac6dffb-bd15-4829-b96d-e2c1abe61d3a
+                policyholder_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                claim_id: null
+                created_at: '2017-11-26T11:14:59.777Z'
+                call_status: completed
+                direction: inbound
+                from_number: '+27823378000'
+                to_number: '+27821234567'
+                topic: general
+                recording_url: https://recordingurl.com
+                call_duration: '5'
+    post:
+      operationId: create-call
+      summary: Create a call
+      description: Creates a new call record with an associated recording. The recording must be provided as a base64-encoded string.
+      tags:
+      - Calls
+      x-additional-tags:
+      - Endpoints
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - recording_file_name
+              - recording_file_type
+              - recording_base64_string
+              properties:
+                claim_id:
+                  type: string
+                  description: Must be a UUID. The unique identifier of the [claim](ref:claim) for which the call is being made.
+                policyholder_id:
+                  type: string
+                  description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder) for whom the call is being made.
+                direction:
+                  type: string
+                  description: The direction of the call.
+                  enum:
+                  - inbound
+                  - outbound
+                from:
+                  type: string
+                  description: The phone number the call was made from.
+                to:
+                  type: string
+                  description: The phone number the call was made to.
+                topic:
+                  type: string
+                  description: The topic category of the call.
+                  enum:
+                  - claims
+                  - complaints
+                  - general
+                call_duration:
+                  type: integer
+                  minimum: 0
+                  description: The duration of the call in seconds.
+                call_status:
+                  type: string
+                  description: The status of the call.
+                  enum:
+                  - initiated
+                  - ringing
+                  - in-progress
+                  - completed
+                  - busy
+                  - no-answer
+                recording_file_name:
+                  type: string
+                  description: The filename of the recording (e.g., `Recording0001.mp3`).
+                recording_file_type:
+                  type: string
+                  description: The MIME type of the recording. Must be `audio/mpeg`.
+                recording_base64_string:
+                  type: string
+                  description: The base64-encoded string of the call recording.
+            example:
+              policyholder_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+              claim_id: 673b8081-9668-4136-97cc-6ae0debda083
+              direction: outbound
+              from: '0721234567'
+              to: 0821234567
+              topic: general
+              call_duration: 72
+              call_status: completed
+              recording_file_name: Recording0001.mp3
+              recording_file_type: audio/mpeg
+              recording_base64_string: //uUZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAAT
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/call'
+              example:
+                call_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                policyholder_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                claim_id: 673b8081-9668-4136-97cc-6ae0debda083
+                created_at: '2017-10-16T10:12:02.872Z'
+                call_status: completed
+                direction: outbound
+                from_number: '0721234567'
+                to_number: 0821234567
+                topic: general
+                recording_url: https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83/Recording0001.mp3
+                call_duration: '72'
+  /calls/{call_id}:
+    get:
+      operationId: retrieve-call
+      summary: Retrieve a call
+      tags:
+      - Calls
+      x-additional-tags:
+      - Endpoints
+      parameters:
+      - name: call_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [call](ref:call).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/call'
+              example:
+                call_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                policyholder_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                claim_id: 673b8081-9668-4136-97cc-6ae0debda083
+                created_at: '2017-10-16T10:12:02.872Z'
+                call_status: completed
+                direction: outbound
+                from_number: '0721234567'
+                to_number: 0821234567
+                topic: general
+                recording_url: https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83/Recording0001.mp3
+                call_duration: '72'
+  /calls/{call_id}/events:
+    get:
+      operationId: retrieve-call-events
+      summary: Retrieve call events
+      description: Returns a list of events associated with a specific call, sorted by creation time in descending order (most recent first). Events include call status changes, recordings added, and other call-related activities.
+      tags:
+      - Calls
+      x-additional-tags:
+      - Events
+      parameters:
+      - name: call_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [call](ref:call).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: An event object containing details about an action that occurred on the call.
+                  properties:
+                    type:
+                      type: string
+                      description: 'The type of call event. Possible values include: `inbound_call_started`, `outbound_call_started`, `option_entered`, `recording_added`, `call_initiated`, `call_ringing`, `call_answered`, `call_completed`, `call_not_answered`, `called_busy`, `call_flushed`, `call_created`, `call_updated`, `connect_call_initiated`, `connect_call_ringing`, `connect_call_answered`, `connect_call_completed`, `connect_call_not_answered`, `connect_called_busy`.'
+                    call_id:
+                      type: string
+                      description: Must be a UUID. The unique identifier of the call.
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: The timestamp at which the event occurred.
+                    requested_by:
+                      type: object
+                      description: An object indicating the user or API key that triggered the event.
+                      properties:
+                        type:
+                          type: string
+                          description: The type of requester (e.g., `user`, `api_key`).
+                        id:
+                          type: string
+                          description: The unique identifier of the requester.
+                        owner_id:
+                          type: string
+                          description: The owner ID associated with the requester.
+                    to_number:
+                      type: string
+                      description: The destination phone number. Only present for `connect_call_initiated` events.
+                    from:
+                      type: string
+                      description: The originating phone number. Present for `inbound_call_started` and `outbound_call_started` events.
+                    to:
+                      type: string
+                      description: The destination phone number. Present for `outbound_call_started` events.
+                    option:
+                      type: string
+                      description: The option entered by the caller. Only present for `option_entered` events.
+                    recording_url:
+                      type: string
+                      description: The URL of the call recording. Only present for `recording_added` events.
+              example:
+              - type: call_completed
+                call_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                created_at: '2023-02-03T12:05:00.000Z'
+                requested_by:
+                  type: system
+                  id: 00000000-0000-0000-0000-000000000000
+              - type: recording_added
+                call_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                created_at: '2023-02-03T12:04:30.000Z'
+                requested_by:
+                  type: system
+                  id: 00000000-0000-0000-0000-000000000000
+                recording_url: https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83/Recording0001.mp3
+              - type: call_answered
+                call_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                created_at: '2023-02-03T12:00:15.000Z'
+                requested_by:
+                  type: system
+                  id: 00000000-0000-0000-0000-000000000000
+              - type: outbound_call_started
+                call_id: d3d13c48-4dc3-4816-8d01-de3215878225
+                created_at: '2023-02-03T12:00:00.000Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+                from: '0721234567'
+                to: 0821234567
+  /calls/{call_id}/playback-url:
+    get:
+      operationId: retrieve-call-playback-url
+      summary: Retrieve call playback URL
+      description: Returns a signed URL for playing back the recording of a specific call. If the call has an associated attachment, a signed download URL is returned. Otherwise, the legacy recording URL is returned if available. Returns a 404 error if no recording exists for the call.
+      tags:
+      - Calls
+      x-additional-tags:
+      - Playback
+      parameters:
+      - name: call_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [call](ref:call).
+        required: true
+        schema:
+          type: string
+          example: d3d13c48-4dc3-4816-8d01-de3215878225
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - url
+                properties:
+                  url:
+                    type: string
+                    description: The URL to play back the call recording. This may be a signed download URL (for newer recordings stored as attachments) or a legacy recording URL.
+                  file_id:
+                    type: string
+                    description: Must be a UUID. The unique identifier of the attachment file. Only present if the recording is stored as an attachment.
+                  file_type:
+                    type: string
+                    description: The MIME type of the recording file (e.g., `audio/mpeg`). Only present if the recording is stored as an attachment.
+                  file_name:
+                    type: string
+                    description: The filename of the recording. Only present if the recording is stored as an attachment.
+                  file_url:
+                    type: string
+                    description: The permanent download URL for the file. Only present if the recording is stored as an attachment.
+                  created_at:
+                    type: integer
+                    description: Unix timestamp (seconds) when the attachment was created. Only present if the recording is stored as an attachment.
+              examples:
+                with_attachment:
+                  summary: Recording stored as attachment
+                  value:
+                    url: https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83/Recording0001.mp3?signature=abc123
+                    file_id: ccbd249e-a404-11ea-8f4a-47e769474b83
+                    file_type: audio/mpeg
+                    file_name: Recording0001.mp3
+                    file_url: https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83
+                    created_at: 1697456522
+                legacy_url:
+                  summary: Legacy recording URL
+                  value:
+                    url: https://recordings.example.com/Recording0001.mp3
+        '404':
+          description: Not Found - No recording exists for this call
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error type identifier.
+                  message:
+                    type: string
+                    description: Human-readable error message.
+              example:
+                error: not_found
+                message: No recording url or attachment found for call with id d3d13c48-4dc3-4816-8d01-de3215878225
+components:
+  parameters:
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
+  schemas:
+    call:
+      type: object
+      required:
+      - call_id
+      - created_at
+      - call_status
+      - direction
+      - from_number
+      - topic
+      properties:
+        call_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the call.
+        policyholder_id:
+          type:
+          - string
+          - 'null'
+          description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder) associated with the call. `null` if no policyholder is linked.
+        policyholder:
+          type:
+          - object
+          - 'null'
+          description: The [policyholder](ref:policyholder) object associated with this call. Only included when `include=policyholder` query parameter is specified.
+        claim_id:
+          type:
+          - string
+          - 'null'
+          description: Must be a UUID. The unique identifier of the [claim](ref:claim) associated with the call. `null` if no claim is linked.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp at which the call was logged.
+        call_status:
+          type: string
+          description: The current status of the call.
+          enum:
+          - initiated
+          - ringing
+          - in-progress
+          - completed
+          - busy
+          - no-answer
+        direction:
+          type: string
+          description: The direction of the call.
+          enum:
+          - inbound
+          - outbound
+        from_number:
+          type: string
+          description: The initiating phone number of the call.
+        to_number:
+          type:
+          - string
+          - 'null'
+          description: The receiving phone number of the call. `null` if not available.
+        topic:
+          type: string
+          description: The topic category of the call.
+          enum:
+          - claims
+          - complaints
+          - general
+        recording_url:
+          type:
+          - string
+          - 'null'
+          description: The URL of the call recording. This is available if the call successfully connected and only once the call is completed. `null` if no recording exists.
+        call_duration:
+          type:
+          - string
+          - 'null'
+          description: The duration of the call in seconds. May be `null` if not recorded.
+      example:
+        call_id: d3d13c48-4dc3-4816-8d01-de3215878225
+        policyholder_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+        claim_id: 673b8081-9668-4136-97cc-6ae0debda083
+        created_at: '2017-10-16T10:12:02.872Z'
+        call_status: completed
+        direction: outbound
+        from_number: '0721234567'
+        to_number: 0821234567
+        topic: general
+        recording_url: https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83/Recording0001.mp3
+        call_duration: '72'
+    calls:
+      type: array
+      items:
+        $ref: '#/components/schemas/call'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

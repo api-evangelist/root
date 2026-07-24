@@ -1,0 +1,195 @@
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Root Applications Embed API
+  description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
+  termsOfService: https://rootplatform.com/about
+  contact:
+    name: Root support team
+    url: https://rootplatform.com/contact
+    email: support@root.co.za
+servers:
+- url: https://sandbox.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - sandbox
+- url: https://api.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - production
+- url: https://sandbox.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - sandbox
+- url: https://api.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - production
+security:
+- basicAuth: []
+tags:
+- name: Embed
+paths:
+  /embed/url:
+    post:
+      operationId: create-embed-url
+      summary: Create an embed URL
+      description: 'Generates a unique URL to initiate an Embed session, which allows customers to access various workflows within Embed. This URL can be used in either authenticated or unauthenticated flows. The authenticated flow is recommended for scenarios where the customer''s identity is known, enabling seamless access to Embed’s Management and Sales workflows. The unauthenticated flow, intended for use in Embed | Sales only, is suited for scenarios where customer identity is not known upfront. See the [Embed implementation guide](https://docs.rootplatform.com/docs/embed-implementation) for detailed steps on integrating Embed into your customer journey.
+
+        '
+      tags:
+      - Embed
+      x-additional-tags:
+      - Create
+      parameters:
+      - name: organization_id
+        in: query
+        description: The unique identifier of the organization.
+        required: true
+        schema:
+          type: string
+          example: f84b3856-1358-4e12-bcf6-6732bc8b9522
+      - name: environment
+        in: query
+        description: Specifies the environment for the embed session (e.g., sandbox, production).
+        required: true
+        schema:
+          type: string
+          example: sandbox
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                unauthenticated:
+                  type: boolean
+                  description: Indicates if the session is unauthenticated.
+                  example: false
+                product_module_key:
+                  type: string
+                  description: Unique key for the product module associated with the embed.
+                  example: product-module-123
+                custom_path:
+                  type: string
+                  description: Optional custom path for the embed session URL.
+                prefill_data:
+                  type: object
+                  description: Prefilled data for the session, organized by categories (application, payment, personalDetails, etc.).
+                  properties:
+                    application:
+                      type: object
+                      description: Application-related data.
+                    payment:
+                      type: object
+                      description: Payment-related data.
+                    personal_details:
+                      type: object
+                      description: User's personal details.
+                    pre_payment_details_consent:
+                      type: boolean
+                      description: Indicates consent for pre-payment details.
+                    pre_personal_details_consent:
+                      type: boolean
+                      description: Indicates consent for pre-personal details.
+                    quote:
+                      type: object
+                      description: Quote details for the embed session.
+                    screening_questions:
+                      type: array
+                      items:
+                        type: object
+                      description: Screening questions for the embed session.
+              required:
+              - product_module_key
+      responses:
+        '200':
+          description: Embed URL created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  embed_url:
+                    type: string
+                    description: Generated embed URL for the user session.
+                example:
+                  embed_url: https://app.embedroot.com/dinosure_embedded/issue-policy?api_key=sandbox_NDM1YzAzNTMtYmE3MS00ZjZiLTk2ODItZGQ4Zjk4NDQ5YTNhLkxnUTJmM210N1hPZWtmYUhQUWtGMTBaZ0ZZejlBX0xQ
+  /embed-sessions/lookup:
+    post:
+      operationId: lookup-embed-session
+      summary: Lookup an Embed session
+      description: 'This endpoint allows you to retrieve an existing Embed session using identification details and a `product_module_key`. The session is retrieved based on the customer''s identification type, number, and associated organization information. This supports use cases where an organization needs to look up session details securely using authentication.
+
+        '
+      tags:
+      - Embed
+      x-additional-tags:
+      - Sessions
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - product_module_key
+              - identification_type
+              - identification_number
+              - identification_country
+              properties:
+                product_module_key:
+                  type: string
+                  description: The unique key for the product module associated with the session.
+                  example: dinosure
+                identification_type:
+                  type: string
+                  description: 'The type of identification, required for authenticated sessions. Must be one of the following: `id`, `email`, `cellphone`, or `custom`.
+
+                    '
+                  example: id
+                identification_number:
+                  type: string
+                  description: 'Identification number corresponding to the identification type, validated based on country and type.
+
+                    '
+                  example: '8704094800082'
+                identification_country:
+                  type: string
+                  description: 'Country code of the identification (ISO Alpha-2). This is required based on the identification type provided.
+
+                    '
+                  example: ZA
+                registration_number:
+                  type: string
+                  description: An optional registration number for identification.
+                embed_session_id:
+                  type: string
+                  description: Optional UUID for the Embed session ID, if known.
+      responses:
+        '200':
+          description: Embed session lookup successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  embed_session_id:
+                    type: string
+                    description: The unique identifier of the found Embed session.
+                  organization_id:
+                    type: string
+                    description: The organization associated with the Embed session.
+                  product_module_id:
+                    type: string
+                    description: The product module linked to the session.
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: The creation timestamp of the session.
+              example:
+                embed_session_id: 9f3e4567-e89b-12d3-a456-426614174111
+                organization_id: 8b7e1a2c-4f92-4d90-9e8a-d5c3285c8ad9
+                product_module_id: 5e1a7e8a-b123-4c0a-9b8a-426614175111
+                created_at: '2023-01-15T10:00:00Z'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

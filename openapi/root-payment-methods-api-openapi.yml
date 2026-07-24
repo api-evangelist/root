@@ -1,0 +1,1625 @@
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Root Applications Payment Methods API
+  description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
+  termsOfService: https://rootplatform.com/about
+  contact:
+    name: Root support team
+    url: https://rootplatform.com/contact
+    email: support@root.co.za
+servers:
+- url: https://sandbox.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - sandbox
+- url: https://api.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - production
+- url: https://sandbox.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - sandbox
+- url: https://api.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - production
+security:
+- basicAuth: []
+tags:
+- name: Payment Methods
+paths:
+  /payment-methods:
+    get:
+      operationId: list-payment-methods
+      summary: List payment methods
+      description: Returns a paginated list of payment methods for the organization. Use the `include` parameter to include related objects in the response.
+      tags:
+      - Payment Methods
+      x-additional-tags:
+      - Endpoints
+      parameters:
+      - name: page
+        in: query
+        description: The page number to retrieve.
+        required: false
+        schema:
+          type: integer
+          default: 1
+          example: 1
+      - name: page_size
+        in: query
+        description: The number of items to retrieve per page.
+        required: false
+        schema:
+          type: integer
+          default: 20
+          example: 20
+      - name: include
+        in: query
+        description: A comma-separated list of related objects to include in the response. Valid values are `policyholder`, `policies`, `collection_module`.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policyholder
+            - policies
+            - collection_module
+        style: form
+        explode: false
+        example: policyholder,policies
+      - name: type
+        in: query
+        description: Filter by payment method type. Valid values include `debit_order`, `card`, `eft`, `collection_module`, or a custom external payment method key.
+        required: false
+        schema:
+          type: string
+          example: debit_order
+      - name: banv_status
+        in: query
+        description: Filter by BANV status. Accepts multiple values.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - pending
+            - processing
+            - verified
+            - failed_verification
+            - blocked
+        style: form
+        explode: false
+        example: pending,verified
+      - name: policyholder_ids
+        in: query
+        description: Filter by policyholder IDs. Accepts multiple UUIDs.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: false
+        example: f91f4ea4-9c6d-459e-998b-a5711cbd8895
+      - name: payment_method_ids
+        in: query
+        description: Filter by payment method IDs. Accepts multiple UUIDs.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: false
+        example: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+      - name: dismissed
+        in: query
+        description: Filter by dismissed status. Set to `true` to include only dismissed payment methods, `false` to exclude dismissed payment methods.
+        required: false
+        schema:
+          type: boolean
+          example: false
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-Total-Count:
+              description: The total number of payment methods matching the query.
+              schema:
+                type: integer
+                example: 100
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/payment-method'
+              example:
+              - payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+                type: debit_order
+                organization_id: 952bfef5-7517-47ff-bf41-08c5a66c52db
+                policyholder_id: f91f4ea4-9c6d-459e-998b-a5711cbd8895
+                created_at: '2021-01-29T13:12:00.968Z'
+                updated_at: '2021-01-29T13:12:00.968Z'
+                bank_details:
+                  account_holder: Erlich Bachman
+                  bank: absa
+                  branch_code: '12345'
+                  account_number: '123456789'
+                  account_type: cheque
+                  banv_status: verified
+  /payment-methods/external-types:
+    get:
+      operationId: list-external-payment-method-types
+      summary: List external payment method types
+      description: Returns a list of external payment method types configured for the organization. External payment method types allow you to define custom payment methods with their own collection logic and outbound channels.
+      tags:
+      - Payment Methods
+      x-additional-tags:
+      - External
+      parameters:
+      - name: keys
+        in: query
+        description: Filter by external payment method type keys. Accepts a comma-separated list of keys.
+        required: false
+        schema:
+          type: string
+          example: my_payment_provider
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - payment_method_id
+                  - organization_id
+                  - environment
+                  - key
+                  - created_at
+                  properties:
+                    payment_method_id:
+                      type: string
+                      description: Must be a UUID. The unique identifier of the external payment method type.
+                    organization_id:
+                      type: string
+                      description: Must be a UUID. The unique identifier of the organization.
+                    environment:
+                      type: string
+                      description: The environment of the external payment method type.
+                      enum:
+                      - sandbox
+                      - production
+                    key:
+                      type: string
+                      description: The unique key identifying this external payment method type.
+                    outbound_channels:
+                      type: array
+                      description: An array of outbound channels configured for this external payment method type. These define how payment requests are communicated to external systems.
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            description: The type of outbound channel.
+                            enum:
+                            - http
+                          url:
+                            type: string
+                            description: The URL to send payment requests to.
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: The date and time at which the external payment method type was created.
+                    config:
+                      type: object
+                      description: Configuration options for the external payment method type.
+                      properties:
+                        fixed_billing_day:
+                          type: integer
+                          description: If set, all payments will be scheduled on this day of the month.
+                          minimum: 1
+                          maximum: 31
+                        assume_success:
+                          type: boolean
+                          description: If true, payments are assumed successful until explicitly marked otherwise.
+                        payments_per_batch:
+                          type: integer
+                          description: The number of payments to include in each batch.
+                        external_reference_template:
+                          type: string
+                          description: A template string for generating external references.
+                        allow_payment_imports:
+                          type: boolean
+                          description: If true, payments can be imported from external systems.
+                        should_debit_ledger:
+                          type: boolean
+                          description: If true, successful payments will debit the ledger.
+                        external_reference_required:
+                          type: boolean
+                          description: If true, an external reference is required when creating payment methods of this type.
+              example:
+              - payment_method_id: 6e91fe74-aa56-4b4e-8f68-636d23d5706f
+                organization_id: 952bfef5-7517-47ff-bf41-08c5a66c52db
+                environment: sandbox
+                key: my_payment_provider
+                outbound_channels:
+                - type: http
+                  url: https://api.example.com/payments
+                created_at: '2021-01-29T13:12:00.968Z'
+                config:
+                  assume_success: true
+                  allow_payment_imports: true
+                  should_debit_ledger: true
+  /payment-methods/{payment_method_id}/verification-status:
+    patch:
+      operationId: update-payment-method-verification-status
+      summary: Update Payment Method Verification Status
+      description: 'This endpoint validates the input and updates the status of a payment method, which will result in a `200 OK` successful response, with the updated payment method in the response.
+
+        '
+      tags:
+      - Payment Methods
+      x-additional-tags:
+      - Endpoints
+      parameters:
+      - name: payment_method_id
+        in: path
+        description: The unique identifier of the payment method.
+        required: true
+        schema:
+          type: string
+          example: 00000000-0000-0000-0000-00000000000b
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - banv_status
+              properties:
+                banv_status:
+                  type: string
+                  enum:
+                  - pending
+                  - processing
+                  - verified
+                  - failed_verification
+                  - blocked
+                  description: The BANV status of the payment method.
+                  example: blocked
+                banv_response:
+                  type: object
+                  description: The response received when bank account verification was attempted. Required when `banv_status` is `failed_verification`.
+                  example:
+                    reason: Invalid account number
+                blocked_reason:
+                  type: string
+                  description: The reason the payment method is blocked. Required when `banv_status` is `blocked`.
+                  example: Fraud detected
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-method'
+  /payment-methods/{payment_method_id}/dismiss:
+    post:
+      operationId: dismiss-payment-method
+      summary: Dismiss a payment method
+      description: Dismisses a payment method, marking it as no longer active. Dismissed payment methods are excluded from standard queries unless explicitly requested.
+      tags:
+      - Payment Methods
+      x-additional-tags:
+      - Endpoints
+      parameters:
+      - name: payment_method_id
+        in: path
+        description: Must be a UUID. The unique identifier of the payment method.
+        required: true
+        schema:
+          type: string
+          example: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-method'
+              example:
+                payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+                type: debit_order
+                organization_id: 952bfef5-7517-47ff-bf41-08c5a66c52db
+                policyholder_id: f91f4ea4-9c6d-459e-998b-a5711cbd8895
+                created_at: '2021-01-29T13:12:00.968Z'
+                updated_at: '2021-02-15T10:30:00.000Z'
+                bank_details:
+                  account_holder: Erlich Bachman
+                  bank: absa
+                  branch_code: '12345'
+                  account_number: '123456789'
+                  account_type: cheque
+                  banv_status: verified
+  /payment-methods/{payment_method_id}/manual-verify:
+    post:
+      operationId: manual-verify-payment-method
+      summary: Manually verify a payment method
+      description: Manually verifies a payment method, setting its BANV status to `verified`. This is useful when verification has been performed through an external process.
+      tags:
+      - Payment Methods
+      x-additional-tags:
+      - Endpoints
+      parameters:
+      - name: payment_method_id
+        in: path
+        description: Must be a UUID. The unique identifier of the payment method.
+        required: true
+        schema:
+          type: string
+          example: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-method'
+              example:
+                payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+                type: debit_order
+                organization_id: 952bfef5-7517-47ff-bf41-08c5a66c52db
+                policyholder_id: f91f4ea4-9c6d-459e-998b-a5711cbd8895
+                created_at: '2021-01-29T13:12:00.968Z'
+                updated_at: '2021-02-15T10:30:00.000Z'
+                bank_details:
+                  account_holder: Erlich Bachman
+                  bank: absa
+                  branch_code: '12345'
+                  account_number: '123456789'
+                  account_type: cheque
+                  banv_status: verified
+  /payment-methods/debicheck-mandates/{mandate_id}:
+    get:
+      operationId: get-debicheck-mandate
+      summary: Get DebiCheck Mandate
+      description: Retrieves a DebiCheck mandate by ID.
+      tags:
+      - Payment Methods
+      x-additional-tags:
+      - Billing & payments
+      parameters:
+      - name: mandate_id
+        in: path
+        description: The unique identifier of the DebiCheck mandate.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 00000000-0000-0000-0000-00000000000a
+      responses:
+        '200':
+          description: Successfully retrieved DebiCheck Mandate
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1payment-methods~1debicheck-mandates/post/responses/201/content/application~1json/schema'
+    patch:
+      operationId: update-debicheck-mandate
+      summary: Update DebiCheck Mandate
+      description: Updates a DebiCheck mandate by ID.
+      tags:
+      - Payment Methods
+      x-additional-tags:
+      - Billing & payments
+      parameters:
+      - name: mandate_id
+        in: path
+        description: The unique identifier of the DebiCheck mandate.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 00000000-0000-0000-0000-00000000000a
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - debicheckMandateId
+              - status
+              properties:
+                debicheckMandateId:
+                  type: string
+                  format: uuid
+                  description: The unique identifier of the DebiCheck mandate
+                  example: 00000000-0000-0000-0000-00000000000a
+                status:
+                  type: string
+                  description: The status of the DebiCheck mandate
+                  enum:
+                  - pending
+                  - submitted
+                  - processing
+                  - active
+                  - rejected
+                  - suspended
+                  - cancelled
+                  - no_response
+                  example: active
+                mandateRequestIdentifier:
+                  type: string
+                  description: The mandate request identifier
+                  example: MANDATE_REQ_12345
+                startDate:
+                  type: string
+                  format: date-time
+                  description: The start date of the mandate
+                  example: '2024-01-01T00:00:00Z'
+                externalReference:
+                  type: string
+                  description: External reference for the mandate
+                  example: EXT_REF_12345
+                failureReasons:
+                  type: array
+                  items:
+                    type: string
+                  description: Array of failure reasons if the mandate was rejected
+                  example:
+                  - Invalid account details
+                  - Insufficient funds
+                failureCodes:
+                  type: array
+                  items:
+                    type: string
+                  description: Array of failure codes if the mandate was rejected
+                  example:
+                  - '900002'
+                  - '900003'
+                mandateReference:
+                  type: string
+                  description: The mandate reference number
+                  example: MANDATE_REF_12345
+                rawRequest:
+                  type: string
+                  description: Raw request data
+                  example: '{"mandateId":"12345","accountDetails":{...}}'
+                rawResponse:
+                  type: object
+                  description: Raw response data from the bank
+                  example:
+                    status: SUCCESS
+                    mandateId: '12345'
+                    responseCode: '0000'
+                submittedAt:
+                  type: string
+                  format: date-time
+                  description: The date when the mandate was submitted
+                  example: '2024-01-01T00:00:00Z'
+      responses:
+        '200':
+          description: Successfully updated DebiCheck Mandate
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1payment-methods~1debicheck-mandates/post/responses/201/content/application~1json/schema'
+  /payment-methods/debicheck-mandates:
+    post:
+      operationId: create-debicheck-mandate
+      summary: Create DebiCheck Mandate
+      description: Creates a new DebiCheck mandate for a policy.
+      tags:
+      - Payment Methods
+      x-additional-tags:
+      - Billing & payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - policyId
+              - providerType
+              - debicheckAuthenticationType
+              properties:
+                policyId:
+                  type: string
+                  format: uuid
+                  description: The ID of the policy to create the mandate for
+                  example: 00000000-0000-0000-0000-00000000000a
+                providerType:
+                  type: string
+                  enum:
+                  - nedbank
+                  - external
+                  description: Provider type for the DebiCheck mandate
+                  example: nedbank
+                debicheckAuthenticationType:
+                  type: string
+                  enum:
+                  - REAL TIME
+                  - BATCH
+                  - PREAUTH
+                  description: Authentication type for the DebiCheck mandate
+                  example: BATCH
+      responses:
+        '201':
+          description: Successfully created DebiCheck Mandate
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    description: The unique identifier of the DebiCheck mandate.
+                  policy_id:
+                    type: string
+                    format: uuid
+                    description: The unique identifier of the policy.
+                  payment_method_id:
+                    type: string
+                    format: uuid
+                    description: The unique identifier of the payment method.
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - submitted
+                    - processing
+                    - active
+                    - rejected
+                    - suspended
+                    - cancelled
+                    - no_response
+                    description: The status of the DebiCheck mandate.
+                  submitted_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: The date and time the mandate was submitted.
+                  authorized_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: The date and time the mandate was authorized.
+                  rejected_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: The date and time the mandate was rejected.
+                  cancelled_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: The date and time the mandate was cancelled.
+                  mandate_reference:
+                    type: string
+                    nullable: true
+                    description: The mandate reference.
+                  external_reference:
+                    type: string
+                    nullable: true
+                    description: The external reference for the mandate.
+                  failure_reasons:
+                    type: array
+                    items:
+                      type: string
+                    nullable: true
+                    description: Reasons for failure.
+                  failure_codes:
+                    type: array
+                    items:
+                      type: string
+                    nullable: true
+                    description: Failure codes.
+                  contract_reference:
+                    type: string
+                    nullable: true
+                    description: The contract reference.
+                  installment_occurance:
+                    type: string
+                    nullable: true
+                    description: The installment occurrence.
+                  frequency:
+                    type: string
+                    nullable: true
+                    description: The frequency of the mandate.
+                  start_date:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: The start date of the mandate.
+                  amount:
+                    type: number
+                    nullable: true
+                    description: The amount of the mandate.
+                  max_collection_amount:
+                    type: number
+                    nullable: true
+                    description: The maximum collection amount.
+                  collection_day:
+                    type: integer
+                    nullable: true
+                    description: The collection day.
+                  first_collection_date:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: The first collection date.
+                  first_collection_amount:
+                    type: number
+                    nullable: true
+                    description: The first collection amount.
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: The date and time the mandate was created.
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: The date and time the mandate was last updated.
+                  policy:
+                    $ref: '#/components/schemas/policy'
+                    nullable: true
+                  payment_method:
+                    $ref: '#/components/schemas/payment-method'
+                    nullable: true
+                  debicheck_mandate_batch_id:
+                    type: string
+                    format: uuid
+                    nullable: true
+                    description: The unique identifier of the DebiCheck mandate batch.
+                  provider_type:
+                    type: string
+                    enum:
+                    - nedbank
+                    - external
+                    description: The provider type for the DebiCheck mandate.
+                required:
+                - id
+                - policy_id
+                - payment_method_id
+                - status
+                - created_at
+                - updated_at
+                - provider_type
+components:
+  schemas:
+    payment-details:
+      type: object
+      description: Details of the account into which the payout should be made.
+      required:
+      - type
+      - details
+      properties:
+        type:
+          type: string
+          description: The type of account into which the payout should be made.  For a beneficiary, this must be `eft`.
+          enum:
+          - eft
+          - card
+        details:
+          type: object
+          description: The bank account details.
+          required:
+          - bank_name
+          - branch_code
+          - account_type
+          - account_number
+          properties:
+            bank_name:
+              $ref: '#/components/schemas/bank-name'
+            branch_code:
+              type: string
+              description: The branch code for the account.
+            account_type:
+              type: string
+              description: The account type.
+              enum:
+              - cheque_account
+              - savings
+            account_number:
+              type: string
+              description: The account number.
+    payment-charge-type:
+      type: string
+      description: Variable charges are applied as a proportion of the total payment amount. Fixed charges are applied as an absolute currency value in cents. The `balance` is the balance of the payment total after all charges have been applied.
+      enum:
+      - fixed
+      - variable
+      - balance
+    policy:
+      type: object
+      description: Policies are issued from applications, and represent binding insurance agreements. Parameters stored on the policy can be referenced in custom notifications, policy documents, data exports and external integrations. <br/><br/> See the [issuing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook) guide for more details.
+      required:
+      - policy_id
+      - policy_number
+      - status
+      - policyholder_id
+      - package_name
+      - monthly_premium
+      - billing_amount
+      - balance
+      - currency
+      - billing_day
+      - billing_frequency
+      - next_billing_date
+      - covered_people
+      - base_premium
+      - claim_ids
+      - complaint_ids
+      - start_date
+      - end_date
+      - policy_schedule_uri
+      - terms_uri
+      - schedule_versions
+      - created_at
+      - module
+      - app_data
+      - created_by
+      - scheme_type
+      - charges
+      - supplementary_terms_files
+      properties:
+        policy_id:
+          type: string
+          description: Must be a UUID. Object ID of the policy.
+        policy_number:
+          type: string
+          description: A shorter, human-readable policy identifier. This typically used in policy documents and customer notifications for ease of reference.
+        status:
+          $ref: '#/components/schemas/policy-status'
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The system identifier of the policy's policyholder.
+        package_name:
+          type: string
+          description: The insurance package name.
+        sum_assured:
+          type: integer
+          description: The amount, in cents, of the maximum value insured.
+        monthly_premium:
+          type: integer
+          description: The total monthly premium, in cents, that will be billed to the policyholder.
+        billing_amount:
+          type: integer
+          description: The amount, in cents, that will be billed on the next billing run.
+        balance:
+          type: integer
+          description: The amount, in cents, that is owed on the policy. If the policyholder makes an adhoc payment to the policy, the amount is credited to this balance. If the policyholder defaults on a payment, it is subtracted from the balance. If the balance is found negative during the next billing run, the amount is added to the monthly premium, else the monthly premium is subtracted from the balance and the remainder is charged.
+        billing_day:
+          type:
+          - integer
+          - 'null'
+          description: '`null` is allowed. The day of month on which the policy is billed. Should be between 1 and 31, or `null`. If it falls on a day that does not exist in the month (for example, 31 in February) the policy will be billed on the last day of the month. Setting this value to 31 will ensure that the policy is billed on the last day of every month.'
+        billing_frequency:
+          type: string
+          description: The frequency at which the policy is billed. One of [`monthly`, `yearly`, `once_off`]. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency.
+        next_billing_date:
+          type: string
+          format: date-time
+          description: The next date the policy is due to be billed.
+        currency:
+          type: string
+          description: The currency code of the policy.
+        beneficiaries:
+          description: An array of beneficiaries, or "null".
+          oneOf:
+          - $ref: '#/components/schemas/beneficiaries'
+          - type: 'null'
+        covered_people:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+          description: '`null` is allowed. An array of covered people added to the policy.'
+        base_premium:
+          type: integer
+          description: The amount, in cents, of the minimum allowed monthly premium fee. This includes risk pricing and platform fees.
+        claim_ids:
+          type: array
+          items:
+            type: string
+          description: An array of claim ids of the claims linked to the policy.
+        complaint_ids:
+          type: array
+          items:
+            type: string
+          description: An array of complaint ids of the complaints linked to the policy.
+        start_date:
+          type: string
+          format: date-time
+          description: Once the policy reaches its start date, cover commences and regular collection attempts can run against the policy (provided it has an `active` status). See the [Managing policies](https://docs.rootplatform.com/docs/policy-administration#policy-lifecycle) guide for more details on the policy lifecycle.
+        end_date:
+          type: string
+          format: date-time
+          description: When the policy reaches its end date, its status will change to `expired`. Cover and collections will cease. Policies with no end date do not expire.
+        current_version:
+          type:
+          - integer
+          - 'null'
+          description: '`null` is allowed. The current policy schedule version.'
+        schedule_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Object ID of the policy document.'
+        policy_schedule_uri:
+          type:
+          - string
+          - 'null'
+          description: URI to the policy document in PDF format.
+        terms_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Attachment ID of the policy terms document.'
+        terms_uri:
+          type:
+          - string
+          - 'null'
+          description: URI to the terms document in PDF format.
+        supplementary_terms_files:
+          type: array
+          description: Supplementary terms files associated with the policy.
+          items:
+            type: object
+            properties:
+              supplementary_terms_file_id:
+                type: string
+                description: Attachment ID of the supplementary terms document.
+              type:
+                type: string
+                description: The supplementary terms file type, as specified in the product module settings.
+              uri:
+                type: string
+                description: URI to the supplementary terms document in PDF format.
+        policy_welcome_letter_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Object ID of the welcome letter.'
+        policy_welcome_letter_uri:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. URI to the welcome letter in PDF format.'
+        policy_certificate_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Object ID of the policy certificate.'
+        policy_certificate_uri:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. URI to the certificate in PDF format.'
+        policy_anniversary_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Object ID of the policy anniversary document.'
+        schedule_versions:
+          type: array
+          items:
+            type: object
+            properties:
+              version:
+                type: integer
+                description: The policy schedule version number.
+              created_at:
+                type: string
+                format: date-time
+                description: The date the policy schedule version was created.
+          description: The policy schedule versions for the policy. A new policy schedule version is typically created when the policy is updated.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the policy was created.
+        module:
+          type: object
+          description: Custom, product-specific fields stored against the policy. These parameters are set in the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook) in the product module code. They can be referenced in policy documents, data exports and external integrations.
+          additionalProperties: true
+        restricted_data:
+          type: object
+          description: Optional restricted product-specific information saved to the policy. This field is only returned when the requestee has access to restricted policy module data.
+          additionalProperties: true
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the policy.'
+          additionalProperties: true
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the policy.'
+        scheme_type:
+          type: string
+          description: Indicates the policy scheme type, being either `individual` or `group`.
+        payment_method_id:
+          type: string
+          description: Must be a UUID. The ID of the policy's payment method, if set.
+        status_updated_at:
+          type: string
+          format: date-time
+          description: Date indicating when the policy status was last updated.
+        charges:
+          type: array
+          description: Whenever a premium payment is created (including reversals), a breakdown of the payment amount is calculated according to the charges stored on the policy. This allows the premium breakdown to be referenced in policy documents and disclosures, and in the policy's payment data. See the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook#charges-and-commissions) guide for more details on charges and commissions.
+          items:
+            type: object
+            required:
+            - type
+            - name
+            properties:
+              type:
+                $ref: '#/components/schemas/payment-charge-type'
+              name:
+                type: string
+                description: The name of the charge.
+              description:
+                type: string
+                description: The description of the charge.
+              amount:
+                type: integer
+                description: The charged amount. Required when type is `fixed` or `variable`. Either a proportion of the total premium (if `type` is `variable`), or a currency amount in cents (if `type` is `fixed`).
+      example:
+        policy_id: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+        policy_number: 1HFCT1CDBJ
+        policyholder_id: bf3ab7ce-064d-43b7-811d-0ecd9aca3daf
+        status: active
+        package_name: Theft + comprehensive
+        sum_assured: 1199900
+        base_premium: 14999
+        monthly_premium: 50000
+        balance: 0
+        currency: ZAR
+        billing_amount: 50000
+        billing_day: 1
+        billing_frequency: monthly
+        covered_people: []
+        start_date: '2017-10-05T00:00:00.000Z'
+        end_date: '2018-10-05T00:00:00.000Z'
+        current_version: 1
+        schedule_file_id: c85f1d4e-f09b-11ed-a05b-0242ac120003
+        policy_schedule_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/schedule/schedule_latest.pdf
+        terms_file_id: 68c8b6e6-f484-11ed-a05b-0242ac120003
+        terms_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/terms/terms.pdf
+        supplementary_terms_files:
+        - supplementary_terms_file_id: c414342a-7ea4-4a16-be68-d152aa5fce68
+          type: client-conduct
+          uri: https://sandbox.root.co.za/v1/files/download/a7bc326f-640e-4b43-9909-7a6c8be17e37
+        policy_welcome_letter_file_id: d0864e70-f09b-11ed-a05b-0242ac120003
+        policy_welcome_letter_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/welcome-letter/welcome_letter.pdf
+        policy_certificate_file_id: 1e527606-f09c-11ed-a05b-0242ac120003
+        policy_certificate_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/certificate/certificate.pdf
+        policy_anniversary_file_id: 7e6d32c4-f484-11ed-a05b-0242ac120003
+        schedule_versions:
+        - version: 1
+          created_at: '2017-10-05T18:40:47.281Z'
+        created_at: '2017-10-05T18:40:47.281Z'
+        module:
+          type: root_gadgets
+          make: Apple
+          model: iPhone 6S 64GB LTE
+          serial_number: '1234567890'
+        restricted_data:
+          internal_commission_bps: 1500
+        app_data:
+          gadget_colour: Space Grey
+        created_by:
+          id: 00000000-0000-0000-0000-000000000001
+          type: user
+        scheme_type: individual
+        payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+        charges: []
+        beneficiaries:
+        - first_name: Jared
+          last_name: Dunn
+          id:
+            type: id
+            number: '8704094800082'
+            country: ZA
+          percentage: 100
+          relationship: cousin_or_relative
+    beneficiaries:
+      type: array
+      description: '`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some product modules may require adding beneficiaries to a policy for claims to be processed.'
+      items:
+        type: object
+        description: Details for a single beneficiary.
+        required:
+        - beneficiary_id
+        - relationship
+        - percentage
+        properties:
+          beneficiary_id:
+            type: string
+            description: Must be a UUID. The unique identifier of the beneficiary.
+          policyholder_id:
+            type: string
+            description: Must be a UUID. The unique identifier of the policyholder. Only relevant if `relationship` is `policyholder`.
+          type:
+            type: string
+            description: The type of beneficiary.
+            enum:
+            - individual
+            - company
+            default: individual
+          first_name:
+            type: string
+            description: The beneficiary's first name.
+          last_name:
+            type: string
+            description: The beneficiary's last name.
+          title:
+            type: string
+            description: The beneficiary's title.
+            enum:
+            - mr
+            - mrs
+            - miss
+            - mx
+            - sir
+            - dr
+            - adv
+            - ms
+            - prof
+          gender:
+            type: string
+            description: The beneficiary's gender.
+            enum:
+            - male
+            - female
+          id:
+            type: object
+            description: (Individual beneficiaries only) The beneficiary's identification number, type and country.
+            properties:
+              type:
+                type: string
+                description: The beneficiary's identification type.
+                enum:
+                - id
+                - passport
+                - custom
+              number:
+                type: string
+                description: Depending on the type selected, either an ID number, passport number or custom identifier.
+              country:
+                type: string
+                description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`.
+            required:
+            - type
+            - number
+            - country
+          date_of_birth:
+            type:
+            - string
+            - 'null'
+            format: date
+            description: '`null` is allowed. The beneficiary''s date of birth.'
+          percentage:
+            type: integer
+            description: An integer representing the percentage of a claim payout that the beneficiary should receive. Note that the percentages across all beneficiaries should add up to 100%.
+          cellphone:
+            $ref: '#/components/schemas/cellphone-string'
+          email:
+            type: string
+            description: The beneficiary's email address.
+          relationship:
+            $ref: '#/components/schemas/beneficiary-relationship'
+          company_name:
+            type: string
+            description: The name of the company that the beneficiary represents. Required when `type = company`.
+          registration_number:
+            type: string
+            description: The company's registration number. Required when `type = company`.
+          payment_details:
+            $ref: '#/components/schemas/payment-details'
+        example:
+          first_name: Jared
+          last_name: Dunn
+          id:
+            type: id
+            number: '8704094800082'
+            country: ZA
+          percentage: 100
+          relationship: cousin_or_relative
+      example:
+      - first_name: Jared
+        last_name: Dunn
+        id:
+          type: id
+          number: '8704094800082'
+          country: ZA
+        percentage: 100
+        relationship: cousin_or_relative
+    policy-status:
+      type: string
+      description: The policy status. See the [managing policies](https://docs.rootplatform.com/docs/policy-administration#policy-lifecycle) guide for more details on the policy lifecycle.
+      enum:
+      - pending_initial_payment
+      - active
+      - cancelled
+      - expired
+      - lapsed
+      - not_taken_up
+    policyholder:
+      type: object
+      required:
+      - policyholder_id
+      - type
+      - id
+      - first_name
+      - last_name
+      - policy_ids
+      - created_at
+      - app_data
+      - created_by
+      properties:
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the policyholder.
+        type:
+          type: string
+          description: The policyholder type.
+          enum:
+          - individual
+          - company
+        id:
+          type: object
+          description: (Individual policyholders only) Object containing policyholder's identification information.
+          properties:
+            type:
+              type: string
+              description: The id type of the policyholder.
+              enum:
+              - id
+              - passport
+              - email
+              - cellphone
+              - custom
+            number:
+              type: string
+              description: The ID or passport number.
+            country:
+              type: string
+              description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the id/passport number.
+            expiration_date:
+              type: string
+              format: date-time
+              description: (Individual policyholders only) The expiration date of the policyholder's passport.
+          required:
+          - type
+          - number
+          - country
+        title:
+          type: string
+          description: The policyholders's title.
+          enum:
+          - mr
+          - mrs
+          - miss
+          - mx
+          - sir
+          - dr
+          - adv
+          - ms
+          - prof
+        date_of_birth:
+          type: string
+          description: (Individual policyholders only) The policyholder's date of birth in the format YYYYMMDD.
+        gender:
+          type: string
+          description: Null is allowed. (Individual policyholders only) The policyholder's gender.
+          enum:
+          - male
+          - female
+        initials:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The policyholder or primary contact''s initials.'
+        first_name:
+          type: string
+          description: The policyholder or primary contact's legal first name.
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The policyholder or primary contact''s legal middle name.'
+        last_name:
+          type: string
+          description: The policyholder or primary contact's legal last name.
+        company_name:
+          type: string
+          description: (Company policyholders only) The name of the company that the policyholder represents.
+        registration_number:
+          type: string
+          description: (Company policyholders only) The company's registration number.
+        date_of_establishment:
+          type: string
+          description: (Company policyholders only) The company's date of establishment in the format YYYYMMDD.
+        company_website_url:
+          type: string
+          description: (Company policyholders only) The company's website URL.
+        contact_position:
+          type: string
+          description: (Company policyholders only) The position or role of the primary contact at the company.
+        subsidiary_companies:
+          type: array
+          items:
+            type: string
+          description: (Company policyholders only) An array of subsidiary company names.
+        email:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The policyholder or primary contact''s contact email address.'
+        cellphone:
+          $ref: '#/components/schemas/cellphone-string'
+        phone_other:
+          $ref: '#/components/schemas/cellphone-string'
+        policy_ids:
+          type: array
+          items:
+            type: string
+          description: An array of ids of the policies linked to this policyholder.
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/policy'
+          description: An array of full [policy objects](#policy) owned by the policyholder. This is currently only included when [fetching all policyholders](#list-all-policyholders) or [fetching an individual policyholder](#retrieve-a-policyholder) with `?include=policies`.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the policyholder was created.
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the policy holder.'
+          additionalProperties: true
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the policyholder. See [Authentication](#client-apps).'
+        updated_at:
+          type: string
+          format: date-time
+          description: The time at which the policyholder was last updated.
+        address:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. The policyholder''s physical address. See below for more details.'
+          properties:
+            line_1:
+              type: string
+              description: First line of the policyholder's address.
+            line_2:
+              type:
+              - string
+              - 'null'
+              description: '`null` is allowed. Optional second line of the policyholder''s address.'
+            suburb:
+              type: string
+              description: The policyholder's suburb.
+            city:
+              type: string
+              description: The policyholder's city.
+            country:
+              type: string
+              description: The policyholder's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format.
+            area_code:
+              type: string
+              description: The policyholder's area code must be 4 characters long for South African addresses.
+          required:
+          - line_1
+          - city
+          - country
+          - area_code
+      example:
+        policyholder_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+        type: individual
+        initials: E
+        first_name: Erlich
+        middle_name: Aviato
+        last_name: Bachman
+        id:
+          type: id
+          number: '6801015800084'
+          country: ZA
+        date_of_birth: '19680101'
+        gender: male
+        email: erlich@aviato.com
+        cellphone: '+27821234567'
+        phone_other: '+27124101337'
+        created_at: '2017-10-12T15:47:34.281Z'
+        app_data:
+          company: Aviato
+        policy_ids: []
+        created_by:
+          id: 00000000-0000-0000-0000-000000000001
+          type: user
+        address:
+          line_1: 5230 Penfield Avenue
+          suburb: Woodland Hills
+          city: Los Angeles
+          country: US
+          area_code: CA 91364
+    bank-name:
+      type: string
+      description: The name of the bank
+      enum:
+      - absa
+      - access
+      - african_bank
+      - al_baraka
+      - bank_of_china
+      - bank_of_lisbon
+      - bank_zero
+      - bidvest
+      - bidvest_bank_alliances
+      - capitec
+      - discovery_bank
+      - finbond_mutual
+      - fnb
+      - hbz
+      - investec
+      - ithala
+      - mercantile
+      - nedbank
+      - old_mutual
+      - postbank
+      - sasfin
+      - standard_bank
+      - sure
+      - tyme_bank
+      - ubank
+      - vbc_mutual_bank
+      - wizzit
+    payment-method:
+      type: object
+      required:
+      - payment_method_id
+      - type
+      - created_at
+      - organization_id
+      - policyholder_id
+      properties:
+        payment_method_id:
+          type: string
+          description: Must be a UUID. The Unique identifier for the payment method.
+        type:
+          type: string
+          description: The payment method type. Except for external payment methods, must be one of `debit_order`, `card`, `eft`, `collection_module`. For external payment methods, will correspond to the custom `key` field.
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time at which the payment method was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time at which the payment method was last updated.
+        organization_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the related organisation.
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the policyholder the payment method is linked to.
+        policyholder:
+          $ref: '#/components/schemas/policyholder'
+          description: The policyholder object linked to the payment method. Only included when `?include=policyholder` is specified.
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/policy'
+          description: An array of policy objects linked to the payment method. Only included when `?include=policies` is specified.
+        bank_details:
+          type: object
+          description: Required if `type` is `debit_order`. Bank details for the debit order.
+          required:
+          - account_holder
+          - bank
+          - branch_code
+          - account_number
+          - account_type
+          properties:
+            account_holder:
+              type: string
+              description: Name of account holder.
+            account_holder_identification:
+              type:
+              - object
+              - 'null'
+              description: '`null` is allowed. An object containing the identification details of the account holder.'
+              required:
+              - type
+              - number
+              - country
+              properties:
+                type:
+                  type: string
+                  description: The type of identity document.
+                  enum:
+                  - id
+                  - passport
+                number:
+                  type: string
+                  description: The identity document number.
+                country:
+                  type: string
+                  description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the identification document.
+                expiration_date:
+                  type: string
+                  format: date-time
+                  description: The expiration date of the lead's passport.
+            bank:
+              $ref: '#/components/schemas/bank-name'
+            branch_code:
+              type: string
+              description: Branch code for bank account.
+            account_number:
+              type: string
+              description: Bank account number.
+            account_type:
+              type: string
+              description: Bank account type.
+              enum:
+              - cheque
+              - savings
+            banv_status:
+              type: string
+              description: The [bank account verification status](doc:account-verification-banvavs#reporting-on-payment-methods).
+              enum:
+              - pending
+              - processing
+              - verified
+              - failed_verification
+              - blocked
+            blocked_reason:
+              type:
+              - string
+              - 'null'
+              description: The reason the payment method is blocked. Only relevant if `banv_status` is `blocked`.
+            banv_response:
+              type:
+              - string
+              - 'null'
+              description: The response received when bank account verification was attempted.
+            payment_method_id:
+              type: string
+              description: Must be a UUID. The unique identifier of the payment method.
+        card:
+          type: object
+          description: Details of the payment card. Required if `type` is `card`.
+          required:
+          - bin
+          - holder
+          - brand
+          - expiry_month
+          - expiry_year
+          - last_4_digits
+          properties:
+            bin:
+              type: string
+              description: The bank identification number.
+            holder:
+              type: string
+              description: The name of the cardholder.
+            brand:
+              type: string
+              description: The brand of the card.
+            expiry_month:
+              type: string
+              description: The month of the card's exiry date.
+            expiry_year:
+              type: string
+              description: The year of the card's exiry date.
+            last_4_digits:
+              type: string
+              description: The last four digits of the card number.
+            registration:
+              type: string
+              description: The registration ID of the card.
+        external_reference:
+          type: string
+          description: The external identifier of the payment method. Required if `type` is `external`.
+        banv_status:
+          type: string
+          description: The [bank account verification status](doc:account-verification-banvavs#reporting-on-payment-methods). Only relevant if `type` is `external`.
+          enum:
+          - pending
+          - processing
+          - verified
+          - failed_verification
+          - blocked
+        blocked_reason:
+          type: string
+          description: The reason the payment method is blocked. Only relevant if `banv_status` is `blocked` and `type` is `external`.
+        collection_module_definition_id:
+          type: string
+          description: The unique identifier of the collection module definition that the payment method is linked to. Only relevant if `type` is `collection_module`.
+        collection_module_key:
+          type: string
+          description: The key of the collection module that the payment method is linked to. Only relevant if `type` is `collection_module`.
+        module:
+          type: object
+          description: Custom module-specific data for collection module payment methods. Only relevant if `type` is `collection_module`.
+          additionalProperties: true
+        collection_module:
+          type: object
+          description: The collection module object linked to the payment method. Only included when `?include=collection_module` is specified and `type` is `collection_module`.
+          additionalProperties: true
+        updated_by:
+          type: object
+          description: An object indicating the user or API key that last updated the payment method. Only relevant if `type` is `collection_module`.
+      example:
+        payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+        type: debit_order
+        organization_id: 952bfef5-7517-47ff-bf41-08c5a66c52db
+        policyholder_id: f91f4ea4-9c6d-459e-998b-a5711cbd8895
+        created_at: '2021-01-29T13:12:00.968Z'
+        updated_at: '2021-01-29T13:12:00.968Z'
+        bank_details:
+          account_holder: Erlich Bachman
+          bank: absa
+          branch_code: '12345'
+          account_number: '123456789'
+          account_type: cheque
+          banv_status: pending
+    beneficiary-relationship:
+      type: string
+      description: The beneficiary's relationship to the policyholder.
+      enum:
+      - main_member
+      - spouse
+      - parent
+      - son
+      - daughter
+      - aunt_or_uncle
+      - grandparent
+      - cousin_or_relative
+      - brother
+      - sister
+      - employer
+      - policyholder
+      - credit_provider
+      - cessionary
+      - estate
+      - trust
+      - guardian_fund
+      - funeral_parlour
+      - son_in_law
+      - daughter_in_law
+      - mother_in_law
+      - father_in_law
+      - grandchild
+      - niece_or_nephew
+      - other
+    cellphone-string:
+      type:
+      - string
+      - 'null'
+      description: '`null` and `""` allowed. String containing the cellphone number in international format.'
+      example: '+27821234567'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

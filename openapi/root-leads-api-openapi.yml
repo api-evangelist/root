@@ -1,0 +1,430 @@
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Root Applications Leads API
+  description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
+  termsOfService: https://rootplatform.com/about
+  contact:
+    name: Root support team
+    url: https://rootplatform.com/contact
+    email: support@root.co.za
+servers:
+- url: https://sandbox.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - sandbox
+- url: https://api.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - production
+- url: https://sandbox.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - sandbox
+- url: https://api.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - production
+security:
+- basicAuth: []
+tags:
+- name: Leads
+paths:
+  /leads:
+    get:
+      operationId: fetch-leads
+      summary: List all leads
+      tags:
+      - Leads
+      x-additional-tags:
+      - Endpoints
+      parameters:
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/leads'
+              example:
+              - lead_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                type: individual
+                first_name: Erlich
+                last_name: Bachman
+                id:
+                  type: id
+                  number: '6801015800084'
+                  country: ZA
+                date_of_birth: '1968-01-01'
+                gender: male
+                email: erlich@aviato.com
+                cellphone: '+27821234567'
+                phone_other: null
+                app_data:
+                  company: Aviato
+                created_at: '2017-10-12T15:47:34.281Z'
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+                address:
+                  line_1: 5230 Penfield Avenue
+                  suburb: Woodland Hills
+                  city: Los Angeles
+                  country: US
+                  area_code: CA 91364
+    post:
+      operationId: create-lead
+      summary: Create a lead
+      description: 'This endpoint requires a single lead object defined as follows:'
+      tags:
+      - Leads
+      x-additional-tags:
+      - Endpoints
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entity_type:
+                  type: string
+                identification:
+                  type: object
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                app_data:
+                  type: object
+                address:
+                  type: object
+            example:
+              entity_type: individual
+              identification:
+                type: id
+                number: '6801015800084'
+                country: ZA
+              first_name: Erlich
+              last_name: Bachman
+              email: erlich@avaito.com
+              app_data:
+                company: Aviato
+              address:
+                line_1: 5230 Penfield Avenue
+                suburb: Woodland Hills
+                city: Los Angeles
+                country: US
+                area_code: '91364'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lead'
+              example:
+                lead_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                type: individual
+                first_name: Erlich
+                last_name: Bachman
+                id:
+                  type: id
+                  number: '6801015800084'
+                  country: ZA
+                email: erlich@aviato.com
+                cellphone: '+27821234567'
+                phone_other: null
+                created_at: '2017-10-12T15:47:34.281Z'
+                app_data:
+                  company: Aviato
+                created_by:
+                  owner_id: 00000000-0000-0000-0000-000000000001
+                  id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
+                  type: user
+                address:
+                  line_1: 5230 Penfield Avenue
+                  suburb: Woodland Hills
+                  city: Los Angeles
+                  country: US
+                  area_code: '91364'
+    put:
+      operationId: create-or-update-lead
+      summary: Create or update a lead
+      description: 'This endpoint requires a single lead object defined as follows:'
+      tags:
+      - Leads
+      x-additional-tags:
+      - Endpoints
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entity_type:
+                  type: string
+                identification:
+                  type: object
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                app_data:
+                  type: object
+                address:
+                  type: object
+            example:
+              entity_type: individual
+              identification:
+                type: id
+                number: '6801015800084'
+                country: ZA
+              first_name: Erlich
+              last_name: Bachman
+              email: erlich@avaito.com
+              app_data:
+                company: Aviato
+              address:
+                line_1: 5230 Penfield Avenue
+                suburb: Woodland Hills
+                city: Los Angeles
+                country: US
+                area_code: '91364'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lead'
+              example:
+                lead_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                type: individual
+                first_name: Erlich
+                last_name: Bachman
+                id:
+                  type: id
+                  number: '6801015800084'
+                  country: ZA
+                email: erlich@aviato.com
+                cellphone: '+27821234567'
+                phone_other: null
+                created_at: '2017-10-12T15:47:34.281Z'
+                app_data:
+                  company: Aviato
+                created_by:
+                  owner_id: 00000000-0000-0000-0000-000000000001
+                  id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
+                  type: user
+                address:
+                  line_1: 5230 Penfield Avenue
+                  suburb: Woodland Hills
+                  city: Los Angeles
+                  country: US
+                  area_code: '91364'
+  /leads/archive:
+    post:
+      operationId: archive-leads
+      summary: Archive leads
+      description: This archives all leads loaded for the organization. Returns a HTTP `200 OK` response on success.
+      tags:
+      - Leads
+      x-additional-tags:
+      - Endpoints
+      parameters: []
+      responses:
+        '200':
+          description: Success
+components:
+  parameters:
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
+  schemas:
+    lead:
+      type: object
+      required:
+      - lead_id
+      - type
+      - first_name
+      - last_name
+      - created_at
+      - created_by
+      properties:
+        lead_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the lead.
+        type:
+          type: string
+          description: The lead's entity type, either `individual` or `company`.
+        id:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. Object containing the lead''s identification number, type and country.'
+          properties:
+            type:
+              type: string
+              description: Either `id` or `passport`.
+            number:
+              type: string
+              description: The ID or passport number.
+            country:
+              type: string
+              description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the id/passport number.
+            expiration_date:
+              type:
+              - string
+              - 'null'
+              format: date-time
+              description: '`null` is allowed. The expiration date of the lead''s passport.'
+          required:
+          - type
+          - number
+          - country
+        date_of_birth:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: '`null` is allowed. The lead''s date of birth.'
+        gender:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The lead''s gender (`male` or `female`).'
+        first_name:
+          type: string
+          description: The lead's legal first name.
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The lead''s legal middle name.'
+        last_name:
+          type: string
+          description: The lead's legal last name.
+        email:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The lead''s contact email address.'
+        cellphone:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The lead''s contact cellphone number.'
+        phone_other:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The lead''s alternative phone number.'
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the lead was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: The time at which the lead was updated.
+        updated_by:
+          type: object
+          description: An object indicating the user or API key that updated the lead. See [Authentication](#client-apps).
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the lead.'
+          additionalProperties: true
+        created_by:
+          type: object
+          description: An object indicating the user or API key that created the lead. See [Authentication](#client-apps).
+        address:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. The lead''s physical address. See below for more details.'
+          properties:
+            line_1:
+              type: string
+              description: First line of the lead's address.
+            line_2:
+              type:
+              - string
+              - 'null'
+              description: '`null` is allowed. Optional second line of the lead''s address.'
+            suburb:
+              type: string
+              description: The lead's suburb.
+            city:
+              type: string
+              description: The lead's city.
+            country:
+              type: string
+              description: The lead's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format.
+            area_code:
+              type: string
+              description: The lead's area code, must be 4 characters long.
+          required:
+          - line_1
+          - suburb
+          - city
+          - country
+          - area_code
+      example:
+        lead_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+        type: individual
+        first_name: Erlich
+        middle_name: Aviato
+        last_name: Bachman
+        id:
+          type: id
+          number: '6801015800084'
+          country: ZA
+        date_of_birth: '1968-01-01'
+        gender: male
+        email: erlich@aviato.com
+        cellphone: null
+        phone_other: null
+        created_at: '2017-10-12T15:47:34.281Z'
+        app_data:
+          company: Aviato
+        created_by:
+          id: 00000000-0000-0000-0000-000000000001
+          type: user
+        address:
+          line_1: 5230 Penfield Avenue
+          suburb: Woodland Hills
+          city: Los Angeles
+          country: US
+          area_code: CA 91364
+    leads:
+      type: array
+      items:
+        $ref: '#/components/schemas/lead'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

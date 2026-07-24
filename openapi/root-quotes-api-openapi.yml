@@ -1,0 +1,180 @@
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Root Applications Quotes API
+  description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
+  termsOfService: https://rootplatform.com/about
+  contact:
+    name: Root support team
+    url: https://rootplatform.com/contact
+    email: support@root.co.za
+servers:
+- url: https://sandbox.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - sandbox
+- url: https://api.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - production
+- url: https://sandbox.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - sandbox
+- url: https://api.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - production
+security:
+- basicAuth: []
+tags:
+- name: Quotes
+paths:
+  /quotes:
+    post:
+      operationId: create-quote
+      summary: Create a quote
+      description: Note that additional fields may be required based on the product module type being used. See [product modules](doc:product-modules-overview) for more details.
+      tags:
+      - Quotes
+      x-additional-tags:
+      - Endpoints
+      parameters:
+      - name: version
+        in: query
+        description: Whether to use the live or draft version of the product module definition to create the quote.
+        required: false
+        schema:
+          type: string
+          enum:
+          - live
+          - draft
+          default: live
+          example: live
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - type
+              properties:
+                type:
+                  type: string
+                  description: The module identifier of the pricing module. If you have a custom module, use the identifier given to you by the Root team.
+              additionalProperties: true
+              example:
+                type: root_gadgets
+                model_name: iPhone 6s 64GB LTE
+            example:
+              type: root_gadgets
+              model_name: iPhone 6s 64GB LTE
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quote-packages'
+              example:
+              - package_name: Theft + comprehensive
+                sum_assured: 1199900
+                base_premium: 14999
+                suggested_premium: 18749
+                created_at: '2017-10-12T15:47:34.281Z'
+                quote_package_id: f4397823-db4a-4d6a-a06b-08e1a2a3172c
+                module:
+                  type: root_gadgets
+                  make: Apple
+                  model: iPhone 6S 64GB LTE
+              - package_name: Theft only
+                sum_assured: 1199900
+                base_premium: 5000
+                suggested_premium: 6250
+                created_at: '2017-10-12T15:47:34.281Z'
+                quote_package_id: 5d8606c7-3cf9-4167-b65a-937384dea73e
+                module:
+                  type: root_gadgets
+                  make: Apple
+                  model: iPhone 6S 64GB LTE
+components:
+  schemas:
+    quote-package:
+      type: object
+      description: Quote packages are designed to be low-fidelity and fast to generate,  and are used to generate and display new quotes rapidly on a customer-facing front-end.  They expire after one week. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide  and the [quote hook](https://docs.rootplatform.com/docs/quote-hook) guide for more details.
+      required:
+      - quote_package_id
+      - package_name
+      - sum_assured
+      - base_premium
+      - suggested_premium
+      - module
+      - created_at
+      - currency
+      - billing_frequency
+      - product_module_definition_id
+      properties:
+        quote_package_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the quote package.
+        package_name:
+          type: string
+          description: The package name.
+        sum_assured:
+          type: integer
+          description: The maximum insured value in cents.
+        base_premium:
+          type: integer
+          description: The combined risk and platform fee in cents. `monthly_premium` should be calculated from this.
+        suggested_premium:
+          type: integer
+          description: The suggested `monthly_premium` amount in cents. This is the total premium for display to the customer.
+        module:
+          type: object
+          description: Custom, product-specific information saved to the quote for later reference.  These parameters are set in the [quote hook](https://docs.rootplatform.com/docs/quote-hook) in the product module code.
+          additionalProperties: true
+        restricted_data:
+          type: object
+          description: Optional restricted product-specific information saved to the quote. This field is only returned when the requestee has access to restricted quote module data.
+          additionalProperties: true
+        input_data:
+          type: object
+          description: Quote input parameters as received over the [create a quote](https://docs.rootplatform.com/reference/getting-a-quote-2) endpoint.
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          description: The date/time at which the quote package was created.
+        currency:
+          type: string
+          description: The currency used for the quote package, in [ISO 4217] (https://en.wikipedia.org/wiki/ISO_4217) format.
+        billing_frequency:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          - once_off
+          description: The frequency at which the policy will be billed. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency.
+        product_module_definition_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the product module definition associated with this quote package. If a policy is issued from this quote, this product module definition will be associated with the policy.
+      example:
+        quote_package_id: 3822b8fb-43e7-43f7-94ad-63e94e6ce1e3
+        package_name: Theft + comprehensive
+        sum_assured: 1199900
+        base_premium: 14999
+        suggested_premium: 18749
+        module:
+          type: root_gadgets
+          make: Apple
+          model: iPhone 6S 64GB LTE
+        restricted_data:
+          internal_commission_bps: 2500
+        created_at: '2023-02-03T11:17:09.747Z'
+        currency: ZAR
+        billing_frequency: monthly
+        product_module_definition_id: 4889a9e0-d5f9-4971-8ac2-2175a9d15477
+    quote-packages:
+      type: array
+      items:
+        $ref: '#/components/schemas/quote-package'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

@@ -1,0 +1,1101 @@
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Root Applications Complaints API
+  description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
+  termsOfService: https://rootplatform.com/about
+  contact:
+    name: Root support team
+    url: https://rootplatform.com/contact
+    email: support@root.co.za
+servers:
+- url: https://sandbox.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - sandbox
+- url: https://api.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - production
+- url: https://sandbox.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - sandbox
+- url: https://api.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - production
+security:
+- basicAuth: []
+tags:
+- name: Complaints
+paths:
+  /complaints:
+    post:
+      operationId: create-a-complaint
+      summary: Create a complaint
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Create
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                policy_id:
+                  type: string
+                  description: The identifier of policy under which the complaint is being made.
+                member_id:
+                  type: string
+                  description: The identifier of the member for whom the complaint is being made. Required when linking a group scheme policy.
+                app_data:
+                  type:
+                  - object
+                  - 'null'
+                  description: '`null` is allowed. An object containing additional custom data for the complaint.'
+                  additionalProperties: true
+                complainant:
+                  type: object
+                  description: Object containing complainant's first name, last name, email and/or cellphone. All fields are optional.
+                  properties:
+                    first_name:
+                      type:
+                      - string
+                      - 'null'
+                      description: The first name of the complainant.
+                    last_name:
+                      type:
+                      - string
+                      - 'null'
+                      description: The last name of the complainant.
+                    id_number:
+                      type:
+                      - string
+                      - 'null'
+                      description: The ID number of the complainant.
+                    email:
+                      type:
+                      - string
+                      - 'null'
+                      description: The complainant's email address.
+                    cellphone:
+                      type:
+                      - string
+                      - 'null'
+                      description: The complainant's cellphone number.
+              example:
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                app_data:
+                  key1: value 1
+                  key2: value 2
+                complainant:
+                  first_name: Erlich
+                  last_name: Bachman
+                  id_number: '9001015000000'
+                  email: erlich@aviato.com
+                  cellphone: '+27731234567'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/complaint'
+              example:
+                complaint_id: acd6c4af-108e-444d-a90f-e90b67786c74
+                complaint_number: CMP-000001
+                created_at: '2017-10-16T10:12:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 3c74e595-48bc-4dd6-8ac7-2dee1c1f397b
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                complaint_status: open
+                app_data:
+                  key1: value 1
+                  key2: value 2
+                complainant:
+                  first_name: Erlich
+                  last_name: Bachman
+                  id_number: '9001015000000'
+                  email: erlich@aviato.com
+                  cellphone: '+27731234567'
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+    get:
+      operationId: list-all-complaints
+      summary: List all complaints
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - name: complaint_status
+        in: query
+        description: Filter by complaint status. Can be a comma-separated list.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - open
+            - closed
+      - name: search
+        in: query
+        description: Search complaints by complaint number or other fields.
+        required: false
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: A comma-separated list of related resources to include in the response.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - member
+      - name: policy_id
+        in: query
+        description: Filter complaints by policy ID.
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-Total-Count:
+              description: The total number of complaints matching the query.
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/complaints'
+              example:
+              - complaint_id: acd6c4af-108e-444d-a90f-e90b67786c74
+                complaint_number: CMP-000001
+                created_at: '2017-10-16T10:12:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 3c74e595-48bc-4dd6-8ac7-2dee1c1f397b
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                complaint_status: open
+                app_data:
+                  key1: value 1
+                  key2: value 2
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+              - complaint_id: da20903b-7f0d-4318-96bd-6df78514e2fd
+                complaint_number: CMP-000002
+                created_at: '2017-10-14T11:09:55.332Z'
+                policy_id: 76096ff5-f4ed-47e2-8ac0-de16ba095508
+                policyholder_id: aed6eedd-25d7-4a42-a2cf-8a8368dffc6e
+                complaint_status: closed
+                app_data:
+                  key1: value 1
+                  key2: value 2
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /complaints/{complaint_id}:
+    get:
+      operationId: retrieve-a-complaint
+      summary: Retrieve a complaint
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - name: complaint_id
+        in: path
+        description: The unique identifier of the [complaint](ref:complaint).
+        required: true
+        schema:
+          type: string
+          example: acd6c4af-108e-444d-a90f-e90b67786c74
+      - name: include
+        in: query
+        description: A comma-separated list of related resources to include in the response.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - policy
+            - policyholder
+            - member
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/complaint'
+              example:
+                complaint_id: acd6c4af-108e-444d-a90f-e90b67786c74
+                complaint_number: CMP-000001
+                created_at: '2017-10-16T10:12:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 3c74e595-48bc-4dd6-8ac7-2dee1c1f397b
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                complaint_status: open
+                app_data:
+                  key1: value 1
+                  key2: value 2
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+    patch:
+      operationId: update-complaint
+      summary: Update a complaint
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: complaint_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [complaint](ref:complaint).
+        required: true
+        schema:
+          type: string
+          example: acd6c4af-108e-444d-a90f-e90b67786c74
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                app_data:
+                  type:
+                  - object
+                  - 'null'
+                  description: '`null` is allowed. An object containing additional custom data for the complaint.'
+                  additionalProperties: true
+              example:
+                app_data:
+                  key3: value 3
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/complaint'
+              example:
+                complaint_id: acd6c4af-108e-444d-a90f-e90b67786c74
+                complaint_number: CMP-000001
+                created_at: '2017-10-16T10:12:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 3c74e595-48bc-4dd6-8ac7-2dee1c1f397b
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                complaint_status: open
+                app_data:
+                  key3: value 3
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /complaints/{complaint_id}/attachments:
+    get:
+      operationId: retrieve-complaint-attachments
+      summary: List complaint attachments
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: complaint_id
+        in: path
+        description: The unique identifier of the [complaint](ref:complaint).
+        required: true
+        schema:
+          type: string
+          example: acd6c4af-108e-444d-a90f-e90b67786c74
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-Total-Count:
+              description: The total number of attachments for the complaint.
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    attachment_id:
+                      type: string
+                    file_name:
+                      type: string
+                    file_type:
+                      type: string
+                    file_url:
+                      type: string
+                    description:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    requested_by:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                        id:
+                          type: string
+                          format: uuid
+                        owner_id:
+                          type: string
+                          format: uuid
+                    is_archived:
+                      type: boolean
+                      description: Whether the attachment has been archived.
+                    archived_at:
+                      type:
+                      - string
+                      - 'null'
+                      format: date-time
+                      description: The timestamp when the attachment was archived, if applicable.
+                    labels:
+                      type: array
+                      items:
+                        type: string
+                      description: Labels associated with the attachment.
+                    has_embedding:
+                      type: boolean
+                      description: Whether the attachment has an embedding.
+                    processing_status:
+                      type:
+                      - string
+                      - 'null'
+                      description: The processing status of the attachment.
+                    error_message:
+                      type:
+                      - string
+                      - 'null'
+                      description: Error message if processing failed.
+              example:
+              - attachment_id: 7f4315b2-a919-11ed-8553-5bb8fbd4817b
+                file_name: report.pdf
+                file_type: application/pdf
+                file_url: http://yoururlhere/report.pdf
+                description: Police Report
+                created_at: '2022-01-31T11:25:51.557Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+                is_archived: false
+                archived_at: null
+                labels: []
+                has_embedding: false
+                processing_status: null
+                error_message: null
+    post:
+      operationId: complaint-create-attachment
+      summary: Create an attachment
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: complaint_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [complaint](ref:complaint).
+        required: true
+        schema:
+          type: string
+          example: acd6c4af-108e-444d-a90f-e90b67786c74
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - file_name
+              - description
+              - file_base64
+              - file_type
+              properties:
+                file_name:
+                  type: string
+                  description: The name of the file (with file extension).
+                description:
+                  type: string
+                  description: A tag describing what the document is about (e.g. affidavit, etc.).
+                file_base64:
+                  type: string
+                  description: The raw file bytes encoded as a base 64 string. Limited to a maximum of 4 MB in size.
+                file_type:
+                  type: string
+                  description: The mime type of the attachment (e.g. image/png).
+              example:
+                file_name: report.pdf
+                file_type: application/pdf
+                description: Police Report
+                file_base64: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBvYmoK...
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    description: The event type.
+                  complaint_id:
+                    type: string
+                    description: The identifier of the complaint.
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: The timestamp when the event was created.
+                  requested_by:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      id:
+                        type: string
+                        format: uuid
+                      owner_id:
+                        type: string
+                        format: uuid
+                  file_name:
+                    type: string
+                  file_type:
+                    type: string
+                  file_url:
+                    type: string
+                  description:
+                    type: string
+              example:
+                type: attachment_created
+                complaint_id: 02ca3e8b-2033-4d91-9869-b1080052dc10
+                created_at: '2022-01-31T11:25:51.557Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+                file_name: report.pdf
+                file_type: application/pdf
+                file_url: http://yoururlhere/report.pdf
+                description: Police Report
+  /complaints/{complaint_id}/attachments/{attachment_id}/archive:
+    post:
+      operationId: complaint-archive-attachment
+      summary: Archive an attachment
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: complaint_id
+        in: path
+        description: The unique identifier of the [complaint](ref:complaint).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - name: attachment_id
+        in: path
+        description: The unique identifier of the attachment.
+        required: true
+        schema:
+          type: string
+          example: c1cace2a-634a-4848-bde8-d2c60322e7e8
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    description: The event type.
+                  complaint_id:
+                    type: string
+                    description: The identifier of the complaint.
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: The timestamp when the event was created.
+                  requested_by:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      id:
+                        type: string
+                        format: uuid
+                      owner_id:
+                        type: string
+                        format: uuid
+              example:
+                type: attachment_archived
+                complaint_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                created_at: '2017-10-13T09:37:48.947Z'
+                requested_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /complaints/{complaint_id}/close:
+    post:
+      operationId: close-complaint
+      summary: Close a complaint
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: complaint_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [complaint](ref:complaint).
+        required: true
+        schema:
+          type: string
+          example: acd6c4af-108e-444d-a90f-e90b67786c74
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/complaint'
+              example:
+                complaint_id: acd6c4af-108e-444d-a90f-e90b67786c74
+                created_at: '2017-10-16T10:12:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 3c74e595-48bc-4dd6-8ac7-2dee1c1f397b
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                complaint_status: closed
+                app_data:
+                  key1: value 1
+                  key2: value 2
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /complaints/{complaint_id}/events:
+    get:
+      operationId: get-complaint-events
+      summary: List complaint events
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - name: complaint_id
+        in: path
+        description: The unique identifier of the [complaint](ref:complaint).
+        required: true
+        schema:
+          type: string
+          example: acd6c4af-108e-444d-a90f-e90b67786c74
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: The event type.
+                    complaint_id:
+                      type: string
+                      description: The identifier of the complaint.
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: The timestamp when the event was created.
+                  requested_by:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      id:
+                        type: string
+                        format: uuid
+                      owner_id:
+                        type: string
+                        format: uuid
+              example:
+              - type: complaint_opened
+                complaint_id: acd6c4af-108e-444d-a90f-e90b67786c74
+                created_at: '2022-01-31T11:25:51.557Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+              - type: attachment_created
+                complaint_id: acd6c4af-108e-444d-a90f-e90b67786c74
+                created_at: '2022-01-31T12:30:00.000Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+                file_name: document.pdf
+                file_type: application/pdf
+  /complaints/{complaint_id}/complainant:
+    patch:
+      operationId: complaint-update-complainant
+      summary: Update the complainant
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: complaint_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [complaint](ref:complaint).
+        required: true
+        schema:
+          type: string
+          example: acd6c4af-108e-444d-a90f-e90b67786c74
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type:
+                  - string
+                  - 'null'
+                  description: The first name of the complainant.
+                last_name:
+                  type:
+                  - string
+                  - 'null'
+                  description: The last name of the complainant.
+                id_number:
+                  type:
+                  - string
+                  - 'null'
+                  description: The ID number of the complainant.
+                email:
+                  type:
+                  - string
+                  - 'null'
+                  description: The complainant's email address.
+                cellphone:
+                  type:
+                  - string
+                  - 'null'
+                  description: The complainant's cellphone number.
+              example:
+                first_name: Erlich
+                last_name: Bachman
+                id_number: '9001015000000'
+                email: erlich@aviato.com
+                cellphone: '+27831234567'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/complaint'
+              example:
+                complaint_id: acd6c4af-108e-444d-a90f-e90b67786c74
+                complaint_number: CMP-000001
+                created_at: '2017-10-16T10:12:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 3c74e595-48bc-4dd6-8ac7-2dee1c1f397b
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                complaint_status: open
+                app_data:
+                  key1: value 1
+                  key2: value 2
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+                complainant:
+                  first_name: Erlich
+                  last_name: Bachman
+                  id_number: '9001015000000'
+                  email: erlich@aviato.com
+                  cellphone: '+27831234567'
+  /complaints/{complaint_id}/notes:
+    get:
+      operationId: fetch-complaint-notes
+      summary: List complaint notes
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: complaint_id
+        in: path
+        description: The unique identifier of the [complaint](ref:complaint).
+        required: true
+        schema:
+          type: string
+          example: acd6c4af-108e-444d-a90f-e90b67786c74
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-Total-Count:
+              description: The total number of notes for the complaint.
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notes'
+              example:
+              - text: Customer spoke to Erlich previously
+                created_at: '2018-05-25T08:51:20.317Z'
+                requested_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+    post:
+      operationId: complaint-create-note
+      summary: Add a note
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: complaint_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [complaint](ref:complaint).
+        required: true
+        schema:
+          type: string
+          example: acd6c4af-108e-444d-a90f-e90b67786c74
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - text
+              properties:
+                text:
+                  type: string
+                  description: A string of text for the note.
+              example:
+                text: Customer spoke to Erlich previously
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    description: The event type.
+                  complaint_id:
+                    type: string
+                    description: The identifier of the complaint.
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: The timestamp when the event was created.
+                  requested_by:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      id:
+                        type: string
+                        format: uuid
+                      owner_id:
+                        type: string
+                        format: uuid
+                  text:
+                    type: string
+                    description: The note text.
+              example:
+                type: text_note_created
+                complaint_id: 02ca3e8b-2033-4d91-9869-b1080052dc10
+                created_at: '2022-10-16T10:12:02.872Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+                text: Customer spoke to Erlich previously
+  /complaints/{complaint_id}/policy:
+    post:
+      operationId: complaint-link-policy
+      summary: Link a policy
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: complaint_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [complaint](ref:complaint).
+        required: true
+        schema:
+          type: string
+          example: acd6c4af-108e-444d-a90f-e90b67786c74
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - policy_id
+              properties:
+                policy_id:
+                  type: string
+                  description: The identifier of policy under which the complaint is being made.
+                member_id:
+                  type: string
+                  description: The identifier of group scheme member under which the complaint is being made. Only required for group scheme policies.
+              example:
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/complaint'
+              example:
+                complaint_id: acd6c4af-108e-444d-a90f-e90b67786c74
+                complaint_number: CMP-000001
+                created_at: '2017-10-16T10:12:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 3c74e595-48bc-4dd6-8ac7-2dee1c1f397b
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                complaint_status: open
+                app_data:
+                  key1: value 1
+                  key2: value 2
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /complaints/{complaint_id}/reopen:
+    post:
+      operationId: reopen-complaint
+      summary: Reopen a complaint
+      tags:
+      - Complaints
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: complaint_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [complaint](ref:complaint).
+        required: true
+        schema:
+          type: string
+          example: acd6c4af-108e-444d-a90f-e90b67786c74
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  description: A required reason for reopening the complaint.
+              example:
+                reason: Customer phoned in again with additional query on complaint
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/complaint'
+              example:
+                complaint_id: acd6c4af-108e-444d-a90f-e90b67786c74
+                complaint_number: CMP-000001
+                created_at: '2017-10-16T10:12:02.872Z'
+                policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+                policyholder_id: 3c74e595-48bc-4dd6-8ac7-2dee1c1f397b
+                member_id: 673b8081-9668-4136-97cc-6ae0debda083
+                complaint_status: open
+                app_data:
+                  key1: value 1
+                  key2: value 2
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+components:
+  schemas:
+    notes:
+      type: array
+      items:
+        $ref: '#/components/schemas/note'
+    complaints:
+      type: array
+      items:
+        $ref: '#/components/schemas/complaint'
+    note:
+      type: object
+      required:
+      - text
+      - created_at
+      properties:
+        text:
+          type: string
+          description: A string of text for the note.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the attachment was created.
+      example:
+        text: Customer spoke to Erlich previously
+        created_at: '2022-10-16T10:12:02.872Z'
+        requested_by:
+          type: user
+          id: 00000000-0000-0000-0000-000000000001
+    complaint:
+      type: object
+      required:
+      - complaint_id
+      - created_at
+      - complaint_status
+      - app_data
+      - created_by
+      properties:
+        complaint_id:
+          type: string
+          description: The identifier of the complaint.
+        complaint_number:
+          type: string
+          description: A human-readable complaint number.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the complaint was opened.
+        policy_id:
+          type: string
+          description: The identifier of the policy attached to this complaint. May initially be omitted.
+        policyholder_id:
+          type: string
+          description: The identifier of the policyholder for this complaint. May initially be omitted.
+        member_id:
+          type: string
+          description: The identifier of the member for this complaint. Only used for group scheme policies. May initially be omitted.
+        complaint_status:
+          type: string
+          enum:
+          - open
+          - closed
+          description: Whether the complaint is 'open' or 'closed'.
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the complaint.'
+          additionalProperties: true
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the complaint. See [Authentication](#client-apps).'
+        complainant:
+          type:
+          - object
+          - 'null'
+          description: Object containing complainant's first name, last name, email and/or cellphone. All fields are optional and can be null.
+          properties:
+            first_name:
+              type:
+              - string
+              - 'null'
+              description: The first name of the complainant.
+            last_name:
+              type:
+              - string
+              - 'null'
+              description: The last name of the complainant.
+            id_number:
+              type:
+              - string
+              - 'null'
+              description: The ID number of the complainant.
+            email:
+              type:
+              - string
+              - 'null'
+              description: The complainant's email address.
+            cellphone:
+              type:
+              - string
+              - 'null'
+              description: The complainant's cellphone number.
+        policy:
+          type: object
+          description: The policy object. Included when `include=policy` is specified.
+        policyholder:
+          type: object
+          description: The policyholder object. Included when `include=policyholder` is specified.
+        member:
+          type: object
+          description: The member object. Included when `include=member` is specified.
+      example:
+        complaint_id: acd6c4af-108e-444d-a90f-e90b67786c74
+        complaint_number: CMP-000001
+        created_at: '2017-10-16T10:12:02.872Z'
+        policy_id: 8349345c-a6c5-4bf9-8ebb-6bbfc1628715
+        policyholder_id: 3c74e595-48bc-4dd6-8ac7-2dee1c1f397b
+        member_id: 673b8081-9668-4136-97cc-6ae0debda083
+        complaint_status: open
+        complainant:
+          first_name: Erlich
+          last_name: Bachman
+          id_number: '9001015000000'
+          cellphone: '+27821234567'
+          email: erlich@aviato.com
+        app_data:
+          key1: value 1
+          key2: value 2
+        created_by:
+          id: 00000000-0000-0000-0000-000000000001
+          type: user
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

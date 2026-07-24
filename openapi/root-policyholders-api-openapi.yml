@@ -1,0 +1,2446 @@
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Root Applications Policyholders API
+  description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
+  termsOfService: https://rootplatform.com/about
+  contact:
+    name: Root support team
+    url: https://rootplatform.com/contact
+    email: support@root.co.za
+servers:
+- url: https://sandbox.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - sandbox
+- url: https://api.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - production
+- url: https://sandbox.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - sandbox
+- url: https://api.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - production
+security:
+- basicAuth: []
+tags:
+- name: Policyholders
+paths:
+  /policyholders:
+    post:
+      operationId: create-policyholder
+      summary: Create a policyholder
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Create
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/policyholder-request'
+            examples:
+              individual:
+                summary: Individual policyholder
+                value:
+                  type: individual
+                  id:
+                    type: id
+                    number: '6801015800084'
+                    country: ZA
+                  initials: E
+                  first_name: Erlich
+                  middle_name: Aviato
+                  last_name: Bachman
+                  email: erlich@avaito.com
+                  cellphone: '+27821234567'
+                  phone_other: '+27124101337'
+                  app_data:
+                    company: Aviato
+                  address:
+                    line_1: 5230 Penfield Avenue
+                    suburb: Woodland Hills
+                    city: Los Angeles
+                    country: US
+                    area_code: '91364'
+              company:
+                summary: Company policyholder
+                value:
+                  type: company
+                  first_name: Allister
+                  last_name: Smith
+                  email: allister@testco.com
+                  company_name: Test Co
+                  registration_number: 12398734A
+                  date_of_establishment: '19880202'
+                  company_website_url: www.testco.co.za
+                  contact_position: Engineer
+                  subsidiary_companies:
+                  - Subsidiary Inc
+                  cellphone: '+27821234567'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/policyholder'
+    get:
+      operationId: fetch-policyholders
+      summary: List all policyholders
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - name: id_number
+        in: query
+        description: An optional ID or passport number to filter by.
+        required: false
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: An optional semicolon-separated list of underlying objects to include, e.g. `?include=policies`. Currently, only `policies` is supported, which will include all policies owned by the policyholder.
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/policyholders'
+              example:
+              - policyholder_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                type: individual
+                initials: E
+                first_name: Erlich
+                last_name: Bachman
+                id:
+                  type: id
+                  number: '6801015800084'
+                  country: ZA
+                date_of_birth: '19680101'
+                email: erlich@aviato.com
+                cellphone: null
+                phone_other: null
+                created_at: '2017-10-12T15:47:34.281Z'
+                app_data:
+                  company: Aviato
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+                address:
+                  line_1: 5230 Penfield Avenue
+                  suburb: Woodland Hills
+                  city: Los Angeles
+                  country: US
+                  area_code: '91364'
+    put:
+      operationId: upsert-policyholder
+      summary: Upsert a policyholder
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Create
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/policyholder-request'
+            examples:
+              individual:
+                summary: Individual policyholder
+                value:
+                  type: individual
+                  id:
+                    type: id
+                    number: '6801015800084'
+                    country: ZA
+                  initials: E
+                  first_name: Erlich
+                  middle_name: Aviato
+                  last_name: Bachman
+                  email: erlich@avaito.com
+                  cellphone: '+27821234567'
+                  phone_other: '+27124101337'
+                  app_data:
+                    company: Aviato
+                  address:
+                    line_1: 5230 Penfield Avenue
+                    suburb: Woodland Hills
+                    city: Los Angeles
+                    country: US
+                    area_code: '91364'
+              company:
+                summary: Company policyholder
+                value:
+                  type: company
+                  first_name: Allister
+                  last_name: Smith
+                  email: allister@testco.com
+                  company_name: Test Co
+                  registration_number: 12398734A
+                  date_of_establishment: '19880202'
+                  company_website_url: www.testco.co.za
+                  contact_position: Engineer
+                  subsidiary_companies:
+                  - Subsidiary Inc
+                  cellphone: '+27821234567'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/policyholder'
+  /policyholders/{policyholder_id}:
+    get:
+      operationId: retrieve-policyholder
+      summary: Retrieve a policyholder
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - name: policyholder_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - name: include
+        in: query
+        description: An optional semicolon-separated list of underlying objects to include, e.g. `?include=policies`. Currently, only `policies` is supported, which will include all policies owned by the policyholder.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/policyholder'
+              example:
+                policyholder_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                type: individual
+                initials: E
+                first_name: Erlich
+                last_name: Bachman
+                id:
+                  type: id
+                  number: '6801015800084'
+                  country: ZA
+                date_of_birth: '19680101'
+                email: erlich@aviato.com
+                cellphone: null
+                phone_other: null
+                created_at: '2017-10-12T15:47:34.281Z'
+                app_data:
+                  company: Aviato
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+                address:
+                  line_1: 5230 Penfield Avenue
+                  suburb: Woodland Hills
+                  city: Los Angeles
+                  country: US
+                  area_code: '91364'
+    patch:
+      operationId: update-policyholder
+      summary: Update a policyholder
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: policyholder_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: object
+                  description: (Individual policyholders only) Object containing policyholder's identification information.
+                  properties:
+                    type:
+                      type: string
+                      description: The id type of the policyholder.
+                      enum:
+                      - id
+                      - passport
+                      - email
+                      - cellphone
+                      - custom
+                    number:
+                      type: string
+                      description: Depending on the `type` selected, either an ID number, passport number, email address, cellphone number or custom identifier.
+                    country:
+                      type: string
+                      description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`.
+                    expiration_date:
+                      type: string
+                      format: date-time
+                      description: (Individual policyholders only) The expiration date of the policyholder's passport or custom identifier.
+                  required:
+                  - type
+                  - number
+                  - country
+                initials:
+                  type: string
+                  description: The new initials for the policyholder. This replaces the policyholder's current initials.
+                title:
+                  type: string
+                  description: The policyholders's title.
+                  enum:
+                  - mr
+                  - mrs
+                  - miss
+                  - mx
+                  - sir
+                  - dr
+                  - adv
+                  - ms
+                  - prof
+                first_name:
+                  type: string
+                  description: A new first name for the policyholder. This replaces the policyholder's current first name.
+                middle_name:
+                  type: string
+                  description: The policyholder or primary contact's legal middle name.
+                last_name:
+                  type: string
+                  description: A new last name for the policyholder. This replaces the policyholder's current last name.
+                expiration_date:
+                  type: string
+                  format: date-time
+                  description: (Individual policyholders only) The expiration date of the policyholder's passport or custom identifier.
+                email:
+                  type: string
+                  description: A new contact email for the policyholder. This replaces the policyholder's current email address.
+                cellphone:
+                  oneOf:
+                  - $ref: '#/components/schemas/cellphone'
+                  - $ref: '#/components/schemas/cellphone-string'
+                phone_other:
+                  oneOf:
+                  - $ref: '#/components/schemas/cellphone'
+                  - $ref: '#/components/schemas/cellphone-string'
+                app_data:
+                  type:
+                  - object
+                  - 'null'
+                  description: '`null` is allowed. An object containing additional custom data for the policy holder.'
+                  additionalProperties: true
+                address:
+                  type:
+                  - object
+                  - 'null'
+                  description: '`null` is allowed. The policyholder''s physical address. See below for more details.'
+                  properties:
+                    line_1:
+                      type: string
+                      description: First line of the policyholder's address.
+                    line_2:
+                      type:
+                      - string
+                      - 'null'
+                      description: '`null` is allowed. Optional second line of the policyholder''s address.'
+                    suburb:
+                      type: string
+                      description: The policyholder's suburb.
+                    city:
+                      type: string
+                      description: The policyholder's city.
+                    country:
+                      type: string
+                      description: The policyholder's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format.
+                    area_code:
+                      type: string
+                      description: The policyholder's area code, must be 4 characters long when the policyholder's country code is ZA.
+                  required:
+                  - line_1
+                  - suburb
+                  - city
+                  - country
+                  - area_code
+            example:
+              id:
+                type: id
+                number: '6801015800084'
+                country: GB
+              cellphone: '+27821234567'
+              phone_other: '+27124101337'
+              email: erlich@piedpiper.com
+              app_data:
+                company: Pied Piper
+              address:
+                line_1: 5230 Penfield Avenue
+                suburb: Woodland Hills
+                city: Los Angeles
+                country: US
+                area_code: CA 91364
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/policyholder'
+              example:
+                policyholder_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                type: individual
+                initials: E
+                first_name: Erlich
+                last_name: Bachman
+                id:
+                  type: id
+                  number: '6801015800084'
+                  country: GB
+                date_of_birth: '19680101'
+                email: erlich@piedpiper.com
+                cellphone: '+27821234567'
+                phone_other: '+27124101337'
+                created_at: '2017-10-12T15:47:34.281Z'
+                app_data:
+                  company: Pied Piper
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+                address:
+                  line_1: 5230 Penfield Avenue
+                  suburb: Woodland Hills
+                  city: Los Angeles
+                  country: US
+                  area_code: CA 91364
+  /policyholders/{policyholder_id}/applications:
+    get:
+      operationId: fetch-policyholders-applications
+      summary: List policyholder's applications
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - name: policyholder_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/applications'
+              example:
+              - application_id: 59a10cb0-8f7a-4c7b-8deb-a863474891dd
+                policyholder_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                package_name: Theft + comprehensive
+                sum_assured: 1199900
+                monthly_premium: 50000
+                base_premium: 14999
+                module:
+                  type: root_gadgets
+                  make: Apple
+                  model: iPhone 6S 64GB LTE
+                  serial_number: '1234567890'
+                created_at: '2017-10-05T18:40:47.281Z'
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+                currency: ZAR
+                product_module_definition_id: 3c8112fc-5bf4-4d2c-ba25-361a76149ed2
+                billing_frequency: monthly
+                billing_month: null
+                billing_day: 1
+                status: active
+                type: null
+                beneficiaries:
+                - beneficiary_id: 15c0cba9-c579-45cc-bb9c-5cde4c79350c
+                  policyholder_id: bd72f916-6952-444c-9b33-3e29db5cbe8b
+                  percentage: 100
+                  relationship: policyholder
+                quote_package_id: 338b0dc9-6a78-4baa-bf73-239690e3e201
+                input_data: {}
+  /policyholders/{policyholder_id}/attachments:
+    get:
+      operationId: retrieve-policyholder-attachments
+      summary: List attachments
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: policyholder_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    file_name:
+                      type: string
+                    file_type:
+                      type: string
+                    file_url:
+                      type: string
+                    description:
+                      type: string
+                    created_at:
+                      type: string
+                    requested_by:
+                      type: object
+              example:
+              - file_name: report.pdf
+                file_type: text/csv
+                file_url: https://sandbox.root.co.za/v1/files/download/5ec09f8a-5ff9-11e8-99c9-63fa045d8a15/report.pdf
+                description: Police Report
+                created_at: '2018-05-25T08:55:27.600Z'
+                requested_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+    post:
+      operationId: policyholder-create-attachment
+      summary: Create an attachment
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: policyholder_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - file_name
+              - description
+              - file_base64
+              - file_type
+              properties:
+                file_name:
+                  type: string
+                  description: The name of the file (with file extension)
+                description:
+                  type: string
+                  description: A tag describing what the document is about (e.g. affidavit, etc.)
+                file_base64:
+                  type: string
+                  description: The raw file bytes encoded as a base 64 string. Limited to a maximum of 4 MB in size
+                file_type:
+                  type: string
+                  description: The mime type of the attachment (e.g. image/png)
+              example:
+                file_name: report.pdf
+                file_type: application/pdf
+                description: Police Report
+                file_base64: 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CmVuZG9iagoKOSAwIG9iago8PC9UeXBlL0ZvbnQvU3VidHlwZS9UcnVlVHlwZS9CYXNlRm9udC9CQUFBQUErQXJpYWwtQm9sZE1UCi9GaXJzdENoYXIgMAovTGFzdENoYXIgMTEKL1dpZHRoc1s3NTAgNzIyIDYxMCA4ODkgNTU2IDI3NyA2NjYgNjEwIDMzMyAyNzcgMjc3IDU1NiBdCi9Gb250RGVzY3JpcHRvciA3IDAgUgovVG9Vbmljb2RlIDggMCBSCj4+CmVuZG9iagoKMTAgMCBvYmoKPDwKL0YxIDkgMCBSCj4+CmVuZG9iagoKMTEgMCBvYmoKPDwvRm9udCAxMCAwIFIKL1Byb2NTZXRbL1BERi9UZXh0XT4+CmVuZG9iagoKMSAwIG9iago8PC9UeXBlL1BhZ2UvUGFyZW50IDQgMCBSL1Jlc291cmNlcyAxMSAwIFIvTWVkaWFCb3hbMCAwIDU5NSA4NDJdL0dyb3VwPDwvUy9UcmFuc3BhcmVuY3kvQ1MvRGV2aWNlUkdCL0kgdHJ1ZT4+L0NvbnRlbnRzIDIgMCBSPj4KZW5kb2JqCgoxMiAwIG9iago8PC9Db3VudCAxL0ZpcnN0IDEzIDAgUi9MYXN0IDEzIDAgUgo+PgplbmRvYmoKCjEzIDAgb2JqCjw8L1RpdGxlPEZFRkYwMDQ0MDA3NTAwNkQwMDZEMDA3OTAwMjAwMDUwMDA0NDAwNDYwMDIwMDA2NjAwNjkwMDZDMDA2NT4KL0Rlc3RbMSAwIFIvWFlaIDU2LjcgNzczLjMgMF0vUGFyZW50IDEyIDAgUj4+CmVuZG9iagoKNCAwIG9iago8PC9UeXBlL1BhZ2VzCi9SZXNvdXJjZXMgMTEgMCBSCi9NZWRpYUJveFsgMCAwIDU5NSA4NDIgXQovS2lkc1sgMSAwIFIgXQovQ291bnQgMT4+CmVuZG9iagoKMTQgMCBvYmoKPDwvVHlwZS9DYXRhbG9nL1BhZ2VzIDQgMCBSCi9PdXRsaW5lcyAxMiAwIFIKPj4KZW5kb2JqCgoxNSAwIG9iago8PC9BdXRob3I8RkVGRjAwNDUwMDc2MDA2MTAwNkUwMDY3MDA2NTAwNkMwMDZGMDA3MzAwMjAwMDU2MDA2QzAwNjEwMDYzMDA2ODAwNkYwMDY3MDA2OTAwNjEwMDZFMDA2RTAwNjkwMDczPgovQ3JlYXRvcjxGRUZGMDA1NzAwNzIwMDY5MDA3NDAwNjUwMDcyPgovUHJvZHVjZXI8RkVGRjAwNEYwMDcwMDA2NTAwNkUwMDRGMDA2NjAwNjYwMDY5MDA2MzAwNjUwMDJFMDA2RjAwNzIwMDY3MDAyMDAwMzIwMDJFMDAzMT4KL0NyZWF0aW9uRGF0ZShEOjIwMDcwMjIzMTc1NjM3KzAyJzAwJyk+PgplbmRvYmoKCnhyZWYKMCAxNgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMTE5OTcgMDAwMDAgbiAKMDAwMDAwMDAxOSAwMDAwMCBuIAowMDAwMDAwMjI0IDAwMDAwIG4gCjAwMDAwMTIzMzAgMDAwMDAgbiAKMDAwMDAwMDI0NCAwMDAwMCBuIAowMDAwMDExMTU0IDAwMDAwIG4gCjAwMDAwMTExNzYgMDAwMDAgbiAKMDAwMDAxMTM2OCAwMDAwMCBuIAowMDAwMDExNzA5IDAwMDAwIG4gCjAwMDAwMTE5MTAgMDAwMDAgbiAKMDAwMDAxMTk0MyAwMDAwMCBuIAowMDAwMDEyMTQwIDAwMDAwIG4gCjAwMDAwMTIxOTYgMDAwMDAgbiAKMDAwMDAxMjQyOSAwMDAwMCBuIAowMDAwMDEyNDk0IDAwMDAwIG4gCnRyYWlsZXIKPDwvU2l6ZSAxNi9Sb290IDE0IDAgUgovSW5mbyAxNSAwIFIKL0lEIFsgPEY3RDc3QjNEMjJCOUY5MjgyOUQ0OUZGNUQ3OEI4RjI4Pgo8RjdENzdCM0QyMkI5RjkyODI5RDQ5RkY1RDc4QjhGMjg+IF0KPj4Kc3RhcnR4cmVmCjEyNzg3CiUlRU9GCg==
+            example:
+              file_name: report.pdf
+              file_type: application/pdf
+              description: Police Report
+              file_base64: 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CmVuZG9iagoKOSAwIG9iago8PC9UeXBlL0ZvbnQvU3VidHlwZS9UcnVlVHlwZS9CYXNlRm9udC9CQUFBQUErQXJpYWwtQm9sZE1UCi9GaXJzdENoYXIgMAovTGFzdENoYXIgMTEKL1dpZHRoc1s3NTAgNzIyIDYxMCA4ODkgNTU2IDI3NyA2NjYgNjEwIDMzMyAyNzcgMjc3IDU1NiBdCi9Gb250RGVzY3JpcHRvciA3IDAgUgovVG9Vbmljb2RlIDggMCBSCj4+CmVuZG9iagoKMTAgMCBvYmoKPDwKL0YxIDkgMCBSCj4+CmVuZG9iagoKMTEgMCBvYmoKPDwvRm9udCAxMCAwIFIKL1Byb2NTZXRbL1BERi9UZXh0XT4+CmVuZG9iagoKMSAwIG9iago8PC9UeXBlL1BhZ2UvUGFyZW50IDQgMCBSL1Jlc291cmNlcyAxMSAwIFIvTWVkaWFCb3hbMCAwIDU5NSA4NDJdL0dyb3VwPDwvUy9UcmFuc3BhcmVuY3kvQ1MvRGV2aWNlUkdCL0kgdHJ1ZT4+L0NvbnRlbnRzIDIgMCBSPj4KZW5kb2JqCgoxMiAwIG9iago8PC9Db3VudCAxL0ZpcnN0IDEzIDAgUi9MYXN0IDEzIDAgUgo+PgplbmRvYmoKCjEzIDAgb2JqCjw8L1RpdGxlPEZFRkYwMDQ0MDA3NTAwNkQwMDZEMDA3OTAwMjAwMDUwMDA0NDAwNDYwMDIwMDA2NjAwNjkwMDZDMDA2NT4KL0Rlc3RbMSAwIFIvWFlaIDU2LjcgNzczLjMgMF0vUGFyZW50IDEyIDAgUj4+CmVuZG9iagoKNCAwIG9iago8PC9UeXBlL1BhZ2VzCi9SZXNvdXJjZXMgMTEgMCBSCi9NZWRpYUJveFsgMCAwIDU5NSA4NDIgXQovS2lkc1sgMSAwIFIgXQovQ291bnQgMT4+CmVuZG9iagoKMTQgMCBvYmoKPDwvVHlwZS9DYXRhbG9nL1BhZ2VzIDQgMCBSCi9PdXRsaW5lcyAxMiAwIFIKPj4KZW5kb2JqCgoxNSAwIG9iago8PC9BdXRob3I8RkVGRjAwNDUwMDc2MDA2MTAwNkUwMDY3MDA2NTAwNkMwMDZGMDA3MzAwMjAwMDU2MDA2QzAwNjEwMDYzMDA2ODAwNkYwMDY3MDA2OTAwNjEwMDZFMDA2RTAwNjkwMDczPgovQ3JlYXRvcjxGRUZGMDA1NzAwNzIwMDY5MDA3NDAwNjUwMDcyPgovUHJvZHVjZXI8RkVGRjAwNEYwMDcwMDA2NTAwNkUwMDRGMDA2NjAwNjYwMDY5MDA2MzAwNjUwMDJFMDA2RjAwNzIwMDY3MDAyMDAwMzIwMDJFMDAzMT4KL0NyZWF0aW9uRGF0ZShEOjIwMDcwMjIzMTc1NjM3KzAyJzAwJyk+PgplbmRvYmoKCnhyZWYKMCAxNgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMTE5OTcgMDAwMDAgbiAKMDAwMDAwMDAxOSAwMDAwMCBuIAowMDAwMDAwMjI0IDAwMDAwIG4gCjAwMDAwMTIzMzAgMDAwMDAgbiAKMDAwMDAwMDI0NCAwMDAwMCBuIAowMDAwMDExMTU0IDAwMDAwIG4gCjAwMDAwMTExNzYgMDAwMDAgbiAKMDAwMDAxMTM2OCAwMDAwMCBuIAowMDAwMDExNzA5IDAwMDAwIG4gCjAwMDAwMTE5MTAgMDAwMDAgbiAKMDAwMDAxMTk0MyAwMDAwMCBuIAowMDAwMDEyMTQwIDAwMDAwIG4gCjAwMDAwMTIxOTYgMDAwMDAgbiAKMDAwMDAxMjQyOSAwMDAwMCBuIAowMDAwMDEyNDk0IDAwMDAwIG4gCnRyYWlsZXIKPDwvU2l6ZSAxNi9Sb290IDE0IDAgUgovSW5mbyAxNSAwIFIKL0lEIFsgPEY3RDc3QjNEMjJCOUY5MjgyOUQ0OUZGNUQ3OEI4RjI4Pgo8RjdENzdCM0QyMkI5RjkyODI5RDQ5RkY1RDc4QjhGMjg+IF0KPj4Kc3RhcnR4cmVmCjEyNzg3CiUlRU9GCg==
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/attachment'
+              example:
+                file_name: report.pdf
+                file_type: application/pdf
+                file_url: http://yoururlhere/report.pdf
+                description: Police Report
+                type: attachment_created
+                policyholder_id: 00000000-0000-0000-0000-000000000001
+                created_at: '2022-01-31T11:25:23.427Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+  /policyholders/{policyholder_id}/notes:
+    get:
+      operationId: fetch-policyholder-notes
+      summary: List notes
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: policyholder_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                    created_at:
+                      type: object
+                    requested_by:
+                      type: object
+              example:
+              - text: Customer spoke to Erlich previously
+                created_at: '2018-05-25T08:51:20.317Z'
+                requested_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+    post:
+      operationId: policyholder-add-note
+      summary: Add a note
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: policyholder_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - text
+              properties:
+                text:
+                  type: string
+                  description: A string of text for the note.
+              example:
+                text: Customer spoke to Erlich previously
+            example:
+              text: Customer spoke to Erlich previously
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/note'
+              example:
+                text: Customer spoke to Erlich previously
+                type: text_note_created
+                policyholder_id: 00000000-0000-0000-0000-000000000001
+                created_at: '2022-10-16T10:12:02.872Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+  /policyholders/{policyholder_id}/payment-methods:
+    get:
+      operationId: fetch-policyholder-payment-methods
+      summary: List policyholder payment methods
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Payment methods
+      parameters:
+      - name: policyholder_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder).
+        required: true
+        schema:
+          type: string
+          example: :policyholder_id
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    payment_method_id:
+                      type: string
+                    type:
+                      type: string
+                    bank_details:
+                      type: object
+              example:
+              - payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+                type: debit_order
+                bank_details:
+                  first_name: Erlich
+                  last_name: Bachman
+                  bank: absa
+                  branch_code: '12345'
+                  account_number: '123456789'
+                  banv_response:
+                    account_number: '0000000000000'
+                    flags: N
+                    id_number: '8902165145086'
+                    initials: s
+                    name: dube
+                    reference: 58196226-b9a1-4b8d-82bb-3ea5322790e2
+                    result: A/c doesn't exist
+    post:
+      operationId: create-policyholder-payment-method
+      summary: Create payment method
+      description: Create a payment method. Read more about [payment methods](doc:billing-settings#payment-method-types).
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Payment methods
+      parameters:
+      - name: policyholder_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder).
+        required: true
+        schema:
+          type: string
+          example: f91f4ea4-9c6d-459e-998b-a5711cbd8895
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - type
+              properties:
+                type:
+                  type: string
+                  description: The payment method type. `debit_order`, `card`, `eft`, `collection_module`, or a custom key for external payment methods.
+                payment_method_key:
+                  type: string
+                  description: The key of an external payment method type. Use this for external payment methods instead of `type`.
+                collection_module_key:
+                  type: string
+                  description: The key of the collection module to use. Required if `type` is `collection_module`.
+                data:
+                  type: object
+                  description: Custom data for collection module payment methods. Required if `type` is `collection_module`.
+                  additionalProperties: true
+                payment_method_config_id:
+                  type: string
+                  description: Must be a UUID. The unique identifier of the payment method configuration to use. Only relevant when Direct Billing Config feature is enabled.
+                bank_details:
+                  type: object
+                  description: Required if `type` is `debit_order`. Bank details to use for the debit order.
+                  properties:
+                    account_holder:
+                      type: string
+                      description: Name of account holder.
+                    account_holder_identification:
+                      type:
+                      - object
+                      - 'null'
+                      description: '`null` is allowed. An object containing identification details of the account holder. Attributes include "type" (_string_ - either ''id'' or ''passport''), "number" (_string_), "country" (_string_), and optional "expiration_date" (_datetime_).'
+                    bank:
+                      $ref: '#/components/schemas/bank-name'
+                    branch_code:
+                      type: string
+                      description: Branch code for bank account.
+                    account_number:
+                      type: string
+                      description: Bank account number.
+                    account_type:
+                      type: string
+                      description: Bank account type - either `cheque` or `savings`.
+                  required:
+                  - account_holder
+                  - bank
+                  - branch_code
+                  - account_number
+                  - account_type
+                card_details:
+                  type: object
+                  description: Required if `type` is `card`. Cards details to use for the card payment.
+                  properties:
+                    registration_id:
+                      type: string
+                      description: External reference token identifier for the card.
+                    bin:
+                      type: string
+                      description: Card BIN number.
+                    holder:
+                      type: string
+                      description: First & last name on the card.
+                    brand:
+                      type: string
+                      description: The card network. "visa" "mastercard" "discover" "americanExpress"
+                    expiry_year:
+                      type: string
+                      description: The expiration year of the card.
+                    expiry_month:
+                      type: string
+                      description: The expiration month of the card.
+                    last_4_digits:
+                      type: string
+                      description: The last four digits of the card number.
+                    raw_status:
+                      type: object
+                      description: Raw request JSON object.
+                  required:
+                  - registration_id
+                policy_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: An optional list of policy ids (each must be a UUID) to which the payment method should be assigned.
+                external_reference:
+                  type: string
+                  description: An optional external reference linked to the payment method. Relevant for `debit_order` and external payment methods.
+                application_id:
+                  type: string
+                  description: Must be a UUID. An optional application id to which the payment method should be assigned.
+                billing_day:
+                  type: integer
+                  description: Only specify the billing_day when providing policy_ids otherwise it will have no effect. If any of the provided policy_ids belong to once-off or group policies, specifying a billing_day will cause the request to fail. For once-off policies, collection requests are automatically initiated upon payment method assignment, not on specified billing days. Additionally, billing day updates are not allowed for group policies.
+            examples:
+              debit_order:
+                summary: Debit order
+                value:
+                  type: debit_order
+                  bank_details:
+                    account_holder: Erlich Bachman
+                    account_holder_identification:
+                      type: id
+                      number: '7701014800086'
+                      country: ZA
+                    bank: absa
+                    branch_code: '12345'
+                    account_number: '123456789'
+                    account_type: cheque
+                  policy_ids:
+                  - 9e0c897f-bc68-4225-b13a-57599062ea0a
+                  billing_day: 23
+              eft:
+                summary: EFT
+                value:
+                  type: eft
+                  policy_ids:
+                  - 9e0c897f-bc68-4225-b13a-57599062ea0a
+              collection_module:
+                summary: Collection module
+                value:
+                  type: collection_module
+                  collection_module_key: my_collection_module
+                  data:
+                    customer_id: CUST-12345
+                    account_reference: ACC-67890
+                  policy_ids:
+                  - 9e0c897f-bc68-4225-b13a-57599062ea0a
+              external:
+                summary: External payment method
+                value:
+                  payment_method_key: my_external_payment_method
+                  external_reference: EXT-REF-12345
+                  policy_ids:
+                  - 9e0c897f-bc68-4225-b13a-57599062ea0a
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-method'
+              examples:
+                debit_order:
+                  summary: Debit order
+                  value:
+                    payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+                    type: debit_order
+                    bank_details:
+                      account_holder: Erlich Bachman
+                      account_holder_identification:
+                        type: id
+                        number: '7701014800086'
+                        country: ZA
+                      bank: absa
+                      branch_code: '12345'
+                      account_number: '123456789'
+                      account_type: cheque
+                      banv_status: pending
+                card:
+                  summary: Card
+                  value:
+                    payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+                    type: card
+                    card:
+                      bin: 217339
+                      holder: NB FLOOR
+                      brand: VISA
+                      expiry_month: 09
+                      expiry_year: '2025'
+                      last_4_digits: '9766'
+                eft:
+                  summary: EFT
+                  value:
+                    payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+                    type: eft
+  /policyholders/{policyholder_id}/policies:
+    get:
+      operationId: fetch-policyholders-policies
+      summary: List policyholder's policies
+      tags:
+      - Policyholders
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - name: policyholder_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/policies'
+              example:
+              - policy_id: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+                policy_number: 1HFCT1CDBJ
+                policyholder_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                status: active
+                package_name: Theft + comprehensive
+                sum_assured: 1199900
+                base_premium: 14999
+                monthly_premium: 50000
+                billing_amount: 45000
+                beneficiaries: []
+                start_date: '2017-10-05T00:00:00.000Z'
+                end_date: '2018-10-05T00:00:00.000Z'
+                policy_schedule_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/schedule/schedule_latest.pdf
+                terms_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/terms/terms.pdf
+                schedule_versions:
+                - version: 1
+                  created_at: '2017-10-05T18:40:47.281Z'
+                created_at: '2017-10-05T18:40:47.281Z'
+                module:
+                  type: root_gadgets
+                  make: Apple
+                  model: iPhone 6S 64GB LTE
+                  serial_number: '1234567890'
+                app_data:
+                  gadget_colour: Space Grey
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+                scheme_type: individual
+components:
+  schemas:
+    beneficiaries:
+      type: array
+      description: '`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some product modules may require adding beneficiaries to a policy for claims to be processed.'
+      items:
+        type: object
+        description: Details for a single beneficiary.
+        required:
+        - beneficiary_id
+        - relationship
+        - percentage
+        properties:
+          beneficiary_id:
+            type: string
+            description: Must be a UUID. The unique identifier of the beneficiary.
+          policyholder_id:
+            type: string
+            description: Must be a UUID. The unique identifier of the policyholder. Only relevant if `relationship` is `policyholder`.
+          type:
+            type: string
+            description: The type of beneficiary.
+            enum:
+            - individual
+            - company
+            default: individual
+          first_name:
+            type: string
+            description: The beneficiary's first name.
+          last_name:
+            type: string
+            description: The beneficiary's last name.
+          title:
+            type: string
+            description: The beneficiary's title.
+            enum:
+            - mr
+            - mrs
+            - miss
+            - mx
+            - sir
+            - dr
+            - adv
+            - ms
+            - prof
+          gender:
+            type: string
+            description: The beneficiary's gender.
+            enum:
+            - male
+            - female
+          id:
+            type: object
+            description: (Individual beneficiaries only) The beneficiary's identification number, type and country.
+            properties:
+              type:
+                type: string
+                description: The beneficiary's identification type.
+                enum:
+                - id
+                - passport
+                - custom
+              number:
+                type: string
+                description: Depending on the type selected, either an ID number, passport number or custom identifier.
+              country:
+                type: string
+                description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`.
+            required:
+            - type
+            - number
+            - country
+          date_of_birth:
+            type:
+            - string
+            - 'null'
+            format: date
+            description: '`null` is allowed. The beneficiary''s date of birth.'
+          percentage:
+            type: integer
+            description: An integer representing the percentage of a claim payout that the beneficiary should receive. Note that the percentages across all beneficiaries should add up to 100%.
+          cellphone:
+            $ref: '#/components/schemas/cellphone-string'
+          email:
+            type: string
+            description: The beneficiary's email address.
+          relationship:
+            $ref: '#/components/schemas/beneficiary-relationship'
+          company_name:
+            type: string
+            description: The name of the company that the beneficiary represents. Required when `type = company`.
+          registration_number:
+            type: string
+            description: The company's registration number. Required when `type = company`.
+          payment_details:
+            $ref: '#/components/schemas/payment-details'
+        example:
+          first_name: Jared
+          last_name: Dunn
+          id:
+            type: id
+            number: '8704094800082'
+            country: ZA
+          percentage: 100
+          relationship: cousin_or_relative
+      example:
+      - first_name: Jared
+        last_name: Dunn
+        id:
+          type: id
+          number: '8704094800082'
+          country: ZA
+        percentage: 100
+        relationship: cousin_or_relative
+    policy:
+      type: object
+      description: Policies are issued from applications, and represent binding insurance agreements. Parameters stored on the policy can be referenced in custom notifications, policy documents, data exports and external integrations. <br/><br/> See the [issuing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook) guide for more details.
+      required:
+      - policy_id
+      - policy_number
+      - status
+      - policyholder_id
+      - package_name
+      - monthly_premium
+      - billing_amount
+      - balance
+      - currency
+      - billing_day
+      - billing_frequency
+      - next_billing_date
+      - covered_people
+      - base_premium
+      - claim_ids
+      - complaint_ids
+      - start_date
+      - end_date
+      - policy_schedule_uri
+      - terms_uri
+      - schedule_versions
+      - created_at
+      - module
+      - app_data
+      - created_by
+      - scheme_type
+      - charges
+      - supplementary_terms_files
+      properties:
+        policy_id:
+          type: string
+          description: Must be a UUID. Object ID of the policy.
+        policy_number:
+          type: string
+          description: A shorter, human-readable policy identifier. This typically used in policy documents and customer notifications for ease of reference.
+        status:
+          $ref: '#/components/schemas/policy-status'
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The system identifier of the policy's policyholder.
+        package_name:
+          type: string
+          description: The insurance package name.
+        sum_assured:
+          type: integer
+          description: The amount, in cents, of the maximum value insured.
+        monthly_premium:
+          type: integer
+          description: The total monthly premium, in cents, that will be billed to the policyholder.
+        billing_amount:
+          type: integer
+          description: The amount, in cents, that will be billed on the next billing run.
+        balance:
+          type: integer
+          description: The amount, in cents, that is owed on the policy. If the policyholder makes an adhoc payment to the policy, the amount is credited to this balance. If the policyholder defaults on a payment, it is subtracted from the balance. If the balance is found negative during the next billing run, the amount is added to the monthly premium, else the monthly premium is subtracted from the balance and the remainder is charged.
+        billing_day:
+          type:
+          - integer
+          - 'null'
+          description: '`null` is allowed. The day of month on which the policy is billed. Should be between 1 and 31, or `null`. If it falls on a day that does not exist in the month (for example, 31 in February) the policy will be billed on the last day of the month. Setting this value to 31 will ensure that the policy is billed on the last day of every month.'
+        billing_frequency:
+          type: string
+          description: The frequency at which the policy is billed. One of [`monthly`, `yearly`, `once_off`]. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency.
+        next_billing_date:
+          type: string
+          format: date-time
+          description: The next date the policy is due to be billed.
+        currency:
+          type: string
+          description: The currency code of the policy.
+        beneficiaries:
+          description: An array of beneficiaries, or "null".
+          oneOf:
+          - $ref: '#/components/schemas/beneficiaries'
+          - type: 'null'
+        covered_people:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+          description: '`null` is allowed. An array of covered people added to the policy.'
+        base_premium:
+          type: integer
+          description: The amount, in cents, of the minimum allowed monthly premium fee. This includes risk pricing and platform fees.
+        claim_ids:
+          type: array
+          items:
+            type: string
+          description: An array of claim ids of the claims linked to the policy.
+        complaint_ids:
+          type: array
+          items:
+            type: string
+          description: An array of complaint ids of the complaints linked to the policy.
+        start_date:
+          type: string
+          format: date-time
+          description: Once the policy reaches its start date, cover commences and regular collection attempts can run against the policy (provided it has an `active` status). See the [Managing policies](https://docs.rootplatform.com/docs/policy-administration#policy-lifecycle) guide for more details on the policy lifecycle.
+        end_date:
+          type: string
+          format: date-time
+          description: When the policy reaches its end date, its status will change to `expired`. Cover and collections will cease. Policies with no end date do not expire.
+        current_version:
+          type:
+          - integer
+          - 'null'
+          description: '`null` is allowed. The current policy schedule version.'
+        schedule_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Object ID of the policy document.'
+        policy_schedule_uri:
+          type:
+          - string
+          - 'null'
+          description: URI to the policy document in PDF format.
+        terms_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Attachment ID of the policy terms document.'
+        terms_uri:
+          type:
+          - string
+          - 'null'
+          description: URI to the terms document in PDF format.
+        supplementary_terms_files:
+          type: array
+          description: Supplementary terms files associated with the policy.
+          items:
+            type: object
+            properties:
+              supplementary_terms_file_id:
+                type: string
+                description: Attachment ID of the supplementary terms document.
+              type:
+                type: string
+                description: The supplementary terms file type, as specified in the product module settings.
+              uri:
+                type: string
+                description: URI to the supplementary terms document in PDF format.
+        policy_welcome_letter_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Object ID of the welcome letter.'
+        policy_welcome_letter_uri:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. URI to the welcome letter in PDF format.'
+        policy_certificate_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Object ID of the policy certificate.'
+        policy_certificate_uri:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. URI to the certificate in PDF format.'
+        policy_anniversary_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Object ID of the policy anniversary document.'
+        schedule_versions:
+          type: array
+          items:
+            type: object
+            properties:
+              version:
+                type: integer
+                description: The policy schedule version number.
+              created_at:
+                type: string
+                format: date-time
+                description: The date the policy schedule version was created.
+          description: The policy schedule versions for the policy. A new policy schedule version is typically created when the policy is updated.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the policy was created.
+        module:
+          type: object
+          description: Custom, product-specific fields stored against the policy. These parameters are set in the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook) in the product module code. They can be referenced in policy documents, data exports and external integrations.
+          additionalProperties: true
+        restricted_data:
+          type: object
+          description: Optional restricted product-specific information saved to the policy. This field is only returned when the requestee has access to restricted policy module data.
+          additionalProperties: true
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the policy.'
+          additionalProperties: true
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the policy.'
+        scheme_type:
+          type: string
+          description: Indicates the policy scheme type, being either `individual` or `group`.
+        payment_method_id:
+          type: string
+          description: Must be a UUID. The ID of the policy's payment method, if set.
+        status_updated_at:
+          type: string
+          format: date-time
+          description: Date indicating when the policy status was last updated.
+        charges:
+          type: array
+          description: Whenever a premium payment is created (including reversals), a breakdown of the payment amount is calculated according to the charges stored on the policy. This allows the premium breakdown to be referenced in policy documents and disclosures, and in the policy's payment data. See the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook#charges-and-commissions) guide for more details on charges and commissions.
+          items:
+            type: object
+            required:
+            - type
+            - name
+            properties:
+              type:
+                $ref: '#/components/schemas/payment-charge-type'
+              name:
+                type: string
+                description: The name of the charge.
+              description:
+                type: string
+                description: The description of the charge.
+              amount:
+                type: integer
+                description: The charged amount. Required when type is `fixed` or `variable`. Either a proportion of the total premium (if `type` is `variable`), or a currency amount in cents (if `type` is `fixed`).
+      example:
+        policy_id: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+        policy_number: 1HFCT1CDBJ
+        policyholder_id: bf3ab7ce-064d-43b7-811d-0ecd9aca3daf
+        status: active
+        package_name: Theft + comprehensive
+        sum_assured: 1199900
+        base_premium: 14999
+        monthly_premium: 50000
+        balance: 0
+        currency: ZAR
+        billing_amount: 50000
+        billing_day: 1
+        billing_frequency: monthly
+        covered_people: []
+        start_date: '2017-10-05T00:00:00.000Z'
+        end_date: '2018-10-05T00:00:00.000Z'
+        current_version: 1
+        schedule_file_id: c85f1d4e-f09b-11ed-a05b-0242ac120003
+        policy_schedule_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/schedule/schedule_latest.pdf
+        terms_file_id: 68c8b6e6-f484-11ed-a05b-0242ac120003
+        terms_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/terms/terms.pdf
+        supplementary_terms_files:
+        - supplementary_terms_file_id: c414342a-7ea4-4a16-be68-d152aa5fce68
+          type: client-conduct
+          uri: https://sandbox.root.co.za/v1/files/download/a7bc326f-640e-4b43-9909-7a6c8be17e37
+        policy_welcome_letter_file_id: d0864e70-f09b-11ed-a05b-0242ac120003
+        policy_welcome_letter_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/welcome-letter/welcome_letter.pdf
+        policy_certificate_file_id: 1e527606-f09c-11ed-a05b-0242ac120003
+        policy_certificate_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/certificate/certificate.pdf
+        policy_anniversary_file_id: 7e6d32c4-f484-11ed-a05b-0242ac120003
+        schedule_versions:
+        - version: 1
+          created_at: '2017-10-05T18:40:47.281Z'
+        created_at: '2017-10-05T18:40:47.281Z'
+        module:
+          type: root_gadgets
+          make: Apple
+          model: iPhone 6S 64GB LTE
+          serial_number: '1234567890'
+        restricted_data:
+          internal_commission_bps: 1500
+        app_data:
+          gadget_colour: Space Grey
+        created_by:
+          id: 00000000-0000-0000-0000-000000000001
+          type: user
+        scheme_type: individual
+        payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+        charges: []
+        beneficiaries:
+        - first_name: Jared
+          last_name: Dunn
+          id:
+            type: id
+            number: '8704094800082'
+            country: ZA
+          percentage: 100
+          relationship: cousin_or_relative
+    application:
+      type: object
+      description: An application represents a "draft" policy, with all information captured and validated. Applications persist on Root (they do not expire), and can be reviewed and managed on the Root management dashboard. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [application hook](https://docs.rootplatform.com/docs/application-hook) guide for more details.
+      required:
+      - application_id
+      - policyholder_id
+      - product_module_definition_id
+      - status
+      - package_name
+      - sum_assured
+      - base_premium
+      - monthly_premium
+      - module
+      - created_at
+      - created_by
+      - billing_day
+      properties:
+        application_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the application.
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the policyholder linked to the application.
+        product_module_definition_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the product module definition associated with the application. Determined by the product module definition associated with the quote from which the application was created.
+        status:
+          description: The status of the application. One of `pending`, `issued`, or `cancelled`.
+          type: string
+          enum:
+          - pending
+          - issued
+          - cancelled
+        package_name:
+          type: string
+          description: The package name.
+        sum_assured:
+          type: integer
+          description: The maximum insured value in cents.
+        base_premium:
+          type: integer
+          description: The combined risk and platform fee in cents. `monthly_premium` is calculated from this.
+        monthly_premium:
+          type: integer
+          description: The total monthly premium, in cents, of the application. This is the total premium that will be billed to the policyholder after the policy is issued.
+        module:
+          type: object
+          description: Custom, product-specific information saved to the application for later reference. These parameters are set in the [application hook](https://docs.rootplatform.com/docs/application-hook) in the product module code.
+          additionalProperties: true
+        restricted_data:
+          type: object
+          description: Optional restricted product-specific information saved to the application. This field is only returned when the requestee has access to restricted application module data.
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          description: The date at which the quote package was created..
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the application.'
+        billing_day:
+          type:
+          - integer
+          - 'null'
+          description: '`null` is allowed. The day of month on which the policy to write will be billed on. Should be between 1 and 31, or `null`. If it falls on a day that does not exist in the month (for example, 31 in February) the policy to be written will be billed on the last day of that month. Setting this value to 31 will ensure that the policy to be written will be billed on the last day of every month.'
+        currency:
+          type: string
+          description: The currency used for the quote package, in [ISO 4217] (https://en.wikipedia.org/wiki/ISO_4217) format.
+        billing_frequency:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          - once_off
+          description: The frequency at which the policy will be billed. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency.
+        beneficiaries:
+          $ref: '#/components/schemas/beneficiaries'
+        input_data:
+          type:
+          - object
+          - 'null'
+          description: Application input parameters as received over the [create an application](https://docs.rootplatform.com/reference/create-an-application) endpoint.
+          additionalProperties: true
+        payment_method_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the payment method linked to the application.
+        type:
+          type: string
+          description: The type of the application. One of `requote` or `new_policy`.
+          enum:
+          - requote
+          - new_policy
+        quote_package_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the quote package from which the application was created.
+        policy:
+          $ref: '#/components/schemas/policy'
+          description: The policy object linked to the application. Only included when `?include=policy` is specified.
+        policyholder:
+          $ref: '#/components/schemas/policyholder'
+          description: The policyholder object linked to the application. Only included when `?include=policyholder` is specified.
+        quote_package:
+          $ref: '#/components/schemas/quote-package'
+          description: The quote package object from which the application was created. Only included when `?include=quote_package` is specified.
+        cancelled_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the application was cancelled, if applicable.
+        reason_cancelled:
+          type:
+          - string
+          - 'null'
+          description: Reason the application was cancelled.
+        cancellation_requestor:
+          type:
+          - string
+          - 'null'
+          description: Whether the customer (`client`) or insurer (`insurer`) initiated cancellation.
+        cancellation_type:
+          type:
+          - string
+          - 'null'
+          description: Cancellation reason code. Defaults are platform-defined; a product module may override allowed values when configured.
+      example:
+        application_id: 02e2ce3b-a235-48ea-8415-c58440f631bd
+        policyholder_id: 246ee082-9f88-44b7-b51c-22a1f1a9a19e
+        payment_method_id: 7c3e8f2a-1d4b-5e6f-9a0b-c1d2e3f4a5b6
+        package_name: Theft + comprehensive
+        sum_assured: 1199900
+        monthly_premium: 16999
+        base_premium: 16999
+        module:
+          make: Apple
+          type: root_gadgets
+          model: iPhone 6S 64GB LTE
+          serial_number: 0123456789
+        restricted_data:
+          underwriting_score: 85
+        created_at: '2023-02-03T11:17:49.009Z'
+        created_by:
+          type: api_key
+          id: b6565862-cc6e-4563-85d3-659894338cda
+          owner_id: e17f06ce-2a6a-4864-b826-19a83270eab4
+        currency: ZAR
+        product_module_definition_id: 4889a9e0-d5f9-4971-8ac2-2175a9d15477
+        billing_frequency: monthly
+        billing_day: 1
+        status: pending
+        type: new_policy
+        beneficiaries:
+        - beneficiary_id: cd444567-10d5-47f5-a0cc-34e262266359
+          policyholder_id: 246ee082-9f88-44b7-b51c-22a1f1a9a19e
+          percentage: 100
+          relationship: policyholder
+        quote_package_id: 3822b8fb-43e7-43f7-94ad-63e94e6ce1e3
+    beneficiary-relationship:
+      type: string
+      description: The beneficiary's relationship to the policyholder.
+      enum:
+      - main_member
+      - spouse
+      - parent
+      - son
+      - daughter
+      - aunt_or_uncle
+      - grandparent
+      - cousin_or_relative
+      - brother
+      - sister
+      - employer
+      - policyholder
+      - credit_provider
+      - cessionary
+      - estate
+      - trust
+      - guardian_fund
+      - funeral_parlour
+      - son_in_law
+      - daughter_in_law
+      - mother_in_law
+      - father_in_law
+      - grandchild
+      - niece_or_nephew
+      - other
+    note:
+      type: object
+      required:
+      - text
+      - created_at
+      properties:
+        text:
+          type: string
+          description: A string of text for the note.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the attachment was created.
+      example:
+        text: Customer spoke to Erlich previously
+        created_at: '2022-10-16T10:12:02.872Z'
+        requested_by:
+          type: user
+          id: 00000000-0000-0000-0000-000000000001
+    cellphone:
+      type:
+      - object
+      - 'null'
+      description: '`null` and `""` allowed. Object containing the cellphone number in national format, and the corresponding alpha 2 country code.'
+      properties:
+        number:
+          type: string
+          description: The cellphone number.
+        country:
+          type: string
+          description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the cellphone number.
+      required:
+      - number
+      - country
+      example:
+        number: 0821234567
+        country: ZA
+    policy-status:
+      type: string
+      description: The policy status. See the [managing policies](https://docs.rootplatform.com/docs/policy-administration#policy-lifecycle) guide for more details on the policy lifecycle.
+      enum:
+      - pending_initial_payment
+      - active
+      - cancelled
+      - expired
+      - lapsed
+      - not_taken_up
+    policyholder:
+      type: object
+      required:
+      - policyholder_id
+      - type
+      - id
+      - first_name
+      - last_name
+      - policy_ids
+      - created_at
+      - app_data
+      - created_by
+      properties:
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the policyholder.
+        type:
+          type: string
+          description: The policyholder type.
+          enum:
+          - individual
+          - company
+        id:
+          type: object
+          description: (Individual policyholders only) Object containing policyholder's identification information.
+          properties:
+            type:
+              type: string
+              description: The id type of the policyholder.
+              enum:
+              - id
+              - passport
+              - email
+              - cellphone
+              - custom
+            number:
+              type: string
+              description: The ID or passport number.
+            country:
+              type: string
+              description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the id/passport number.
+            expiration_date:
+              type: string
+              format: date-time
+              description: (Individual policyholders only) The expiration date of the policyholder's passport.
+          required:
+          - type
+          - number
+          - country
+        title:
+          type: string
+          description: The policyholders's title.
+          enum:
+          - mr
+          - mrs
+          - miss
+          - mx
+          - sir
+          - dr
+          - adv
+          - ms
+          - prof
+        date_of_birth:
+          type: string
+          description: (Individual policyholders only) The policyholder's date of birth in the format YYYYMMDD.
+        gender:
+          type: string
+          description: Null is allowed. (Individual policyholders only) The policyholder's gender.
+          enum:
+          - male
+          - female
+        initials:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The policyholder or primary contact''s initials.'
+        first_name:
+          type: string
+          description: The policyholder or primary contact's legal first name.
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The policyholder or primary contact''s legal middle name.'
+        last_name:
+          type: string
+          description: The policyholder or primary contact's legal last name.
+        company_name:
+          type: string
+          description: (Company policyholders only) The name of the company that the policyholder represents.
+        registration_number:
+          type: string
+          description: (Company policyholders only) The company's registration number.
+        date_of_establishment:
+          type: string
+          description: (Company policyholders only) The company's date of establishment in the format YYYYMMDD.
+        company_website_url:
+          type: string
+          description: (Company policyholders only) The company's website URL.
+        contact_position:
+          type: string
+          description: (Company policyholders only) The position or role of the primary contact at the company.
+        subsidiary_companies:
+          type: array
+          items:
+            type: string
+          description: (Company policyholders only) An array of subsidiary company names.
+        email:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The policyholder or primary contact''s contact email address.'
+        cellphone:
+          $ref: '#/components/schemas/cellphone-string'
+        phone_other:
+          $ref: '#/components/schemas/cellphone-string'
+        policy_ids:
+          type: array
+          items:
+            type: string
+          description: An array of ids of the policies linked to this policyholder.
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/policy'
+          description: An array of full [policy objects](#policy) owned by the policyholder. This is currently only included when [fetching all policyholders](#list-all-policyholders) or [fetching an individual policyholder](#retrieve-a-policyholder) with `?include=policies`.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the policyholder was created.
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the policy holder.'
+          additionalProperties: true
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the policyholder. See [Authentication](#client-apps).'
+        updated_at:
+          type: string
+          format: date-time
+          description: The time at which the policyholder was last updated.
+        address:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. The policyholder''s physical address. See below for more details.'
+          properties:
+            line_1:
+              type: string
+              description: First line of the policyholder's address.
+            line_2:
+              type:
+              - string
+              - 'null'
+              description: '`null` is allowed. Optional second line of the policyholder''s address.'
+            suburb:
+              type: string
+              description: The policyholder's suburb.
+            city:
+              type: string
+              description: The policyholder's city.
+            country:
+              type: string
+              description: The policyholder's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format.
+            area_code:
+              type: string
+              description: The policyholder's area code must be 4 characters long for South African addresses.
+          required:
+          - line_1
+          - city
+          - country
+          - area_code
+      example:
+        policyholder_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+        type: individual
+        initials: E
+        first_name: Erlich
+        middle_name: Aviato
+        last_name: Bachman
+        id:
+          type: id
+          number: '6801015800084'
+          country: ZA
+        date_of_birth: '19680101'
+        gender: male
+        email: erlich@aviato.com
+        cellphone: '+27821234567'
+        phone_other: '+27124101337'
+        created_at: '2017-10-12T15:47:34.281Z'
+        app_data:
+          company: Aviato
+        policy_ids: []
+        created_by:
+          id: 00000000-0000-0000-0000-000000000001
+          type: user
+        address:
+          line_1: 5230 Penfield Avenue
+          suburb: Woodland Hills
+          city: Los Angeles
+          country: US
+          area_code: CA 91364
+    policyholders:
+      type: array
+      items:
+        $ref: '#/components/schemas/policyholder'
+    payment-method:
+      type: object
+      required:
+      - payment_method_id
+      - type
+      - created_at
+      - organization_id
+      - policyholder_id
+      properties:
+        payment_method_id:
+          type: string
+          description: Must be a UUID. The Unique identifier for the payment method.
+        type:
+          type: string
+          description: The payment method type. Except for external payment methods, must be one of `debit_order`, `card`, `eft`, `collection_module`. For external payment methods, will correspond to the custom `key` field.
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time at which the payment method was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time at which the payment method was last updated.
+        organization_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the related organisation.
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the policyholder the payment method is linked to.
+        policyholder:
+          $ref: '#/components/schemas/policyholder'
+          description: The policyholder object linked to the payment method. Only included when `?include=policyholder` is specified.
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/policy'
+          description: An array of policy objects linked to the payment method. Only included when `?include=policies` is specified.
+        bank_details:
+          type: object
+          description: Required if `type` is `debit_order`. Bank details for the debit order.
+          required:
+          - account_holder
+          - bank
+          - branch_code
+          - account_number
+          - account_type
+          properties:
+            account_holder:
+              type: string
+              description: Name of account holder.
+            account_holder_identification:
+              type:
+              - object
+              - 'null'
+              description: '`null` is allowed. An object containing the identification details of the account holder.'
+              required:
+              - type
+              - number
+              - country
+              properties:
+                type:
+                  type: string
+                  description: The type of identity document.
+                  enum:
+                  - id
+                  - passport
+                number:
+                  type: string
+                  description: The identity document number.
+                country:
+                  type: string
+                  description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the identification document.
+                expiration_date:
+                  type: string
+                  format: date-time
+                  description: The expiration date of the lead's passport.
+            bank:
+              $ref: '#/components/schemas/bank-name'
+            branch_code:
+              type: string
+              description: Branch code for bank account.
+            account_number:
+              type: string
+              description: Bank account number.
+            account_type:
+              type: string
+              description: Bank account type.
+              enum:
+              - cheque
+              - savings
+            banv_status:
+              type: string
+              description: The [bank account verification status](doc:account-verification-banvavs#reporting-on-payment-methods).
+              enum:
+              - pending
+              - processing
+              - verified
+              - failed_verification
+              - blocked
+            blocked_reason:
+              type:
+              - string
+              - 'null'
+              description: The reason the payment method is blocked. Only relevant if `banv_status` is `blocked`.
+            banv_response:
+              type:
+              - string
+              - 'null'
+              description: The response received when bank account verification was attempted.
+            payment_method_id:
+              type: string
+              description: Must be a UUID. The unique identifier of the payment method.
+        card:
+          type: object
+          description: Details of the payment card. Required if `type` is `card`.
+          required:
+          - bin
+          - holder
+          - brand
+          - expiry_month
+          - expiry_year
+          - last_4_digits
+          properties:
+            bin:
+              type: string
+              description: The bank identification number.
+            holder:
+              type: string
+              description: The name of the cardholder.
+            brand:
+              type: string
+              description: The brand of the card.
+            expiry_month:
+              type: string
+              description: The month of the card's exiry date.
+            expiry_year:
+              type: string
+              description: The year of the card's exiry date.
+            last_4_digits:
+              type: string
+              description: The last four digits of the card number.
+            registration:
+              type: string
+              description: The registration ID of the card.
+        external_reference:
+          type: string
+          description: The external identifier of the payment method. Required if `type` is `external`.
+        banv_status:
+          type: string
+          description: The [bank account verification status](doc:account-verification-banvavs#reporting-on-payment-methods). Only relevant if `type` is `external`.
+          enum:
+          - pending
+          - processing
+          - verified
+          - failed_verification
+          - blocked
+        blocked_reason:
+          type: string
+          description: The reason the payment method is blocked. Only relevant if `banv_status` is `blocked` and `type` is `external`.
+        collection_module_definition_id:
+          type: string
+          description: The unique identifier of the collection module definition that the payment method is linked to. Only relevant if `type` is `collection_module`.
+        collection_module_key:
+          type: string
+          description: The key of the collection module that the payment method is linked to. Only relevant if `type` is `collection_module`.
+        module:
+          type: object
+          description: Custom module-specific data for collection module payment methods. Only relevant if `type` is `collection_module`.
+          additionalProperties: true
+        collection_module:
+          type: object
+          description: The collection module object linked to the payment method. Only included when `?include=collection_module` is specified and `type` is `collection_module`.
+          additionalProperties: true
+        updated_by:
+          type: object
+          description: An object indicating the user or API key that last updated the payment method. Only relevant if `type` is `collection_module`.
+      example:
+        payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+        type: debit_order
+        organization_id: 952bfef5-7517-47ff-bf41-08c5a66c52db
+        policyholder_id: f91f4ea4-9c6d-459e-998b-a5711cbd8895
+        created_at: '2021-01-29T13:12:00.968Z'
+        updated_at: '2021-01-29T13:12:00.968Z'
+        bank_details:
+          account_holder: Erlich Bachman
+          bank: absa
+          branch_code: '12345'
+          account_number: '123456789'
+          account_type: cheque
+          banv_status: pending
+    cellphone-string:
+      type:
+      - string
+      - 'null'
+      description: '`null` and `""` allowed. String containing the cellphone number in international format.'
+      example: '+27821234567'
+    payment-details:
+      type: object
+      description: Details of the account into which the payout should be made.
+      required:
+      - type
+      - details
+      properties:
+        type:
+          type: string
+          description: The type of account into which the payout should be made.  For a beneficiary, this must be `eft`.
+          enum:
+          - eft
+          - card
+        details:
+          type: object
+          description: The bank account details.
+          required:
+          - bank_name
+          - branch_code
+          - account_type
+          - account_number
+          properties:
+            bank_name:
+              $ref: '#/components/schemas/bank-name'
+            branch_code:
+              type: string
+              description: The branch code for the account.
+            account_type:
+              type: string
+              description: The account type.
+              enum:
+              - cheque_account
+              - savings
+            account_number:
+              type: string
+              description: The account number.
+    quote-package:
+      type: object
+      description: Quote packages are designed to be low-fidelity and fast to generate,  and are used to generate and display new quotes rapidly on a customer-facing front-end.  They expire after one week. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide  and the [quote hook](https://docs.rootplatform.com/docs/quote-hook) guide for more details.
+      required:
+      - quote_package_id
+      - package_name
+      - sum_assured
+      - base_premium
+      - suggested_premium
+      - module
+      - created_at
+      - currency
+      - billing_frequency
+      - product_module_definition_id
+      properties:
+        quote_package_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the quote package.
+        package_name:
+          type: string
+          description: The package name.
+        sum_assured:
+          type: integer
+          description: The maximum insured value in cents.
+        base_premium:
+          type: integer
+          description: The combined risk and platform fee in cents. `monthly_premium` should be calculated from this.
+        suggested_premium:
+          type: integer
+          description: The suggested `monthly_premium` amount in cents. This is the total premium for display to the customer.
+        module:
+          type: object
+          description: Custom, product-specific information saved to the quote for later reference.  These parameters are set in the [quote hook](https://docs.rootplatform.com/docs/quote-hook) in the product module code.
+          additionalProperties: true
+        restricted_data:
+          type: object
+          description: Optional restricted product-specific information saved to the quote. This field is only returned when the requestee has access to restricted quote module data.
+          additionalProperties: true
+        input_data:
+          type: object
+          description: Quote input parameters as received over the [create a quote](https://docs.rootplatform.com/reference/getting-a-quote-2) endpoint.
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          description: The date/time at which the quote package was created.
+        currency:
+          type: string
+          description: The currency used for the quote package, in [ISO 4217] (https://en.wikipedia.org/wiki/ISO_4217) format.
+        billing_frequency:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          - once_off
+          description: The frequency at which the policy will be billed. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency.
+        product_module_definition_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the product module definition associated with this quote package. If a policy is issued from this quote, this product module definition will be associated with the policy.
+      example:
+        quote_package_id: 3822b8fb-43e7-43f7-94ad-63e94e6ce1e3
+        package_name: Theft + comprehensive
+        sum_assured: 1199900
+        base_premium: 14999
+        suggested_premium: 18749
+        module:
+          type: root_gadgets
+          make: Apple
+          model: iPhone 6S 64GB LTE
+        restricted_data:
+          internal_commission_bps: 2500
+        created_at: '2023-02-03T11:17:09.747Z'
+        currency: ZAR
+        billing_frequency: monthly
+        product_module_definition_id: 4889a9e0-d5f9-4971-8ac2-2175a9d15477
+    payment-charge-type:
+      type: string
+      description: Variable charges are applied as a proportion of the total payment amount. Fixed charges are applied as an absolute currency value in cents. The `balance` is the balance of the payment total after all charges have been applied.
+      enum:
+      - fixed
+      - variable
+      - balance
+    attachment:
+      type: object
+      required:
+      - file_name
+      - description
+      - file_type
+      - file_url
+      - created_at
+      - requested_by
+      properties:
+        file_name:
+          type: string
+          description: The name of the file (with file extension).
+        description:
+          type: string
+          description: A tag describing what the document is about (e.g. affidavit, etc.).
+        file_type:
+          type: string
+          description: The mime type of the attachment (e.g. image/png).
+        file_url:
+          type: string
+          format: uri
+          description: The URL to download the attachment file.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the attachment was created.
+        requested_by:
+          type: object
+          description: An object indicating the user or API key that created the attachment. See [Authentication](#client-apps).
+          properties:
+            type:
+              type: string
+              description: The type of the creator (e.g., user, api_key).
+            id:
+              type: string
+              description: The identifier of the creator.
+            owner_id:
+              type: string
+              description: The identifier of the owner (only present for API key requests).
+          required:
+          - type
+        type:
+          type: string
+          description: The event type associated with the attachment (e.g., attachment_created). This field is only present when the attachment is returned as part of an event.
+      example:
+        file_name: report.pdf
+        file_type: application/pdf
+        file_url: https://sandbox.rootplatform.com/v1/files/download/00000000-0000-0000-0000-000000000001
+        description: quote
+        type: attachment_created
+        created_at: '2025-11-10T14:33:50.095Z'
+        requested_by:
+          type: api_key
+          id: 00000000-0000-0000-0000-000000000001
+          owner_id: 00000000-0000-0000-0000-000000000001
+    policyholder-request:
+      type: object
+      required:
+      - id
+      - first_name
+      - last_name
+      - company_name
+      - registration_number
+      properties:
+        type:
+          type: string
+          description: The policyholder type.
+          enum:
+          - individual
+          - company
+        id:
+          type: object
+          description: (Individual policyholders only) Object containing policyholder's identification information.
+          properties:
+            type:
+              type: string
+              description: The id type of the policyholder.
+              enum:
+              - id
+              - passport
+              - email
+              - cellphone
+              - custom
+            number:
+              type: string
+              description: Depending on the `type` selected, either an ID number, passport number, email address, cellphone number or custom identifier.
+            country:
+              type: string
+              description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`.
+            expiration_date:
+              type: string
+              format: date-time
+              description: (Individual policyholders only) The expiration date of the policyholder's passport or custom identifier.
+          required:
+          - type
+          - number
+          - country
+        date_of_birth:
+          type: string
+          description: (Individual policyholders only) The policyholder's date of birth in the format YYYYMMDD. Forbidden if `id.type` is "id" and `id.country` is "ZA".
+        gender:
+          type:
+          - string
+          - 'null'
+          description: (Individual policyholders only) The gender of the policyholder.
+          enum:
+          - male
+          - female
+        initials:
+          type: string
+          description: Policyholder or primary contact's initials.
+        title:
+          type: string
+          description: The policyholders's title.
+          enum:
+          - mr
+          - mrs
+          - miss
+          - mx
+          - sir
+          - dr
+          - adv
+          - ms
+          - prof
+        first_name:
+          type: string
+          description: Policyholder or primary contact's legal first name.
+        middle_name:
+          type: string
+          description: The policyholder or primary contact's legal middle name.
+        last_name:
+          type: string
+          description: Policyholder or primary contact's legal last name.
+        email:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Policyholder or primary contact''s contact email address.'
+        cellphone:
+          oneOf:
+          - $ref: '#/components/schemas/cellphone'
+          - $ref: '#/components/schemas/cellphone-string'
+        phone_other:
+          oneOf:
+          - $ref: '#/components/schemas/cellphone'
+          - $ref: '#/components/schemas/cellphone-string'
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the policyholder.'
+          additionalProperties: true
+        company_name:
+          type: string
+          description: The name of the company that the policyholder represents. Only required when `type = company`.
+        registration_number:
+          type: string
+          description: The company's registration number. Only required when `type = company`.
+        date_of_establishment:
+          type: string
+          description: (Company policyholders only) The company's date of establishment in the format YYYYMMDD. Required when `type = company`.
+        company_website_url:
+          type: string
+          description: (Company policyholders only) The company's website URL. Required when `type = company`.
+        subsidiary_companies:
+          type: array
+          items:
+            type: string
+          description: (Company policyholders only) An array of subsidiary company names. Required when `type = company`.
+        contact_position:
+          type: string
+          description: (Company policyholders only) The position or role of the primary contact at the company. Required when `type = company`.
+        address:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. The policyholder''s physical address. See below for more details.'
+          properties:
+            line_1:
+              type: string
+              description: First line of the policyholder's address.
+            line_2:
+              type:
+              - string
+              - 'null'
+              description: '`null` is allowed. Optional second line of the policyholder''s address.'
+            suburb:
+              type: string
+              description: The policyholder's suburb.
+            city:
+              type: string
+              description: The policyholder's city.
+            country:
+              type: string
+              description: The policyholder's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format.
+            area_code:
+              type: string
+              description: The policyholder's area code, must be 4 characters long when the policyholder's country code is ZA.
+          required:
+          - line_1
+          - city
+          - country
+          - area_code
+      example:
+        id:
+          type: id
+          number: '6801015800084'
+          country: ZA
+        initials: E
+        first_name: Erlich
+        middle_name: Aviato
+        last_name: Bachman
+        email: erlich@avaito.com
+        cellphone: '+27821234567'
+        phone_other: '+27124101337'
+        app_data:
+          company: Aviato
+        address:
+          line_1: 5230 Penfield Avenue
+          suburb: Woodland Hills
+          city: Los Angeles
+          country: US
+          area_code: '91364'
+    bank-name:
+      type: string
+      description: The name of the bank
+      enum:
+      - absa
+      - access
+      - african_bank
+      - al_baraka
+      - bank_of_china
+      - bank_of_lisbon
+      - bank_zero
+      - bidvest
+      - bidvest_bank_alliances
+      - capitec
+      - discovery_bank
+      - finbond_mutual
+      - fnb
+      - hbz
+      - investec
+      - ithala
+      - mercantile
+      - nedbank
+      - old_mutual
+      - postbank
+      - sasfin
+      - standard_bank
+      - sure
+      - tyme_bank
+      - ubank
+      - vbc_mutual_bank
+      - wizzit
+    policies:
+      type: array
+      items:
+        $ref: '#/components/schemas/policy'
+    applications:
+      type: array
+      items:
+        $ref: '#/components/schemas/application'
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

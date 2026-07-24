@@ -1,0 +1,143 @@
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Root Applications Files API
+  description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
+  termsOfService: https://rootplatform.com/about
+  contact:
+    name: Root support team
+    url: https://rootplatform.com/contact
+    email: support@root.co.za
+servers:
+- url: https://sandbox.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - sandbox
+- url: https://api.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - production
+- url: https://sandbox.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - sandbox
+- url: https://api.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - production
+security:
+- basicAuth: []
+tags:
+- name: Files
+paths:
+  /apps/{organization_id}/files/download/{file_id}:
+    get:
+      operationId: download-file
+      summary: Download file
+      description: 'Download a file by its unique file ID. Files are typically attachments that have been uploaded to the system and associated with various entities like policies, claims, applications, etc.
+
+
+        Note: A filename can optionally be appended to the URL for readability (e.g., `/apps/{organization_id}/files/download/{file_id}/report.pdf`), but it is not used for file identification.'
+      tags:
+      - Files
+      x-additional-tags:
+      - Endpoints
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique identifier of the organization.
+      - name: file_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique identifier of the file to download.
+      responses:
+        '200':
+          description: File downloaded successfully
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            text/plain:
+              schema:
+                type: string
+                format: binary
+          headers:
+            Content-Type:
+              description: The MIME type of the file
+              schema:
+                type: string
+                example: application/pdf
+            Content-Disposition:
+              description: Indicates if the content should be displayed inline or downloaded as an attachment
+              schema:
+                type: string
+                example: attachment; filename="document.pdf"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: invalid_request_error
+                      message:
+                        type: string
+                        example: Missing organization ID.
+                      more_info:
+                        type: string
+                        example: https://docs.rootplatform.com/reference/errors
+              example:
+                error:
+                  type: invalid_request_error
+                  message: Missing organization ID.
+                  more_info: https://docs.rootplatform.com/reference/errors
+        '404':
+          description: File not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: not_found_error
+                      message:
+                        type: string
+                        example: Attachment not found
+                      more_info:
+                        type: string
+                        example: https://docs.rootplatform.com/reference/errors
+              example:
+                error:
+                  type: not_found_error
+                  message: Attachment not found
+                  more_info: https://docs.rootplatform.com/reference/errors
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

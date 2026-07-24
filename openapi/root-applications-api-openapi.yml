@@ -1,0 +1,2723 @@
+openapi: 3.1.0
+info:
+  version: 1.0.1
+  title: Root Applications API
+  description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
+  termsOfService: https://rootplatform.com/about
+  contact:
+    name: Root support team
+    url: https://rootplatform.com/contact
+    email: support@root.co.za
+servers:
+- url: https://sandbox.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - sandbox
+- url: https://api.uk.rootplatform.com/v1/insurance
+  description: United Kingdom multi-tenant - production
+- url: https://sandbox.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - sandbox
+- url: https://api.rootplatform.com/v1/insurance
+  description: South Africa multi-tenant - production
+security:
+- basicAuth: []
+tags:
+- name: Applications
+paths:
+  /applications:
+    post:
+      operationId: create-application
+      summary: Create an application
+      description: '**Note:** Additional custom fields may be required depending on how the [application hook](https://docs.rootplatform.com/docs/application-hook) is configured for the product module.'
+      tags:
+      - Applications
+      x-additional-tags:
+      - Create
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - quote_package_id
+              - policyholder_id
+              - billing_day
+              properties:
+                quote_package_id:
+                  type: string
+                  description: Must be a UUID. Unique identifier of quote package retrieved in [quote generation](ref:getting-a-quote-2).
+                policyholder_id:
+                  type: string
+                  description: Must be a UUID. Unique identifier of the [policyholder](ref:policyholder) that is applying.
+                billing_day:
+                  type: integer
+                  description: The day of month on which the policy to write will be billed on. Should be between 1 and 31. If it falls on a day that does not exist in the month (for example, 31 in February) the policy to be written will be billed on the last day of that month. Setting this value to 31 will ensure that the policy to be written will be billed on the last day of every month.
+                  minimum: 1
+                  maximum: 31
+                monthly_premium:
+                  type:
+                  - number
+                  - 'null'
+                  description: '`null` is allowed. The monthly premium amount in cents. Minimum value is 0.'
+                  minimum: 0
+                type:
+                  type: string
+                  description: The type of the application. One of `requote` or `new_policy`.
+                  enum:
+                  - requote
+                  - new_policy
+                user_group_id:
+                  type:
+                  - string
+                  - 'null'
+                  description: '`null` is allowed. Must be a UUID. The unique identifier of the user group to assign this application to.'
+              additionalProperties: true
+              example:
+                quote_package_id: f4551b91-3e3e-4acc-915b-82e1b163cef8
+                policyholder_id: 00000000-0000-0000-0000-000000000009
+                billing_day: 1
+                serial_number: '1234567890'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/application'
+    get:
+      operationId: fetch-applications
+      summary: List all applications
+      tags:
+      - Applications
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      - name: search
+        in: query
+        description: A space seperated list of matching words to search for. e.g. "richard@aviato.com"
+        required: false
+        schema:
+          type: string
+        example: richard@aviato.com
+      - name: status
+        in: query
+        description: A comma seperated list of statuses. eg. "pending,issued"
+        required: false
+        schema:
+          type: string
+        example: pending
+      - name: created_by
+        in: query
+        description: A valid UUID of the user that created the application.
+        required: false
+        schema:
+          type: string
+        example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      - name: user_group_id
+        in: query
+        description: A valid UUID of the user group that created the application.
+        required: false
+        schema:
+          type: string
+        example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      - name: created_by_type
+        in: query
+        description: A semi-colon seperated list of the requestee types. e.g. api_key, user, legacy_api_key, legacy_user_api_key, system, product_module or embed_jwt
+        required: false
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: An optional semicolon-separated list of underlying objects to include, e.g. `?include=policy;policyholder`. Valid options are 'policy', 'policyholder' and 'quote_package'
+        required: false
+        schema:
+          type: string
+        example: policyholder
+      - name: product_module_id
+        in: query
+        description: A valid UUID of the product module to filter applications by.
+        required: false
+        schema:
+          type: string
+        example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/applications'
+  /applications/{application_id}:
+    get:
+      operationId: retrieve-an-application
+      summary: Retrieve an application
+      tags:
+      - Applications
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+        example: 40fb4335-55b2-4f20-951a-cc41097cb213
+      - name: include
+        in: query
+        description: An optional semicolon-separated list of underlying objects to include, e.g. `?include=policy;policyholder`. Valid options are 'policy', 'policyholder' and 'quote_package'
+        required: false
+        schema:
+          type: string
+        example: policyholder
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/application'
+              example:
+                application_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                policyholder_id: bf3ab7ce-064d-43b7-811d-0ecd9aca3daf
+                package_name: Theft + comprehensive
+                sum_assured: 1199900
+                monthly_premium: 50000
+                base_premium: 14999
+                billing_day: 1
+                module:
+                  type: root_gadgets
+                  make: Apple
+                  model: iPhone 6S 64GB LTE
+                  serial_number: '1234567890'
+                created_at: '2017-10-12T15:47:34.281Z'
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+    put:
+      operationId: requote-application
+      summary: Requote an application
+      description: Note that additional fields may be required based on the product module type being used. See [product modules](doc:product-modules-overview) for more details.
+      tags:
+      - Applications
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quote_package_id:
+                  type: string
+                  description: Must be a UUID. Unique identifier of quote package retrieved in [quote generation](ref:getting-a-quote-2).
+                monthly_premium:
+                  type:
+                  - number
+                  - 'null'
+                  description: '`null` is allowed. Premium amount, in cents, to write on policy. This can''t be changed, only discounted by changing the `billing_amount`. This must be more than the `base_premium`. Minimum value is 0.'
+                  minimum: 0
+                policyholder_id:
+                  type: string
+                  description: Must be a UUID. The unique identifier of the [policyholder](ref:policyholder).
+                billing_day:
+                  type: integer
+                  description: The day of month on which the policy to write will be billed on. Should be between 1 and 31.
+                  minimum: 1
+                  maximum: 31
+              additionalProperties: true
+              example:
+                monthly_premium: 50000
+                quote_package_id: bf3ab7ce-064d-43b7-811d-0ecd9aca3daf
+                billing_day: 1
+                serial_number: '1234567890'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/application'
+              example:
+                application_id: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+                policyholder_id: bf3ab7ce-064d-43b7-811d-0ecd9aca3daf
+                package_name: Theft + comprehensive
+                sum_assured: 1199900
+                monthly_premium: 50000
+                base_premium: 14999
+                billing_day: 1
+                module:
+                  type: root_gadgets
+                  make: Apple
+                  model: iPhone 6S 64GB LTE
+                  serial_number: '1234567890'
+                created_at: '2017-10-05T18:28:30.281Z'
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+  /applications/{application_id}/alteration-packages:
+    post:
+      operationId: create-application-alteration-package
+      summary: Create an application alteration package
+      tags:
+      - Applications
+      x-additional-tags:
+      - Alteration packages
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - key
+              - data
+              properties:
+                key:
+                  type: string
+                  description: The identifier of the application alteration hook.
+                data:
+                  type: object
+                  description: Custom module-specific fields stored against the application alteration package. See [product modules](doc:product-modules-overview) for more details.
+                  additionalProperties: true
+              example:
+                key: update_cover_amount
+                data:
+                  cover_amount: 25000000
+                  spouse_cover: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/application-alteration-packages'
+              example:
+              - alteration_package_application_id: 2d200d5c-477c-4c90-b305-e8f445f4d8e5
+                organization_id: 00000000-0000-0000-0000-000000000001
+                created_at: '2026-01-28T09:17:05.101Z'
+                created_by:
+                  type: api_key
+                  id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
+                  owner_id: 00000000-0000-0000-0000-000000000001
+                module:
+                  package_name: Funeral Cover
+                  suggested_premium: 17500
+                  base_premium: 16000
+                  cover_amount: 25000000
+                monthly_premium: 17500
+                currency: ZAR
+                sum_assured: 25000000
+                billing_frequency: monthly
+                status: pending
+                change_description: Updating cover amount before issuing policy
+                input_data:
+                  cover_amount: 25000000
+                  spouse_cover: true
+                application_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                alteration_hook_key: update_cover_amount
+  /applications/{application_id}/alteration-packages/{alteration_package_id}:
+    get:
+      operationId: retrieve-application-alteration-package
+      summary: Retrieve an application alteration package
+      tags:
+      - Applications
+      x-additional-tags:
+      - Alteration packages
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - name: alteration_package_id
+        in: path
+        description: Must be a UUID. The unique identifier of the application alteration package.
+        required: true
+        schema:
+          type: string
+          example: 2d200d5c-477c-4c90-b305-e8f445f4d8e5
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/application-alteration-package'
+              example:
+                alteration_package_application_id: 2d200d5c-477c-4c90-b305-e8f445f4d8e5
+                organization_id: 00000000-0000-0000-0000-000000000001
+                created_at: '2026-01-28T09:17:05.101Z'
+                created_by:
+                  type: api_key
+                  id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
+                  owner_id: 00000000-0000-0000-0000-000000000001
+                module:
+                  package_name: Funeral Cover
+                  suggested_premium: 17500
+                  base_premium: 16000
+                  cover_amount: 25000000
+                monthly_premium: 17500
+                currency: ZAR
+                sum_assured: 25000000
+                billing_frequency: monthly
+                status: pending
+                change_description: Updating cover amount before issuing policy
+                input_data:
+                  cover_amount: 25000000
+                  spouse_cover: true
+                application_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                alteration_hook_key: update_cover_amount
+  /applications/{application_id}/alteration-packages/{alteration_package_id}/apply:
+    post:
+      operationId: apply-application-alteration-package
+      summary: Apply application alteration package
+      tags:
+      - Applications
+      x-additional-tags:
+      - Alteration packages
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      - name: alteration_package_id
+        in: path
+        description: Must be a UUID. The ID of the application alteration package to apply to the application.
+        required: true
+        schema:
+          type: string
+          example: 2d200d5c-477c-4c90-b305-e8f445f4d8e5
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/application-alteration-package'
+              example:
+                alteration_package_application_id: 2d200d5c-477c-4c90-b305-e8f445f4d8e5
+                organization_id: 00000000-0000-0000-0000-000000000001
+                created_at: '2026-01-28T09:17:05.101Z'
+                created_by:
+                  type: api_key
+                  id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
+                  owner_id: 00000000-0000-0000-0000-000000000001
+                module:
+                  package_name: Funeral Cover
+                  suggested_premium: 17500
+                  base_premium: 16000
+                  cover_amount: 25000000
+                monthly_premium: 17500
+                currency: ZAR
+                sum_assured: 25000000
+                billing_frequency: monthly
+                status: applied
+                change_description: Updating cover amount before issuing policy
+                input_data:
+                  cover_amount: 25000000
+                  spouse_cover: true
+                application_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                alteration_hook_key: update_cover_amount
+  /applications/{application_id}/attachments:
+    get:
+      operationId: retrieve-application-attachments
+      summary: Retrieve application attachments
+      tags:
+      - Applications
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: An object providing details regarding the file attached.
+                  properties:
+                    attachment_id:
+                      type: string
+                      description: Must be a UUID. Unique identifier of the attachment.
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: The time at which the attachment was created.
+                    file_name:
+                      type: string
+                      description: The name of the file.
+                    file_type:
+                      type: string
+                      description: The MIME type of the file.
+                    file_url:
+                      type: string
+                      description: The URL to download the file.
+                    description:
+                      type: string
+                      description: A description of the attachment.
+                    is_archived:
+                      type: boolean
+                      description: Whether the attachment has been archived.
+                    requested_by:
+                      type: object
+                      description: An object indicating the user or API key that created the attachment.
+                    archived_at:
+                      type:
+                      - string
+                      - 'null'
+                      format: date-time
+                      description: '`null` is allowed. The time at which the attachment was archived.'
+                    labels:
+                      type: array
+                      items:
+                        type: string
+                      description: An array of labels associated with the attachment.
+                  example:
+                    attachment_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+                    created_at: '2017-10-12T15:47:34.281Z'
+                    file_name: doc.pdf
+                    file_type: application/pdf
+                    file_url: https://example.com/1234.pdf
+                    description: Application PDF
+                    is_archived: false
+                    requested_by:
+                      type: user
+                      id: 00000000-0000-0000-0000-000000000001
+                    labels: []
+    post:
+      operationId: add-application-attachments
+      summary: Add application attachment
+      tags:
+      - Applications
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - file_name
+              - description
+              - file_base64
+              - file_type
+              properties:
+                file_name:
+                  type: string
+                  description: The name of the file (filename and extension)
+                description:
+                  type: string
+                  description: A description of the file
+                file_base64:
+                  type: string
+                  description: The file contents, base64 encoded
+                file_type:
+                  type: string
+                  description: The file mime type.
+                  example: application/pdf
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/attachment'
+              example:
+                file_name: report.pdf
+                file_type: application/pdf
+                file_url: http://yoururlhere/report.pdf
+                description: Police Report
+                type: attachment_created
+                application_id: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+                created_at: '2022-01-31T11:25:23.427Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+  /applications/{application_id}/attachments/{attachment_id}/archive:
+    post:
+      operationId: archive-application-attachment
+      summary: Archive an attachment
+      tags:
+      - Applications
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      - name: attachment_id
+        in: path
+        description: Must be a UUID. The unique identifier of the attachment.
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                description: An event object indicating the attachment was archived.
+                properties:
+                  type:
+                    type: string
+                    description: The type of event.
+                  application_id:
+                    type: string
+                    description: Must be a UUID. The unique identifier of the application.
+                  file_name:
+                    type: string
+                    description: The name of the archived file.
+                  file_type:
+                    type: string
+                    description: The MIME type of the archived file.
+                  file_url:
+                    type: string
+                    description: The URL of the archived file.
+                  description:
+                    type: string
+                    description: A description of the archived file.
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: The time at which the attachment was archived.
+                  requested_by:
+                    type: object
+                    description: An object indicating the user or API key that archived the attachment.
+              example:
+                type: attachment_archived
+                application_id: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+                file_name: report.pdf
+                file_type: application/pdf
+                file_url: https://example.com/report.pdf
+                description: Police Report
+                created_at: '2023-02-03T12:00:00.000Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+  /applications/{application_id}/beneficiaries:
+    get:
+      summary: List beneficiaries
+      operationId: fetch-application-beneficiaries
+      tags:
+      - Applications
+      x-additional-tags:
+      - Beneficiaries
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/beneficiaries'
+    put:
+      operationId: update-application-beneficiaries
+      summary: Update beneficiaries
+      description: This endpoint accepts an array of beneficiary objects as the body. The entire array of beneficiaries will be replaced. The number of beneficiaries cannot exceed the max defined in the [general settings](doc:general-settings). The percentages must add up to 100%.
+      tags:
+      - Applications
+      x-additional-tags:
+      - Beneficiaries
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/beneficiaries-request'
+            example:
+              $ref: '#/components/schemas/beneficiaries-request/example'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/application'
+              example:
+                application_id: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+                policyholder_id: bf3ab7ce-064d-43b7-811d-0ecd9aca3daf
+                package_name: Theft + comprehensive
+                sum_assured: 1199900
+                monthly_premium: 50000
+                base_premium: 14999
+                billing_day: 1
+                module:
+                  type: root_gadgets
+                  make: Apple
+                  model: iPhone 6S 64GB LTE
+                  serial_number: '1234567890'
+                created_at: '2017-10-12T15:47:34.281Z'
+                created_by:
+                  id: 00000000-0000-0000-0000-000000000001
+                  type: user
+                beneficiaries:
+                - first_name: Jared
+                  last_name: Dunn
+                  id:
+                    type: id
+                    number: '8704094800082'
+                    country: ZA
+                  percentage: 100
+                  relationship: cousin_or_relative
+  /applications/{application_id}/notes:
+    get:
+      operationId: retrieve-application-notes
+      summary: Retrieve application notes
+      tags:
+      - Applications
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notes'
+    post:
+      operationId: add-application-notes
+      summary: Add application notes
+      tags:
+      - Applications
+      x-additional-tags:
+      - Attachments & notes
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: The string of text to add as a note
+              required:
+              - text
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/note'
+  /applications/{application_id}/events:
+    get:
+      operationId: retrieve-application-events
+      summary: Retrieve application events
+      tags:
+      - Applications
+      x-additional-tags:
+      - Retrieve
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: An event object containing details about an action that occurred on the application. Events include application events, notification events, and user group event logs.
+                  properties:
+                    type:
+                      type: string
+                      description: The type of event.
+                    application_id:
+                      type: string
+                      description: Must be a UUID. The unique identifier of the application.
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: The time at which the event occurred.
+                    requested_by:
+                      type: object
+                      description: An object indicating the user or API key that triggered the event.
+              example:
+              - type: application_created
+                application_id: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+                created_at: '2023-02-03T11:17:49.009Z'
+                requested_by:
+                  type: api_key
+                  id: b6565862-cc6e-4563-85d3-659894338cda
+                  owner_id: e17f06ce-2a6a-4864-b826-19a83270eab4
+              - type: attachment_created
+                application_id: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+                file_name: report.pdf
+                file_type: application/pdf
+                file_url: https://example.com/report.pdf
+                description: Police Report
+                created_at: '2023-02-03T12:00:00.000Z'
+                requested_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+  /applications/{application_id}/payment-method:
+    get:
+      operationId: retrieve-application-payment-method
+      summary: Retrieve application payment method
+      tags:
+      - Applications
+      x-additional-tags:
+      - Billing & payments
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-method'
+    post:
+      operationId: assign-application-payment-method
+      summary: Assign application payment method
+      tags:
+      - Applications
+      x-additional-tags:
+      - Billing & payments
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payment_method_id:
+                  type: string
+                  description: A valid UUID, containing the payment method ID to assign.
+              required:
+              - payment_method_id
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-method'
+  /applications/{application_id}/send-application-pdf-to-policyholder:
+    post:
+      operationId: send-application-pdf-to-policyholder
+      summary: Send application PDF to policyholder
+      tags:
+      - Applications
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      responses:
+        '200':
+          description: Success
+  /applications/{application_id}/cancellation-reasons:
+    get:
+      operationId: get-application-cancellation-reasons
+      summary: Get allowed application cancellation reasons
+      tags:
+      - Applications
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - client
+                - insurer
+                properties:
+                  client:
+                    type: array
+                    items:
+                      type: string
+                    description: Allowed `cancellation_type` values when `cancellation_requestor` is `client`.
+                  insurer:
+                    type: array
+                    items:
+                      type: string
+                    description: Allowed `cancellation_type` values when `cancellation_requestor` is `insurer`.
+  /applications/{application_id}/cancel:
+    post:
+      operationId: cancel-application
+      summary: Cancel an application
+      tags:
+      - Applications
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: Free-text context for the cancellation (for example when `cancellation_type` is `other`). Required if `cancellation_requestor` is not specified.
+                cancellation_requestor:
+                  type: string
+                  description: The entity cancelling the application. Either `insurer` or `client`.
+                  enum:
+                  - client
+                  - insurer
+                cancellation_type:
+                  type: string
+                  description: Reason code. Must be one of the values returned by [get application cancellation reasons](ref:get-application-cancellation-reasons) for the corresponding `cancellation_requestor`.
+              example:
+                cancellation_requestor: client
+                cancellation_type: no_longer_interested
+                reason: Customer confirmed they will not proceed
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/application'
+  /applications/{application_id}/archive:
+    post:
+      operationId: archive-application
+      summary: Archive an application
+      tags:
+      - Applications
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+      responses:
+        '200':
+          description: Success
+  /organizations/{client_app_id}/applications/{application_id}/alteration-hooks:
+    get:
+      operationId: retrieve-application-alteration-hooks
+      summary: Retrieve application alteration hooks
+      tags:
+      - Applications
+      x-additional-tags:
+      - Manage
+      parameters:
+      - name: client_app_id
+        in: path
+        description: Must be a UUID. The unique identifier of the organization.
+        required: true
+        schema:
+          type: string
+          example: 00000000-0000-0000-0000-000000000001
+      - name: application_id
+        in: path
+        description: Must be a UUID. The unique identifier of the [application](ref:application).
+        required: true
+        schema:
+          type: string
+          example: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/application-alteration-hooks'
+              example:
+              - product_module_definition_alteration_hook_id: 2cbbc377-e142-4986-8871-29b0a4c23353
+                product_module_definition_id: 9b7b43f4-9ab8-4e37-b42b-59d5595f3983
+                schema_id: 18f7e13a-f4f4-4b10-86ec-2973dfe77732
+                key: update_cover_amount
+                name: Update cover amount
+                type: application
+                created_at: '2026-01-28T09:17:05.101Z'
+                created_by:
+                  type: user
+                  id: 00000000-0000-0000-0000-000000000001
+                productModuleDefinitionSchema:
+                  product_module_definition_schema_id: 18f7e13a-f4f4-4b10-86ec-2973dfe77732
+                  json:
+                    type: object
+                    properties:
+                      cover_amount:
+                        type: integer
+                  created_at: '2026-01-28T09:15:45.100Z'
+                  created_by:
+                    type: user
+                    id: 00000000-0000-0000-0000-000000000001
+                  type: application_alteration
+components:
+  schemas:
+    beneficiaries:
+      type: array
+      description: '`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some product modules may require adding beneficiaries to a policy for claims to be processed.'
+      items:
+        type: object
+        description: Details for a single beneficiary.
+        required:
+        - beneficiary_id
+        - relationship
+        - percentage
+        properties:
+          beneficiary_id:
+            type: string
+            description: Must be a UUID. The unique identifier of the beneficiary.
+          policyholder_id:
+            type: string
+            description: Must be a UUID. The unique identifier of the policyholder. Only relevant if `relationship` is `policyholder`.
+          type:
+            type: string
+            description: The type of beneficiary.
+            enum:
+            - individual
+            - company
+            default: individual
+          first_name:
+            type: string
+            description: The beneficiary's first name.
+          last_name:
+            type: string
+            description: The beneficiary's last name.
+          title:
+            type: string
+            description: The beneficiary's title.
+            enum:
+            - mr
+            - mrs
+            - miss
+            - mx
+            - sir
+            - dr
+            - adv
+            - ms
+            - prof
+          gender:
+            type: string
+            description: The beneficiary's gender.
+            enum:
+            - male
+            - female
+          id:
+            type: object
+            description: (Individual beneficiaries only) The beneficiary's identification number, type and country.
+            properties:
+              type:
+                type: string
+                description: The beneficiary's identification type.
+                enum:
+                - id
+                - passport
+                - custom
+              number:
+                type: string
+                description: Depending on the type selected, either an ID number, passport number or custom identifier.
+              country:
+                type: string
+                description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`.
+            required:
+            - type
+            - number
+            - country
+          date_of_birth:
+            type:
+            - string
+            - 'null'
+            format: date
+            description: '`null` is allowed. The beneficiary''s date of birth.'
+          percentage:
+            type: integer
+            description: An integer representing the percentage of a claim payout that the beneficiary should receive. Note that the percentages across all beneficiaries should add up to 100%.
+          cellphone:
+            $ref: '#/components/schemas/cellphone-string'
+          email:
+            type: string
+            description: The beneficiary's email address.
+          relationship:
+            $ref: '#/components/schemas/beneficiary-relationship'
+          company_name:
+            type: string
+            description: The name of the company that the beneficiary represents. Required when `type = company`.
+          registration_number:
+            type: string
+            description: The company's registration number. Required when `type = company`.
+          payment_details:
+            $ref: '#/components/schemas/payment-details'
+        example:
+          first_name: Jared
+          last_name: Dunn
+          id:
+            type: id
+            number: '8704094800082'
+            country: ZA
+          percentage: 100
+          relationship: cousin_or_relative
+      example:
+      - first_name: Jared
+        last_name: Dunn
+        id:
+          type: id
+          number: '8704094800082'
+          country: ZA
+        percentage: 100
+        relationship: cousin_or_relative
+    application-alteration-packages:
+      type: array
+      items:
+        $ref: '#/components/schemas/application-alteration-package'
+    policy:
+      type: object
+      description: Policies are issued from applications, and represent binding insurance agreements. Parameters stored on the policy can be referenced in custom notifications, policy documents, data exports and external integrations. <br/><br/> See the [issuing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook) guide for more details.
+      required:
+      - policy_id
+      - policy_number
+      - status
+      - policyholder_id
+      - package_name
+      - monthly_premium
+      - billing_amount
+      - balance
+      - currency
+      - billing_day
+      - billing_frequency
+      - next_billing_date
+      - covered_people
+      - base_premium
+      - claim_ids
+      - complaint_ids
+      - start_date
+      - end_date
+      - policy_schedule_uri
+      - terms_uri
+      - schedule_versions
+      - created_at
+      - module
+      - app_data
+      - created_by
+      - scheme_type
+      - charges
+      - supplementary_terms_files
+      properties:
+        policy_id:
+          type: string
+          description: Must be a UUID. Object ID of the policy.
+        policy_number:
+          type: string
+          description: A shorter, human-readable policy identifier. This typically used in policy documents and customer notifications for ease of reference.
+        status:
+          $ref: '#/components/schemas/policy-status'
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The system identifier of the policy's policyholder.
+        package_name:
+          type: string
+          description: The insurance package name.
+        sum_assured:
+          type: integer
+          description: The amount, in cents, of the maximum value insured.
+        monthly_premium:
+          type: integer
+          description: The total monthly premium, in cents, that will be billed to the policyholder.
+        billing_amount:
+          type: integer
+          description: The amount, in cents, that will be billed on the next billing run.
+        balance:
+          type: integer
+          description: The amount, in cents, that is owed on the policy. If the policyholder makes an adhoc payment to the policy, the amount is credited to this balance. If the policyholder defaults on a payment, it is subtracted from the balance. If the balance is found negative during the next billing run, the amount is added to the monthly premium, else the monthly premium is subtracted from the balance and the remainder is charged.
+        billing_day:
+          type:
+          - integer
+          - 'null'
+          description: '`null` is allowed. The day of month on which the policy is billed. Should be between 1 and 31, or `null`. If it falls on a day that does not exist in the month (for example, 31 in February) the policy will be billed on the last day of the month. Setting this value to 31 will ensure that the policy is billed on the last day of every month.'
+        billing_frequency:
+          type: string
+          description: The frequency at which the policy is billed. One of [`monthly`, `yearly`, `once_off`]. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency.
+        next_billing_date:
+          type: string
+          format: date-time
+          description: The next date the policy is due to be billed.
+        currency:
+          type: string
+          description: The currency code of the policy.
+        beneficiaries:
+          description: An array of beneficiaries, or "null".
+          oneOf:
+          - $ref: '#/components/schemas/beneficiaries'
+          - type: 'null'
+        covered_people:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+          description: '`null` is allowed. An array of covered people added to the policy.'
+        base_premium:
+          type: integer
+          description: The amount, in cents, of the minimum allowed monthly premium fee. This includes risk pricing and platform fees.
+        claim_ids:
+          type: array
+          items:
+            type: string
+          description: An array of claim ids of the claims linked to the policy.
+        complaint_ids:
+          type: array
+          items:
+            type: string
+          description: An array of complaint ids of the complaints linked to the policy.
+        start_date:
+          type: string
+          format: date-time
+          description: Once the policy reaches its start date, cover commences and regular collection attempts can run against the policy (provided it has an `active` status). See the [Managing policies](https://docs.rootplatform.com/docs/policy-administration#policy-lifecycle) guide for more details on the policy lifecycle.
+        end_date:
+          type: string
+          format: date-time
+          description: When the policy reaches its end date, its status will change to `expired`. Cover and collections will cease. Policies with no end date do not expire.
+        current_version:
+          type:
+          - integer
+          - 'null'
+          description: '`null` is allowed. The current policy schedule version.'
+        schedule_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Object ID of the policy document.'
+        policy_schedule_uri:
+          type:
+          - string
+          - 'null'
+          description: URI to the policy document in PDF format.
+        terms_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Attachment ID of the policy terms document.'
+        terms_uri:
+          type:
+          - string
+          - 'null'
+          description: URI to the terms document in PDF format.
+        supplementary_terms_files:
+          type: array
+          description: Supplementary terms files associated with the policy.
+          items:
+            type: object
+            properties:
+              supplementary_terms_file_id:
+                type: string
+                description: Attachment ID of the supplementary terms document.
+              type:
+                type: string
+                description: The supplementary terms file type, as specified in the product module settings.
+              uri:
+                type: string
+                description: URI to the supplementary terms document in PDF format.
+        policy_welcome_letter_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Object ID of the welcome letter.'
+        policy_welcome_letter_uri:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. URI to the welcome letter in PDF format.'
+        policy_certificate_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Object ID of the policy certificate.'
+        policy_certificate_uri:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. URI to the certificate in PDF format.'
+        policy_anniversary_file_id:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. Object ID of the policy anniversary document.'
+        schedule_versions:
+          type: array
+          items:
+            type: object
+            properties:
+              version:
+                type: integer
+                description: The policy schedule version number.
+              created_at:
+                type: string
+                format: date-time
+                description: The date the policy schedule version was created.
+          description: The policy schedule versions for the policy. A new policy schedule version is typically created when the policy is updated.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the policy was created.
+        module:
+          type: object
+          description: Custom, product-specific fields stored against the policy. These parameters are set in the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook) in the product module code. They can be referenced in policy documents, data exports and external integrations.
+          additionalProperties: true
+        restricted_data:
+          type: object
+          description: Optional restricted product-specific information saved to the policy. This field is only returned when the requestee has access to restricted policy module data.
+          additionalProperties: true
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the policy.'
+          additionalProperties: true
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the policy.'
+        scheme_type:
+          type: string
+          description: Indicates the policy scheme type, being either `individual` or `group`.
+        payment_method_id:
+          type: string
+          description: Must be a UUID. The ID of the policy's payment method, if set.
+        status_updated_at:
+          type: string
+          format: date-time
+          description: Date indicating when the policy status was last updated.
+        charges:
+          type: array
+          description: Whenever a premium payment is created (including reversals), a breakdown of the payment amount is calculated according to the charges stored on the policy. This allows the premium breakdown to be referenced in policy documents and disclosures, and in the policy's payment data. See the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook#charges-and-commissions) guide for more details on charges and commissions.
+          items:
+            type: object
+            required:
+            - type
+            - name
+            properties:
+              type:
+                $ref: '#/components/schemas/payment-charge-type'
+              name:
+                type: string
+                description: The name of the charge.
+              description:
+                type: string
+                description: The description of the charge.
+              amount:
+                type: integer
+                description: The charged amount. Required when type is `fixed` or `variable`. Either a proportion of the total premium (if `type` is `variable`), or a currency amount in cents (if `type` is `fixed`).
+      example:
+        policy_id: 128ba0c0-3f6a-4f8b-9b40-e2066b02b59e
+        policy_number: 1HFCT1CDBJ
+        policyholder_id: bf3ab7ce-064d-43b7-811d-0ecd9aca3daf
+        status: active
+        package_name: Theft + comprehensive
+        sum_assured: 1199900
+        base_premium: 14999
+        monthly_premium: 50000
+        balance: 0
+        currency: ZAR
+        billing_amount: 50000
+        billing_day: 1
+        billing_frequency: monthly
+        covered_people: []
+        start_date: '2017-10-05T00:00:00.000Z'
+        end_date: '2018-10-05T00:00:00.000Z'
+        current_version: 1
+        schedule_file_id: c85f1d4e-f09b-11ed-a05b-0242ac120003
+        policy_schedule_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/schedule/schedule_latest.pdf
+        terms_file_id: 68c8b6e6-f484-11ed-a05b-0242ac120003
+        terms_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/terms/terms.pdf
+        supplementary_terms_files:
+        - supplementary_terms_file_id: c414342a-7ea4-4a16-be68-d152aa5fce68
+          type: client-conduct
+          uri: https://sandbox.root.co.za/v1/files/download/a7bc326f-640e-4b43-9909-7a6c8be17e37
+        policy_welcome_letter_file_id: d0864e70-f09b-11ed-a05b-0242ac120003
+        policy_welcome_letter_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/welcome-letter/welcome_letter.pdf
+        policy_certificate_file_id: 1e527606-f09c-11ed-a05b-0242ac120003
+        policy_certificate_uri: https://sandbox.root.co.za/v1/insurance/policies/128ba0c0-3f6a-4f8b-9b40-e2066b02b59e/certificate/certificate.pdf
+        policy_anniversary_file_id: 7e6d32c4-f484-11ed-a05b-0242ac120003
+        schedule_versions:
+        - version: 1
+          created_at: '2017-10-05T18:40:47.281Z'
+        created_at: '2017-10-05T18:40:47.281Z'
+        module:
+          type: root_gadgets
+          make: Apple
+          model: iPhone 6S 64GB LTE
+          serial_number: '1234567890'
+        restricted_data:
+          internal_commission_bps: 1500
+        app_data:
+          gadget_colour: Space Grey
+        created_by:
+          id: 00000000-0000-0000-0000-000000000001
+          type: user
+        scheme_type: individual
+        payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+        charges: []
+        beneficiaries:
+        - first_name: Jared
+          last_name: Dunn
+          id:
+            type: id
+            number: '8704094800082'
+            country: ZA
+          percentage: 100
+          relationship: cousin_or_relative
+    application:
+      type: object
+      description: An application represents a "draft" policy, with all information captured and validated. Applications persist on Root (they do not expire), and can be reviewed and managed on the Root management dashboard. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [application hook](https://docs.rootplatform.com/docs/application-hook) guide for more details.
+      required:
+      - application_id
+      - policyholder_id
+      - product_module_definition_id
+      - status
+      - package_name
+      - sum_assured
+      - base_premium
+      - monthly_premium
+      - module
+      - created_at
+      - created_by
+      - billing_day
+      properties:
+        application_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the application.
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the policyholder linked to the application.
+        product_module_definition_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the product module definition associated with the application. Determined by the product module definition associated with the quote from which the application was created.
+        status:
+          description: The status of the application. One of `pending`, `issued`, or `cancelled`.
+          type: string
+          enum:
+          - pending
+          - issued
+          - cancelled
+        package_name:
+          type: string
+          description: The package name.
+        sum_assured:
+          type: integer
+          description: The maximum insured value in cents.
+        base_premium:
+          type: integer
+          description: The combined risk and platform fee in cents. `monthly_premium` is calculated from this.
+        monthly_premium:
+          type: integer
+          description: The total monthly premium, in cents, of the application. This is the total premium that will be billed to the policyholder after the policy is issued.
+        module:
+          type: object
+          description: Custom, product-specific information saved to the application for later reference. These parameters are set in the [application hook](https://docs.rootplatform.com/docs/application-hook) in the product module code.
+          additionalProperties: true
+        restricted_data:
+          type: object
+          description: Optional restricted product-specific information saved to the application. This field is only returned when the requestee has access to restricted application module data.
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          description: The date at which the quote package was created..
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the application.'
+        billing_day:
+          type:
+          - integer
+          - 'null'
+          description: '`null` is allowed. The day of month on which the policy to write will be billed on. Should be between 1 and 31, or `null`. If it falls on a day that does not exist in the month (for example, 31 in February) the policy to be written will be billed on the last day of that month. Setting this value to 31 will ensure that the policy to be written will be billed on the last day of every month.'
+        currency:
+          type: string
+          description: The currency used for the quote package, in [ISO 4217] (https://en.wikipedia.org/wiki/ISO_4217) format.
+        billing_frequency:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          - once_off
+          description: The frequency at which the policy will be billed. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency.
+        beneficiaries:
+          $ref: '#/components/schemas/beneficiaries'
+        input_data:
+          type:
+          - object
+          - 'null'
+          description: Application input parameters as received over the [create an application](https://docs.rootplatform.com/reference/create-an-application) endpoint.
+          additionalProperties: true
+        payment_method_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the payment method linked to the application.
+        type:
+          type: string
+          description: The type of the application. One of `requote` or `new_policy`.
+          enum:
+          - requote
+          - new_policy
+        quote_package_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the quote package from which the application was created.
+        policy:
+          $ref: '#/components/schemas/policy'
+          description: The policy object linked to the application. Only included when `?include=policy` is specified.
+        policyholder:
+          $ref: '#/components/schemas/policyholder'
+          description: The policyholder object linked to the application. Only included when `?include=policyholder` is specified.
+        quote_package:
+          $ref: '#/components/schemas/quote-package'
+          description: The quote package object from which the application was created. Only included when `?include=quote_package` is specified.
+        cancelled_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the application was cancelled, if applicable.
+        reason_cancelled:
+          type:
+          - string
+          - 'null'
+          description: Reason the application was cancelled.
+        cancellation_requestor:
+          type:
+          - string
+          - 'null'
+          description: Whether the customer (`client`) or insurer (`insurer`) initiated cancellation.
+        cancellation_type:
+          type:
+          - string
+          - 'null'
+          description: Cancellation reason code. Defaults are platform-defined; a product module may override allowed values when configured.
+      example:
+        application_id: 02e2ce3b-a235-48ea-8415-c58440f631bd
+        policyholder_id: 246ee082-9f88-44b7-b51c-22a1f1a9a19e
+        payment_method_id: 7c3e8f2a-1d4b-5e6f-9a0b-c1d2e3f4a5b6
+        package_name: Theft + comprehensive
+        sum_assured: 1199900
+        monthly_premium: 16999
+        base_premium: 16999
+        module:
+          make: Apple
+          type: root_gadgets
+          model: iPhone 6S 64GB LTE
+          serial_number: 0123456789
+        restricted_data:
+          underwriting_score: 85
+        created_at: '2023-02-03T11:17:49.009Z'
+        created_by:
+          type: api_key
+          id: b6565862-cc6e-4563-85d3-659894338cda
+          owner_id: e17f06ce-2a6a-4864-b826-19a83270eab4
+        currency: ZAR
+        product_module_definition_id: 4889a9e0-d5f9-4971-8ac2-2175a9d15477
+        billing_frequency: monthly
+        billing_day: 1
+        status: pending
+        type: new_policy
+        beneficiaries:
+        - beneficiary_id: cd444567-10d5-47f5-a0cc-34e262266359
+          policyholder_id: 246ee082-9f88-44b7-b51c-22a1f1a9a19e
+          percentage: 100
+          relationship: policyholder
+        quote_package_id: 3822b8fb-43e7-43f7-94ad-63e94e6ce1e3
+    beneficiary-relationship:
+      type: string
+      description: The beneficiary's relationship to the policyholder.
+      enum:
+      - main_member
+      - spouse
+      - parent
+      - son
+      - daughter
+      - aunt_or_uncle
+      - grandparent
+      - cousin_or_relative
+      - brother
+      - sister
+      - employer
+      - policyholder
+      - credit_provider
+      - cessionary
+      - estate
+      - trust
+      - guardian_fund
+      - funeral_parlour
+      - son_in_law
+      - daughter_in_law
+      - mother_in_law
+      - father_in_law
+      - grandchild
+      - niece_or_nephew
+      - other
+    application-alteration-hook:
+      type: object
+      required:
+      - product_module_definition_alteration_hook_id
+      - product_module_definition_id
+      - schema_id
+      - key
+      - name
+      - type
+      - created_at
+      - created_by
+      properties:
+        product_module_definition_alteration_hook_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the alteration hook definition.
+        product_module_definition_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the product module definition.
+        schema_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the schema linked to this alteration hook.
+        key:
+          type: string
+          description: The unique key of the alteration hook.
+        name:
+          type: string
+          description: The display name of the alteration hook.
+        type:
+          type: string
+          description: The alteration hook type.
+        created_at:
+          type: string
+          format: date-time
+          description: The date/time at which the alteration hook was created.
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the alteration hook definition.'
+        productModuleDefinitionSchema:
+          type:
+          - object
+          - 'null'
+          description: Optional schema metadata for the alteration hook.
+          properties:
+            product_module_definition_schema_id:
+              type: string
+            json:
+              type: object
+              additionalProperties: true
+            created_at:
+              type: string
+              format: date-time
+            created_by:
+              type:
+              - object
+              - 'null'
+            type:
+              type:
+              - string
+              - 'null'
+          additionalProperties: true
+      example:
+        product_module_definition_alteration_hook_id: 2cbbc377-e142-4986-8871-29b0a4c23353
+        product_module_definition_id: 9b7b43f4-9ab8-4e37-b42b-59d5595f3983
+        schema_id: 18f7e13a-f4f4-4b10-86ec-2973dfe77732
+        key: update_cover_amount
+        name: Update cover amount
+        type: application
+        created_at: '2026-01-28T09:17:05.101Z'
+        created_by:
+          type: user
+          id: 00000000-0000-0000-0000-000000000001
+        productModuleDefinitionSchema:
+          product_module_definition_schema_id: 18f7e13a-f4f4-4b10-86ec-2973dfe77732
+          json:
+            type: object
+            properties:
+              cover_amount:
+                type: integer
+          created_at: '2026-01-28T09:15:45.100Z'
+          created_by:
+            type: user
+            id: 00000000-0000-0000-0000-000000000001
+          type: application_alteration
+    notes:
+      type: array
+      items:
+        $ref: '#/components/schemas/note'
+    note:
+      type: object
+      required:
+      - text
+      - created_at
+      properties:
+        text:
+          type: string
+          description: A string of text for the note.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the attachment was created.
+      example:
+        text: Customer spoke to Erlich previously
+        created_at: '2022-10-16T10:12:02.872Z'
+        requested_by:
+          type: user
+          id: 00000000-0000-0000-0000-000000000001
+    cellphone:
+      type:
+      - object
+      - 'null'
+      description: '`null` and `""` allowed. Object containing the cellphone number in national format, and the corresponding alpha 2 country code.'
+      properties:
+        number:
+          type: string
+          description: The cellphone number.
+        country:
+          type: string
+          description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the cellphone number.
+      required:
+      - number
+      - country
+      example:
+        number: 0821234567
+        country: ZA
+    policy-status:
+      type: string
+      description: The policy status. See the [managing policies](https://docs.rootplatform.com/docs/policy-administration#policy-lifecycle) guide for more details on the policy lifecycle.
+      enum:
+      - pending_initial_payment
+      - active
+      - cancelled
+      - expired
+      - lapsed
+      - not_taken_up
+    policyholder:
+      type: object
+      required:
+      - policyholder_id
+      - type
+      - id
+      - first_name
+      - last_name
+      - policy_ids
+      - created_at
+      - app_data
+      - created_by
+      properties:
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the policyholder.
+        type:
+          type: string
+          description: The policyholder type.
+          enum:
+          - individual
+          - company
+        id:
+          type: object
+          description: (Individual policyholders only) Object containing policyholder's identification information.
+          properties:
+            type:
+              type: string
+              description: The id type of the policyholder.
+              enum:
+              - id
+              - passport
+              - email
+              - cellphone
+              - custom
+            number:
+              type: string
+              description: The ID or passport number.
+            country:
+              type: string
+              description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the id/passport number.
+            expiration_date:
+              type: string
+              format: date-time
+              description: (Individual policyholders only) The expiration date of the policyholder's passport.
+          required:
+          - type
+          - number
+          - country
+        title:
+          type: string
+          description: The policyholders's title.
+          enum:
+          - mr
+          - mrs
+          - miss
+          - mx
+          - sir
+          - dr
+          - adv
+          - ms
+          - prof
+        date_of_birth:
+          type: string
+          description: (Individual policyholders only) The policyholder's date of birth in the format YYYYMMDD.
+        gender:
+          type: string
+          description: Null is allowed. (Individual policyholders only) The policyholder's gender.
+          enum:
+          - male
+          - female
+        initials:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The policyholder or primary contact''s initials.'
+        first_name:
+          type: string
+          description: The policyholder or primary contact's legal first name.
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The policyholder or primary contact''s legal middle name.'
+        last_name:
+          type: string
+          description: The policyholder or primary contact's legal last name.
+        company_name:
+          type: string
+          description: (Company policyholders only) The name of the company that the policyholder represents.
+        registration_number:
+          type: string
+          description: (Company policyholders only) The company's registration number.
+        date_of_establishment:
+          type: string
+          description: (Company policyholders only) The company's date of establishment in the format YYYYMMDD.
+        company_website_url:
+          type: string
+          description: (Company policyholders only) The company's website URL.
+        contact_position:
+          type: string
+          description: (Company policyholders only) The position or role of the primary contact at the company.
+        subsidiary_companies:
+          type: array
+          items:
+            type: string
+          description: (Company policyholders only) An array of subsidiary company names.
+        email:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The policyholder or primary contact''s contact email address.'
+        cellphone:
+          $ref: '#/components/schemas/cellphone-string'
+        phone_other:
+          $ref: '#/components/schemas/cellphone-string'
+        policy_ids:
+          type: array
+          items:
+            type: string
+          description: An array of ids of the policies linked to this policyholder.
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/policy'
+          description: An array of full [policy objects](#policy) owned by the policyholder. This is currently only included when [fetching all policyholders](#list-all-policyholders) or [fetching an individual policyholder](#retrieve-a-policyholder) with `?include=policies`.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the policyholder was created.
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the policy holder.'
+          additionalProperties: true
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the policyholder. See [Authentication](#client-apps).'
+        updated_at:
+          type: string
+          format: date-time
+          description: The time at which the policyholder was last updated.
+        address:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. The policyholder''s physical address. See below for more details.'
+          properties:
+            line_1:
+              type: string
+              description: First line of the policyholder's address.
+            line_2:
+              type:
+              - string
+              - 'null'
+              description: '`null` is allowed. Optional second line of the policyholder''s address.'
+            suburb:
+              type: string
+              description: The policyholder's suburb.
+            city:
+              type: string
+              description: The policyholder's city.
+            country:
+              type: string
+              description: The policyholder's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format.
+            area_code:
+              type: string
+              description: The policyholder's area code must be 4 characters long for South African addresses.
+          required:
+          - line_1
+          - city
+          - country
+          - area_code
+      example:
+        policyholder_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+        type: individual
+        initials: E
+        first_name: Erlich
+        middle_name: Aviato
+        last_name: Bachman
+        id:
+          type: id
+          number: '6801015800084'
+          country: ZA
+        date_of_birth: '19680101'
+        gender: male
+        email: erlich@aviato.com
+        cellphone: '+27821234567'
+        phone_other: '+27124101337'
+        created_at: '2017-10-12T15:47:34.281Z'
+        app_data:
+          company: Aviato
+        policy_ids: []
+        created_by:
+          id: 00000000-0000-0000-0000-000000000001
+          type: user
+        address:
+          line_1: 5230 Penfield Avenue
+          suburb: Woodland Hills
+          city: Los Angeles
+          country: US
+          area_code: CA 91364
+    application-alteration-hooks:
+      type: array
+      items:
+        $ref: '#/components/schemas/application-alteration-hook'
+    payment-method:
+      type: object
+      required:
+      - payment_method_id
+      - type
+      - created_at
+      - organization_id
+      - policyholder_id
+      properties:
+        payment_method_id:
+          type: string
+          description: Must be a UUID. The Unique identifier for the payment method.
+        type:
+          type: string
+          description: The payment method type. Except for external payment methods, must be one of `debit_order`, `card`, `eft`, `collection_module`. For external payment methods, will correspond to the custom `key` field.
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time at which the payment method was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time at which the payment method was last updated.
+        organization_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the related organisation.
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the policyholder the payment method is linked to.
+        policyholder:
+          $ref: '#/components/schemas/policyholder'
+          description: The policyholder object linked to the payment method. Only included when `?include=policyholder` is specified.
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/policy'
+          description: An array of policy objects linked to the payment method. Only included when `?include=policies` is specified.
+        bank_details:
+          type: object
+          description: Required if `type` is `debit_order`. Bank details for the debit order.
+          required:
+          - account_holder
+          - bank
+          - branch_code
+          - account_number
+          - account_type
+          properties:
+            account_holder:
+              type: string
+              description: Name of account holder.
+            account_holder_identification:
+              type:
+              - object
+              - 'null'
+              description: '`null` is allowed. An object containing the identification details of the account holder.'
+              required:
+              - type
+              - number
+              - country
+              properties:
+                type:
+                  type: string
+                  description: The type of identity document.
+                  enum:
+                  - id
+                  - passport
+                number:
+                  type: string
+                  description: The identity document number.
+                country:
+                  type: string
+                  description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the identification document.
+                expiration_date:
+                  type: string
+                  format: date-time
+                  description: The expiration date of the lead's passport.
+            bank:
+              $ref: '#/components/schemas/bank-name'
+            branch_code:
+              type: string
+              description: Branch code for bank account.
+            account_number:
+              type: string
+              description: Bank account number.
+            account_type:
+              type: string
+              description: Bank account type.
+              enum:
+              - cheque
+              - savings
+            banv_status:
+              type: string
+              description: The [bank account verification status](doc:account-verification-banvavs#reporting-on-payment-methods).
+              enum:
+              - pending
+              - processing
+              - verified
+              - failed_verification
+              - blocked
+            blocked_reason:
+              type:
+              - string
+              - 'null'
+              description: The reason the payment method is blocked. Only relevant if `banv_status` is `blocked`.
+            banv_response:
+              type:
+              - string
+              - 'null'
+              description: The response received when bank account verification was attempted.
+            payment_method_id:
+              type: string
+              description: Must be a UUID. The unique identifier of the payment method.
+        card:
+          type: object
+          description: Details of the payment card. Required if `type` is `card`.
+          required:
+          - bin
+          - holder
+          - brand
+          - expiry_month
+          - expiry_year
+          - last_4_digits
+          properties:
+            bin:
+              type: string
+              description: The bank identification number.
+            holder:
+              type: string
+              description: The name of the cardholder.
+            brand:
+              type: string
+              description: The brand of the card.
+            expiry_month:
+              type: string
+              description: The month of the card's exiry date.
+            expiry_year:
+              type: string
+              description: The year of the card's exiry date.
+            last_4_digits:
+              type: string
+              description: The last four digits of the card number.
+            registration:
+              type: string
+              description: The registration ID of the card.
+        external_reference:
+          type: string
+          description: The external identifier of the payment method. Required if `type` is `external`.
+        banv_status:
+          type: string
+          description: The [bank account verification status](doc:account-verification-banvavs#reporting-on-payment-methods). Only relevant if `type` is `external`.
+          enum:
+          - pending
+          - processing
+          - verified
+          - failed_verification
+          - blocked
+        blocked_reason:
+          type: string
+          description: The reason the payment method is blocked. Only relevant if `banv_status` is `blocked` and `type` is `external`.
+        collection_module_definition_id:
+          type: string
+          description: The unique identifier of the collection module definition that the payment method is linked to. Only relevant if `type` is `collection_module`.
+        collection_module_key:
+          type: string
+          description: The key of the collection module that the payment method is linked to. Only relevant if `type` is `collection_module`.
+        module:
+          type: object
+          description: Custom module-specific data for collection module payment methods. Only relevant if `type` is `collection_module`.
+          additionalProperties: true
+        collection_module:
+          type: object
+          description: The collection module object linked to the payment method. Only included when `?include=collection_module` is specified and `type` is `collection_module`.
+          additionalProperties: true
+        updated_by:
+          type: object
+          description: An object indicating the user or API key that last updated the payment method. Only relevant if `type` is `collection_module`.
+      example:
+        payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+        type: debit_order
+        organization_id: 952bfef5-7517-47ff-bf41-08c5a66c52db
+        policyholder_id: f91f4ea4-9c6d-459e-998b-a5711cbd8895
+        created_at: '2021-01-29T13:12:00.968Z'
+        updated_at: '2021-01-29T13:12:00.968Z'
+        bank_details:
+          account_holder: Erlich Bachman
+          bank: absa
+          branch_code: '12345'
+          account_number: '123456789'
+          account_type: cheque
+          banv_status: pending
+    cellphone-string:
+      type:
+      - string
+      - 'null'
+      description: '`null` and `""` allowed. String containing the cellphone number in international format.'
+      example: '+27821234567'
+    beneficiaries-request:
+      type: array
+      description: '`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some modules may require adding beneficiaries to a policy for claims to be processed.'
+      items:
+        type: object
+        required:
+        - first_name
+        - last_name
+        - percentage
+        - relationship
+        properties:
+          type:
+            type: string
+            description: The type of beneficiary to be created.
+            enum:
+            - individual
+            - company
+            default: individual
+          first_name:
+            type: string
+            description: The beneficiary's first name.
+          last_name:
+            type: string
+            description: The beneficiary's last name.
+          title:
+            type: string
+            description: The beneficiary's title.
+            enum:
+            - mr
+            - mrs
+            - miss
+            - mx
+            - sir
+            - dr
+            - adv
+            - ms
+            - prof
+          gender:
+            type: string
+            description: The beneficiary's gender.
+            enum:
+            - male
+            - female
+          id:
+            type: object
+            description: (Individual beneficiaries only) Object containing beneficiary's identification number, type and country.
+            properties:
+              type:
+                type: string
+                description: The beneficiary's identification type.
+                enum:
+                - id
+                - passport
+                - custom
+              number:
+                type: string
+                description: Depending on the type selected, either an ID number, passport number or custom identifier.
+              country:
+                type: string
+                description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`.
+            required:
+            - type
+            - number
+            - country
+          date_of_birth:
+            type:
+            - string
+            - 'null'
+            format: date
+            description: '`null` is allowed. An optional string containing the beneficiary''s date of birth.'
+          percentage:
+            type: integer
+            description: An integer representing the percentage of a claim payout that the beneficiary should receive. Note that the percentages across all beneficiaries should add up to 100%.
+          cellphone:
+            oneOf:
+            - $ref: '#/components/schemas/cellphone'
+            - $ref: '#/components/schemas/cellphone-string'
+          email:
+            type: string
+            description: The beneficiary's email address.
+          relationship:
+            $ref: '#/components/schemas/beneficiary-relationship'
+          company_name:
+            type: string
+            description: The name of the company that the beneficiary represents. Required when `type = company`.
+          registration_number:
+            type: string
+            description: The company's registration number. Required when `type = company`.
+          payment_details:
+            $ref: '#/components/schemas/payment-details'
+          policyholder_id:
+            type: string
+            description: Must be a UUID. The unique identifier of an existing policyholder to link as a beneficiary.
+          address:
+            type: object
+            description: The beneficiary's physical address.
+            properties:
+              line_1:
+                type: string
+                description: First line of the beneficiary's address.
+              line_2:
+                type:
+                - string
+                - 'null'
+                description: '`null` is allowed. Optional second line of the beneficiary''s address.'
+              suburb:
+                type: string
+                description: The beneficiary's suburb.
+              city:
+                type: string
+                description: The beneficiary's city.
+              country:
+                type: string
+                description: The beneficiary's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format.
+              area_code:
+                type: string
+                description: The beneficiary's area code.
+            required:
+            - line_1
+            - city
+            - country
+            - area_code
+        example:
+          first_name: Jared
+          last_name: Dunn
+          id:
+            type: id
+            number: '8704094800082'
+            country: ZA
+          percentage: 100
+          relationship: cousin_or_relative
+          payment_details:
+            type: eft
+            details:
+              bank_name: absa
+              branch_code: '632005'
+              account_number: '23234342424'
+              account_type: cheque_account
+      example:
+      - first_name: Mary
+        last_name: Yang
+        percentage: 90
+        title: mrs
+        gender: female
+        id:
+          type: id
+          number: '9504014800082'
+          country: ZA
+        email: mary@piedpiper.com
+        relationship: spouse
+        cellphone: '+27821234567'
+        payment_details:
+          type: eft
+          details:
+            account_number: '01304055557'
+            account_type: cheque_account
+            bank_name: nedbank
+            branch_code: '20177778'
+        type: individual
+      - first_name: Erlich
+        last_name: Aviatio
+        percentage: 10
+        title: mr
+        email: erlich@aviatio.com
+        relationship: other
+        cellphone: '+27783456578'
+        payment_details:
+          type: eft
+          details:
+            account_number: '546767819'
+            account_type: cheque_account
+            bank_name: investec
+            branch_code: '201507'
+        company_name: Pied Piper
+        registration_number: CC1234
+        type: company
+    payment-details:
+      type: object
+      description: Details of the account into which the payout should be made.
+      required:
+      - type
+      - details
+      properties:
+        type:
+          type: string
+          description: The type of account into which the payout should be made.  For a beneficiary, this must be `eft`.
+          enum:
+          - eft
+          - card
+        details:
+          type: object
+          description: The bank account details.
+          required:
+          - bank_name
+          - branch_code
+          - account_type
+          - account_number
+          properties:
+            bank_name:
+              $ref: '#/components/schemas/bank-name'
+            branch_code:
+              type: string
+              description: The branch code for the account.
+            account_type:
+              type: string
+              description: The account type.
+              enum:
+              - cheque_account
+              - savings
+            account_number:
+              type: string
+              description: The account number.
+    quote-package:
+      type: object
+      description: Quote packages are designed to be low-fidelity and fast to generate,  and are used to generate and display new quotes rapidly on a customer-facing front-end.  They expire after one week. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide  and the [quote hook](https://docs.rootplatform.com/docs/quote-hook) guide for more details.
+      required:
+      - quote_package_id
+      - package_name
+      - sum_assured
+      - base_premium
+      - suggested_premium
+      - module
+      - created_at
+      - currency
+      - billing_frequency
+      - product_module_definition_id
+      properties:
+        quote_package_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the quote package.
+        package_name:
+          type: string
+          description: The package name.
+        sum_assured:
+          type: integer
+          description: The maximum insured value in cents.
+        base_premium:
+          type: integer
+          description: The combined risk and platform fee in cents. `monthly_premium` should be calculated from this.
+        suggested_premium:
+          type: integer
+          description: The suggested `monthly_premium` amount in cents. This is the total premium for display to the customer.
+        module:
+          type: object
+          description: Custom, product-specific information saved to the quote for later reference.  These parameters are set in the [quote hook](https://docs.rootplatform.com/docs/quote-hook) in the product module code.
+          additionalProperties: true
+        restricted_data:
+          type: object
+          description: Optional restricted product-specific information saved to the quote. This field is only returned when the requestee has access to restricted quote module data.
+          additionalProperties: true
+        input_data:
+          type: object
+          description: Quote input parameters as received over the [create a quote](https://docs.rootplatform.com/reference/getting-a-quote-2) endpoint.
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          description: The date/time at which the quote package was created.
+        currency:
+          type: string
+          description: The currency used for the quote package, in [ISO 4217] (https://en.wikipedia.org/wiki/ISO_4217) format.
+        billing_frequency:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          - once_off
+          description: The frequency at which the policy will be billed. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency.
+        product_module_definition_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the product module definition associated with this quote package. If a policy is issued from this quote, this product module definition will be associated with the policy.
+      example:
+        quote_package_id: 3822b8fb-43e7-43f7-94ad-63e94e6ce1e3
+        package_name: Theft + comprehensive
+        sum_assured: 1199900
+        base_premium: 14999
+        suggested_premium: 18749
+        module:
+          type: root_gadgets
+          make: Apple
+          model: iPhone 6S 64GB LTE
+        restricted_data:
+          internal_commission_bps: 2500
+        created_at: '2023-02-03T11:17:09.747Z'
+        currency: ZAR
+        billing_frequency: monthly
+        product_module_definition_id: 4889a9e0-d5f9-4971-8ac2-2175a9d15477
+    payment-charge-type:
+      type: string
+      description: Variable charges are applied as a proportion of the total payment amount. Fixed charges are applied as an absolute currency value in cents. The `balance` is the balance of the payment total after all charges have been applied.
+      enum:
+      - fixed
+      - variable
+      - balance
+    attachment:
+      type: object
+      required:
+      - file_name
+      - description
+      - file_type
+      - file_url
+      - created_at
+      - requested_by
+      properties:
+        file_name:
+          type: string
+          description: The name of the file (with file extension).
+        description:
+          type: string
+          description: A tag describing what the document is about (e.g. affidavit, etc.).
+        file_type:
+          type: string
+          description: The mime type of the attachment (e.g. image/png).
+        file_url:
+          type: string
+          format: uri
+          description: The URL to download the attachment file.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the attachment was created.
+        requested_by:
+          type: object
+          description: An object indicating the user or API key that created the attachment. See [Authentication](#client-apps).
+          properties:
+            type:
+              type: string
+              description: The type of the creator (e.g., user, api_key).
+            id:
+              type: string
+              description: The identifier of the creator.
+            owner_id:
+              type: string
+              description: The identifier of the owner (only present for API key requests).
+          required:
+          - type
+        type:
+          type: string
+          description: The event type associated with the attachment (e.g., attachment_created). This field is only present when the attachment is returned as part of an event.
+      example:
+        file_name: report.pdf
+        file_type: application/pdf
+        file_url: https://sandbox.rootplatform.com/v1/files/download/00000000-0000-0000-0000-000000000001
+        description: quote
+        type: attachment_created
+        created_at: '2025-11-10T14:33:50.095Z'
+        requested_by:
+          type: api_key
+          id: 00000000-0000-0000-0000-000000000001
+          owner_id: 00000000-0000-0000-0000-000000000001
+    application-alteration-package:
+      type: object
+      required:
+      - alteration_package_application_id
+      - organization_id
+      - created_at
+      - created_by
+      - module
+      - application_id
+      - alteration_hook_key
+      properties:
+        alteration_package_application_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the application alteration package.
+        organization_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the organization.
+        created_at:
+          type: string
+          format: date-time
+          description: The date/time at which the application alteration package was created.
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the application alteration package. See [Authentication](#client-apps).'
+        module:
+          type: object
+          description: Custom module-specific fields stored against the application alteration package. See [product modules](doc:product-modules-overview) for more details.
+          additionalProperties: true
+        monthly_premium:
+          type:
+          - integer
+          - 'null'
+          description: Null is allowed. The monthly premium amount in cents.
+        currency:
+          type:
+          - string
+          - 'null'
+          description: Null is allowed. The currency code for premium values.
+        sum_assured:
+          type:
+          - integer
+          - 'null'
+          description: Null is allowed. The sum assured amount in cents.
+        billing_frequency:
+          type:
+          - string
+          - 'null'
+          description: Null is allowed. The billing frequency to be applied.
+        status:
+          type:
+          - string
+          - 'null'
+          description: Null is allowed. The status of the application alteration package.
+        change_description:
+          type:
+          - string
+          - 'null'
+          description: Null is allowed. Description of the change being applied.
+        input_data:
+          type: object
+          description: The input data received when creating the alteration package.
+          additionalProperties: true
+        application_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the related application.
+        alteration_hook_key:
+          type: string
+          description: The identifier of the alteration hook used to create this package.
+      example:
+        alteration_package_application_id: 2d200d5c-477c-4c90-b305-e8f445f4d8e5
+        organization_id: 00000000-0000-0000-0000-000000000001
+        created_at: '2026-01-28T09:17:05.101Z'
+        created_by:
+          type: api_key
+          id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
+          owner_id: 00000000-0000-0000-0000-000000000001
+        module:
+          package_name: Funeral Cover
+          suggested_premium: 17500
+          base_premium: 16000
+          cover_amount: 25000000
+        monthly_premium: 17500
+        currency: ZAR
+        sum_assured: 25000000
+        billing_frequency: monthly
+        status: pending
+        change_description: Updating cover amount before issuing policy
+        input_data:
+          cover_amount: 25000000
+          spouse_cover: true
+        application_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+        alteration_hook_key: update_cover_amount
+    bank-name:
+      type: string
+      description: The name of the bank
+      enum:
+      - absa
+      - access
+      - african_bank
+      - al_baraka
+      - bank_of_china
+      - bank_of_lisbon
+      - bank_zero
+      - bidvest
+      - bidvest_bank_alliances
+      - capitec
+      - discovery_bank
+      - finbond_mutual
+      - fnb
+      - hbz
+      - investec
+      - ithala
+      - mercantile
+      - nedbank
+      - old_mutual
+      - postbank
+      - sasfin
+      - standard_bank
+      - sure
+      - tyme_bank
+      - ubank
+      - vbc_mutual_bank
+      - wizzit
+    applications:
+      type: array
+      items:
+        $ref: '#/components/schemas/application'
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true
