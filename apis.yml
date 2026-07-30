@@ -1,7 +1,20 @@
 aid: root
 name: Root Insurance
 description: Root Insurance is a usage-based auto insurance company that prices policies primarily based on driving behavior captured via smartphone telematics. Root provides a REST API platform for insurers, MGAs, and distribution partners to build, embed, and operate insurance products — covering quoting, policy administration, claims processing, premium collections, and data management. The Root Bind API enables partners to embed auto insurance quoting and checkout directly into their applications.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/root.png
 url: https://raw.githubusercontent.com/api-evangelist/root/refs/heads/main/apis.yml
 created: '2026-06-13'
 modified: '2026-06-13'
@@ -17,51 +30,334 @@ tags:
   - Usage-Based Insurance
   - InsurTech
 apis:
-  - aid: root:root-platform-api
-    name: Root Platform API
-    description: The Root Platform REST API enables insurers, MGAs, and distribution partners to build and operate full insurance products. Capabilities include application management, quote generation, policy issuance and lifecycle management, claims processing, premium collections, policyholder management, webhooks, and data exports.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.rootplatform.com/docs/overview
-    baseURL: https://api.rootplatform.com/
-    tags:
-      - Insurance Platform
-      - Policy Management
-      - Claims
-      - Quotes
-      - Collections
-      - Webhooks
-    properties:
-      - type: Documentation
-        url: https://docs.rootplatform.com/docs/overview
-      - type: OpenAPI
-        url: https://api.rootplatform.com/v1/docs/insurance/openapi
-      - type: Authentication
-        url: https://docs.rootplatform.com/reference/getting-started-1
-      - type: Sandbox
-        url: https://sandbox.rootplatform.com/
-      - type: StatusPage
-        url: https://status.rootplatform.com/
-
-  - aid: root:root-bind-api
-    name: Root Bind API
-    description: The Root Bind API enables distribution partners to embed auto insurance quoting, checkout, and servicing within their own applications. Supports both a hosted experience (Root-managed checkout) and a fully embedded experience where partners control the entire customer journey through Root's APIs.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://root-bind-api.readme.io/docs/embedded-insurance-101
-    baseURL: https://production.joinroot.com/bind_api/v3/
-    tags:
-      - Embedded Insurance
-      - Auto Insurance
-      - Quote and Bind
-      - Partner API
-      - Telematics
-    properties:
-      - type: Documentation
-        url: https://root-bind-api.readme.io/docs/getting-started
-      - type: GettingStarted
-        url: https://root-bind-api.readme.io/docs/getting-started
-      - type: Sandbox
-        url: https://sandbox.joinroot.com/bind_api/v3/
-
+- aid: root:root-bind-api
+  name: Root Bind API
+  description: >-
+    The Root Bind API enables distribution partners to embed auto insurance quoting, checkout, and servicing
+    within their own applications. Supports both a hosted experience (Root-managed checkout) and a fully
+    embedded experience where partners control the entire customer journey through Root's APIs.
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://root-bind-api.readme.io/docs/embedded-insurance-101
+  baseURL: https://production.joinroot.com/bind_api/v3/
+  tags:
+  - Embedded Insurance
+  - Auto Insurance
+  - Quote and Bind
+  - Partner API
+  - Telematics
+  properties:
+  - type: Documentation
+    url: https://root-bind-api.readme.io/docs/getting-started
+  - type: GettingStarted
+    url: https://root-bind-api.readme.io/docs/getting-started
+  - type: Sandbox
+    url: https://sandbox.joinroot.com/bind_api/v3/
+- aid: root:root-applications-api
+  name: Root Insurance Applications API
+  description: The Applications API from Root Insurance — 16 operation(s) for applications.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Applications
+  properties:
+  - type: OpenAPI
+    url: openapi/root-applications-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-calls-api
+  name: Root Insurance Calls API
+  description: The Calls API from Root Insurance — 4 operation(s) for calls.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Calls
+  properties:
+  - type: OpenAPI
+    url: openapi/root-calls-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-claims-api
+  name: Root Insurance Claims API
+  description: The Claims API from Root Insurance — 31 operation(s) for claims.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Claims
+  properties:
+  - type: OpenAPI
+    url: openapi/root-claims-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-complaints-api
+  name: Root Insurance Complaints API
+  description: The Complaints API from Root Insurance — 10 operation(s) for complaints.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Complaints
+  properties:
+  - type: OpenAPI
+    url: openapi/root-complaints-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-data-exports-api
+  name: Root Insurance Data exports API
+  description: The Data exports API from Root Insurance — 9 operation(s) for data exports.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Data exports
+  properties:
+  - type: OpenAPI
+    url: openapi/root-data-exports-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-data-stores-api
+  name: Root Insurance Data stores API
+  description: The Data stores API from Root Insurance — 4 operation(s) for data stores.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Data stores
+  properties:
+  - type: OpenAPI
+    url: openapi/root-data-stores-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-embed-api
+  name: Root Insurance Embed API
+  description: The Embed API from Root Insurance — 2 operation(s) for embed.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Embed
+  properties:
+  - type: OpenAPI
+    url: openapi/root-embed-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-files-api
+  name: Root Insurance Files API
+  description: The Files API from Root Insurance — 1 operation(s) for files.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Files
+  properties:
+  - type: OpenAPI
+    url: openapi/root-files-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-leads-api
+  name: Root Insurance Leads API
+  description: The Leads API from Root Insurance — 2 operation(s) for leads.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Leads
+  properties:
+  - type: OpenAPI
+    url: openapi/root-leads-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-notifications-api
+  name: Root Insurance Notifications API
+  description: The Notifications API from Root Insurance — 3 operation(s) for notifications.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Notifications
+  properties:
+  - type: OpenAPI
+    url: openapi/root-notifications-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-payment-methods-api
+  name: Root Insurance Payment Methods API
+  description: The Payment Methods API from Root Insurance — 7 operation(s) for payment methods.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Payment Methods
+  properties:
+  - type: OpenAPI
+    url: openapi/root-payment-methods-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-payments-api
+  name: Root Insurance Payments API
+  description: The Payments API from Root Insurance — 6 operation(s) for payments.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/root-payments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-policies-api
+  name: Root Insurance Policies API
+  description: The Policies API from Root Insurance — 32 operation(s) for policies.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Policies
+  properties:
+  - type: OpenAPI
+    url: openapi/root-policies-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-policyholders-api
+  name: Root Insurance Policyholders API
+  description: The Policyholders API from Root Insurance — 7 operation(s) for policyholders.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Policyholders
+  properties:
+  - type: OpenAPI
+    url: openapi/root-policyholders-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-quotes-api
+  name: Root Insurance Quotes API
+  description: The Quotes API from Root Insurance — 1 operation(s) for quotes.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Quotes
+  properties:
+  - type: OpenAPI
+    url: openapi/root-quotes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-secret-keys-api
+  name: Root Insurance Secret keys API
+  description: The Secret keys API from Root Insurance — 2 operation(s) for secret keys.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Secret keys
+  properties:
+  - type: OpenAPI
+    url: openapi/root-secret-keys-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
+- aid: root:root-webhooks-api
+  name: Root Insurance Webhooks API
+  description: The Webhooks API from Root Insurance — 9 operation(s) for webhooks.
+  humanURL: https://docs.rootplatform.com/docs/overview
+  baseURL: https://api.rootplatform.com/
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/root-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
 common:
   - type: AgenticAccess
     url: agentic-access/root-agentic-access.yml
