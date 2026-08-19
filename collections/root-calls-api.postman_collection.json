@@ -1,0 +1,612 @@
+{
+  "item": [
+    {
+      "id": "7ef32ed7-f36a-4bcf-bda5-e104befb56c0",
+      "name": "Calls",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a0474adb-effd-4a42-aa82-21d6e473abf5",
+          "name": "List all calls",
+          "request": {
+            "name": "List all calls",
+            "description": {
+              "content": "Returns a paginated list of calls for the organization. Use the `include` parameter to include the related policyholder object.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "calls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                },
+                {
+                  "disabled": false,
+                  "key": "call_status",
+                  "value": "<string>,<string>",
+                  "description": "Filter by call status. Accepts multiple values."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>,<string>",
+                  "description": "A comma-separated list of related objects to include in the response. Valid values: `policyholder`."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c83aa74a-255e-43f2-b70e-a043e2812045",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "call_status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The total number of calls matching the query.",
+                  "key": "X-Total-Count",
+                  "value": "42"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"call_id\": \"0ac6dffb-bd15-4829-b96d-e2c1abe61d3a\",\n    \"policyholder_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n    \"claim_id\": null,\n    \"created_at\": \"2017-11-26T11:14:59.777Z\",\n    \"call_status\": \"completed\",\n    \"direction\": \"inbound\",\n    \"from_number\": \"+27823378000\",\n    \"to_number\": \"+27821234567\",\n    \"topic\": \"general\",\n    \"recording_url\": \"https://recordingurl.com\",\n    \"call_duration\": \"5\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2a661601-a220-43dd-b326-a1a58d69fc50",
+          "name": "Create a call",
+          "request": {
+            "name": "Create a call",
+            "description": {
+              "content": "Creates a new call record with an associated recording. The recording must be provided as a base64-encoded string.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "calls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recording_file_name\": \"<string>\",\n  \"recording_file_type\": \"<string>\",\n  \"recording_base64_string\": \"<string>\",\n  \"claim_id\": \"<string>\",\n  \"policyholder_id\": \"<string>\",\n  \"direction\": \"<string>\",\n  \"from\": \"<string>\",\n  \"to\": \"<string>\",\n  \"topic\": \"<string>\",\n  \"call_duration\": \"<integer>\",\n  \"call_status\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e3045a44-8721-4322-9fa8-d2e876d0c882",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policyholder_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n  \"claim_id\": \"673b8081-9668-4136-97cc-6ae0debda083\",\n  \"direction\": \"outbound\",\n  \"from\": \"0721234567\",\n  \"to\": 821234567,\n  \"topic\": \"general\",\n  \"call_duration\": 72,\n  \"call_status\": \"completed\",\n  \"recording_file_name\": \"Recording0001.mp3\",\n  \"recording_file_type\": \"audio/mpeg\",\n  \"recording_base64_string\": \"//uUZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAAT\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"call_id\": \"d3d13c48-4dc3-4816-8d01-de3215878225\",\n  \"policyholder_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n  \"claim_id\": \"673b8081-9668-4136-97cc-6ae0debda083\",\n  \"created_at\": \"2017-10-16T10:12:02.872Z\",\n  \"call_status\": \"completed\",\n  \"direction\": \"outbound\",\n  \"from_number\": \"0721234567\",\n  \"to_number\": 821234567,\n  \"topic\": \"general\",\n  \"recording_url\": \"https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83/Recording0001.mp3\",\n  \"call_duration\": \"72\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8bb22d62-070b-4465-96df-f50a874a426c",
+          "name": "Retrieve a call",
+          "request": {
+            "name": "Retrieve a call",
+            "description": {},
+            "url": {
+              "path": [
+                "calls",
+                ":call_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "call_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [call](ref:call)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "787f6dcf-9d8a-4b63-933a-523ce87abaed",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "calls",
+                    ":call_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "call_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [call](ref:call)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"call_id\": \"d3d13c48-4dc3-4816-8d01-de3215878225\",\n  \"policyholder_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n  \"claim_id\": \"673b8081-9668-4136-97cc-6ae0debda083\",\n  \"created_at\": \"2017-10-16T10:12:02.872Z\",\n  \"call_status\": \"completed\",\n  \"direction\": \"outbound\",\n  \"from_number\": \"0721234567\",\n  \"to_number\": 821234567,\n  \"topic\": \"general\",\n  \"recording_url\": \"https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83/Recording0001.mp3\",\n  \"call_duration\": \"72\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "584051d8-dd7c-43b8-85ff-2c99371478df",
+          "name": "Retrieve call events",
+          "request": {
+            "name": "Retrieve call events",
+            "description": {
+              "content": "Returns a list of events associated with a specific call, sorted by creation time in descending order (most recent first). Events include call status changes, recordings added, and other call-related activities.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "calls",
+                ":call_id",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "call_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [call](ref:call)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "20e8c718-c2c4-40fa-97c0-c5834a3d6346",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "calls",
+                    ":call_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "call_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [call](ref:call)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type\": \"call_completed\",\n    \"call_id\": \"d3d13c48-4dc3-4816-8d01-de3215878225\",\n    \"created_at\": \"2023-02-03T12:05:00.000Z\",\n    \"requested_by\": {\n      \"type\": \"system\",\n      \"id\": \"00000000-0000-0000-0000-000000000000\"\n    }\n  },\n  {\n    \"type\": \"recording_added\",\n    \"call_id\": \"d3d13c48-4dc3-4816-8d01-de3215878225\",\n    \"created_at\": \"2023-02-03T12:04:30.000Z\",\n    \"requested_by\": {\n      \"type\": \"system\",\n      \"id\": \"00000000-0000-0000-0000-000000000000\"\n    },\n    \"recording_url\": \"https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83/Recording0001.mp3\"\n  },\n  {\n    \"type\": \"call_answered\",\n    \"call_id\": \"d3d13c48-4dc3-4816-8d01-de3215878225\",\n    \"created_at\": \"2023-02-03T12:00:15.000Z\",\n    \"requested_by\": {\n      \"type\": \"system\",\n      \"id\": \"00000000-0000-0000-0000-000000000000\"\n    }\n  },\n  {\n    \"type\": \"outbound_call_started\",\n    \"call_id\": \"d3d13c48-4dc3-4816-8d01-de3215878225\",\n    \"created_at\": \"2023-02-03T12:00:00.000Z\",\n    \"requested_by\": {\n      \"type\": \"user\",\n      \"id\": \"00000000-0000-0000-0000-000000000001\"\n    },\n    \"from\": \"0721234567\",\n    \"to\": 821234567\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8153ec6f-9641-4cae-9567-5e6b3867ec9f",
+          "name": "Retrieve call playback URL",
+          "request": {
+            "name": "Retrieve call playback URL",
+            "description": {
+              "content": "Returns a signed URL for playing back the recording of a specific call. If the call has an associated attachment, a signed download URL is returned. Otherwise, the legacy recording URL is returned if available. Returns a 404 error if no recording exists for the call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "calls",
+                ":call_id",
+                "playback-url"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "call_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [call](ref:call)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6a68926d-8a67-4299-aab6-2fea42818fbf",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "calls",
+                    ":call_id",
+                    "playback-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "call_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [call](ref:call)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83/Recording0001.mp3?signature=abc123\",\n  \"file_id\": \"ccbd249e-a404-11ea-8f4a-47e769474b83\",\n  \"file_type\": \"audio/mpeg\",\n  \"file_name\": \"Recording0001.mp3\",\n  \"file_url\": \"https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83\",\n  \"created_at\": 1697456522\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "416f0293-1ac4-42a7-8c38-ed8776007ca4",
+              "name": "Not Found - No recording exists for this call",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "calls",
+                    ":call_id",
+                    "playback-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "call_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [call](ref:call)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"not_found\",\n  \"message\": \"No recording url or attachment found for call with id d3d13c48-4dc3-4816-8d01-de3215878225\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.uk.rootplatform.com/v1/insurance",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8c920eb0-6aa7-4e08-a6da-7e39914bd1ca",
+    "name": "Root Applications Calls API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.\n\nContact Support:\n Name: Root support team\n Email: support@root.co.za",
+      "type": "text/plain"
+    }
+  }
+}

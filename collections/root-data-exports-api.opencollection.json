@@ -1,0 +1,270 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Root Applications Data exports API",
+    "version": "1.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data exports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List data export runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-export-runs",
+            "params": [
+              {
+                "name": "template_id",
+                "value": "",
+                "type": "query",
+                "description": "Must be a UUID. An optional list of data export template ID's."
+              },
+              {
+                "name": "data_source",
+                "value": "",
+                "type": "query",
+                "description": "The data source of the data export run."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List data export runs"
+        },
+        {
+          "info": {
+            "name": "Retrieve a run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-export-runs/:data_export_run_id",
+            "params": [
+              {
+                "name": "data_export_run_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [data export run](ref:retrieve-data-export-run)."
+              }
+            ]
+          },
+          "docs": "Retrieve a run"
+        },
+        {
+          "info": {
+            "name": "Retrieve a run log",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-export-runs/:data_export_run_id/log-items",
+            "params": [
+              {
+                "name": "data_export_run_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [data export run](ref:retrieve-data-export-run)."
+              }
+            ]
+          },
+          "docs": "Retrieve a run log"
+        },
+        {
+          "info": {
+            "name": "List all scheduled data exports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/scheduled-data-exports",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "An optional semicolon-separated list of underlying objects to include, e.g. `?include=latest_run`. Currently, only `latest_run` is supported, which will include the latest run for the scheduled data export."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List all scheduled data exports"
+        },
+        {
+          "info": {
+            "name": "Create a scheduled data export",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/scheduled-data-exports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The following adapters are supported for scheduled data exports:"
+        },
+        {
+          "info": {
+            "name": "Retrieve a scheduled data export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/scheduled-data-exports/:scheduled_data_export_id",
+            "params": [
+              {
+                "name": "scheduled_data_export_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "An optional semicolon-separated list of underlying objects to include, e.g. `?include=latest_run`. Currently, only `latest_run` is supported, which will include the latest run for the scheduled data export."
+              }
+            ]
+          },
+          "docs": "Retrieve a scheduled data export"
+        },
+        {
+          "info": {
+            "name": "Update a scheduled data export",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/scheduled-data-exports/:scheduled_data_export_id",
+            "params": [
+              {
+                "name": "scheduled_data_export_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The following adapters are supported for scheduled data exports:"
+        },
+        {
+          "info": {
+            "name": "Archive a scheduled data export",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/scheduled-data-exports/:scheduled_data_export_id/archive",
+            "params": [
+              {
+                "name": "scheduled_data_export_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+              }
+            ]
+          },
+          "docs": "Archive a scheduled data export"
+        },
+        {
+          "info": {
+            "name": "Pause a scheduled data export",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/scheduled-data-exports/:scheduled_data_export_id/pause",
+            "params": [
+              {
+                "name": "scheduled_data_export_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+              }
+            ]
+          },
+          "docs": "Pause a scheduled data export"
+        },
+        {
+          "info": {
+            "name": "Resume a scheduled data export",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/scheduled-data-exports/:scheduled_data_export_id/resume",
+            "params": [
+              {
+                "name": "scheduled_data_export_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+              }
+            ]
+          },
+          "docs": "Resume a scheduled data export"
+        },
+        {
+          "info": {
+            "name": "Trigger an adhoc run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/scheduled-data-exports/:scheduled_data_export_id/trigger",
+            "params": [
+              {
+                "name": "scheduled_data_export_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+              }
+            ]
+          },
+          "docs": "Action a scheduled data export immediately regardless of the specified time."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

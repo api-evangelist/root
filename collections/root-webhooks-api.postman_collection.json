@@ -1,0 +1,1542 @@
+{
+  "item": [
+    {
+      "id": "7a67e344-6019-4de1-93cd-3c2baad4a2dd",
+      "name": "Webhooks",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "780a737e-42d1-42e8-8610-0f5a246130f7",
+          "name": "Create a webhook",
+          "request": {
+            "name": "Create a webhook",
+            "description": {},
+            "url": {
+              "path": [
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"url\": \"<string>\",\n  \"subscriptions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\",\n  \"verification_token\": \"<string>\",\n  \"user_group_id\": \"<uuid>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3eeaa6e7-ae7b-4d99-ac83-395468eee6d7",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Example webhook\",\n  \"description\": \"A webhook for receiving various events\",\n  \"verification_token\": \"459106913AF9\",\n  \"url\": \"http://your.url.here\",\n  \"subscriptions\": [\n    \"policyholder_created\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n  \"organization_id\": \"3f4b2899-7957-464b-a609-49939039cd49\",\n  \"name\": \"Example webhook\",\n  \"description\": \"A webhook for receiving various events\",\n  \"secret\": \"B3a8y1WotX7glI7OxZhX5EAd_6UJ7YEvTJBNQzano4dHjntn9_5AlyPg-dzpX76A\",\n  \"enabled\": true,\n  \"verification_token\": \"459106913AF9\",\n  \"url\": \"http://your.url.here\",\n  \"subscriptions\": [\n    \"policyholder_created\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "69757f07-61bf-4c87-9421-a1e8ec928f47",
+          "name": "List all webhooks",
+          "request": {
+            "name": "List all webhooks",
+            "description": {},
+            "url": {
+              "path": [
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "81195fb2-9c78-4337-89b5-abac645b3d04",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The total number of records.",
+                  "key": "X-Total-Count",
+                  "value": "3265"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"$ref\": \"#/components/schemas/webhook/example\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2f68c7f7-cbdc-4854-95b7-beb2b1cace52",
+          "name": "Count all webhooks",
+          "request": {
+            "name": "Count all webhooks",
+            "description": {},
+            "url": {
+              "path": [
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "HEAD",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a84ef12a-1efe-4240-bbb2-baf073560ee1",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "HEAD",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The total number of records.",
+                  "key": "X-Total-Count",
+                  "value": "3265"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8b243712-6655-4a3b-8d5f-d7b34a0476a3",
+          "name": "Retrieve a webhook",
+          "request": {
+            "name": "Retrieve a webhook",
+            "description": {},
+            "url": {
+              "path": [
+                "webhooks",
+                ":webhook_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook_id",
+                  "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c6239c8e-8cab-4e4b-bb95-285857ffe04f",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n  \"organization_id\": \"3f4b2899-7957-464b-a609-49939039cd49\",\n  \"name\": \"Example webhook\",\n  \"description\": \"A webhook for receiving various events\",\n  \"secret\": \"B3a8y1WotX7glI7OxZhX5EAd_6UJ7YEvTJBNQzano4dHjntn9_5AlyPg-dzpX76A\",\n  \"enabled\": true,\n  \"verification_token\": \"459106913AF9\",\n  \"url\": \"http://your.url.here\",\n  \"subscriptions\": [\n    \"policyholder_created\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "10ef9983-81c3-4729-a440-b04b823019f8",
+          "name": "Update a webhook",
+          "request": {
+            "name": "Update a webhook",
+            "description": {},
+            "url": {
+              "path": [
+                "webhooks",
+                ":webhook_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook_id",
+                  "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"verification_token\": \"<string>\",\n  \"url\": \"<string>\",\n  \"subscriptions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"user_group_id\": \"<uuid>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "426e5f6c-bfd0-4ce9-bece-d623f2de11b4",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Policyholder created\",\n  \"description\": \"Policyholder created event\",\n  \"subscriptions\": [\n    \"policyholder_created\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n  \"name\": \"Policyholder created\",\n  \"description\": \"Policyholder created event\",\n  \"secret\": \"B3a8y1WotX7glI7OxZhX5EAd_6UJ7YEvTJBNQzano4dHjntn9_5AlyPg-dzpX76A\",\n  \"verification_token\": \"459106913AF9\",\n  \"url\": \"http://your.url.here\",\n  \"subscriptions\": [\n    \"policyholder_created\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "65f11a92-3695-4199-994d-0cb8812b4339",
+          "name": "Archive a webhook",
+          "request": {
+            "name": "Archive a webhook",
+            "description": {},
+            "url": {
+              "path": [
+                "webhooks",
+                ":webhook_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook_id",
+                  "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4f638f5f-da12-4c12-b2a6-1f1adbdead96",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n  \"organization_id\": \"3f4b2899-7957-464b-a609-49939039cd49\",\n  \"name\": \"Example webhook\",\n  \"description\": \"A webhook for receiving various events\",\n  \"secret\": \"B3a8y1WotX7glI7OxZhX5EAd_6UJ7YEvTJBNQzano4dHjntn9_5AlyPg-dzpX76A\",\n  \"enabled\": true,\n  \"verification_token\": \"459106913AF9\",\n  \"url\": \"http://your.url.here\",\n  \"subscriptions\": [\n    \"policyholder_created\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8b19370c-4158-4f05-93bb-999fd8cd86ef",
+          "name": "Disable a webhook",
+          "request": {
+            "name": "Disable a webhook",
+            "description": {
+              "content": "When a webhook is disabled, queue events it is subscribed to will be marked as `failed` and will not be sent to the webhook's URL.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks",
+                ":webhook_id",
+                "disable"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook_id",
+                  "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5a02583a-af7c-4908-ac27-e6e6dc6849d7",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id",
+                    "disable"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n  \"organization_id\": \"34b2899-7957-464b-a609-49939039cd49\",\n  \"name\": \"Claim opened\",\n  \"description\": \"Claim opened event\",\n  \"secret\": \"B3a8y1WotX7glI7OxZhX5EAd_6UJ7YEvTJBNQzano4dHjntn9_5AlyPg-dzpX76A\",\n  \"verification_token\": \"459106913AF9\",\n  \"url\": \"http://yoururlhere.com\",\n  \"enabled\": false,\n  \"subscriptions\": [\n    \"claim_opened\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "153a604a-30ea-46de-8c1c-bb4c228ba7fe",
+          "name": "Enable a webhook",
+          "request": {
+            "name": "Enable a webhook",
+            "description": {
+              "content": "When a webhook is enabled, Root will attempt to send queue events to the webhook's URL.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks",
+                ":webhook_id",
+                "enable"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook_id",
+                  "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c2ee305d-9cda-4769-b9fb-dcd5a5e7e2dd",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id",
+                    "enable"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n  \"organization_id\": \"34b2899-7957-464b-a609-49939039cd49\",\n  \"name\": \"Claim opened\",\n  \"description\": \"Claim opened event\",\n  \"secret\": \"B3a8y1WotX7glI7OxZhX5EAd_6UJ7YEvTJBNQzano4dHjntn9_5AlyPg-dzpX76A\",\n  \"verification_token\": \"459106913AF9\",\n  \"url\": \"http://yoururlhere.com\",\n  \"enabled\": true,\n  \"subscriptions\": [\n    \"claim_opened\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3cbc2b86-7253-4153-b4e3-c5cf2f122ab8",
+          "name": "Ping a webhook",
+          "request": {
+            "name": "Ping a webhook",
+            "description": {
+              "content": "In order to test that your webhook correctly receives and processes events, you can send a \"ping\" event on request. This endpoint dispatches a `webhook_ping` event to the specified webhook (see [webhook subscriptions](ref:webhooks#available-subscriptions) for more details).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks",
+                ":webhook_id",
+                "ping"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook_id",
+                  "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6f793154-8d46-421c-956c-559e6de591e9",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id",
+                    "ping"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n  \"organization_id\": \"3f4b2899-7957-464b-a609-49939039cd49\",\n  \"name\": \"Example webhook\",\n  \"description\": \"A webhook for receiving various events\",\n  \"secret\": \"B3a8y1WotX7glI7OxZhX5EAd_6UJ7YEvTJBNQzano4dHjntn9_5AlyPg-dzpX76A\",\n  \"enabled\": true,\n  \"verification_token\": \"459106913AF9\",\n  \"url\": \"http://your.url.here\",\n  \"subscriptions\": [\n    \"policyholder_created\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "36db66e9-c081-4321-ab0b-9147c54123a4",
+          "name": "List webhook queue events",
+          "request": {
+            "name": "List webhook queue events",
+            "description": {
+              "content": "Get queue events for a webhook. A queue event represents a single message to be delivered to the webhook URL, and may have multiple attempts.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks",
+                ":webhook_id",
+                "queue-events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter queue events by status."
+                },
+                {
+                  "disabled": false,
+                  "key": "subscriptions",
+                  "value": "<string>",
+                  "description": "Filter queue events by subscription (comma-separated list)."
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<dateTime>",
+                  "description": "Filter for queue events created on or after this time (ISO 8601 format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<dateTime>",
+                  "description": "Filter for queue events created on or before this time (ISO 8601 format)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook_id",
+                  "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cb89d762-e92b-495a-990f-83d7eb1c1d80",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id",
+                    "queue-events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptions",
+                      "value": "policy_issued,claim_opened,complaint_opened"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The total number of records.",
+                  "key": "X-Total-Count",
+                  "value": "3265"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"webhook_queue_event_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"organization_id\": \"2f26d0e1-9158-4685-83e8-1660c27e4c3f\",\n    \"environment\": \"production\",\n    \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n    \"created_at\": \"2023-04-01T12:00:00Z\",\n    \"status\": \"queued\",\n    \"subscription\": \"policy_issued\",\n    \"attempts_count\": 1,\n    \"last_attempt_at\": \"2023-04-01T12:00:02Z\",\n    \"last_response_code\": 500,\n    \"body\": {\n      \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n      \"event\": {\n        \"type\": \"policy_issued\",\n        \"policy_id\": \"abc123\"\n      },\n      \"verification_token\": \"optional_token_123\",\n      \"environment\": \"production\"\n    },\n    \"url\": \"http://yoururlhere.com\"\n  },\n  {\n    \"webhook_queue_event_id\": \"234e5678-f90c-23e4-b567-537725285111\",\n    \"organization_id\": \"2f26d0e1-9158-4685-83e8-1660c27e4c3f\",\n    \"environment\": \"production\",\n    \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n    \"created_at\": \"2023-04-01T12:05:00Z\",\n    \"status\": \"successful\",\n    \"subscription\": \"claim_opened\",\n    \"attempts_count\": 1,\n    \"last_attempt_at\": \"2023-04-01T12:05:02Z\",\n    \"last_response_code\": 200,\n    \"body\": {\n      \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n      \"event\": {\n        \"type\": \"claim_opened\",\n        \"claim_id\": \"def456\"\n      },\n      \"verification_token\": \"optional_token_456\",\n      \"environment\": \"production\"\n    },\n    \"url\": \"http://yoururlhere.com\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "28ebda72-000a-49c5-901c-d379f3f72174",
+          "name": "Count webhook queue events",
+          "request": {
+            "name": "Count webhook queue events",
+            "description": {},
+            "url": {
+              "path": [
+                "webhooks",
+                ":webhook_id",
+                "queue-events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter queue events by status."
+                },
+                {
+                  "disabled": false,
+                  "key": "subscriptions",
+                  "value": "<string>",
+                  "description": "Filter queue events by subscription (comma-separated list)."
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<dateTime>",
+                  "description": "Filter for queue events created on or after this time (ISO 8601 format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<dateTime>",
+                  "description": "Filter for queue events created on or before this time (ISO 8601 format)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook_id",
+                  "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                }
+              ]
+            },
+            "method": "HEAD",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e9d4ea88-8dd9-47f4-9091-c9f705123959",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id",
+                    "queue-events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptions",
+                      "value": "policy_issued,claim_opened,complaint_opened"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "HEAD",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The total number of records.",
+                  "key": "X-Total-Count",
+                  "value": "3265"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d9082e1a-5f3b-4342-a3d8-80386e03f7e7",
+          "name": "Bulk retry webhook queue events",
+          "request": {
+            "name": "Bulk retry webhook queue events",
+            "description": {
+              "content": "Retry multiple webhook queue events for a given webhook. The queue events identified by the filters will be added to the queue to be re-attempted with priority 2 (low).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks",
+                ":webhook_id",
+                "queue-events",
+                "retry"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "(Required) Filter queue events by status."
+                },
+                {
+                  "disabled": false,
+                  "key": "subscriptions",
+                  "value": "<string>",
+                  "description": "Filter queue events by subscription (comma-separated list)."
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<dateTime>",
+                  "description": "Filter for queue events created on or after this time (ISO 8601 format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<dateTime>",
+                  "description": "Filter for queue events created on or before this time (ISO 8601 format)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook_id",
+                  "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a65c8e5f-1fe7-4e56-91bf-0bb7d094bf8b",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id",
+                    "queue-events",
+                    "retry"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptions",
+                      "value": "policy_issued,claim_opened,complaint_opened"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The unique identifier of the [webhook](ref:webhook)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The total number of events queued to be retried.",
+                  "key": "X-Total-Count",
+                  "value": "3265"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ee9c12b3-1f86-4851-b914-b7728959de3d",
+          "name": "Retry a webhook queue event",
+          "request": {
+            "name": "Retry a webhook queue event",
+            "description": {
+              "content": "Add a webhook queue event back to the queue to be re-attempted with priority 2 (low).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhook-queue-events",
+                ":webhook_queue_event_id",
+                "retry"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "webhook_queue_event_id",
+                  "description": "(Required) The unique identifier of the webhook queue event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b780ae04-7ed7-4ac5-844d-f4c6e66c6c3c",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhook-queue-events",
+                    ":webhook_queue_event_id",
+                    "retry"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "webhook_queue_event_id",
+                      "description": "(Required) The unique identifier of the webhook queue event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"webhook_queue_event_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"organization_id\": \"2f26d0e1-9158-4685-83e8-1660c27e4c3f\",\n  \"environment\": \"production\",\n  \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n  \"created_at\": \"2023-04-01T12:00:00Z\",\n  \"status\": \"queued\",\n  \"subscription\": \"policy_issued\",\n  \"attempts_count\": 2,\n  \"last_attempt_at\": \"2023-04-01T12:00:02Z\",\n  \"last_response_code\": 500,\n  \"body\": {\n    \"webhook_id\": \"274b2899-7957-464b-a609-49939039cd49\",\n    \"event\": {\n      \"type\": \"policy_issued\",\n      \"policy_id\": \"abc123\"\n    },\n    \"verification_token\": \"optional_token_123\",\n    \"environment\": \"production\"\n  },\n  \"url\": \"http://yoururlhere.com\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1e0a969c-ac27-4268-b26d-8f562fc26813",
+          "name": "List webhook queue event attempts",
+          "request": {
+            "name": "List webhook queue event attempts",
+            "description": {
+              "content": "Get attempts for a webhook queue event",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhook-queue-events",
+                ":webhook_queue_event_id",
+                "attempts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "webhook_queue_event_id",
+                  "description": "(Required) The unique identifier of the webhook queue event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "77d0541c-6ec6-46d1-8fe3-4dd9d64dc19d",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhook-queue-events",
+                    ":webhook_queue_event_id",
+                    "attempts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "webhook_queue_event_id",
+                      "description": "(Required) The unique identifier of the webhook queue event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"webhook_attempt_id\": \"456f7890-a12b-34c5-d678-901234567890\",\n    \"organization_id\": \"2f26d0e1-9158-4685-83e8-1660c27e4c3f\",\n    \"webhook_queue_event_id\": \"234e5678-f90c-23e4-b567-537725285111\",\n    \"environment\": \"production\",\n    \"created_at\": \"2024-04-01T12:00:02Z\",\n    \"attempted_at\": \"2024-04-01T12:00:02Z\",\n    \"success\": false,\n    \"result\": {\n      \"type\": \"response\",\n      \"status\": 500,\n      \"body\": \"{\\\"error\\\": \\\"Internal server error\\\"}\",\n      \"headers\": \"{\\\"content-type\\\": \\\"application/json\\\", \\\"x-request-id\\\": \\\"efgh5678\\\"}\"\n    }\n  },\n  {\n    \"webhook_attempt_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"organization_id\": \"2f26d0e1-9158-4685-83e8-1660c27e4c3f\",\n    \"webhook_queue_event_id\": \"234e5678-f90c-23e4-b567-537725285111\",\n    \"environment\": \"production\",\n    \"created_at\": \"2024-04-01T12:00:07Z\",\n    \"attempted_at\": \"2024-04-01T12:00:07Z\",\n    \"success\": true,\n    \"result\": {\n      \"type\": \"response\",\n      \"status\": 200,\n      \"body\": \"{\\\"message\\\": \\\"Webhook received successfully\\\"}\",\n      \"headers\": \"{\\\"content-type\\\": \\\"application/json\\\", \\\"x-request-id\\\": \\\"abcd1234\\\"}\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.uk.rootplatform.com/v1/insurance",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "af10629b-0c57-4f6b-9f68-1f1928123c01",
+    "name": "Root Applications Webhooks API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.\n\nContact Support:\n Name: Root support team\n Email: support@root.co.za",
+      "type": "text/plain"
+    }
+  }
+}

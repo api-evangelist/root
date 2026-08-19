@@ -1,0 +1,223 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Root Applications Payment Methods API",
+    "version": "1.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payment Methods",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List payment methods",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/payment-methods",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to retrieve per page."
+              },
+              {
+                "name": "include",
+                "value": "policyholder,policies",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values are `policyholder`, `policies`, `collection_module`."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by payment method type. Valid values include `debit_order`, `card`, `eft`, `collection_module`, or a custom external payment method key."
+              },
+              {
+                "name": "banv_status",
+                "value": "pending,verified",
+                "type": "query",
+                "description": "Filter by BANV status. Accepts multiple values."
+              },
+              {
+                "name": "policyholder_ids",
+                "value": "f91f4ea4-9c6d-459e-998b-a5711cbd8895",
+                "type": "query",
+                "description": "Filter by policyholder IDs. Accepts multiple UUIDs."
+              },
+              {
+                "name": "payment_method_ids",
+                "value": "e0b7b222-772f-47ac-b08d-c7ba38aa1b25",
+                "type": "query",
+                "description": "Filter by payment method IDs. Accepts multiple UUIDs."
+              },
+              {
+                "name": "dismissed",
+                "value": "",
+                "type": "query",
+                "description": "Filter by dismissed status. Set to `true` to include only dismissed payment methods, `false` to exclude dismissed payment methods."
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of payment methods for the organization. Use the `include` parameter to include related objects in the response."
+        },
+        {
+          "info": {
+            "name": "List external payment method types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/payment-methods/external-types",
+            "params": [
+              {
+                "name": "keys",
+                "value": "",
+                "type": "query",
+                "description": "Filter by external payment method type keys. Accepts a comma-separated list of keys."
+              }
+            ]
+          },
+          "docs": "Returns a list of external payment method types configured for the organization. External payment method types allow you to define custom payment methods with their own collection logic and outbound channels."
+        },
+        {
+          "info": {
+            "name": "Update Payment Method Verification Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/payment-methods/:payment_method_id/verification-status",
+            "params": [
+              {
+                "name": "payment_method_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the payment method."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint validates the input and updates the status of a payment method, which will result in a `200 OK` successful response, with the updated payment method in the response.\n"
+        },
+        {
+          "info": {
+            "name": "Dismiss a payment method",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/payment-methods/:payment_method_id/dismiss",
+            "params": [
+              {
+                "name": "payment_method_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the payment method."
+              }
+            ]
+          },
+          "docs": "Dismisses a payment method, marking it as no longer active. Dismissed payment methods are excluded from standard queries unless explicitly requested."
+        },
+        {
+          "info": {
+            "name": "Manually verify a payment method",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/payment-methods/:payment_method_id/manual-verify",
+            "params": [
+              {
+                "name": "payment_method_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the payment method."
+              }
+            ]
+          },
+          "docs": "Manually verifies a payment method, setting its BANV status to `verified`. This is useful when verification has been performed through an external process."
+        },
+        {
+          "info": {
+            "name": "Get DebiCheck Mandate",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/payment-methods/debicheck-mandates/:mandate_id",
+            "params": [
+              {
+                "name": "mandate_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the DebiCheck mandate."
+              }
+            ]
+          },
+          "docs": "Retrieves a DebiCheck mandate by ID."
+        },
+        {
+          "info": {
+            "name": "Update DebiCheck Mandate",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/payment-methods/debicheck-mandates/:mandate_id",
+            "params": [
+              {
+                "name": "mandate_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the DebiCheck mandate."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a DebiCheck mandate by ID."
+        },
+        {
+          "info": {
+            "name": "Create DebiCheck Mandate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/payment-methods/debicheck-mandates",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new DebiCheck mandate for a policy."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,581 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Root Applications API",
+    "version": "1.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all applications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications",
+            "params": [
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              },
+              {
+                "name": "search",
+                "value": "richard@aviato.com",
+                "type": "query",
+                "description": "A space seperated list of matching words to search for. e.g. \"richard@aviato.com\""
+              },
+              {
+                "name": "status",
+                "value": "pending",
+                "type": "query",
+                "description": "A comma seperated list of statuses. eg. \"pending,issued\""
+              },
+              {
+                "name": "created_by",
+                "value": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+                "type": "query",
+                "description": "A valid UUID of the user that created the application."
+              },
+              {
+                "name": "user_group_id",
+                "value": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+                "type": "query",
+                "description": "A valid UUID of the user group that created the application."
+              },
+              {
+                "name": "created_by_type",
+                "value": "",
+                "type": "query",
+                "description": "A semi-colon seperated list of the requestee types. e.g. api_key, user, legacy_api_key, legacy_user_api_key, system, product_module or embed_jwt"
+              },
+              {
+                "name": "include",
+                "value": "policyholder",
+                "type": "query",
+                "description": "An optional semicolon-separated list of underlying objects to include, e.g. `?include=policy;policyholder`. Valid options are 'policy', 'policyholder' and 'quote_package'"
+              },
+              {
+                "name": "product_module_id",
+                "value": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e",
+                "type": "query",
+                "description": "A valid UUID of the product module to filter applications by."
+              }
+            ]
+          },
+          "docs": "List all applications"
+        },
+        {
+          "info": {
+            "name": "Create an application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Note:** Additional custom fields may be required depending on how the [application hook](https://docs.rootplatform.com/docs/application-hook) is configured for the product module."
+        },
+        {
+          "info": {
+            "name": "Retrieve an application",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "40fb4335-55b2-4f20-951a-cc41097cb213",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              },
+              {
+                "name": "include",
+                "value": "policyholder",
+                "type": "query",
+                "description": "An optional semicolon-separated list of underlying objects to include, e.g. `?include=policy;policyholder`. Valid options are 'policy', 'policyholder' and 'quote_package'"
+              }
+            ]
+          },
+          "docs": "Retrieve an application"
+        },
+        {
+          "info": {
+            "name": "Requote an application",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Note that additional fields may be required based on the product module type being used. See [product modules](doc:product-modules-overview) for more details."
+        },
+        {
+          "info": {
+            "name": "Create an application alteration package",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/alteration-packages",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an application alteration package"
+        },
+        {
+          "info": {
+            "name": "Retrieve an application alteration package",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/alteration-packages/:alteration_package_id",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              },
+              {
+                "name": "alteration_package_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the application alteration package."
+              }
+            ]
+          },
+          "docs": "Retrieve an application alteration package"
+        },
+        {
+          "info": {
+            "name": "Apply application alteration package",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/alteration-packages/:alteration_package_id/apply",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              },
+              {
+                "name": "alteration_package_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The ID of the application alteration package to apply to the application."
+              }
+            ]
+          },
+          "docs": "Apply application alteration package"
+        },
+        {
+          "info": {
+            "name": "Retrieve application attachments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/attachments",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "Retrieve application attachments"
+        },
+        {
+          "info": {
+            "name": "Add application attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/attachments",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add application attachment"
+        },
+        {
+          "info": {
+            "name": "Archive an attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/attachments/:attachment_id/archive",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              },
+              {
+                "name": "attachment_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the attachment."
+              }
+            ]
+          },
+          "docs": "Archive an attachment"
+        },
+        {
+          "info": {
+            "name": "List beneficiaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/beneficiaries",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List beneficiaries"
+        },
+        {
+          "info": {
+            "name": "Update beneficiaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/beneficiaries",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint accepts an array of beneficiary objects as the body. The entire array of beneficiaries will be replaced. The number of beneficiaries cannot exceed the max defined in the [general settings](doc:general-settings). The percentages must add up to 100%."
+        },
+        {
+          "info": {
+            "name": "Retrieve application notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/notes",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "Retrieve application notes"
+        },
+        {
+          "info": {
+            "name": "Add application notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/notes",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add application notes"
+        },
+        {
+          "info": {
+            "name": "Retrieve application events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/events",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ]
+          },
+          "docs": "Retrieve application events"
+        },
+        {
+          "info": {
+            "name": "Retrieve application payment method",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/payment-method",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ]
+          },
+          "docs": "Retrieve application payment method"
+        },
+        {
+          "info": {
+            "name": "Assign application payment method",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/payment-method",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Assign application payment method"
+        },
+        {
+          "info": {
+            "name": "Send application PDF to policyholder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/send-application-pdf-to-policyholder",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ]
+          },
+          "docs": "Send application PDF to policyholder"
+        },
+        {
+          "info": {
+            "name": "Get allowed application cancellation reasons",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/cancellation-reasons",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ]
+          },
+          "docs": "Get allowed application cancellation reasons"
+        },
+        {
+          "info": {
+            "name": "Cancel an application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/cancel",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cancel an application"
+        },
+        {
+          "info": {
+            "name": "Archive an application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/applications/:application_id/archive",
+            "params": [
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ]
+          },
+          "docs": "Archive an application"
+        },
+        {
+          "info": {
+            "name": "Retrieve application alteration hooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/organizations/:client_app_id/applications/:application_id/alteration-hooks",
+            "params": [
+              {
+                "name": "client_app_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the organization."
+              },
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [application](ref:application)."
+              }
+            ]
+          },
+          "docs": "Retrieve application alteration hooks"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,154 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Root Applications Notifications API",
+    "version": "1.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Notifications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Trigger a custom notification event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/custom-notification-events/:custom_event_key/trigger",
+            "params": [
+              {
+                "name": "custom_event_key",
+                "value": "",
+                "type": "path",
+                "description": "The key identifiying the custom notification event."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Queue a custom notification request (or first queue policy documents to be generated if there are email attachments). A `200 (Success)` response does not indicate that the notification was sent successfully. Please refer to the [custom notification events](doc:custom-notification-events) guide.\n"
+        },
+        {
+          "info": {
+            "name": "List all notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/notifications",
+            "params": [
+              {
+                "name": "channel",
+                "value": "",
+                "type": "query",
+                "description": "Either `email`, `sms` or `other`. If omitted defaults to fetching notifications across all channels."
+              },
+              {
+                "name": "provider",
+                "value": "",
+                "type": "query",
+                "description": "Either `root_standard`, `external` or `root_webhooks`. If omitted defaults to fetching notifications across all providers."
+              },
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "query",
+                "description": "The unique identifier for the policy to filter by."
+              },
+              {
+                "name": "policyholder_id",
+                "value": "",
+                "type": "query",
+                "description": "The unique identifier for the policyholder to filter by."
+              },
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "query",
+                "description": "The unique identifier for the claim to filter by."
+              },
+              {
+                "name": "exclude_types",
+                "value": "",
+                "type": "query",
+                "description": "Optionally exclude notification types from the returned results."
+              }
+            ]
+          },
+          "docs": "List all notifications"
+        },
+        {
+          "info": {
+            "name": "Create an external notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/notifications",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a notification with provider of `external`. If you use an integration external to Root to send notifications to end customers, you can use this endpoint to record the notification on Root and link it to the relevant entities (such as a policy or claim)."
+        },
+        {
+          "info": {
+            "name": "Retrieve a notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/notifications/:notification_id",
+            "params": [
+              {
+                "name": "notification_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [notification](ref:notification)."
+              }
+            ]
+          },
+          "docs": "Retrieve a notification"
+        },
+        {
+          "info": {
+            "name": "Update an external notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/notifications/:notification_id",
+            "params": [
+              {
+                "name": "notification_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the notification to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the status of a notification with provider of `external`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

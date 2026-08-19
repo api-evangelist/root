@@ -1,0 +1,50 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Root Applications Files API",
+    "version": "1.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Download file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/apps/:organization_id/files/download/:file_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the organization."
+              },
+              {
+                "name": "file_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the file to download."
+              }
+            ]
+          },
+          "docs": "Download a file by its unique file ID. Files are typically attachments that have been uploaded to the system and associated with various entities like policies, claims, applications, etc.\n\nNote: A filename can optionally be appended to the URL for readability (e.g., `/apps/{organization_id}/files/download/{file_id}/report.pdf`), but it is not used for file identification."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

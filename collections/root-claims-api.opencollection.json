@@ -1,0 +1,1024 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Root Applications Claims API",
+    "version": "1.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Claims",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all claims",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims",
+            "params": [
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              },
+              {
+                "name": "claim_status",
+                "value": "open,in_review",
+                "type": "query",
+                "description": "Filter by claim status. Accepts multiple values."
+              },
+              {
+                "name": "approval_status",
+                "value": "pending,approved",
+                "type": "query",
+                "description": "Filter by approval status. Accepts multiple values."
+              },
+              {
+                "name": "search",
+                "value": "D33B754",
+                "type": "query",
+                "description": "Search claims by claim number, claimant name, or other searchable fields."
+              },
+              {
+                "name": "policyholder_id",
+                "value": "00000000-0000-0000-0000-000000000004",
+                "type": "query",
+                "description": "Must be a UUID. Filter claims by policyholder ID."
+              },
+              {
+                "name": "product_module_id",
+                "value": "8349345c-a6c5-4bf9-8ebb-6bbfc1628715",
+                "type": "query",
+                "description": "Must be a UUID. Filter claims by product module ID."
+              },
+              {
+                "name": "policy_id",
+                "value": "8349345c-a6c5-4bf9-8ebb-6bbfc1628715",
+                "type": "query",
+                "description": "Must be a UUID. Filter claims by policy ID."
+              },
+              {
+                "name": "created_by",
+                "value": "00000000-0000-0000-0000-000000000001",
+                "type": "query",
+                "description": "Must be a UUID. Filter claims by the ID of the user or API key that created them."
+              },
+              {
+                "name": "created_by_type",
+                "value": "user",
+                "type": "query",
+                "description": "Filter claims by the type of entity that created them."
+              },
+              {
+                "name": "assigned_to",
+                "value": "00000000-0000-0000-0000-000000000001",
+                "type": "query",
+                "description": "Must be a UUID. Filter claims by the user they are assigned to."
+              },
+              {
+                "name": "user_group_id",
+                "value": "8349345c-a6c5-4bf9-8ebb-6bbfc1628715",
+                "type": "query",
+                "description": "Must be a UUID. Filter claims by user group ID."
+              },
+              {
+                "name": "include",
+                "value": "policy,policyholder",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of claims for the organization. Use the query parameters to filter claims by status, policy, policyholder, and more. Use the `include` parameter to include related objects in the response."
+        },
+        {
+          "info": {
+            "name": "Create a claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new claim. The claim can optionally be linked to a policy, member, or covered item. A claimant can be specified with contact details."
+        },
+        {
+          "info": {
+            "name": "Retrieve a claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ]
+          },
+          "docs": "Retrieve a claim"
+        },
+        {
+          "info": {
+            "name": "Update a claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [claim](ref:claim)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a claim"
+        },
+        {
+          "info": {
+            "name": "Acknowledge approval",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/acknowledge-approved",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Acknowledges a claim approval decision, transitioning the claim to pending payout."
+        },
+        {
+          "info": {
+            "name": "Acknowledge goodwill",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/acknowledge-goodwill",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Acknowledges a goodwill claim decision, transitioning the claim to pending payout."
+        },
+        {
+          "info": {
+            "name": "Acknowledge no claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/acknowledge-no-claim",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Acknowledges a no-claim decision, finalizing the claim as no-claim."
+        },
+        {
+          "info": {
+            "name": "Acknowledge repudiation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/acknowledge-repudiated",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Acknowledges a claim repudiation decision, finalizing the claim as repudiated."
+        },
+        {
+          "info": {
+            "name": "Approve claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/approve",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Approves a claim and optionally specifies payees for the payout. Multiple payees can be specified to split the payout amount."
+        },
+        {
+          "info": {
+            "name": "List claim attachments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/attachments",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `embedding`."
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of attachments for a claim."
+        },
+        {
+          "info": {
+            "name": "Create an attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/attachments",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [claim](ref:claim)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an attachment"
+        },
+        {
+          "info": {
+            "name": "Archive an attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/attachments/:attachment_id/archive",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "attachment_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the attachment."
+              }
+            ]
+          },
+          "docs": "Archive an attachment"
+        },
+        {
+          "info": {
+            "name": "Update multiple block states",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/blocks",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [claim](ref:claim)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Note:** This endpoint is product module specific and depends on the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference) defined for the product module."
+        },
+        {
+          "info": {
+            "name": "Retrieve a block state",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/block-states/:block_key",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "block_key",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the block defined in the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference)."
+              }
+            ]
+          },
+          "docs": "**Note:** This endpoint is product module specific and depends on the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference) defined for the product module."
+        },
+        {
+          "info": {
+            "name": "Update a block state",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/blocks/:block_key",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "block_key",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the block defined in the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Note:** This endpoint is product module specific and depends on the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference) defined for the product module."
+        },
+        {
+          "info": {
+            "name": "Do not acknowledge approval",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/do-not-acknowledge-approved",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rejects the claim approval decision, returning the claim to review status."
+        },
+        {
+          "info": {
+            "name": "Do not acknowledge goodwill",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/do-not-acknowledge-goodwill",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rejects the goodwill claim decision, returning the claim to review status."
+        },
+        {
+          "info": {
+            "name": "Do not acknowledge no claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/do-not-acknowledge-no-claim",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rejects the no-claim decision, returning the claim to review status."
+        },
+        {
+          "info": {
+            "name": "Do not acknowledge repudiation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/do-not-acknowledge-repudiated",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rejects the claim repudiation decision, returning the claim to review status."
+        },
+        {
+          "info": {
+            "name": "Goodwill claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/goodwill",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Marks a claim as goodwill, indicating a payout will be made even though the claim may not fully meet approval criteria. Multiple payees can be specified."
+        },
+        {
+          "info": {
+            "name": "No claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/no-claim",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Marks a claim as \"no claim\", indicating the incident does not warrant a claim or the claim has been withdrawn."
+        },
+        {
+          "info": {
+            "name": "List claim notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/notes",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List claim notes"
+        },
+        {
+          "info": {
+            "name": "Add a note",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/notes",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [claim](ref:claim)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a note"
+        },
+        {
+          "info": {
+            "name": "Link a policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/policy",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Links a claim to a policy. Optionally, a member or covered item can also be specified for group scheme policies or policies with covered items."
+        },
+        {
+          "info": {
+            "name": "Approve a fulfillment request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/fulfillment-requests/:fulfillment_request_id/approve",
+            "params": [
+              {
+                "name": "fulfillment_request_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the fulfillment request."
+              }
+            ]
+          },
+          "docs": "Approve a fulfillment request"
+        },
+        {
+          "info": {
+            "name": "Reject a fulfillment request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/fulfillment-requests/:fulfillment_request_id/reject",
+            "params": [
+              {
+                "name": "fulfillment_request_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the fulfillment request."
+              }
+            ]
+          },
+          "docs": "Reject a fulfillment request"
+        },
+        {
+          "info": {
+            "name": "Repudiate claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/repudiate",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Repudiates a claim, indicating the claim is not valid and no payout will be made."
+        },
+        {
+          "info": {
+            "name": "Send claim to review",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/send-to-review",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Transitions a claim to the review stage. Optionally assign the claim to a specific user for review."
+        },
+        {
+          "info": {
+            "name": "Close claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/close",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Closes a claim, indicating the claim process is complete."
+        },
+        {
+          "info": {
+            "name": "Reopen claim",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/reopen",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [claim](ref:claim)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policy`, `policyholder`, `user_group`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reopens a previously closed claim, returning it to an open state."
+        },
+        {
+          "info": {
+            "name": "Update claimant",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/claimant",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the claim."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related resources to include in the response."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the claimant information for a specific claim."
+        },
+        {
+          "info": {
+            "name": "List claim events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/events",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the claim."
+              }
+            ]
+          },
+          "docs": "Returns a list of events for a specific claim."
+        },
+        {
+          "info": {
+            "name": "Mark claim as paid out",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/paid-out",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the claim."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related resources to include in the response."
+              }
+            ]
+          },
+          "docs": "Marks an approved claim as paid out, indicating that all payments have been made."
+        },
+        {
+          "info": {
+            "name": "Send claim to capture",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/claims/:claim_id/send-to-capture",
+            "params": [
+              {
+                "name": "claim_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the claim."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related resources to include in the response."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a claim to the capture stage for additional information gathering."
+        },
+        {
+          "info": {
+            "name": "Update a payout request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/payout-requests/:payout_request_id",
+            "params": [
+              {
+                "name": "payout_request_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the payout request."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a payout request"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,373 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Root Applications Webhooks API",
+    "version": "1.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhooks",
+            "params": [
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List all webhooks"
+        },
+        {
+          "info": {
+            "name": "Create a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a webhook"
+        },
+        {
+          "info": {
+            "name": "Count all webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "HEAD",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhooks"
+          },
+          "docs": "Count all webhooks"
+        },
+        {
+          "info": {
+            "name": "Retrieve a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhooks/:webhook_id",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [webhook](ref:webhook)."
+              }
+            ]
+          },
+          "docs": "Retrieve a webhook"
+        },
+        {
+          "info": {
+            "name": "Update a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhooks/:webhook_id",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [webhook](ref:webhook)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a webhook"
+        },
+        {
+          "info": {
+            "name": "Archive a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhooks/:webhook_id",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [webhook](ref:webhook)."
+              }
+            ]
+          },
+          "docs": "Archive a webhook"
+        },
+        {
+          "info": {
+            "name": "Disable a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhooks/:webhook_id/disable",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [webhook](ref:webhook)."
+              }
+            ]
+          },
+          "docs": "When a webhook is disabled, queue events it is subscribed to will be marked as `failed` and will not be sent to the webhook's URL.\n"
+        },
+        {
+          "info": {
+            "name": "Enable a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhooks/:webhook_id/enable",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [webhook](ref:webhook)."
+              }
+            ]
+          },
+          "docs": "When a webhook is enabled, Root will attempt to send queue events to the webhook's URL.\n"
+        },
+        {
+          "info": {
+            "name": "Ping a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhooks/:webhook_id/ping",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [webhook](ref:webhook)."
+              }
+            ]
+          },
+          "docs": "In order to test that your webhook correctly receives and processes events, you can send a \"ping\" event on request. This endpoint dispatches a `webhook_ping` event to the specified webhook (see [webhook subscriptions](ref:webhooks#available-subscriptions) for more details)."
+        },
+        {
+          "info": {
+            "name": "List webhook queue events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhooks/:webhook_id/queue-events",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [webhook](ref:webhook)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter queue events by status."
+              },
+              {
+                "name": "subscriptions",
+                "value": "policy_issued,claim_opened,complaint_opened",
+                "type": "query",
+                "description": "Filter queue events by subscription (comma-separated list)."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Filter for queue events created on or after this time (ISO 8601 format)."
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Filter for queue events created on or before this time (ISO 8601 format)."
+              }
+            ]
+          },
+          "docs": "Get queue events for a webhook. A queue event represents a single message to be delivered to the webhook URL, and may have multiple attempts."
+        },
+        {
+          "info": {
+            "name": "Count webhook queue events",
+            "type": "http"
+          },
+          "http": {
+            "method": "HEAD",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhooks/:webhook_id/queue-events",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [webhook](ref:webhook)."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter queue events by status."
+              },
+              {
+                "name": "subscriptions",
+                "value": "policy_issued,claim_opened,complaint_opened",
+                "type": "query",
+                "description": "Filter queue events by subscription (comma-separated list)."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Filter for queue events created on or after this time (ISO 8601 format)."
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Filter for queue events created on or before this time (ISO 8601 format)."
+              }
+            ]
+          },
+          "docs": "Count webhook queue events"
+        },
+        {
+          "info": {
+            "name": "Bulk retry webhook queue events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhooks/:webhook_id/queue-events/retry",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [webhook](ref:webhook)."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter queue events by status."
+              },
+              {
+                "name": "subscriptions",
+                "value": "policy_issued,claim_opened,complaint_opened",
+                "type": "query",
+                "description": "Filter queue events by subscription (comma-separated list)."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Filter for queue events created on or after this time (ISO 8601 format)."
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Filter for queue events created on or before this time (ISO 8601 format)."
+              }
+            ]
+          },
+          "docs": "Retry multiple webhook queue events for a given webhook. The queue events identified by the filters will be added to the queue to be re-attempted with priority 2 (low)."
+        },
+        {
+          "info": {
+            "name": "Retry a webhook queue event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhook-queue-events/:webhook_queue_event_id/retry",
+            "params": [
+              {
+                "name": "webhook_queue_event_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the webhook queue event"
+              }
+            ]
+          },
+          "docs": "Add a webhook queue event back to the queue to be re-attempted with priority 2 (low)."
+        },
+        {
+          "info": {
+            "name": "List webhook queue event attempts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/webhook-queue-events/:webhook_queue_event_id/attempts",
+            "params": [
+              {
+                "name": "webhook_queue_event_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the webhook queue event"
+              }
+            ]
+          },
+          "docs": "Get attempts for a webhook queue event"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

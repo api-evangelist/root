@@ -1,0 +1,364 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Root Applications Policyholders API",
+    "version": "1.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Policyholders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all policyholders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders",
+            "params": [
+              {
+                "name": "id_number",
+                "value": "",
+                "type": "query",
+                "description": "An optional ID or passport number to filter by."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "An optional semicolon-separated list of underlying objects to include, e.g. `?include=policies`. Currently, only `policies` is supported, which will include all policies owned by the policyholder."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List all policyholders"
+        },
+        {
+          "info": {
+            "name": "Create a policyholder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a policyholder"
+        },
+        {
+          "info": {
+            "name": "Upsert a policyholder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upsert a policyholder"
+        },
+        {
+          "info": {
+            "name": "Retrieve a policyholder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders/:policyholder_id",
+            "params": [
+              {
+                "name": "policyholder_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [policyholder](ref:policyholder)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "An optional semicolon-separated list of underlying objects to include, e.g. `?include=policies`. Currently, only `policies` is supported, which will include all policies owned by the policyholder."
+              }
+            ]
+          },
+          "docs": "Retrieve a policyholder"
+        },
+        {
+          "info": {
+            "name": "Update a policyholder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders/:policyholder_id",
+            "params": [
+              {
+                "name": "policyholder_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [policyholder](ref:policyholder)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a policyholder"
+        },
+        {
+          "info": {
+            "name": "List policyholder's applications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders/:policyholder_id/applications",
+            "params": [
+              {
+                "name": "policyholder_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [policyholder](ref:policyholder)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List policyholder's applications"
+        },
+        {
+          "info": {
+            "name": "List attachments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders/:policyholder_id/attachments",
+            "params": [
+              {
+                "name": "policyholder_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [policyholder](ref:policyholder)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List attachments"
+        },
+        {
+          "info": {
+            "name": "Create an attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders/:policyholder_id/attachments",
+            "params": [
+              {
+                "name": "policyholder_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [policyholder](ref:policyholder)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an attachment"
+        },
+        {
+          "info": {
+            "name": "List notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders/:policyholder_id/notes",
+            "params": [
+              {
+                "name": "policyholder_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [policyholder](ref:policyholder)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List notes"
+        },
+        {
+          "info": {
+            "name": "Add a note",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders/:policyholder_id/notes",
+            "params": [
+              {
+                "name": "policyholder_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [policyholder](ref:policyholder)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a note"
+        },
+        {
+          "info": {
+            "name": "List policyholder payment methods",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders/:policyholder_id/payment-methods",
+            "params": [
+              {
+                "name": "policyholder_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [policyholder](ref:policyholder)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List policyholder payment methods"
+        },
+        {
+          "info": {
+            "name": "Create payment method",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders/:policyholder_id/payment-methods",
+            "params": [
+              {
+                "name": "policyholder_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [policyholder](ref:policyholder)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a payment method. Read more about [payment methods](doc:billing-settings#payment-method-types)."
+        },
+        {
+          "info": {
+            "name": "List policyholder's policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/policyholders/:policyholder_id/policies",
+            "params": [
+              {
+                "name": "policyholder_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [policyholder](ref:policyholder)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List policyholder's policies"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

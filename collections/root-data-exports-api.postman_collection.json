@@ -1,0 +1,1161 @@
+{
+  "item": [
+    {
+      "id": "8e26e725-e983-486d-a552-6735c05f0eb9",
+      "name": "Data exports",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "881d524a-36cd-4f3f-858e-d83641215342",
+          "name": "List data export runs",
+          "request": {
+            "name": "List data export runs",
+            "description": {},
+            "url": {
+              "path": [
+                "data-export-runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "template_id",
+                  "value": "<string>",
+                  "description": "Must be a UUID. An optional list of data export template ID's."
+                },
+                {
+                  "disabled": false,
+                  "key": "data_source",
+                  "value": "<string>",
+                  "description": "The data source of the data export run."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ea8d2370-1137-4f18-91d0-48bb5419e80d",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-export-runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "template_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data_source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"data_export_run_id\": \"34233912-c91f-4dc9-bfed-c10d16be26af\",\n    \"scheduled_data_export_id\": \"4ab082f2-864e-4bcf-bc17-75664a25f2e1\",\n    \"created_at\": \"2019-03-09T08:07:59.044Z\",\n    \"completed_at\": \"2019-03-09T08:08:02.178Z\",\n    \"status\": \"complete\",\n    \"file_id\": \"74ce9562-4242-11e9-904a-7b14ba20f082\",\n    \"triggered_by\": {\n      \"type\": \"api_key\",\n      \"id\": \"313f7511-c16a-4fdb-ba49-25a80a9b571c\",\n      \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n    },\n    \"to\": \"2019-03-09T08:07:59.044Z\",\n    \"data_range\": \"today\",\n    \"environment\": \"sandbox\",\n    \"export_type\": \"policy_export\",\n    \"name\": \"Daily policies export\",\n    \"type\": \"once_off\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "54176ef9-d32e-4847-aba0-36346a6692d8",
+          "name": "Retrieve a run",
+          "request": {
+            "name": "Retrieve a run",
+            "description": {},
+            "url": {
+              "path": [
+                "data-export-runs",
+                ":data_export_run_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_export_run_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [data export run](ref:retrieve-data-export-run)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "afcb881f-bc8c-4011-81f8-fdda068e397f",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-export-runs",
+                    ":data_export_run_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_export_run_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [data export run](ref:retrieve-data-export-run)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data_export_run_id\": \"34233912-c91f-4dc9-bfed-c10d16be26af\",\n  \"scheduled_data_export_id\": \"4ab082f2-864e-4bcf-bc17-75664a25f2e1\",\n  \"created_at\": \"2019-03-09T08:07:59.044Z\",\n  \"completed_at\": \"2019-03-09T08:08:02.178Z\",\n  \"status\": \"complete\",\n  \"file_id\": \"74ce9562-4242-11e9-904a-7b14ba20f082\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e2ceb079-1680-43ff-a0f8-5a7adee690e3",
+          "name": "Retrieve a run log",
+          "request": {
+            "name": "Retrieve a run log",
+            "description": {},
+            "url": {
+              "path": [
+                "data-export-runs",
+                ":data_export_run_id",
+                "log-items"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_export_run_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [data export run](ref:retrieve-data-export-run)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bca00a3e-68b6-4027-97dd-8a79c1d10f2a",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-export-runs",
+                    ":data_export_run_id",
+                    "log-items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_export_run_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [data export run](ref:retrieve-data-export-run)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"data_export_run_id\": \"34233912-c91f-4dc9-bfed-c10d16be26af\",\n    \"created_at\": \"2019-03-09T08:07:59.075Z\",\n    \"level\": \"info\",\n    \"content\": \"Creating policy export file\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cfd9711f-7e3c-4203-ac25-9640cb4f0606",
+          "name": "List all scheduled data exports",
+          "request": {
+            "name": "List all scheduled data exports",
+            "description": {},
+            "url": {
+              "path": [
+                "scheduled-data-exports"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "An optional semicolon-separated list of underlying objects to include, e.g. `?include=latest_run`. Currently, only `latest_run` is supported, which will include the latest run for the scheduled data export."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "01e3560f-1289-4680-ac2b-9504ddbc124b",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scheduled-data-exports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"scheduled_data_export_id\": \"4ab082f2-864e-4bcf-bc17-75664a25f2e1\",\n    \"environment\": \"sandbox\",\n    \"created_at\": \"2019-03-15T09:55:13.627Z\",\n    \"created_by\": {\n      \"type\": \"api_key\",\n      \"id\": \"313f7511-c16a-4fdb-ba49-25a80a9b571c\",\n      \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n    },\n    \"status\": \"active\",\n    \"name\": \"Daily policies export\",\n    \"frequency\": {\n      \"type\": \"daily\",\n      \"time_of_day\": \"09:00\"\n    },\n    \"adapter\": {\n      \"type\": \"sftp\",\n      \"host\": \"localhost\",\n      \"username\": \"someuser\",\n      \"path\": \"/some/path/\"\n    },\n    \"export_type\": \"policy_export\",\n    \"data_range\": \"since_last_run\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b2555253-6fb4-42f8-ad67-312bbc9cc1e0",
+          "name": "Create a scheduled data export",
+          "request": {
+            "name": "Create a scheduled data export",
+            "description": {
+              "content": "The following adapters are supported for scheduled data exports:",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "scheduled-data-exports"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"environment\": \"<string>\",\n  \"name\": \"<string>\",\n  \"frequency\": {\n    \"time_of_day\": \"<string>\"\n  },\n  \"adapter\": {\n    \"type\": \"<string>\",\n    \"host\": \"<string>\",\n    \"path\": \"<string>\",\n    \"port\": \"<number>\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"export_type\": \"<string>\",\n  \"data_range\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "42838c0f-6753-4b9d-a1f8-aecdeedef83d",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scheduled-data-exports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Daily policies export\",\n  \"environment\": \"sandbox\",\n  \"export_type\": \"policy_export\",\n  \"data_range\": \"since_last_run\",\n  \"frequency\": {\n    \"type\": \"daily\",\n    \"time_of_day\": \"09:00\"\n  },\n  \"adapter\": {\n    \"type\": \"sftp\",\n    \"host\": \"127.0.0.1\",\n    \"username\": \"someuser\",\n    \"password\": \"somepassword\",\n    \"path\": \"/some/path/\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"scheduled_data_export_id\": \"4ab082f2-864e-4bcf-bc17-75664a25f2e1\",\n  \"environment\": \"sandbox\",\n  \"created_at\": \"2019-03-15T09:55:13.627Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"313f7511-c16a-4fdb-ba49-25a80a9b571c\",\n    \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n  },\n  \"status\": \"active\",\n  \"name\": \"Daily policies export\",\n  \"frequency\": {\n    \"type\": \"daily\",\n    \"time_of_day\": \"09:00\"\n  },\n  \"adapter\": {\n    \"type\": \"sftp\",\n    \"host\": \"localhost\",\n    \"username\": \"someuser\",\n    \"path\": \"/some/path/\"\n  },\n  \"export_type\": \"policy_export\",\n  \"data_range\": \"since_last_run\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d84231b-62ce-454c-b7e9-87531dbf0dc8",
+          "name": "Retrieve a scheduled data export",
+          "request": {
+            "name": "Retrieve a scheduled data export",
+            "description": {},
+            "url": {
+              "path": [
+                "scheduled-data-exports",
+                ":scheduled_data_export_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "An optional semicolon-separated list of underlying objects to include, e.g. `?include=latest_run`. Currently, only `latest_run` is supported, which will include the latest run for the scheduled data export."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "scheduled_data_export_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "da875265-41e1-44e0-801d-e6107592c9b2",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scheduled-data-exports",
+                    ":scheduled_data_export_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "scheduled_data_export_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"scheduled_data_export_id\": \"4ab082f2-864e-4bcf-bc17-75664a25f2e1\",\n  \"environment\": \"sandbox\",\n  \"created_at\": \"2019-03-15T09:55:13.627Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"313f7511-c16a-4fdb-ba49-25a80a9b571c\",\n    \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n  },\n  \"status\": \"active\",\n  \"name\": \"Daily policies export\",\n  \"frequency\": {\n    \"type\": \"daily\",\n    \"time_of_day\": \"09:00\"\n  },\n  \"adapter\": {\n    \"type\": \"sftp\",\n    \"host\": \"localhost\",\n    \"username\": \"someuser\",\n    \"path\": \"/some/path/\"\n  },\n  \"export_type\": \"policy_export\",\n  \"data_range\": \"since_last_run\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dabb935b-27ca-4ab5-ab7d-ccb5afa6879b",
+          "name": "Update a scheduled data export",
+          "request": {
+            "name": "Update a scheduled data export",
+            "description": {
+              "content": "The following adapters are supported for scheduled data exports:",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "scheduled-data-exports",
+                ":scheduled_data_export_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "scheduled_data_export_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"adapter\": \"<object>\",\n  \"environment\": \"<string>\",\n  \"frequency\": \"<object>\",\n  \"data_range\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0874f362-8d28-44a0-b495-656b8902a576",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scheduled-data-exports",
+                    ":scheduled_data_export_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "scheduled_data_export_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Daily policies export\",\n  \"adapter\": {\n    \"type\": \"sftp\",\n    \"host\": \"127.0.0.1\",\n    \"port\": 22,\n    \"username\": \"someuser\",\n    \"password\": \"somepassword\",\n    \"path\": \"/some/path/\"\n  },\n  \"environment\": \"production\",\n  \"data_range\": \"full\",\n  \"export_type\": \"custom_export\",\n  \"template_id\": \"00000000-0000-0000-0000-000000000002\",\n  \"frequency\": {\n    \"type\": \"daily\",\n    \"time_of_day\": \"11:00\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"scheduled_data_export_id\": \"4ab082f2-864e-4bcf-bc17-75664a25f2e1\",\n  \"environment\": \"production\",\n  \"created_at\": \"2019-03-15T09:55:13.627Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"313f7511-c16a-4fdb-ba49-25a80a9b571c\",\n    \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n  },\n  \"status\": \"active\",\n  \"name\": \"Daily policies export\",\n  \"frequency\": {\n    \"type\": \"daily\",\n    \"time_of_day\": \"11:00\"\n  },\n  \"adapter\": {\n    \"type\": \"sftp\",\n    \"host\": \"localhost\",\n    \"username\": \"someuser\",\n    \"path\": \"/some/path/\"\n  },\n  \"export_type\": \"policy_export\",\n  \"data_range\": \"full\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f9891b9f-fd28-4fb5-b2fb-eb22f2ddf882",
+          "name": "Archive a scheduled data export",
+          "request": {
+            "name": "Archive a scheduled data export",
+            "description": {},
+            "url": {
+              "path": [
+                "scheduled-data-exports",
+                ":scheduled_data_export_id",
+                "archive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "scheduled_data_export_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f09f5126-515d-4bbe-8245-5c8c7a8e9d23",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scheduled-data-exports",
+                    ":scheduled_data_export_id",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "scheduled_data_export_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"scheduled_data_export_id\": \"4ab082f2-864e-4bcf-bc17-75664a25f2e1\",\n  \"environment\": \"sandbox\",\n  \"created_at\": \"2019-03-15T09:55:13.627Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"313f7511-c16a-4fdb-ba49-25a80a9b571c\",\n    \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n  },\n  \"status\": \"archived\",\n  \"name\": \"Daily policies export\",\n  \"frequency\": {\n    \"type\": \"daily\",\n    \"time_of_day\": \"09:00\"\n  },\n  \"adapter\": {\n    \"type\": \"sftp\",\n    \"host\": \"localhost\",\n    \"username\": \"someuser\",\n    \"path\": \"/some/path/\"\n  },\n  \"export_type\": \"policy_export\",\n  \"data_range\": \"since_last_run\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c9553e74-29c6-458e-9430-a753ea7c6705",
+          "name": "Pause a scheduled data export",
+          "request": {
+            "name": "Pause a scheduled data export",
+            "description": {},
+            "url": {
+              "path": [
+                "scheduled-data-exports",
+                ":scheduled_data_export_id",
+                "pause"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "scheduled_data_export_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "017f52cf-9e27-4aac-820d-6b2b0e1f011f",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scheduled-data-exports",
+                    ":scheduled_data_export_id",
+                    "pause"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "scheduled_data_export_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"scheduled_data_export_id\": \"4ab082f2-864e-4bcf-bc17-75664a25f2e1\",\n  \"environment\": \"sandbox\",\n  \"created_at\": \"2019-03-15T09:55:13.627Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"313f7511-c16a-4fdb-ba49-25a80a9b571c\",\n    \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n  },\n  \"status\": \"paused\",\n  \"name\": \"Daily policies export\",\n  \"frequency\": {\n    \"type\": \"daily\",\n    \"time_of_day\": \"09:00\"\n  },\n  \"adapter\": {\n    \"type\": \"sftp\",\n    \"host\": \"localhost\",\n    \"username\": \"someuser\",\n    \"path\": \"/some/path/\"\n  },\n  \"export_type\": \"policy_export\",\n  \"data_range\": \"since_last_run\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "71906634-7bf8-4b0d-b85f-e22930bed998",
+          "name": "Resume a scheduled data export",
+          "request": {
+            "name": "Resume a scheduled data export",
+            "description": {},
+            "url": {
+              "path": [
+                "scheduled-data-exports",
+                ":scheduled_data_export_id",
+                "resume"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "scheduled_data_export_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b117da21-38aa-469e-b1ca-a7b828be02b6",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scheduled-data-exports",
+                    ":scheduled_data_export_id",
+                    "resume"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "scheduled_data_export_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"scheduled_data_export_id\": \"4ab082f2-864e-4bcf-bc17-75664a25f2e1\",\n  \"environment\": \"sandbox\",\n  \"created_at\": \"2019-03-15T09:55:13.627Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"313f7511-c16a-4fdb-ba49-25a80a9b571c\",\n    \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n  },\n  \"status\": \"active\",\n  \"name\": \"Daily policies export\",\n  \"frequency\": {\n    \"type\": \"daily\",\n    \"time_of_day\": \"09:00\"\n  },\n  \"adapter\": {\n    \"type\": \"sftp\",\n    \"host\": \"localhost\",\n    \"username\": \"someuser\",\n    \"path\": \"/some/path/\"\n  },\n  \"export_type\": \"policy_export\",\n  \"data_range\": \"since_last_run\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cb5fe96a-47d7-4b6c-9234-e42ec83e4b92",
+          "name": "Trigger an adhoc run",
+          "request": {
+            "name": "Trigger an adhoc run",
+            "description": {
+              "content": "Action a scheduled data export immediately regardless of the specified time.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "scheduled-data-exports",
+                ":scheduled_data_export_id",
+                "trigger"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "scheduled_data_export_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2c891cbb-895a-49e6-b1ab-dbdb6f16248b",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scheduled-data-exports",
+                    ":scheduled_data_export_id",
+                    "trigger"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "scheduled_data_export_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [scheduled data export](ref:scheduled-data-export)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"scheduled_data_export_id\": \"4ab082f2-864e-4bcf-bc17-75664a25f2e1\",\n  \"environment\": \"sandbox\",\n  \"created_at\": \"2019-03-15T09:55:13.627Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"313f7511-c16a-4fdb-ba49-25a80a9b571c\",\n    \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n  },\n  \"status\": \"active\",\n  \"name\": \"Daily policies export\",\n  \"frequency\": {\n    \"type\": \"daily\",\n    \"time_of_day\": \"09:00\"\n  },\n  \"adapter\": {\n    \"type\": \"sftp\",\n    \"host\": \"localhost\",\n    \"username\": \"someuser\",\n    \"path\": \"/some/path/\"\n  },\n  \"export_type\": \"policy_export\",\n  \"data_range\": \"since_last_run\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.uk.rootplatform.com/v1/insurance",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d7b36d17-6849-47d6-89f0-736e9e1fdc4e",
+    "name": "Root Applications Data exports API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.\n\nContact Support:\n Name: Root support team\n Email: support@root.co.za",
+      "type": "text/plain"
+    }
+  }
+}

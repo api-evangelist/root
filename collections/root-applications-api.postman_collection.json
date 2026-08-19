@@ -1,0 +1,2488 @@
+{
+  "item": [
+    {
+      "id": "56d5004e-ec84-427f-8892-7e9f72a69a42",
+      "name": "Applications",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "651a818f-e592-44c1-ab56-be1dc660fbe8",
+          "name": "Create an application",
+          "request": {
+            "name": "Create an application",
+            "description": {
+              "content": "**Note:** Additional custom fields may be required depending on how the [application hook](https://docs.rootplatform.com/docs/application-hook) is configured for the product module.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "applications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quote_package_id\": \"<string>\",\n  \"policyholder_id\": \"<string>\",\n  \"billing_day\": \"<integer>\",\n  \"monthly_premium\": \"<number,null>\",\n  \"type\": \"<string>\",\n  \"user_group_id\": \"<string,null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "abb123b5-b528-41f6-81f1-a0aaeca342ff",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quote_package_id\": \"f4551b91-3e3e-4acc-915b-82e1b163cef8\",\n  \"policyholder_id\": \"00000000-0000-0000-0000-000000000009\",\n  \"billing_day\": 1,\n  \"serial_number\": \"1234567890\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"application_id\": \"02e2ce3b-a235-48ea-8415-c58440f631bd\",\n  \"policyholder_id\": \"246ee082-9f88-44b7-b51c-22a1f1a9a19e\",\n  \"payment_method_id\": \"7c3e8f2a-1d4b-5e6f-9a0b-c1d2e3f4a5b6\",\n  \"package_name\": \"Theft + comprehensive\",\n  \"sum_assured\": 1199900,\n  \"monthly_premium\": 16999,\n  \"base_premium\": 16999,\n  \"module\": {\n    \"make\": \"Apple\",\n    \"type\": \"root_gadgets\",\n    \"model\": \"iPhone 6S 64GB LTE\",\n    \"serial_number\": 123456789\n  },\n  \"restricted_data\": {\n    \"underwriting_score\": 85\n  },\n  \"created_at\": \"2023-02-03T11:17:49.009Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"owner_id\": \"e17f06ce-2a6a-4864-b826-19a83270eab4\"\n  },\n  \"currency\": \"ZAR\",\n  \"product_module_definition_id\": \"4889a9e0-d5f9-4971-8ac2-2175a9d15477\",\n  \"billing_frequency\": \"monthly\",\n  \"billing_day\": 1,\n  \"status\": \"pending\",\n  \"type\": \"new_policy\",\n  \"beneficiaries\": [\n    {\n      \"beneficiary_id\": \"cd444567-10d5-47f5-a0cc-34e262266359\",\n      \"policyholder_id\": \"246ee082-9f88-44b7-b51c-22a1f1a9a19e\",\n      \"percentage\": 100,\n      \"relationship\": \"policyholder\"\n    }\n  ],\n  \"quote_package_id\": \"3822b8fb-43e7-43f7-94ad-63e94e6ce1e3\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c00ec93a-d20e-43b3-b3b3-3a3f72aefc45",
+          "name": "List all applications",
+          "request": {
+            "name": "List all applications",
+            "description": {},
+            "url": {
+              "path": [
+                "applications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "A space seperated list of matching words to search for. e.g. \"richard@aviato.com\""
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "A comma seperated list of statuses. eg. \"pending,issued\""
+                },
+                {
+                  "disabled": false,
+                  "key": "created_by",
+                  "value": "<string>",
+                  "description": "A valid UUID of the user that created the application."
+                },
+                {
+                  "disabled": false,
+                  "key": "user_group_id",
+                  "value": "<string>",
+                  "description": "A valid UUID of the user group that created the application."
+                },
+                {
+                  "disabled": false,
+                  "key": "created_by_type",
+                  "value": "<string>",
+                  "description": "A semi-colon seperated list of the requestee types. e.g. api_key, user, legacy_api_key, legacy_user_api_key, system, product_module or embed_jwt"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "An optional semicolon-separated list of underlying objects to include, e.g. `?include=policy;policyholder`. Valid options are 'policy', 'policyholder' and 'quote_package'"
+                },
+                {
+                  "disabled": false,
+                  "key": "product_module_id",
+                  "value": "<string>",
+                  "description": "A valid UUID of the product module to filter applications by."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "019bfc27-2348-4385-805d-d8c428334788",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "search",
+                      "value": "richard@aviato.com"
+                    },
+                    {
+                      "key": "status",
+                      "value": "pending"
+                    },
+                    {
+                      "key": "created_by",
+                      "value": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e"
+                    },
+                    {
+                      "key": "user_group_id",
+                      "value": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e"
+                    },
+                    {
+                      "key": "created_by_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "policyholder"
+                    },
+                    {
+                      "key": "product_module_id",
+                      "value": "128ba0c0-3f6a-4f8b-9b40-e2066b02b59e"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"application_id\": \"02e2ce3b-a235-48ea-8415-c58440f631bd\",\n    \"policyholder_id\": \"246ee082-9f88-44b7-b51c-22a1f1a9a19e\",\n    \"payment_method_id\": \"7c3e8f2a-1d4b-5e6f-9a0b-c1d2e3f4a5b6\",\n    \"package_name\": \"Theft + comprehensive\",\n    \"sum_assured\": 1199900,\n    \"monthly_premium\": 16999,\n    \"base_premium\": 16999,\n    \"module\": {\n      \"make\": \"Apple\",\n      \"type\": \"root_gadgets\",\n      \"model\": \"iPhone 6S 64GB LTE\",\n      \"serial_number\": 123456789\n    },\n    \"restricted_data\": {\n      \"underwriting_score\": 85\n    },\n    \"created_at\": \"2023-02-03T11:17:49.009Z\",\n    \"created_by\": {\n      \"type\": \"api_key\",\n      \"owner_id\": \"e17f06ce-2a6a-4864-b826-19a83270eab4\"\n    },\n    \"currency\": \"ZAR\",\n    \"product_module_definition_id\": \"4889a9e0-d5f9-4971-8ac2-2175a9d15477\",\n    \"billing_frequency\": \"monthly\",\n    \"billing_day\": 1,\n    \"status\": \"pending\",\n    \"type\": \"new_policy\",\n    \"beneficiaries\": [\n      {\n        \"beneficiary_id\": \"cd444567-10d5-47f5-a0cc-34e262266359\",\n        \"policyholder_id\": \"246ee082-9f88-44b7-b51c-22a1f1a9a19e\",\n        \"percentage\": 100,\n        \"relationship\": \"policyholder\"\n      }\n    ],\n    \"quote_package_id\": \"3822b8fb-43e7-43f7-94ad-63e94e6ce1e3\"\n  },\n  {\n    \"application_id\": \"02e2ce3b-a235-48ea-8415-c58440f631bd\",\n    \"policyholder_id\": \"246ee082-9f88-44b7-b51c-22a1f1a9a19e\",\n    \"payment_method_id\": \"7c3e8f2a-1d4b-5e6f-9a0b-c1d2e3f4a5b6\",\n    \"package_name\": \"Theft + comprehensive\",\n    \"sum_assured\": 1199900,\n    \"monthly_premium\": 16999,\n    \"base_premium\": 16999,\n    \"module\": {\n      \"make\": \"Apple\",\n      \"type\": \"root_gadgets\",\n      \"model\": \"iPhone 6S 64GB LTE\",\n      \"serial_number\": 123456789\n    },\n    \"restricted_data\": {\n      \"underwriting_score\": 85\n    },\n    \"created_at\": \"2023-02-03T11:17:49.009Z\",\n    \"created_by\": {\n      \"type\": \"api_key\",\n      \"owner_id\": \"e17f06ce-2a6a-4864-b826-19a83270eab4\"\n    },\n    \"currency\": \"ZAR\",\n    \"product_module_definition_id\": \"4889a9e0-d5f9-4971-8ac2-2175a9d15477\",\n    \"billing_frequency\": \"monthly\",\n    \"billing_day\": 1,\n    \"status\": \"pending\",\n    \"type\": \"new_policy\",\n    \"beneficiaries\": [\n      {\n        \"beneficiary_id\": \"cd444567-10d5-47f5-a0cc-34e262266359\",\n        \"policyholder_id\": \"246ee082-9f88-44b7-b51c-22a1f1a9a19e\",\n        \"percentage\": 100,\n        \"relationship\": \"policyholder\"\n      }\n    ],\n    \"quote_package_id\": \"3822b8fb-43e7-43f7-94ad-63e94e6ce1e3\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d685c666-ee07-479f-928b-3b70e54786ad",
+          "name": "Retrieve an application",
+          "request": {
+            "name": "Retrieve an application",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "An optional semicolon-separated list of underlying objects to include, e.g. `?include=policy;policyholder`. Valid options are 'policy', 'policyholder' and 'quote_package'"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e4332a40-7246-4073-a4da-76197cf2ac01",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "policyholder"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"application_id\": \"bf1ada91-eecb-4f47-9bfa-1258bb1e0055\",\n  \"policyholder_id\": \"bf3ab7ce-064d-43b7-811d-0ecd9aca3daf\",\n  \"package_name\": \"Theft + comprehensive\",\n  \"sum_assured\": 1199900,\n  \"monthly_premium\": 50000,\n  \"base_premium\": 14999,\n  \"billing_day\": 1,\n  \"module\": {\n    \"type\": \"root_gadgets\",\n    \"make\": \"Apple\",\n    \"model\": \"iPhone 6S 64GB LTE\",\n    \"serial_number\": \"1234567890\"\n  },\n  \"created_at\": \"2017-10-12T15:47:34.281Z\",\n  \"created_by\": {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"type\": \"user\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2b08b923-7717-4d31-ab9f-ddebd3f4541d",
+          "name": "Requote an application",
+          "request": {
+            "name": "Requote an application",
+            "description": {
+              "content": "Note that additional fields may be required based on the product module type being used. See [product modules](doc:product-modules-overview) for more details.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "applications",
+                ":application_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quote_package_id\": \"<string>\",\n  \"monthly_premium\": \"<number,null>\",\n  \"policyholder_id\": \"<string>\",\n  \"billing_day\": \"<integer>\",\n  \"key_0\": \"string\",\n  \"key_1\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2e2b1f49-288b-4097-9b94-d6f5eca3f24a",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"monthly_premium\": 50000,\n  \"quote_package_id\": \"bf3ab7ce-064d-43b7-811d-0ecd9aca3daf\",\n  \"billing_day\": 1,\n  \"serial_number\": \"1234567890\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"application_id\": \"128ba0c0-3f6a-4f8b-9b40-e2066b02b59e\",\n  \"policyholder_id\": \"bf3ab7ce-064d-43b7-811d-0ecd9aca3daf\",\n  \"package_name\": \"Theft + comprehensive\",\n  \"sum_assured\": 1199900,\n  \"monthly_premium\": 50000,\n  \"base_premium\": 14999,\n  \"billing_day\": 1,\n  \"module\": {\n    \"type\": \"root_gadgets\",\n    \"make\": \"Apple\",\n    \"model\": \"iPhone 6S 64GB LTE\",\n    \"serial_number\": \"1234567890\"\n  },\n  \"created_at\": \"2017-10-05T18:28:30.281Z\",\n  \"created_by\": {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"type\": \"user\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fee75c6c-d8e1-4a6c-8770-7321da406259",
+          "name": "Create an application alteration package",
+          "request": {
+            "name": "Create an application alteration package",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "alteration-packages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"<string>\",\n  \"data\": {\n    \"key_0\": true,\n    \"key_1\": 7945.484958717382\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "536a248b-35a1-4d81-97c7-db75b20d0385",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "alteration-packages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key\": \"update_cover_amount\",\n  \"data\": {\n    \"cover_amount\": 25000000,\n    \"spouse_cover\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"alteration_package_application_id\": \"2d200d5c-477c-4c90-b305-e8f445f4d8e5\",\n    \"organization_id\": \"00000000-0000-0000-0000-000000000001\",\n    \"created_at\": \"2026-01-28T09:17:05.101Z\",\n    \"created_by\": {\n      \"type\": \"api_key\",\n      \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n      \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n    },\n    \"module\": {\n      \"package_name\": \"Funeral Cover\",\n      \"suggested_premium\": 17500,\n      \"base_premium\": 16000,\n      \"cover_amount\": 25000000\n    },\n    \"monthly_premium\": 17500,\n    \"currency\": \"ZAR\",\n    \"sum_assured\": 25000000,\n    \"billing_frequency\": \"monthly\",\n    \"status\": \"pending\",\n    \"change_description\": \"Updating cover amount before issuing policy\",\n    \"input_data\": {\n      \"cover_amount\": 25000000,\n      \"spouse_cover\": true\n    },\n    \"application_id\": \"bf1ada91-eecb-4f47-9bfa-1258bb1e0055\",\n    \"alteration_hook_key\": \"update_cover_amount\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "341e8ff1-5dde-414b-9f05-5b7362f1c1db",
+          "name": "Retrieve an application alteration package",
+          "request": {
+            "name": "Retrieve an application alteration package",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "alteration-packages",
+                ":alteration_package_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alteration_package_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the application alteration package."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "35a6925e-25a3-4370-b2dd-829be2deb1ce",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "alteration-packages",
+                    ":alteration_package_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alteration_package_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the application alteration package."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"alteration_package_application_id\": \"2d200d5c-477c-4c90-b305-e8f445f4d8e5\",\n  \"organization_id\": \"00000000-0000-0000-0000-000000000001\",\n  \"created_at\": \"2026-01-28T09:17:05.101Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"module\": {\n    \"package_name\": \"Funeral Cover\",\n    \"suggested_premium\": 17500,\n    \"base_premium\": 16000,\n    \"cover_amount\": 25000000\n  },\n  \"monthly_premium\": 17500,\n  \"currency\": \"ZAR\",\n  \"sum_assured\": 25000000,\n  \"billing_frequency\": \"monthly\",\n  \"status\": \"pending\",\n  \"change_description\": \"Updating cover amount before issuing policy\",\n  \"input_data\": {\n    \"cover_amount\": 25000000,\n    \"spouse_cover\": true\n  },\n  \"application_id\": \"bf1ada91-eecb-4f47-9bfa-1258bb1e0055\",\n  \"alteration_hook_key\": \"update_cover_amount\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a685cde3-bab3-4ec5-8b92-78a8e2eaffb3",
+          "name": "Apply application alteration package",
+          "request": {
+            "name": "Apply application alteration package",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "alteration-packages",
+                ":alteration_package_id",
+                "apply"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alteration_package_id",
+                  "description": "(Required) Must be a UUID. The ID of the application alteration package to apply to the application."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "166b1e93-2d58-4a7a-b7e6-480306dd7a98",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "alteration-packages",
+                    ":alteration_package_id",
+                    "apply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alteration_package_id",
+                      "description": "(Required) Must be a UUID. The ID of the application alteration package to apply to the application."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"alteration_package_application_id\": \"2d200d5c-477c-4c90-b305-e8f445f4d8e5\",\n  \"organization_id\": \"00000000-0000-0000-0000-000000000001\",\n  \"created_at\": \"2026-01-28T09:17:05.101Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"module\": {\n    \"package_name\": \"Funeral Cover\",\n    \"suggested_premium\": 17500,\n    \"base_premium\": 16000,\n    \"cover_amount\": 25000000\n  },\n  \"monthly_premium\": 17500,\n  \"currency\": \"ZAR\",\n  \"sum_assured\": 25000000,\n  \"billing_frequency\": \"monthly\",\n  \"status\": \"applied\",\n  \"change_description\": \"Updating cover amount before issuing policy\",\n  \"input_data\": {\n    \"cover_amount\": 25000000,\n    \"spouse_cover\": true\n  },\n  \"application_id\": \"bf1ada91-eecb-4f47-9bfa-1258bb1e0055\",\n  \"alteration_hook_key\": \"update_cover_amount\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c600db19-22dd-42b8-8245-ab82d1b705fb",
+          "name": "Retrieve application attachments",
+          "request": {
+            "name": "Retrieve application attachments",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "attachments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "17af1c25-2a8d-49ce-a933-24db59dbe56b",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "attachments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"attachment_id\": \"bf1ada91-eecb-4f47-9bfa-1258bb1e0055\",\n    \"created_at\": \"2017-10-12T15:47:34.281Z\",\n    \"file_name\": \"doc.pdf\",\n    \"file_type\": \"application/pdf\",\n    \"file_url\": \"https://example.com/1234.pdf\",\n    \"description\": \"Application PDF\",\n    \"is_archived\": false,\n    \"requested_by\": {\n      \"type\": \"user\"\n    }\n  },\n  {\n    \"attachment_id\": \"bf1ada91-eecb-4f47-9bfa-1258bb1e0055\",\n    \"created_at\": \"2017-10-12T15:47:34.281Z\",\n    \"file_name\": \"doc.pdf\",\n    \"file_type\": \"application/pdf\",\n    \"file_url\": \"https://example.com/1234.pdf\",\n    \"description\": \"Application PDF\",\n    \"is_archived\": false,\n    \"requested_by\": {\n      \"type\": \"user\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "43fad027-9273-4085-8c69-3e6610da7c23",
+          "name": "Add application attachment",
+          "request": {
+            "name": "Add application attachment",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "attachments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"file_base64\": \"<string>\",\n  \"file_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f4b78e6d-5637-4fd2-96c8-434f54e2e0c2",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "attachments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"file_base64\": \"<string>\",\n  \"file_type\": \"application/pdf\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"file_name\": \"report.pdf\",\n  \"file_type\": \"application/pdf\",\n  \"file_url\": \"http://yoururlhere/report.pdf\",\n  \"description\": \"Police Report\",\n  \"type\": \"attachment_created\",\n  \"application_id\": \"128ba0c0-3f6a-4f8b-9b40-e2066b02b59e\",\n  \"created_at\": \"2022-01-31T11:25:23.427Z\",\n  \"requested_by\": {\n    \"type\": \"user\",\n    \"id\": \"00000000-0000-0000-0000-000000000001\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1b677aa3-0a50-4d76-be96-f624604f5e52",
+          "name": "Archive an attachment",
+          "request": {
+            "name": "Archive an attachment",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "attachments",
+                ":attachment_id",
+                "archive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "attachment_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the attachment."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e92aa9c2-e700-4662-80e8-18343530b5a8",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "attachments",
+                    ":attachment_id",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "attachment_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the attachment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"attachment_archived\",\n  \"application_id\": \"128ba0c0-3f6a-4f8b-9b40-e2066b02b59e\",\n  \"file_name\": \"report.pdf\",\n  \"file_type\": \"application/pdf\",\n  \"file_url\": \"https://example.com/report.pdf\",\n  \"description\": \"Police Report\",\n  \"created_at\": \"2023-02-03T12:00:00.000Z\",\n  \"requested_by\": {\n    \"type\": \"user\",\n    \"id\": \"00000000-0000-0000-0000-000000000001\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "72d32a3a-f109-4b36-a3ba-65a94fe06f92",
+          "name": "List beneficiaries",
+          "request": {
+            "name": "List beneficiaries",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "beneficiaries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8b21898d-e218-4791-b37c-d747b912cae5",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"beneficiary_id\": \"string\",\n    \"relationship\": \"grandparent\",\n    \"percentage\": 3022,\n    \"policyholder_id\": \"string\",\n    \"type\": \"individual\",\n    \"first_name\": \"string\",\n    \"last_name\": \"string\",\n    \"title\": \"ms\",\n    \"gender\": \"male\",\n    \"id\": {\n      \"type\": \"passport\",\n      \"number\": \"string\",\n      \"country\": \"string\"\n    },\n    \"date_of_birth\": \"1975-04-28\",\n    \"cellphone\": \"+27821234567\",\n    \"email\": \"string\",\n    \"company_name\": \"string\",\n    \"registration_number\": \"string\",\n    \"payment_details\": {\n      \"type\": \"card\",\n      \"details\": {\n        \"bank_name\": \"old_mutual\",\n        \"branch_code\": \"string\",\n        \"account_type\": \"savings\",\n        \"account_number\": \"string\"\n      }\n    }\n  },\n  {\n    \"beneficiary_id\": \"string\",\n    \"relationship\": \"sister\",\n    \"percentage\": 7069,\n    \"policyholder_id\": \"string\",\n    \"type\": \"individual\",\n    \"first_name\": \"string\",\n    \"last_name\": \"string\",\n    \"title\": \"prof\",\n    \"gender\": \"male\",\n    \"id\": {\n      \"type\": \"custom\",\n      \"number\": \"string\",\n      \"country\": \"string\"\n    },\n    \"date_of_birth\": \"1997-10-27\",\n    \"cellphone\": \"+27821234567\",\n    \"email\": \"string\",\n    \"company_name\": \"string\",\n    \"registration_number\": \"string\",\n    \"payment_details\": {\n      \"type\": \"card\",\n      \"details\": {\n        \"bank_name\": \"hbz\",\n        \"branch_code\": \"string\",\n        \"account_type\": \"savings\",\n        \"account_number\": \"string\"\n      }\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9cd12943-ce91-4009-9621-f1941c09f787",
+          "name": "Update beneficiaries",
+          "request": {
+            "name": "Update beneficiaries",
+            "description": {
+              "content": "This endpoint accepts an array of beneficiary objects as the body. The entire array of beneficiaries will be replaced. The number of beneficiaries cannot exceed the max defined in the [general settings](doc:general-settings). The percentages must add up to 100%.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "beneficiaries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"percentage\": \"<integer>\",\n    \"relationship\": \"<string>\",\n    \"type\": \"individual\",\n    \"title\": \"<string>\",\n    \"gender\": \"<string>\",\n    \"id\": {\n      \"type\": \"<string>\",\n      \"number\": \"<string>\",\n      \"country\": \"<string>\"\n    },\n    \"date_of_birth\": \"<string,null-date>\",\n    \"cellphone\": {\n      \"number\": \"<string>\",\n      \"country\": \"<string>\"\n    },\n    \"email\": \"<string>\",\n    \"company_name\": \"<string>\",\n    \"registration_number\": \"<string>\",\n    \"payment_details\": {\n      \"type\": \"<string>\",\n      \"details\": {\n        \"bank_name\": \"<string>\",\n        \"branch_code\": \"<string>\",\n        \"account_type\": \"<string>\",\n        \"account_number\": \"<string>\"\n      }\n    },\n    \"policyholder_id\": \"<string>\",\n    \"address\": {\n      \"line_1\": \"<string>\",\n      \"city\": \"<string>\",\n      \"country\": \"<string>\",\n      \"area_code\": \"<string>\",\n      \"line_2\": \"<string,null>\",\n      \"suburb\": \"<string>\"\n    }\n  },\n  {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"percentage\": \"<integer>\",\n    \"relationship\": \"<string>\",\n    \"type\": \"individual\",\n    \"title\": \"<string>\",\n    \"gender\": \"<string>\",\n    \"id\": {\n      \"type\": \"<string>\",\n      \"number\": \"<string>\",\n      \"country\": \"<string>\"\n    },\n    \"date_of_birth\": \"<string,null-date>\",\n    \"cellphone\": {\n      \"number\": \"<string>\",\n      \"country\": \"<string>\"\n    },\n    \"email\": \"<string>\",\n    \"company_name\": \"<string>\",\n    \"registration_number\": \"<string>\",\n    \"payment_details\": {\n      \"type\": \"<string>\",\n      \"details\": {\n        \"bank_name\": \"<string>\",\n        \"branch_code\": \"<string>\",\n        \"account_type\": \"<string>\",\n        \"account_number\": \"<string>\"\n      }\n    },\n    \"policyholder_id\": \"<string>\",\n    \"address\": {\n      \"line_1\": \"<string>\",\n      \"city\": \"<string>\",\n      \"country\": \"<string>\",\n      \"area_code\": \"<string>\",\n      \"line_2\": \"<string,null>\",\n      \"suburb\": \"<string>\"\n    }\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4bd15807-d87c-4f78-9681-bcb9fbd25082",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"first_name\": \"Mary\",\n    \"last_name\": \"Yang\",\n    \"percentage\": 90,\n    \"title\": \"mrs\",\n    \"gender\": \"female\",\n    \"id\": {\n      \"type\": \"id\",\n      \"number\": \"9504014800082\",\n      \"country\": \"ZA\"\n    },\n    \"email\": \"mary@piedpiper.com\",\n    \"relationship\": \"spouse\",\n    \"cellphone\": \"+27821234567\",\n    \"payment_details\": {\n      \"type\": \"eft\",\n      \"details\": {\n        \"account_number\": \"01304055557\",\n        \"account_type\": \"cheque_account\",\n        \"bank_name\": \"nedbank\",\n        \"branch_code\": \"20177778\"\n      }\n    },\n    \"type\": \"individual\"\n  },\n  {\n    \"first_name\": \"Erlich\",\n    \"last_name\": \"Aviatio\",\n    \"percentage\": 10,\n    \"title\": \"mr\",\n    \"email\": \"erlich@aviatio.com\",\n    \"relationship\": \"other\",\n    \"cellphone\": \"+27783456578\",\n    \"payment_details\": {\n      \"type\": \"eft\",\n      \"details\": {\n        \"account_number\": \"546767819\",\n        \"account_type\": \"cheque_account\",\n        \"bank_name\": \"investec\",\n        \"branch_code\": \"201507\"\n      }\n    },\n    \"company_name\": \"Pied Piper\",\n    \"registration_number\": \"CC1234\",\n    \"type\": \"company\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"application_id\": \"128ba0c0-3f6a-4f8b-9b40-e2066b02b59e\",\n  \"policyholder_id\": \"bf3ab7ce-064d-43b7-811d-0ecd9aca3daf\",\n  \"package_name\": \"Theft + comprehensive\",\n  \"sum_assured\": 1199900,\n  \"monthly_premium\": 50000,\n  \"base_premium\": 14999,\n  \"billing_day\": 1,\n  \"module\": {\n    \"type\": \"root_gadgets\",\n    \"make\": \"Apple\",\n    \"model\": \"iPhone 6S 64GB LTE\",\n    \"serial_number\": \"1234567890\"\n  },\n  \"created_at\": \"2017-10-12T15:47:34.281Z\",\n  \"created_by\": {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"type\": \"user\"\n  },\n  \"beneficiaries\": [\n    {\n      \"first_name\": \"Jared\",\n      \"last_name\": \"Dunn\",\n      \"id\": {\n        \"type\": \"id\",\n        \"number\": \"8704094800082\",\n        \"country\": \"ZA\"\n      },\n      \"percentage\": 100,\n      \"relationship\": \"cousin_or_relative\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a39e2d21-d87c-43f7-a02c-f1e0b3323b73",
+          "name": "Retrieve application notes",
+          "request": {
+            "name": "Retrieve application notes",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "notes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "871b4636-ff4f-492d-8135-6cf6eec52808",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "notes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"text\": \"Customer spoke to Erlich previously\",\n    \"created_at\": \"2022-10-16T10:12:02.872Z\",\n    \"requested_by\": {\n      \"type\": \"user\"\n    }\n  },\n  {\n    \"text\": \"Customer spoke to Erlich previously\",\n    \"created_at\": \"2022-10-16T10:12:02.872Z\",\n    \"requested_by\": {\n      \"type\": \"user\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7db1e79a-168d-4630-a6ce-883f68b284b0",
+          "name": "Add application notes",
+          "request": {
+            "name": "Add application notes",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "notes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ac685fd3-f37e-45f9-85e6-13df9c91c638",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "notes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"text\": \"Customer spoke to Erlich previously\",\n  \"created_at\": \"2022-10-16T10:12:02.872Z\",\n  \"requested_by\": {\n    \"type\": \"user\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "30ec18aa-9bfc-41de-90d6-b56836297ded",
+          "name": "Retrieve application events",
+          "request": {
+            "name": "Retrieve application events",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d0bdad1d-b9a6-4496-92ad-e9cb618bf45e",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type\": \"application_created\",\n    \"application_id\": \"128ba0c0-3f6a-4f8b-9b40-e2066b02b59e\",\n    \"created_at\": \"2023-02-03T11:17:49.009Z\",\n    \"requested_by\": {\n      \"type\": \"api_key\",\n      \"id\": \"b6565862-cc6e-4563-85d3-659894338cda\",\n      \"owner_id\": \"e17f06ce-2a6a-4864-b826-19a83270eab4\"\n    }\n  },\n  {\n    \"type\": \"attachment_created\",\n    \"application_id\": \"128ba0c0-3f6a-4f8b-9b40-e2066b02b59e\",\n    \"file_name\": \"report.pdf\",\n    \"file_type\": \"application/pdf\",\n    \"file_url\": \"https://example.com/report.pdf\",\n    \"description\": \"Police Report\",\n    \"created_at\": \"2023-02-03T12:00:00.000Z\",\n    \"requested_by\": {\n      \"type\": \"user\",\n      \"id\": \"00000000-0000-0000-0000-000000000001\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a8c97993-392f-491c-979c-abfd95d9c6fb",
+          "name": "Retrieve application payment method",
+          "request": {
+            "name": "Retrieve application payment method",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "payment-method"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f45b7247-4a00-4e10-ba16-4378819adc2b",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "payment-method"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"payment_method_id\": \"e0b7b222-772f-47ac-b08d-c7ba38aa1b25\",\n  \"type\": \"debit_order\",\n  \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n  \"policyholder_id\": \"f91f4ea4-9c6d-459e-998b-a5711cbd8895\",\n  \"created_at\": \"2021-01-29T13:12:00.968Z\",\n  \"updated_at\": \"2021-01-29T13:12:00.968Z\",\n  \"bank_details\": {\n    \"account_holder\": \"Erlich Bachman\",\n    \"bank\": \"absa\",\n    \"branch_code\": \"12345\",\n    \"account_number\": \"123456789\",\n    \"account_type\": \"cheque\",\n    \"banv_status\": \"pending\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "99ad8f01-ccd4-40fa-baa4-79898deac819",
+          "name": "Assign application payment method",
+          "request": {
+            "name": "Assign application payment method",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "payment-method"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment_method_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "45380db2-61ab-4ce4-827f-58c8107d0db7",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "payment-method"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_method_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"payment_method_id\": \"e0b7b222-772f-47ac-b08d-c7ba38aa1b25\",\n  \"type\": \"debit_order\",\n  \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n  \"policyholder_id\": \"f91f4ea4-9c6d-459e-998b-a5711cbd8895\",\n  \"created_at\": \"2021-01-29T13:12:00.968Z\",\n  \"updated_at\": \"2021-01-29T13:12:00.968Z\",\n  \"bank_details\": {\n    \"account_holder\": \"Erlich Bachman\",\n    \"bank\": \"absa\",\n    \"branch_code\": \"12345\",\n    \"account_number\": \"123456789\",\n    \"account_type\": \"cheque\",\n    \"banv_status\": \"pending\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "02ee9e3a-0e9c-4004-aa49-022d7dd04390",
+          "name": "Send application PDF to policyholder",
+          "request": {
+            "name": "Send application PDF to policyholder",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "send-application-pdf-to-policyholder"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "debe817d-e4f4-4697-b103-744f907ec8da",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "send-application-pdf-to-policyholder"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "07bc6754-9b3e-43ef-9c5e-217d34bc97c7",
+          "name": "Get allowed application cancellation reasons",
+          "request": {
+            "name": "Get allowed application cancellation reasons",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "cancellation-reasons"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3648936f-7ed8-4bb6-b547-7019328f7e26",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "cancellation-reasons"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"client\": [\n    \"string\",\n    \"string\"\n  ],\n  \"insurer\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "46192926-11ea-49e6-8600-de074b76c47d",
+          "name": "Cancel an application",
+          "request": {
+            "name": "Cancel an application",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"<string>\",\n  \"cancellation_requestor\": \"<string>\",\n  \"cancellation_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3391879f-619f-412a-9d94-409d99803017",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cancellation_requestor\": \"client\",\n  \"cancellation_type\": \"no_longer_interested\",\n  \"reason\": \"Customer confirmed they will not proceed\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"application_id\": \"02e2ce3b-a235-48ea-8415-c58440f631bd\",\n  \"policyholder_id\": \"246ee082-9f88-44b7-b51c-22a1f1a9a19e\",\n  \"payment_method_id\": \"7c3e8f2a-1d4b-5e6f-9a0b-c1d2e3f4a5b6\",\n  \"package_name\": \"Theft + comprehensive\",\n  \"sum_assured\": 1199900,\n  \"monthly_premium\": 16999,\n  \"base_premium\": 16999,\n  \"module\": {\n    \"make\": \"Apple\",\n    \"type\": \"root_gadgets\",\n    \"model\": \"iPhone 6S 64GB LTE\",\n    \"serial_number\": 123456789\n  },\n  \"restricted_data\": {\n    \"underwriting_score\": 85\n  },\n  \"created_at\": \"2023-02-03T11:17:49.009Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"owner_id\": \"e17f06ce-2a6a-4864-b826-19a83270eab4\"\n  },\n  \"currency\": \"ZAR\",\n  \"product_module_definition_id\": \"4889a9e0-d5f9-4971-8ac2-2175a9d15477\",\n  \"billing_frequency\": \"monthly\",\n  \"billing_day\": 1,\n  \"status\": \"pending\",\n  \"type\": \"new_policy\",\n  \"beneficiaries\": [\n    {\n      \"beneficiary_id\": \"cd444567-10d5-47f5-a0cc-34e262266359\",\n      \"policyholder_id\": \"246ee082-9f88-44b7-b51c-22a1f1a9a19e\",\n      \"percentage\": 100,\n      \"relationship\": \"policyholder\"\n    }\n  ],\n  \"quote_package_id\": \"3822b8fb-43e7-43f7-94ad-63e94e6ce1e3\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5759eadc-5e39-466e-9004-ea9bff966556",
+          "name": "Archive an application",
+          "request": {
+            "name": "Archive an application",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":application_id",
+                "archive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "27cf3381-b426-43fd-bb57-bf2b20a09563",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7117db64-82af-47db-90ec-51f3bfbb42f7",
+          "name": "Retrieve application alteration hooks",
+          "request": {
+            "name": "Retrieve application alteration hooks",
+            "description": {},
+            "url": {
+              "path": [
+                "organizations",
+                ":client_app_id",
+                "applications",
+                ":application_id",
+                "alteration-hooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "client_app_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the organization."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b095bf45-3aee-416c-a762-0cf1f10f6873",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "organizations",
+                    ":client_app_id",
+                    "applications",
+                    ":application_id",
+                    "alteration-hooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "client_app_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the organization."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [application](ref:application)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"product_module_definition_alteration_hook_id\": \"2cbbc377-e142-4986-8871-29b0a4c23353\",\n    \"product_module_definition_id\": \"9b7b43f4-9ab8-4e37-b42b-59d5595f3983\",\n    \"schema_id\": \"18f7e13a-f4f4-4b10-86ec-2973dfe77732\",\n    \"key\": \"update_cover_amount\",\n    \"name\": \"Update cover amount\",\n    \"type\": \"application\",\n    \"created_at\": \"2026-01-28T09:17:05.101Z\",\n    \"created_by\": {\n      \"type\": \"user\",\n      \"id\": \"00000000-0000-0000-0000-000000000001\"\n    },\n    \"productModuleDefinitionSchema\": {\n      \"product_module_definition_schema_id\": \"18f7e13a-f4f4-4b10-86ec-2973dfe77732\",\n      \"json\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"cover_amount\": {\n            \"type\": \"integer\"\n          }\n        }\n      },\n      \"created_at\": \"2026-01-28T09:15:45.100Z\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"00000000-0000-0000-0000-000000000001\"\n      },\n      \"type\": \"application_alteration\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.uk.rootplatform.com/v1/insurance",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "1c95aad9-b399-4cce-86c6-77090a269844",
+    "name": "Root Applications API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.\n\nContact Support:\n Name: Root support team\n Email: support@root.co.za",
+      "type": "text/plain"
+    }
+  }
+}

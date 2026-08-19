@@ -1,0 +1,1242 @@
+{
+  "item": [
+    {
+      "id": "ec351257-0c42-4b16-b7ac-8f3dd3628de0",
+      "name": "Data stores",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "67542cf0-8ca6-41ff-ae2e-c625e04436a8",
+          "name": "List all data stores",
+          "request": {
+            "name": "List all data stores",
+            "description": {},
+            "url": {
+              "path": [
+                "data-stores"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "A search string to filter data stores by name or key."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f0164bb5-d766-4ee2-ab24-ed43d8e6917a",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-stores"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"data_store_id\": \"6e91fe74-aa56-4b4e-8f68-636d23d5706f\",\n    \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n    \"key\": \"devices\",\n    \"schema\": {\n      \"type\": \"object\",\n      \"async\": true,\n      \"required\": [\n        \"name\",\n        \"price\"\n      ],\n      \"properties\": {\n        \"name\": {\n          \"type\": \"string\"\n        },\n        \"price\": {\n          \"type\": \"number\"\n        }\n      }\n    },\n    \"description\": \"Devices data store\",\n    \"name\": \"devices\",\n    \"created_at\": \"2021-01-29T13:12:00.968Z\",\n    \"created_by\": {\n      \"type\": \"api_key\",\n      \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n      \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n    },\n    \"updated_at\": \"2021-01-29T13:12:00.968Z\",\n    \"updated_by\": {\n      \"type\": \"api_key\",\n      \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n      \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fa802345-4c1a-43d9-ab70-b89e54fe778e",
+          "name": "Create a data store",
+          "request": {
+            "name": "Create a data store",
+            "description": {},
+            "url": {
+              "path": [
+                "data-stores"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"<string>\",\n  \"name\": \"<string>\",\n  \"schema\": {\n    \"required\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"properties\": \"<object>\"\n  },\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c40b4b86-8ca0-4a74-a00f-968f863e845d",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-stores"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key\": \"devices\",\n  \"name\": \"devices\",\n  \"description\": \"Devices data store\",\n  \"schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"name\": {\n        \"type\": \"string\"\n      },\n      \"price\": {\n        \"type\": \"number\"\n      }\n    },\n    \"required\": [\n      \"name\",\n      \"price\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data_store_id\": \"6e91fe74-aa56-4b4e-8f68-636d23d5706f\",\n  \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n  \"key\": \"devices\",\n  \"schema\": {\n    \"async\": true,\n    \"type\": \"object\",\n    \"properties\": {\n      \"name\": {\n        \"type\": \"string\"\n      },\n      \"price\": {\n        \"type\": \"number\"\n      }\n    },\n    \"required\": [\n      \"name\",\n      \"price\"\n    ]\n  },\n  \"description\": \"Devices data store\",\n  \"name\": \"devices\",\n  \"created_at\": \"2021-02-01T06:05:13.678Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"313f7511-c16a-4fdb-ba49-25a80a9b571c\",\n    \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n  },\n  \"updated_at\": \"2021-02-01T06:05:13.678Z\",\n  \"updated_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"313f7511-c16a-4fdb-ba49-25a80a9b571c\",\n    \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "82e5813e-d2fb-4dbe-9388-58da33c5edec",
+          "name": "Count data store entities",
+          "request": {
+            "name": "Count data store entities",
+            "description": {},
+            "url": {
+              "path": [
+                "data-stores",
+                ":data_store_key",
+                "entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_store_key",
+                  "description": "(Required) The unique key of the [data store](ref:data-store)"
+                }
+              ]
+            },
+            "method": "HEAD",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "177ab6c5-35ca-4b2b-bec0-f6ae5573a710",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-stores",
+                    ":data_store_key",
+                    "entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_store_key",
+                      "description": "(Required) The unique key of the [data store](ref:data-store)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "HEAD",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The total number of data store entities.",
+                  "key": "X-Total-Count",
+                  "value": "2117"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b74393bb-4962-42bd-b15d-33d965ccc8fa",
+          "name": "List data store entities",
+          "request": {
+            "name": "List data store entities",
+            "description": {},
+            "url": {
+              "path": [
+                "data-stores",
+                ":data_store_key",
+                "entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "A search string to filter data store entities."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_store_key",
+                  "description": "(Required) The unique key of the [data store](ref:data-store)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2615c77d-420d-4b92-9715-0cb558c2a065",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-stores",
+                    ":data_store_key",
+                    "entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_store_key",
+                      "description": "(Required) The unique key of the [data store](ref:data-store)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The total number of data store entities.",
+                  "key": "X-Total-Count",
+                  "value": "2117"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"data_store_entity_id\": \"424312b7-6d8f-424f-bf3e-af1384444424\",\n    \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n    \"data\": {\n      \"name\": \"Apple iPhone X\",\n      \"price\": 1000000\n    },\n    \"created_by\": {\n      \"type\": \"api_key\",\n      \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n      \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n    },\n    \"created_at\": \"2021-01-28T10:00:24.809Z\",\n    \"updated_at\": \"2021-01-28T10:00:24.809Z\",\n    \"updated_by\": {\n      \"type\": \"api_key\",\n      \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n      \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n    },\n    \"data_store\": {\n      \"data_store_id\": \"6e91fe74-aa56-4b4e-8f68-636d23d5706f\",\n      \"key\": \"devices\",\n      \"schema\": {\n        \"type\": \"object\",\n        \"async\": true,\n        \"required\": [\n          \"name\",\n          \"price\"\n        ],\n        \"properties\": {\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"price\": {\n            \"type\": \"number\"\n          }\n        }\n      },\n      \"description\": \"Devices data store\",\n      \"name\": \"devices\",\n      \"updated_at\": \"2021-01-28T10:00:17.773Z\",\n      \"updated_by\": {\n        \"type\": \"api_key\",\n        \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n        \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n      }\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4303613f-6b3c-4f14-9397-ee413d250acd",
+          "name": "Create a data store entity",
+          "request": {
+            "name": "Create a data store entity",
+            "description": {},
+            "url": {
+              "path": [
+                "data-stores",
+                ":data_store_key",
+                "entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_store_key",
+                  "description": "(Required) The unique key of the [data store](ref:data-store)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key_0\": \"<string>\",\n  \"key_1\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fb8f11f8-d6e9-47ec-9780-b0adcd6be1e6",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-stores",
+                    ":data_store_key",
+                    "entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_store_key",
+                      "description": "(Required) The unique key of the [data store](ref:data-store)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Apple iPhone X\",\n  \"price\": 1000000\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data_store_entity_id\": \"424312b7-6d8f-424f-bf3e-af1384444424\",\n  \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n  \"data\": {\n    \"name\": \"Apple iPhone X\",\n    \"price\": 1000000\n  },\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"created_at\": \"2021-01-28T10:00:24.809Z\",\n  \"updated_at\": \"2021-01-28T10:00:24.809Z\",\n  \"updated_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"data_store\": {\n    \"data_store_id\": \"6e91fe74-aa56-4b4e-8f68-636d23d5706f\",\n    \"key\": \"devices\",\n    \"schema\": {\n      \"type\": \"object\",\n      \"async\": true,\n      \"required\": [\n        \"name\",\n        \"price\"\n      ],\n      \"properties\": {\n        \"name\": {\n          \"type\": \"string\"\n        },\n        \"price\": {\n          \"type\": \"number\"\n        }\n      }\n    },\n    \"description\": \"Devices data store\",\n    \"name\": \"devices\",\n    \"updated_at\": \"2021-01-28T10:00:17.773Z\",\n    \"updated_by\": {\n      \"type\": \"api_key\",\n      \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n      \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a97a28ec-63db-4a35-8ba0-74a3c2638c49",
+          "name": "Retrieve a data store",
+          "request": {
+            "name": "Retrieve a data store",
+            "description": {},
+            "url": {
+              "path": [
+                "data-stores",
+                ":data_store_key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_store_key",
+                  "description": "(Required) The unique key of the [data store](ref:data-store)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f12e0e0b-d4c4-4e91-9bc3-dd2b9cb8a6a3",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-stores",
+                    ":data_store_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_store_key",
+                      "description": "(Required) The unique key of the [data store](ref:data-store)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data_store_id\": \"6e91fe74-aa56-4b4e-8f68-636d23d5706f\",\n  \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n  \"key\": \"devices\",\n  \"schema\": {\n    \"type\": \"object\",\n    \"async\": true,\n    \"properties\": {\n      \"name\": {\n        \"type\": \"string\"\n      },\n      \"price\": {\n        \"type\": \"number\"\n      }\n    },\n    \"required\": [\n      \"name\",\n      \"price\"\n    ]\n  },\n  \"description\": \"Devices data store\",\n  \"name\": \"devices\",\n  \"created_at\": \"2021-01-29T13:12:00.968Z\",\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"updated_at\": \"2021-01-29T13:12:00.968Z\",\n  \"updated_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ffa4c63f-963c-444b-810e-5d88724fc55a",
+          "name": "Archive a data store",
+          "request": {
+            "name": "Archive a data store",
+            "description": {},
+            "url": {
+              "path": [
+                "data-stores",
+                ":data_store_key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_store_key",
+                  "description": "(Required) The unique key of the [data store](ref:data-store)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ade97041-6f7b-423a-b382-5bf6ecd8c388",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-stores",
+                    ":data_store_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_store_key",
+                      "description": "(Required) The unique key of the [data store](ref:data-store)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data_store_id\": \"6e91fe74-aa56-4b4e-8f68-636d23d5706f\",\n  \"key\": \"devices\",\n  \"schema\": {\n    \"async\": true,\n    \"properties\": {\n      \"cellphone_name\": {\n        \"type\": \"string\"\n      },\n      \"price\": {\n        \"type\": \"number\"\n      }\n    },\n    \"required\": [\n      \"cellphone_name\",\n      \"price\"\n    ]\n  },\n  \"description\": \"Devices data store\",\n  \"name\": \"devices\",\n  \"updated_at\": \"2021-01-28T06:51:08.370Z\",\n  \"updated_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b661d5be-918f-4a81-9a63-1edcad3c08c0",
+          "name": "Update a data store",
+          "request": {
+            "name": "Update a data store",
+            "description": {},
+            "url": {
+              "path": [
+                "data-stores",
+                ":data_store_key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_store_key",
+                  "description": "(Required) The unique key of the [data store](ref:data-store)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schema\": {\n    \"required\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"properties\": \"<object>\",\n    \"type\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c93fc224-8820-49af-b9c3-b9df83053b2a",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-stores",
+                    ":data_store_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_store_key",
+                      "description": "(Required) The unique key of the [data store](ref:data-store)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"cellphone_name\": {\n        \"type\": \"string\"\n      },\n      \"price\": {\n        \"type\": \"number\"\n      }\n    },\n    \"required\": [\n      \"cellphone_name\",\n      \"price\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data_store_id\": \"6e91fe74-aa56-4b4e-8f68-636d23d5706f\",\n  \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n  \"key\": \"devices\",\n  \"schema\": {\n    \"async\": true,\n    \"properties\": {\n      \"cellphone_name\": {\n        \"type\": \"string\"\n      },\n      \"price\": {\n        \"type\": \"number\"\n      }\n    },\n    \"required\": [\n      \"cellphone_name\",\n      \"price\"\n    ]\n  },\n  \"description\": \"Devices data store\",\n  \"name\": \"devices\",\n  \"updated_at\": \"2021-01-28T06:51:08.370Z\",\n  \"updated_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "200e1fc6-ca1a-43ae-8373-9958bb4f5854",
+          "name": "Archive a data store entity",
+          "request": {
+            "name": "Archive a data store entity",
+            "description": {},
+            "url": {
+              "path": [
+                "data-stores",
+                ":data_store_key",
+                "entities",
+                ":data_store_entity_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_store_key",
+                  "description": "(Required) The unique key of the [data store](ref:data-store)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_store_entity_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [data store entity](ref:data-store)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b96bd142-fde9-4347-9ae1-5ef59efff35b",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-stores",
+                    ":data_store_key",
+                    "entities",
+                    ":data_store_entity_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_store_key",
+                      "description": "(Required) The unique key of the [data store](ref:data-store)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_store_entity_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [data store entity](ref:data-store)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data_store_entity_id\": \"424312b7-6d8f-424f-bf3e-af1384444424\",\n  \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n  \"data\": {\n    \"name\": \"Samsung S20\",\n    \"price\": 1000000\n  },\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"created_at\": \"2021-01-28T10:00:24.809Z\",\n  \"updated_at\": \"2021-01-28T10:00:24.809Z\",\n  \"updated_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"data_store\": {\n    \"data_store_id\": \"6e91fe74-aa56-4b4e-8f68-636d23d5706f\",\n    \"key\": \"devices\",\n    \"schema\": {\n      \"type\": \"object\",\n      \"async\": true,\n      \"required\": [\n        \"name\",\n        \"price\"\n      ],\n      \"properties\": {\n        \"name\": {\n          \"type\": \"string\"\n        },\n        \"price\": {\n          \"type\": \"number\"\n        }\n      }\n    },\n    \"description\": \"Devices data store\",\n    \"name\": \"devices\",\n    \"updated_at\": \"2021-01-28T10:00:17.773Z\",\n    \"updated_by\": {\n      \"type\": \"api_key\",\n      \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n      \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b820a438-b544-45ca-9e11-8f10ea0549aa",
+          "name": "Retrieve a data store entity",
+          "request": {
+            "name": "Retrieve a data store entity",
+            "description": {},
+            "url": {
+              "path": [
+                "data-stores",
+                ":data_store_key",
+                "entities",
+                ":data_store_entity_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_store_key",
+                  "description": "(Required) The unique key of the [data store](ref:data-store).\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_store_entity_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [data store entity](ref:retrieve-a-data-store-entity).\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2c8536fd-5e0f-4b4f-a692-fedd10623877",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-stores",
+                    ":data_store_key",
+                    "entities",
+                    ":data_store_entity_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_store_key",
+                      "description": "(Required) The unique key of the [data store](ref:data-store).\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_store_entity_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [data store entity](ref:retrieve-a-data-store-entity).\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data_store_entity_id\": \"424312b7-6d8f-424f-bf3e-af1384444424\",\n  \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n  \"data\": {\n    \"name\": \"Apple iPhone X\",\n    \"price\": 1000000\n  },\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"created_at\": \"2021-01-28T10:00:24.809Z\",\n  \"updated_at\": \"2021-01-28T10:00:24.809Z\",\n  \"updated_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"data_store\": {\n    \"data_store_id\": \"6e91fe74-aa56-4b4e-8f68-636d23d5706f\",\n    \"key\": \"devices\",\n    \"schema\": {\n      \"type\": \"object\",\n      \"async\": true,\n      \"required\": [\n        \"name\",\n        \"price\"\n      ],\n      \"properties\": {\n        \"name\": {\n          \"type\": \"string\"\n        },\n        \"price\": {\n          \"type\": \"number\"\n        }\n      }\n    },\n    \"description\": \"Devices data store\",\n    \"name\": \"devices\",\n    \"updated_at\": \"2021-01-28T10:00:17.773Z\",\n    \"updated_by\": {\n      \"type\": \"api_key\",\n      \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n      \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f13a9113-c8a1-4557-b185-6dc500b913b7",
+          "name": "Update a data store entity",
+          "request": {
+            "name": "Update a data store entity",
+            "description": {},
+            "url": {
+              "path": [
+                "data-stores",
+                ":data_store_key",
+                "entities",
+                ":data_store_entity_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_store_key",
+                  "description": "(Required) The unique key of the [data store](ref:data-store)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "data_store_entity_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [data store entity](ref:data-store-entity)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key_0\": \"<string>\",\n  \"key_1\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e2ad4b60-38d7-4c59-8676-defd6f7e2ed1",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "data-stores",
+                    ":data_store_key",
+                    "entities",
+                    ":data_store_entity_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_store_key",
+                      "description": "(Required) The unique key of the [data store](ref:data-store)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "data_store_entity_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [data store entity](ref:data-store-entity)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Samsung S20\",\n  \"price\": 1000000\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data_store_entity_id\": \"424312b7-6d8f-424f-bf3e-af1384444424\",\n  \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n  \"data\": {\n    \"name\": \"Samsung S20\",\n    \"price\": 1000000\n  },\n  \"created_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"created_at\": \"2021-01-28T10:00:24.809Z\",\n  \"updated_at\": \"2021-01-28T10:00:24.809Z\",\n  \"updated_by\": {\n    \"type\": \"api_key\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"data_store\": {\n    \"data_store_id\": \"6e91fe74-aa56-4b4e-8f68-636d23d5706f\",\n    \"key\": \"devices\",\n    \"schema\": {\n      \"type\": \"object\",\n      \"async\": true,\n      \"required\": [\n        \"name\",\n        \"price\"\n      ],\n      \"properties\": {\n        \"name\": {\n          \"type\": \"string\"\n        },\n        \"price\": {\n          \"type\": \"number\"\n        }\n      }\n    },\n    \"description\": \"Devices data store\",\n    \"name\": \"devices\",\n    \"updated_at\": \"2021-01-28T10:00:17.773Z\",\n    \"updated_by\": {\n      \"type\": \"api_key\",\n      \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n      \"owner_id\": \"00000000-0000-0000-0000-000000000001\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.uk.rootplatform.com/v1/insurance",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3369520a-24d7-4303-be28-7b6020b33869",
+    "name": "Root Applications Data stores API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.\n\nContact Support:\n Name: Root support team\n Email: support@root.co.za",
+      "type": "text/plain"
+    }
+  }
+}

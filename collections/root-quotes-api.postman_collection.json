@@ -1,0 +1,156 @@
+{
+  "item": [
+    {
+      "id": "a4d1aa16-ad1c-4689-80a0-c377e3142130",
+      "name": "Quotes",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "db872666-b456-4c3f-841b-07348d8a0ff5",
+          "name": "Create a quote",
+          "request": {
+            "name": "Create a quote",
+            "description": {
+              "content": "Note that additional fields may be required based on the product module type being used. See [product modules](doc:product-modules-overview) for more details.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "quotes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "version",
+                  "value": "live",
+                  "description": "Whether to use the live or draft version of the product module definition to create the quote."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "96382cba-9464-420d-9499-52e900c2e83b",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quotes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "version",
+                      "value": "live"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"root_gadgets\",\n  \"model_name\": \"iPhone 6s 64GB LTE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"package_name\": \"Theft + comprehensive\",\n    \"sum_assured\": 1199900,\n    \"base_premium\": 14999,\n    \"suggested_premium\": 18749,\n    \"created_at\": \"2017-10-12T15:47:34.281Z\",\n    \"quote_package_id\": \"f4397823-db4a-4d6a-a06b-08e1a2a3172c\",\n    \"module\": {\n      \"type\": \"root_gadgets\",\n      \"make\": \"Apple\",\n      \"model\": \"iPhone 6S 64GB LTE\"\n    }\n  },\n  {\n    \"package_name\": \"Theft only\",\n    \"sum_assured\": 1199900,\n    \"base_premium\": 5000,\n    \"suggested_premium\": 6250,\n    \"created_at\": \"2017-10-12T15:47:34.281Z\",\n    \"quote_package_id\": \"5d8606c7-3cf9-4167-b65a-937384dea73e\",\n    \"module\": {\n      \"type\": \"root_gadgets\",\n      \"make\": \"Apple\",\n      \"model\": \"iPhone 6S 64GB LTE\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.uk.rootplatform.com/v1/insurance",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f405fd97-d84c-4cb9-9da4-d9b7eea24561",
+    "name": "Root Applications Quotes API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.\n\nContact Support:\n Name: Root support team\n Email: support@root.co.za",
+      "type": "text/plain"
+    }
+  }
+}

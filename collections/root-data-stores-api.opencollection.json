@@ -1,0 +1,290 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Root Applications Data stores API",
+    "version": "1.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data stores",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all data stores",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-stores",
+            "params": [
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search string to filter data stores by name or key."
+              }
+            ]
+          },
+          "docs": "List all data stores"
+        },
+        {
+          "info": {
+            "name": "Create a data store",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-stores",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a data store"
+        },
+        {
+          "info": {
+            "name": "List data store entities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-stores/:data_store_key/entities",
+            "params": [
+              {
+                "name": "data_store_key",
+                "value": "",
+                "type": "path",
+                "description": "The unique key of the [data store](ref:data-store)"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search string to filter data store entities."
+              }
+            ]
+          },
+          "docs": "List data store entities"
+        },
+        {
+          "info": {
+            "name": "Create a data store entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-stores/:data_store_key/entities",
+            "params": [
+              {
+                "name": "data_store_key",
+                "value": "",
+                "type": "path",
+                "description": "The unique key of the [data store](ref:data-store)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a data store entity"
+        },
+        {
+          "info": {
+            "name": "Count data store entities",
+            "type": "http"
+          },
+          "http": {
+            "method": "HEAD",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-stores/:data_store_key/entities",
+            "params": [
+              {
+                "name": "data_store_key",
+                "value": "",
+                "type": "path",
+                "description": "The unique key of the [data store](ref:data-store)"
+              }
+            ]
+          },
+          "docs": "Count data store entities"
+        },
+        {
+          "info": {
+            "name": "Retrieve a data store",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-stores/:data_store_key",
+            "params": [
+              {
+                "name": "data_store_key",
+                "value": "",
+                "type": "path",
+                "description": "The unique key of the [data store](ref:data-store)"
+              }
+            ]
+          },
+          "docs": "Retrieve a data store"
+        },
+        {
+          "info": {
+            "name": "Update a data store",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-stores/:data_store_key",
+            "params": [
+              {
+                "name": "data_store_key",
+                "value": "",
+                "type": "path",
+                "description": "The unique key of the [data store](ref:data-store)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a data store"
+        },
+        {
+          "info": {
+            "name": "Archive a data store",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-stores/:data_store_key",
+            "params": [
+              {
+                "name": "data_store_key",
+                "value": "",
+                "type": "path",
+                "description": "The unique key of the [data store](ref:data-store)"
+              }
+            ]
+          },
+          "docs": "Archive a data store"
+        },
+        {
+          "info": {
+            "name": "Retrieve a data store entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-stores/:data_store_key/entities/:data_store_entity_id",
+            "params": [
+              {
+                "name": "data_store_key",
+                "value": "",
+                "type": "path",
+                "description": "The unique key of the [data store](ref:data-store).\n"
+              },
+              {
+                "name": "data_store_entity_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [data store entity](ref:retrieve-a-data-store-entity).\n"
+              }
+            ]
+          },
+          "docs": "Retrieve a data store entity"
+        },
+        {
+          "info": {
+            "name": "Update a data store entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-stores/:data_store_key/entities/:data_store_entity_id",
+            "params": [
+              {
+                "name": "data_store_key",
+                "value": "",
+                "type": "path",
+                "description": "The unique key of the [data store](ref:data-store)"
+              },
+              {
+                "name": "data_store_entity_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [data store entity](ref:data-store-entity)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a data store entity"
+        },
+        {
+          "info": {
+            "name": "Archive a data store entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/data-stores/:data_store_key/entities/:data_store_entity_id",
+            "params": [
+              {
+                "name": "data_store_key",
+                "value": "",
+                "type": "path",
+                "description": "The unique key of the [data store](ref:data-store)"
+              },
+              {
+                "name": "data_store_entity_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [data store entity](ref:data-store)"
+              }
+            ]
+          },
+          "docs": "Archive a data store entity"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

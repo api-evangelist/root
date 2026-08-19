@@ -1,0 +1,936 @@
+{
+  "item": [
+    {
+      "id": "d9871247-6ec2-43c7-b4f8-dde335b69b3d",
+      "name": "Payment Methods",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "24c3b8aa-6aa4-4a97-930c-8d4e278aea19",
+          "name": "List payment methods",
+          "request": {
+            "name": "List payment methods",
+            "description": {
+              "content": "Returns a paginated list of payment methods for the organization. Use the `include` parameter to include related objects in the response.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payment-methods"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "20",
+                  "description": "The number of items to retrieve per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>,<string>",
+                  "description": "A comma-separated list of related objects to include in the response. Valid values are `policyholder`, `policies`, `collection_module`."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filter by payment method type. Valid values include `debit_order`, `card`, `eft`, `collection_module`, or a custom external payment method key."
+                },
+                {
+                  "disabled": false,
+                  "key": "banv_status",
+                  "value": "<string>,<string>",
+                  "description": "Filter by BANV status. Accepts multiple values."
+                },
+                {
+                  "disabled": false,
+                  "key": "policyholder_ids",
+                  "value": "<string>,<string>",
+                  "description": "Filter by policyholder IDs. Accepts multiple UUIDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "payment_method_ids",
+                  "value": "<string>,<string>",
+                  "description": "Filter by payment method IDs. Accepts multiple UUIDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "dismissed",
+                  "value": "<boolean>",
+                  "description": "Filter by dismissed status. Set to `true` to include only dismissed payment methods, `false` to exclude dismissed payment methods."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "95c9e1ff-f0bf-4bb2-983d-5b8dc14f4750",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payment-methods"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "20"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "debit_order"
+                    },
+                    {
+                      "key": "banv_status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "policyholder_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "payment_method_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "dismissed",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The total number of payment methods matching the query.",
+                  "key": "X-Total-Count",
+                  "value": "100"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"payment_method_id\": \"e0b7b222-772f-47ac-b08d-c7ba38aa1b25\",\n    \"type\": \"debit_order\",\n    \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n    \"policyholder_id\": \"f91f4ea4-9c6d-459e-998b-a5711cbd8895\",\n    \"created_at\": \"2021-01-29T13:12:00.968Z\",\n    \"updated_at\": \"2021-01-29T13:12:00.968Z\",\n    \"bank_details\": {\n      \"account_holder\": \"Erlich Bachman\",\n      \"bank\": \"absa\",\n      \"branch_code\": \"12345\",\n      \"account_number\": \"123456789\",\n      \"account_type\": \"cheque\",\n      \"banv_status\": \"verified\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8428622c-bae2-4a72-a312-3897337204f0",
+          "name": "List external payment method types",
+          "request": {
+            "name": "List external payment method types",
+            "description": {
+              "content": "Returns a list of external payment method types configured for the organization. External payment method types allow you to define custom payment methods with their own collection logic and outbound channels.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payment-methods",
+                "external-types"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "keys",
+                  "value": "<string>",
+                  "description": "Filter by external payment method type keys. Accepts a comma-separated list of keys."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5e587f3f-a234-43e2-b0fe-bbad76275a30",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payment-methods",
+                    "external-types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "keys",
+                      "value": "my_payment_provider"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"payment_method_id\": \"6e91fe74-aa56-4b4e-8f68-636d23d5706f\",\n    \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n    \"environment\": \"sandbox\",\n    \"key\": \"my_payment_provider\",\n    \"outbound_channels\": [\n      {\n        \"type\": \"http\",\n        \"url\": \"https://api.example.com/payments\"\n      }\n    ],\n    \"created_at\": \"2021-01-29T13:12:00.968Z\",\n    \"config\": {\n      \"assume_success\": true,\n      \"allow_payment_imports\": true,\n      \"should_debit_ledger\": true\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "951f43e8-83c7-4ebd-81ac-6f0effd33e43",
+          "name": "Update Payment Method Verification Status",
+          "request": {
+            "name": "Update Payment Method Verification Status",
+            "description": {
+              "content": "This endpoint validates the input and updates the status of a payment method, which will result in a `200 OK` successful response, with the updated payment method in the response.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payment-methods",
+                ":payment_method_id",
+                "verification-status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "payment_method_id",
+                  "description": "(Required) The unique identifier of the payment method."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"banv_status\": \"<string>\",\n  \"banv_response\": \"<object>\",\n  \"blocked_reason\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7a180576-9495-403a-9d41-5d9fbd6f88e2",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payment-methods",
+                    ":payment_method_id",
+                    "verification-status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payment_method_id",
+                      "description": "(Required) The unique identifier of the payment method."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"banv_status\": \"blocked\",\n  \"banv_response\": {\n    \"reason\": \"Invalid account number\"\n  },\n  \"blocked_reason\": \"Fraud detected\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"payment_method_id\": \"e0b7b222-772f-47ac-b08d-c7ba38aa1b25\",\n  \"type\": \"debit_order\",\n  \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n  \"policyholder_id\": \"f91f4ea4-9c6d-459e-998b-a5711cbd8895\",\n  \"created_at\": \"2021-01-29T13:12:00.968Z\",\n  \"updated_at\": \"2021-01-29T13:12:00.968Z\",\n  \"bank_details\": {\n    \"account_holder\": \"Erlich Bachman\",\n    \"bank\": \"absa\",\n    \"branch_code\": \"12345\",\n    \"account_number\": \"123456789\",\n    \"account_type\": \"cheque\",\n    \"banv_status\": \"pending\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a9ba2445-f9ae-4070-ac05-17987ab7813f",
+          "name": "Dismiss a payment method",
+          "request": {
+            "name": "Dismiss a payment method",
+            "description": {
+              "content": "Dismisses a payment method, marking it as no longer active. Dismissed payment methods are excluded from standard queries unless explicitly requested.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payment-methods",
+                ":payment_method_id",
+                "dismiss"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "payment_method_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the payment method."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bc7829de-28b0-4e30-b87a-7c27e9e7be3f",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payment-methods",
+                    ":payment_method_id",
+                    "dismiss"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payment_method_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the payment method."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"payment_method_id\": \"e0b7b222-772f-47ac-b08d-c7ba38aa1b25\",\n  \"type\": \"debit_order\",\n  \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n  \"policyholder_id\": \"f91f4ea4-9c6d-459e-998b-a5711cbd8895\",\n  \"created_at\": \"2021-01-29T13:12:00.968Z\",\n  \"updated_at\": \"2021-02-15T10:30:00.000Z\",\n  \"bank_details\": {\n    \"account_holder\": \"Erlich Bachman\",\n    \"bank\": \"absa\",\n    \"branch_code\": \"12345\",\n    \"account_number\": \"123456789\",\n    \"account_type\": \"cheque\",\n    \"banv_status\": \"verified\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4cd7a9ea-0063-479b-b559-56ad22bad6e3",
+          "name": "Manually verify a payment method",
+          "request": {
+            "name": "Manually verify a payment method",
+            "description": {
+              "content": "Manually verifies a payment method, setting its BANV status to `verified`. This is useful when verification has been performed through an external process.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payment-methods",
+                ":payment_method_id",
+                "manual-verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "payment_method_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the payment method."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a1dff6a0-6b34-419d-b552-25f6b0390a0a",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payment-methods",
+                    ":payment_method_id",
+                    "manual-verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payment_method_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the payment method."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"payment_method_id\": \"e0b7b222-772f-47ac-b08d-c7ba38aa1b25\",\n  \"type\": \"debit_order\",\n  \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n  \"policyholder_id\": \"f91f4ea4-9c6d-459e-998b-a5711cbd8895\",\n  \"created_at\": \"2021-01-29T13:12:00.968Z\",\n  \"updated_at\": \"2021-02-15T10:30:00.000Z\",\n  \"bank_details\": {\n    \"account_holder\": \"Erlich Bachman\",\n    \"bank\": \"absa\",\n    \"branch_code\": \"12345\",\n    \"account_number\": \"123456789\",\n    \"account_type\": \"cheque\",\n    \"banv_status\": \"verified\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5f821ccc-2e88-4cb4-96ab-1499a4c99129",
+          "name": "Get DebiCheck Mandate",
+          "request": {
+            "name": "Get DebiCheck Mandate",
+            "description": {
+              "content": "Retrieves a DebiCheck mandate by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payment-methods",
+                "debicheck-mandates",
+                ":mandate_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "mandate_id",
+                  "description": "(Required) The unique identifier of the DebiCheck mandate."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6c0d5a07-e5ea-448a-aecf-5de792402aa0",
+              "name": "Successfully retrieved DebiCheck Mandate",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payment-methods",
+                    "debicheck-mandates",
+                    ":mandate_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "mandate_id",
+                      "description": "(Required) The unique identifier of the DebiCheck mandate."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"518b3644-2e45-0ce3-3bc3-02367321cd79\",\n  \"policy_id\": \"f4916f36-ce01-900b-db06-f4e95cf6039e\",\n  \"payment_method_id\": \"b164d14e-0600-9a28-a588-54b31e68f9e7\",\n  \"status\": \"processing\",\n  \"created_at\": \"1962-07-12T17:38:15.925Z\",\n  \"updated_at\": \"2005-12-19T18:35:39.165Z\",\n  \"provider_type\": \"nedbank\",\n  \"submitted_at\": \"2022-04-16T13:23:31.185Z\",\n  \"authorized_at\": \"1998-07-03T15:06:55.319Z\",\n  \"rejected_at\": \"1956-06-24T23:13:48.079Z\",\n  \"cancelled_at\": \"2002-09-26T02:47:27.358Z\",\n  \"mandate_reference\": \"string\",\n  \"external_reference\": \"string\",\n  \"failure_reasons\": [\n    \"string\",\n    \"string\"\n  ],\n  \"failure_codes\": [\n    \"string\",\n    \"string\"\n  ],\n  \"contract_reference\": \"string\",\n  \"installment_occurance\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"2008-09-26T16:17:55.573Z\",\n  \"amount\": 2173.6175327003793,\n  \"max_collection_amount\": 7955.418634172642,\n  \"collection_day\": 1594,\n  \"first_collection_date\": \"1946-10-01T18:45:33.598Z\",\n  \"first_collection_amount\": 889.778385853115,\n  \"policy\": {\n    \"policy_id\": \"string\",\n    \"policy_number\": \"string\",\n    \"status\": \"active\",\n    \"policyholder_id\": \"string\",\n    \"package_name\": \"string\",\n    \"monthly_premium\": 8393,\n    \"billing_amount\": 5921,\n    \"balance\": 874,\n    \"currency\": \"string\",\n    \"billing_day\": 3067,\n    \"billing_frequency\": \"string\",\n    \"next_billing_date\": \"2009-11-10T00:13:57.470Z\",\n    \"covered_people\": [],\n    \"base_premium\": 955,\n    \"claim_ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"complaint_ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"start_date\": \"2012-05-11T12:27:31.936Z\",\n    \"end_date\": \"2025-07-11T11:28:57.433Z\",\n    \"policy_schedule_uri\": \"string\",\n    \"terms_uri\": \"string\",\n    \"schedule_versions\": [\n      {\n        \"version\": 2820,\n        \"created_at\": \"2006-12-04T04:42:45.686Z\"\n      },\n      {\n        \"version\": 9584,\n        \"created_at\": \"2003-05-28T01:19:58.029Z\"\n      }\n    ],\n    \"created_at\": \"2017-05-09T15:36:04.403Z\",\n    \"module\": {\n      \"key_0\": \"string\",\n      \"key_1\": 9492\n    },\n    \"app_data\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": 4564.1650093383105\n    },\n    \"created_by\": {},\n    \"scheme_type\": \"string\",\n    \"charges\": [\n      {\n        \"type\": \"fixed\",\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"amount\": 5610\n      },\n      {\n        \"type\": \"variable\",\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"amount\": 2986\n      }\n    ],\n    \"supplementary_terms_files\": [\n      {\n        \"supplementary_terms_file_id\": \"string\",\n        \"type\": \"string\",\n        \"uri\": \"string\"\n      },\n      {\n        \"supplementary_terms_file_id\": \"string\",\n        \"type\": \"string\",\n        \"uri\": \"string\"\n      }\n    ],\n    \"sum_assured\": 9298,\n    \"beneficiaries\": [\n      {\n        \"beneficiary_id\": \"string\",\n        \"relationship\": \"spouse\",\n        \"percentage\": 4036,\n        \"policyholder_id\": \"string\",\n        \"type\": \"individual\",\n        \"first_name\": \"string\",\n        \"last_name\": \"string\",\n        \"title\": \"dr\",\n        \"gender\": \"male\",\n        \"id\": {\n          \"type\": \"custom\",\n          \"number\": \"string\",\n          \"country\": \"string\"\n        },\n        \"date_of_birth\": \"2017-01-22\",\n        \"cellphone\": \"+27821234567\",\n        \"email\": \"string\",\n        \"company_name\": \"string\",\n        \"registration_number\": \"string\",\n        \"payment_details\": {\n          \"type\": \"eft\",\n          \"details\": {\n            \"bank_name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"branch_code\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"account_type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"account_number\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      },\n      {\n        \"beneficiary_id\": \"string\",\n        \"relationship\": \"sister\",\n        \"percentage\": 2914,\n        \"policyholder_id\": \"string\",\n        \"type\": \"individual\",\n        \"first_name\": \"string\",\n        \"last_name\": \"string\",\n        \"title\": \"miss\",\n        \"gender\": \"female\",\n        \"id\": {\n          \"type\": \"passport\",\n          \"number\": \"string\",\n          \"country\": \"string\"\n        },\n        \"date_of_birth\": \"2012-01-06\",\n        \"cellphone\": \"+27821234567\",\n        \"email\": \"string\",\n        \"company_name\": \"string\",\n        \"registration_number\": \"string\",\n        \"payment_details\": {\n          \"type\": \"eft\",\n          \"details\": {\n            \"bank_name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"branch_code\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"account_type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"account_number\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      }\n    ],\n    \"current_version\": 6738,\n    \"schedule_file_id\": \"string\",\n    \"terms_file_id\": \"string\",\n    \"policy_welcome_letter_file_id\": \"string\",\n    \"policy_welcome_letter_uri\": \"string\",\n    \"policy_certificate_file_id\": \"string\",\n    \"policy_certificate_uri\": \"string\",\n    \"policy_anniversary_file_id\": \"string\",\n    \"restricted_data\": {\n      \"key_0\": \"string\",\n      \"key_1\": 9589\n    },\n    \"payment_method_id\": \"string\",\n    \"status_updated_at\": \"2014-07-03T00:52:05.837Z\"\n  },\n  \"payment_method\": {\n    \"payment_method_id\": \"e0b7b222-772f-47ac-b08d-c7ba38aa1b25\",\n    \"type\": \"debit_order\",\n    \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n    \"policyholder_id\": \"f91f4ea4-9c6d-459e-998b-a5711cbd8895\",\n    \"created_at\": \"2021-01-29T13:12:00.968Z\",\n    \"updated_at\": \"2021-01-29T13:12:00.968Z\",\n    \"bank_details\": {\n      \"account_holder\": \"Erlich Bachman\",\n      \"bank\": \"absa\",\n      \"branch_code\": \"12345\",\n      \"account_number\": \"123456789\",\n      \"account_type\": \"cheque\",\n      \"banv_status\": \"pending\"\n    }\n  },\n  \"debicheck_mandate_batch_id\": \"4bcec2a2-afef-b328-0536-16dc8cb5784d\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5ea1983c-5f97-4043-ab07-0cffbf6c3454",
+          "name": "Update DebiCheck Mandate",
+          "request": {
+            "name": "Update DebiCheck Mandate",
+            "description": {
+              "content": "Updates a DebiCheck mandate by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payment-methods",
+                "debicheck-mandates",
+                ":mandate_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "mandate_id",
+                  "description": "(Required) The unique identifier of the DebiCheck mandate."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"debicheckMandateId\": \"<uuid>\",\n  \"status\": \"<string>\",\n  \"mandateRequestIdentifier\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"externalReference\": \"<string>\",\n  \"failureReasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"failureCodes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"mandateReference\": \"<string>\",\n  \"rawRequest\": \"<string>\",\n  \"rawResponse\": \"<object>\",\n  \"submittedAt\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "49a377c2-0986-4038-841c-e4531da90796",
+              "name": "Successfully updated DebiCheck Mandate",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payment-methods",
+                    "debicheck-mandates",
+                    ":mandate_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "mandate_id",
+                      "description": "(Required) The unique identifier of the DebiCheck mandate."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"debicheckMandateId\": \"00000000-0000-0000-0000-00000000000a\",\n  \"status\": \"active\",\n  \"mandateRequestIdentifier\": \"MANDATE_REQ_12345\",\n  \"startDate\": \"2024-01-01T00:00:00Z\",\n  \"externalReference\": \"EXT_REF_12345\",\n  \"failureReasons\": [\n    \"Invalid account details\",\n    \"Insufficient funds\"\n  ],\n  \"failureCodes\": [\n    \"900002\",\n    \"900003\"\n  ],\n  \"mandateReference\": \"MANDATE_REF_12345\",\n  \"rawRequest\": \"{\\\"mandateId\\\":\\\"12345\\\",\\\"accountDetails\\\":{...}}\",\n  \"rawResponse\": {\n    \"status\": \"SUCCESS\",\n    \"mandateId\": \"12345\",\n    \"responseCode\": \"0000\"\n  },\n  \"submittedAt\": \"2024-01-01T00:00:00Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"518b3644-2e45-0ce3-3bc3-02367321cd79\",\n  \"policy_id\": \"f4916f36-ce01-900b-db06-f4e95cf6039e\",\n  \"payment_method_id\": \"b164d14e-0600-9a28-a588-54b31e68f9e7\",\n  \"status\": \"processing\",\n  \"created_at\": \"1962-07-12T17:38:15.925Z\",\n  \"updated_at\": \"2005-12-19T18:35:39.165Z\",\n  \"provider_type\": \"nedbank\",\n  \"submitted_at\": \"2022-04-16T13:23:31.185Z\",\n  \"authorized_at\": \"1998-07-03T15:06:55.319Z\",\n  \"rejected_at\": \"1956-06-24T23:13:48.079Z\",\n  \"cancelled_at\": \"2002-09-26T02:47:27.358Z\",\n  \"mandate_reference\": \"string\",\n  \"external_reference\": \"string\",\n  \"failure_reasons\": [\n    \"string\",\n    \"string\"\n  ],\n  \"failure_codes\": [\n    \"string\",\n    \"string\"\n  ],\n  \"contract_reference\": \"string\",\n  \"installment_occurance\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"2008-09-26T16:17:55.573Z\",\n  \"amount\": 2173.6175327003793,\n  \"max_collection_amount\": 7955.418634172642,\n  \"collection_day\": 1594,\n  \"first_collection_date\": \"1946-10-01T18:45:33.598Z\",\n  \"first_collection_amount\": 889.778385853115,\n  \"policy\": {\n    \"policy_id\": \"string\",\n    \"policy_number\": \"string\",\n    \"status\": \"active\",\n    \"policyholder_id\": \"string\",\n    \"package_name\": \"string\",\n    \"monthly_premium\": 8393,\n    \"billing_amount\": 5921,\n    \"balance\": 874,\n    \"currency\": \"string\",\n    \"billing_day\": 3067,\n    \"billing_frequency\": \"string\",\n    \"next_billing_date\": \"2009-11-10T00:13:57.470Z\",\n    \"covered_people\": [],\n    \"base_premium\": 955,\n    \"claim_ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"complaint_ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"start_date\": \"2012-05-11T12:27:31.936Z\",\n    \"end_date\": \"2025-07-11T11:28:57.433Z\",\n    \"policy_schedule_uri\": \"string\",\n    \"terms_uri\": \"string\",\n    \"schedule_versions\": [\n      {\n        \"version\": 2820,\n        \"created_at\": \"2006-12-04T04:42:45.686Z\"\n      },\n      {\n        \"version\": 9584,\n        \"created_at\": \"2003-05-28T01:19:58.029Z\"\n      }\n    ],\n    \"created_at\": \"2017-05-09T15:36:04.403Z\",\n    \"module\": {\n      \"key_0\": \"string\",\n      \"key_1\": 9492\n    },\n    \"app_data\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": 4564.1650093383105\n    },\n    \"created_by\": {},\n    \"scheme_type\": \"string\",\n    \"charges\": [\n      {\n        \"type\": \"fixed\",\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"amount\": 5610\n      },\n      {\n        \"type\": \"variable\",\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"amount\": 2986\n      }\n    ],\n    \"supplementary_terms_files\": [\n      {\n        \"supplementary_terms_file_id\": \"string\",\n        \"type\": \"string\",\n        \"uri\": \"string\"\n      },\n      {\n        \"supplementary_terms_file_id\": \"string\",\n        \"type\": \"string\",\n        \"uri\": \"string\"\n      }\n    ],\n    \"sum_assured\": 9298,\n    \"beneficiaries\": [\n      {\n        \"beneficiary_id\": \"string\",\n        \"relationship\": \"spouse\",\n        \"percentage\": 4036,\n        \"policyholder_id\": \"string\",\n        \"type\": \"individual\",\n        \"first_name\": \"string\",\n        \"last_name\": \"string\",\n        \"title\": \"dr\",\n        \"gender\": \"male\",\n        \"id\": {\n          \"type\": \"custom\",\n          \"number\": \"string\",\n          \"country\": \"string\"\n        },\n        \"date_of_birth\": \"2017-01-22\",\n        \"cellphone\": \"+27821234567\",\n        \"email\": \"string\",\n        \"company_name\": \"string\",\n        \"registration_number\": \"string\",\n        \"payment_details\": {\n          \"type\": \"eft\",\n          \"details\": {\n            \"bank_name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"branch_code\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"account_type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"account_number\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      },\n      {\n        \"beneficiary_id\": \"string\",\n        \"relationship\": \"sister\",\n        \"percentage\": 2914,\n        \"policyholder_id\": \"string\",\n        \"type\": \"individual\",\n        \"first_name\": \"string\",\n        \"last_name\": \"string\",\n        \"title\": \"miss\",\n        \"gender\": \"female\",\n        \"id\": {\n          \"type\": \"passport\",\n          \"number\": \"string\",\n          \"country\": \"string\"\n        },\n        \"date_of_birth\": \"2012-01-06\",\n        \"cellphone\": \"+27821234567\",\n        \"email\": \"string\",\n        \"company_name\": \"string\",\n        \"registration_number\": \"string\",\n        \"payment_details\": {\n          \"type\": \"eft\",\n          \"details\": {\n            \"bank_name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"branch_code\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"account_type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"account_number\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      }\n    ],\n    \"current_version\": 6738,\n    \"schedule_file_id\": \"string\",\n    \"terms_file_id\": \"string\",\n    \"policy_welcome_letter_file_id\": \"string\",\n    \"policy_welcome_letter_uri\": \"string\",\n    \"policy_certificate_file_id\": \"string\",\n    \"policy_certificate_uri\": \"string\",\n    \"policy_anniversary_file_id\": \"string\",\n    \"restricted_data\": {\n      \"key_0\": \"string\",\n      \"key_1\": 9589\n    },\n    \"payment_method_id\": \"string\",\n    \"status_updated_at\": \"2014-07-03T00:52:05.837Z\"\n  },\n  \"payment_method\": {\n    \"payment_method_id\": \"e0b7b222-772f-47ac-b08d-c7ba38aa1b25\",\n    \"type\": \"debit_order\",\n    \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n    \"policyholder_id\": \"f91f4ea4-9c6d-459e-998b-a5711cbd8895\",\n    \"created_at\": \"2021-01-29T13:12:00.968Z\",\n    \"updated_at\": \"2021-01-29T13:12:00.968Z\",\n    \"bank_details\": {\n      \"account_holder\": \"Erlich Bachman\",\n      \"bank\": \"absa\",\n      \"branch_code\": \"12345\",\n      \"account_number\": \"123456789\",\n      \"account_type\": \"cheque\",\n      \"banv_status\": \"pending\"\n    }\n  },\n  \"debicheck_mandate_batch_id\": \"4bcec2a2-afef-b328-0536-16dc8cb5784d\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9af226a9-4cfe-426a-9490-74ac03db6208",
+          "name": "Create DebiCheck Mandate",
+          "request": {
+            "name": "Create DebiCheck Mandate",
+            "description": {
+              "content": "Creates a new DebiCheck mandate for a policy.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payment-methods",
+                "debicheck-mandates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"policyId\": \"<uuid>\",\n  \"providerType\": \"<string>\",\n  \"debicheckAuthenticationType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6c099ada-3eb4-48f1-834f-a80a56680ec0",
+              "name": "Successfully created DebiCheck Mandate",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payment-methods",
+                    "debicheck-mandates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policyId\": \"00000000-0000-0000-0000-00000000000a\",\n  \"providerType\": \"nedbank\",\n  \"debicheckAuthenticationType\": \"BATCH\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"518b3644-2e45-0ce3-3bc3-02367321cd79\",\n  \"policy_id\": \"f4916f36-ce01-900b-db06-f4e95cf6039e\",\n  \"payment_method_id\": \"b164d14e-0600-9a28-a588-54b31e68f9e7\",\n  \"status\": \"processing\",\n  \"created_at\": \"1962-07-12T17:38:15.925Z\",\n  \"updated_at\": \"2005-12-19T18:35:39.165Z\",\n  \"provider_type\": \"nedbank\",\n  \"submitted_at\": \"2022-04-16T13:23:31.185Z\",\n  \"authorized_at\": \"1998-07-03T15:06:55.319Z\",\n  \"rejected_at\": \"1956-06-24T23:13:48.079Z\",\n  \"cancelled_at\": \"2002-09-26T02:47:27.358Z\",\n  \"mandate_reference\": \"string\",\n  \"external_reference\": \"string\",\n  \"failure_reasons\": [\n    \"string\",\n    \"string\"\n  ],\n  \"failure_codes\": [\n    \"string\",\n    \"string\"\n  ],\n  \"contract_reference\": \"string\",\n  \"installment_occurance\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"2008-09-26T16:17:55.573Z\",\n  \"amount\": 2173.6175327003793,\n  \"max_collection_amount\": 7955.418634172642,\n  \"collection_day\": 1594,\n  \"first_collection_date\": \"1946-10-01T18:45:33.598Z\",\n  \"first_collection_amount\": 889.778385853115,\n  \"policy\": {\n    \"policy_id\": \"string\",\n    \"policy_number\": \"string\",\n    \"status\": \"active\",\n    \"policyholder_id\": \"string\",\n    \"package_name\": \"string\",\n    \"monthly_premium\": 8393,\n    \"billing_amount\": 5921,\n    \"balance\": 874,\n    \"currency\": \"string\",\n    \"billing_day\": 3067,\n    \"billing_frequency\": \"string\",\n    \"next_billing_date\": \"2009-11-10T00:13:57.470Z\",\n    \"covered_people\": [],\n    \"base_premium\": 955,\n    \"claim_ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"complaint_ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"start_date\": \"2012-05-11T12:27:31.936Z\",\n    \"end_date\": \"2025-07-11T11:28:57.433Z\",\n    \"policy_schedule_uri\": \"string\",\n    \"terms_uri\": \"string\",\n    \"schedule_versions\": [\n      {\n        \"version\": 2820,\n        \"created_at\": \"2006-12-04T04:42:45.686Z\"\n      },\n      {\n        \"version\": 9584,\n        \"created_at\": \"2003-05-28T01:19:58.029Z\"\n      }\n    ],\n    \"created_at\": \"2017-05-09T15:36:04.403Z\",\n    \"module\": {\n      \"key_0\": \"string\",\n      \"key_1\": 9492\n    },\n    \"app_data\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": 4564.1650093383105\n    },\n    \"created_by\": {},\n    \"scheme_type\": \"string\",\n    \"charges\": [\n      {\n        \"type\": \"fixed\",\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"amount\": 5610\n      },\n      {\n        \"type\": \"variable\",\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"amount\": 2986\n      }\n    ],\n    \"supplementary_terms_files\": [\n      {\n        \"supplementary_terms_file_id\": \"string\",\n        \"type\": \"string\",\n        \"uri\": \"string\"\n      },\n      {\n        \"supplementary_terms_file_id\": \"string\",\n        \"type\": \"string\",\n        \"uri\": \"string\"\n      }\n    ],\n    \"sum_assured\": 9298,\n    \"beneficiaries\": [\n      {\n        \"beneficiary_id\": \"string\",\n        \"relationship\": \"spouse\",\n        \"percentage\": 4036,\n        \"policyholder_id\": \"string\",\n        \"type\": \"individual\",\n        \"first_name\": \"string\",\n        \"last_name\": \"string\",\n        \"title\": \"dr\",\n        \"gender\": \"male\",\n        \"id\": {\n          \"type\": \"custom\",\n          \"number\": \"string\",\n          \"country\": \"string\"\n        },\n        \"date_of_birth\": \"2017-01-22\",\n        \"cellphone\": \"+27821234567\",\n        \"email\": \"string\",\n        \"company_name\": \"string\",\n        \"registration_number\": \"string\",\n        \"payment_details\": {\n          \"type\": \"eft\",\n          \"details\": {\n            \"bank_name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"branch_code\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"account_type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"account_number\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      },\n      {\n        \"beneficiary_id\": \"string\",\n        \"relationship\": \"sister\",\n        \"percentage\": 2914,\n        \"policyholder_id\": \"string\",\n        \"type\": \"individual\",\n        \"first_name\": \"string\",\n        \"last_name\": \"string\",\n        \"title\": \"miss\",\n        \"gender\": \"female\",\n        \"id\": {\n          \"type\": \"passport\",\n          \"number\": \"string\",\n          \"country\": \"string\"\n        },\n        \"date_of_birth\": \"2012-01-06\",\n        \"cellphone\": \"+27821234567\",\n        \"email\": \"string\",\n        \"company_name\": \"string\",\n        \"registration_number\": \"string\",\n        \"payment_details\": {\n          \"type\": \"eft\",\n          \"details\": {\n            \"bank_name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"branch_code\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"account_type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"account_number\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      }\n    ],\n    \"current_version\": 6738,\n    \"schedule_file_id\": \"string\",\n    \"terms_file_id\": \"string\",\n    \"policy_welcome_letter_file_id\": \"string\",\n    \"policy_welcome_letter_uri\": \"string\",\n    \"policy_certificate_file_id\": \"string\",\n    \"policy_certificate_uri\": \"string\",\n    \"policy_anniversary_file_id\": \"string\",\n    \"restricted_data\": {\n      \"key_0\": \"string\",\n      \"key_1\": 9589\n    },\n    \"payment_method_id\": \"string\",\n    \"status_updated_at\": \"2014-07-03T00:52:05.837Z\"\n  },\n  \"payment_method\": {\n    \"payment_method_id\": \"e0b7b222-772f-47ac-b08d-c7ba38aa1b25\",\n    \"type\": \"debit_order\",\n    \"organization_id\": \"952bfef5-7517-47ff-bf41-08c5a66c52db\",\n    \"policyholder_id\": \"f91f4ea4-9c6d-459e-998b-a5711cbd8895\",\n    \"created_at\": \"2021-01-29T13:12:00.968Z\",\n    \"updated_at\": \"2021-01-29T13:12:00.968Z\",\n    \"bank_details\": {\n      \"account_holder\": \"Erlich Bachman\",\n      \"bank\": \"absa\",\n      \"branch_code\": \"12345\",\n      \"account_number\": \"123456789\",\n      \"account_type\": \"cheque\",\n      \"banv_status\": \"pending\"\n    }\n  },\n  \"debicheck_mandate_batch_id\": \"4bcec2a2-afef-b328-0536-16dc8cb5784d\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.uk.rootplatform.com/v1/insurance",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "91145bd9-4267-4279-804f-aca38e97e0fc",
+    "name": "Root Applications Payment Methods API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.\n\nContact Support:\n Name: Root support team\n Email: support@root.co.za",
+      "type": "text/plain"
+    }
+  }
+}

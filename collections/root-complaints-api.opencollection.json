@@ -1,0 +1,377 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Root Applications Complaints API",
+    "version": "1.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Complaints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all complaints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints",
+            "params": [
+              {
+                "name": "complaint_status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by complaint status. Can be a comma-separated list."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search complaints by complaint number or other fields."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related resources to include in the response."
+              },
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter complaints by policy ID."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List all complaints"
+        },
+        {
+          "info": {
+            "name": "Create a complaint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a complaint"
+        },
+        {
+          "info": {
+            "name": "Retrieve a complaint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints/:complaint_id",
+            "params": [
+              {
+                "name": "complaint_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [complaint](ref:complaint)."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of related resources to include in the response."
+              }
+            ]
+          },
+          "docs": "Retrieve a complaint"
+        },
+        {
+          "info": {
+            "name": "Update a complaint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints/:complaint_id",
+            "params": [
+              {
+                "name": "complaint_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a complaint"
+        },
+        {
+          "info": {
+            "name": "List complaint attachments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints/:complaint_id/attachments",
+            "params": [
+              {
+                "name": "complaint_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [complaint](ref:complaint)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List complaint attachments"
+        },
+        {
+          "info": {
+            "name": "Create an attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints/:complaint_id/attachments",
+            "params": [
+              {
+                "name": "complaint_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an attachment"
+        },
+        {
+          "info": {
+            "name": "Archive an attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints/:complaint_id/attachments/:attachment_id/archive",
+            "params": [
+              {
+                "name": "complaint_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [complaint](ref:complaint)."
+              },
+              {
+                "name": "attachment_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the attachment."
+              }
+            ]
+          },
+          "docs": "Archive an attachment"
+        },
+        {
+          "info": {
+            "name": "Close a complaint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints/:complaint_id/close",
+            "params": [
+              {
+                "name": "complaint_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+              }
+            ]
+          },
+          "docs": "Close a complaint"
+        },
+        {
+          "info": {
+            "name": "List complaint events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints/:complaint_id/events",
+            "params": [
+              {
+                "name": "complaint_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [complaint](ref:complaint)."
+              }
+            ]
+          },
+          "docs": "List complaint events"
+        },
+        {
+          "info": {
+            "name": "Update the complainant",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints/:complaint_id/complainant",
+            "params": [
+              {
+                "name": "complaint_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the complainant"
+        },
+        {
+          "info": {
+            "name": "List complaint notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints/:complaint_id/notes",
+            "params": [
+              {
+                "name": "complaint_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the [complaint](ref:complaint)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              }
+            ]
+          },
+          "docs": "List complaint notes"
+        },
+        {
+          "info": {
+            "name": "Add a note",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints/:complaint_id/notes",
+            "params": [
+              {
+                "name": "complaint_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a note"
+        },
+        {
+          "info": {
+            "name": "Link a policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints/:complaint_id/policy",
+            "params": [
+              {
+                "name": "complaint_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Link a policy"
+        },
+        {
+          "info": {
+            "name": "Reopen a complaint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/complaints/:complaint_id/reopen",
+            "params": [
+              {
+                "name": "complaint_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reopen a complaint"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

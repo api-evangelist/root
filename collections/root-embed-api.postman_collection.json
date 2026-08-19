@@ -1,0 +1,269 @@
+{
+  "item": [
+    {
+      "id": "39fcf595-e489-4458-97da-c09c91f3e507",
+      "name": "Embed",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6f0392e1-7d11-491b-9af8-e9eb42b39000",
+          "name": "Create an embed URL",
+          "request": {
+            "name": "Create an embed URL",
+            "description": {
+              "content": "Generates a unique URL to initiate an Embed session, which allows customers to access various workflows within Embed. This URL can be used in either authenticated or unauthenticated flows. The authenticated flow is recommended for scenarios where the customer's identity is known, enabling seamless access to Embed’s Management and Sales workflows. The unauthenticated flow, intended for use in Embed | Sales only, is suited for scenarios where customer identity is not known upfront. See the [Embed implementation guide](https://docs.rootplatform.com/docs/embed-implementation) for detailed steps on integrating Embed into your customer journey.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "embed",
+                "url"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "organization_id",
+                  "value": "<string>",
+                  "description": "(Required) The unique identifier of the organization."
+                },
+                {
+                  "disabled": false,
+                  "key": "environment",
+                  "value": "<string>",
+                  "description": "(Required) Specifies the environment for the embed session (e.g., sandbox, production)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_module_key\": \"<string>\",\n  \"unauthenticated\": \"<boolean>\",\n  \"custom_path\": \"<string>\",\n  \"prefill_data\": {\n    \"application\": \"<object>\",\n    \"payment\": \"<object>\",\n    \"personal_details\": \"<object>\",\n    \"pre_payment_details_consent\": \"<boolean>\",\n    \"pre_personal_details_consent\": \"<boolean>\",\n    \"quote\": \"<object>\",\n    \"screening_questions\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "edd99fba-e718-4e00-8b2d-1038af885d33",
+              "name": "Embed URL created successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "embed",
+                    "url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "organization_id",
+                      "value": "f84b3856-1358-4e12-bcf6-6732bc8b9522"
+                    },
+                    {
+                      "key": "environment",
+                      "value": "sandbox"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"product_module_key\": \"product-module-123\",\n  \"unauthenticated\": false,\n  \"custom_path\": \"<string>\",\n  \"prefill_data\": {\n    \"application\": \"<object>\",\n    \"payment\": \"<object>\",\n    \"personal_details\": \"<object>\",\n    \"pre_payment_details_consent\": \"<boolean>\",\n    \"pre_personal_details_consent\": \"<boolean>\",\n    \"quote\": \"<object>\",\n    \"screening_questions\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"embed_url\": \"https://app.embedroot.com/dinosure_embedded/issue-policy?api_key=sandbox_NDM1YzAzNTMtYmE3MS00ZjZiLTk2ODItZGQ4Zjk4NDQ5YTNhLkxnUTJmM210N1hPZWtmYUhQUWtGMTBaZ0ZZejlBX0xQ\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4bae2176-f4d9-4feb-a87a-cda0fca7d17b",
+          "name": "Lookup an Embed session",
+          "request": {
+            "name": "Lookup an Embed session",
+            "description": {
+              "content": "This endpoint allows you to retrieve an existing Embed session using identification details and a `product_module_key`. The session is retrieved based on the customer's identification type, number, and associated organization information. This supports use cases where an organization needs to look up session details securely using authentication.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "embed-sessions",
+                "lookup"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_module_key\": \"<string>\",\n  \"identification_type\": \"<string>\",\n  \"identification_number\": \"<string>\",\n  \"identification_country\": \"<string>\",\n  \"registration_number\": \"<string>\",\n  \"embed_session_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e81317a8-f428-4ce4-8b53-600ba33e6184",
+              "name": "Embed session lookup successful.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "embed-sessions",
+                    "lookup"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"product_module_key\": \"dinosure\",\n  \"identification_type\": \"id\",\n  \"identification_number\": \"8704094800082\",\n  \"identification_country\": \"ZA\",\n  \"registration_number\": \"<string>\",\n  \"embed_session_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"embed_session_id\": \"9f3e4567-e89b-12d3-a456-426614174111\",\n  \"organization_id\": \"8b7e1a2c-4f92-4d90-9e8a-d5c3285c8ad9\",\n  \"product_module_id\": \"5e1a7e8a-b123-4c0a-9b8a-426614175111\",\n  \"created_at\": \"2023-01-15T10:00:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.uk.rootplatform.com/v1/insurance",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e6897fde-b6e3-4099-9020-613c1958011e",
+    "name": "Root Applications Embed API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.\n\nContact Support:\n Name: Root support team\n Email: support@root.co.za",
+      "type": "text/plain"
+    }
+  }
+}

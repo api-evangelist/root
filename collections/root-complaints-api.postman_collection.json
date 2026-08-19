@@ -1,0 +1,1662 @@
+{
+  "item": [
+    {
+      "id": "6d3863b5-0a8d-47a4-aa65-07598943b098",
+      "name": "Complaints",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "bcb19edc-ad5e-43e2-8846-97204cedb4c6",
+          "name": "Create a complaint",
+          "request": {
+            "name": "Create a complaint",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"policy_id\": \"<string>\",\n  \"member_id\": \"<string>\",\n  \"app_data\": {\n    \"key_0\": true,\n    \"key_1\": 6695,\n    \"key_2\": false,\n    \"key_3\": 1924.2624461051494\n  },\n  \"complainant\": {\n    \"first_name\": \"<string,null>\",\n    \"last_name\": \"<string,null>\",\n    \"id_number\": \"<string,null>\",\n    \"email\": \"<string,null>\",\n    \"cellphone\": \"<string,null>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "72c722b8-3634-4b6e-a253-b976d8fdb7d5",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policy_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n  \"app_data\": {\n    \"key1\": \"value 1\",\n    \"key2\": \"value 2\"\n  },\n  \"complainant\": {\n    \"first_name\": \"Erlich\",\n    \"last_name\": \"Bachman\",\n    \"id_number\": \"9001015000000\",\n    \"email\": \"erlich@aviato.com\",\n    \"cellphone\": \"+27731234567\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"complaint_id\": \"acd6c4af-108e-444d-a90f-e90b67786c74\",\n  \"complaint_number\": \"CMP-000001\",\n  \"created_at\": \"2017-10-16T10:12:02.872Z\",\n  \"policy_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n  \"policyholder_id\": \"3c74e595-48bc-4dd6-8ac7-2dee1c1f397b\",\n  \"member_id\": \"673b8081-9668-4136-97cc-6ae0debda083\",\n  \"complaint_status\": \"open\",\n  \"app_data\": {\n    \"key1\": \"value 1\",\n    \"key2\": \"value 2\"\n  },\n  \"complainant\": {\n    \"first_name\": \"Erlich\",\n    \"last_name\": \"Bachman\",\n    \"id_number\": \"9001015000000\",\n    \"email\": \"erlich@aviato.com\",\n    \"cellphone\": \"+27731234567\"\n  },\n  \"created_by\": {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"type\": \"user\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7aececaa-74e9-4a6f-a68e-e18f04cb5443",
+          "name": "List all complaints",
+          "request": {
+            "name": "List all complaints",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "complaint_status",
+                  "value": "<string>",
+                  "description": "Filter by complaint status. Can be a comma-separated list."
+                },
+                {
+                  "disabled": false,
+                  "key": "complaint_status",
+                  "value": "<string>",
+                  "description": "Filter by complaint status. Can be a comma-separated list."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search complaints by complaint number or other fields."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "A comma-separated list of related resources to include in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "A comma-separated list of related resources to include in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "policy_id",
+                  "value": "<uuid>",
+                  "description": "Filter complaints by policy ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5c4f9331-8716-4639-bf2d-3a5447290f59",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "complaint_status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "complaint_status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "policy_id",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The total number of complaints matching the query.",
+                  "key": "X-Total-Count",
+                  "value": "3894"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"complaint_id\": \"acd6c4af-108e-444d-a90f-e90b67786c74\",\n    \"complaint_number\": \"CMP-000001\",\n    \"created_at\": \"2017-10-16T10:12:02.872Z\",\n    \"policy_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n    \"policyholder_id\": \"3c74e595-48bc-4dd6-8ac7-2dee1c1f397b\",\n    \"member_id\": \"673b8081-9668-4136-97cc-6ae0debda083\",\n    \"complaint_status\": \"open\",\n    \"app_data\": {\n      \"key1\": \"value 1\",\n      \"key2\": \"value 2\"\n    },\n    \"created_by\": {\n      \"id\": \"00000000-0000-0000-0000-000000000001\",\n      \"type\": \"user\"\n    }\n  },\n  {\n    \"complaint_id\": \"da20903b-7f0d-4318-96bd-6df78514e2fd\",\n    \"complaint_number\": \"CMP-000002\",\n    \"created_at\": \"2017-10-14T11:09:55.332Z\",\n    \"policy_id\": \"76096ff5-f4ed-47e2-8ac0-de16ba095508\",\n    \"policyholder_id\": \"aed6eedd-25d7-4a42-a2cf-8a8368dffc6e\",\n    \"complaint_status\": \"closed\",\n    \"app_data\": {\n      \"key1\": \"value 1\",\n      \"key2\": \"value 2\"\n    },\n    \"created_by\": {\n      \"id\": \"00000000-0000-0000-0000-000000000001\",\n      \"type\": \"user\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8a6ea94f-3188-49a3-854e-66ba580e980c",
+          "name": "Retrieve a complaint",
+          "request": {
+            "name": "Retrieve a complaint",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "A comma-separated list of related resources to include in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "A comma-separated list of related resources to include in the response."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_id",
+                  "description": "(Required) The unique identifier of the [complaint](ref:complaint)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "872a757d-d159-4e82-ae65-92afff95c561",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_id",
+                      "description": "(Required) The unique identifier of the [complaint](ref:complaint)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"complaint_id\": \"acd6c4af-108e-444d-a90f-e90b67786c74\",\n  \"complaint_number\": \"CMP-000001\",\n  \"created_at\": \"2017-10-16T10:12:02.872Z\",\n  \"policy_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n  \"policyholder_id\": \"3c74e595-48bc-4dd6-8ac7-2dee1c1f397b\",\n  \"member_id\": \"673b8081-9668-4136-97cc-6ae0debda083\",\n  \"complaint_status\": \"open\",\n  \"app_data\": {\n    \"key1\": \"value 1\",\n    \"key2\": \"value 2\"\n  },\n  \"created_by\": {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"type\": \"user\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "21dea70f-0e76-4a0a-9f7f-3b892f50f556",
+          "name": "Update a complaint",
+          "request": {
+            "name": "Update a complaint",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"app_data\": {\n    \"key_0\": false,\n    \"key_1\": false,\n    \"key_2\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9e3d174c-ca4c-4f4f-9faa-6b427d75b536",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"app_data\": {\n    \"key3\": \"value 3\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"complaint_id\": \"acd6c4af-108e-444d-a90f-e90b67786c74\",\n  \"complaint_number\": \"CMP-000001\",\n  \"created_at\": \"2017-10-16T10:12:02.872Z\",\n  \"policy_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n  \"policyholder_id\": \"3c74e595-48bc-4dd6-8ac7-2dee1c1f397b\",\n  \"member_id\": \"673b8081-9668-4136-97cc-6ae0debda083\",\n  \"complaint_status\": \"open\",\n  \"app_data\": {\n    \"key3\": \"value 3\"\n  },\n  \"created_by\": {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"type\": \"user\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "57c3a4d1-bc69-4128-a780-c4cb438b3054",
+          "name": "List complaint attachments",
+          "request": {
+            "name": "List complaint attachments",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_id",
+                "attachments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_id",
+                  "description": "(Required) The unique identifier of the [complaint](ref:complaint)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f9912542-6578-406e-b4bd-7069462b00f0",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_id",
+                    "attachments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_id",
+                      "description": "(Required) The unique identifier of the [complaint](ref:complaint)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The total number of attachments for the complaint.",
+                  "key": "X-Total-Count",
+                  "value": "3894"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"attachment_id\": \"7f4315b2-a919-11ed-8553-5bb8fbd4817b\",\n    \"file_name\": \"report.pdf\",\n    \"file_type\": \"application/pdf\",\n    \"file_url\": \"http://yoururlhere/report.pdf\",\n    \"description\": \"Police Report\",\n    \"created_at\": \"2022-01-31T11:25:51.557Z\",\n    \"requested_by\": {\n      \"type\": \"user\",\n      \"id\": \"00000000-0000-0000-0000-000000000001\"\n    },\n    \"is_archived\": false,\n    \"archived_at\": null,\n    \"labels\": [],\n    \"has_embedding\": false,\n    \"processing_status\": null,\n    \"error_message\": null\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "73fa63ad-d6e5-4683-86fe-b96815dddcad",
+          "name": "Create an attachment",
+          "request": {
+            "name": "Create an attachment",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_id",
+                "attachments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"file_base64\": \"<string>\",\n  \"file_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ff5b6b69-b997-4ef3-984c-87e080068017",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_id",
+                    "attachments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file_name\": \"report.pdf\",\n  \"file_type\": \"application/pdf\",\n  \"description\": \"Police Report\",\n  \"file_base64\": \"JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBvYmoK...\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"attachment_created\",\n  \"complaint_id\": \"02ca3e8b-2033-4d91-9869-b1080052dc10\",\n  \"created_at\": \"2022-01-31T11:25:51.557Z\",\n  \"requested_by\": {\n    \"type\": \"user\",\n    \"id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"file_name\": \"report.pdf\",\n  \"file_type\": \"application/pdf\",\n  \"file_url\": \"http://yoururlhere/report.pdf\",\n  \"description\": \"Police Report\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0970ee29-bb74-4e7a-af5d-f647ace6811e",
+          "name": "Archive an attachment",
+          "request": {
+            "name": "Archive an attachment",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_id",
+                "attachments",
+                ":attachment_id",
+                "archive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_id",
+                  "description": "(Required) The unique identifier of the [complaint](ref:complaint)."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "attachment_id",
+                  "description": "(Required) The unique identifier of the attachment."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "98404225-4c3b-4b0e-96d5-ee4b05c5f8c2",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_id",
+                    "attachments",
+                    ":attachment_id",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_id",
+                      "description": "(Required) The unique identifier of the [complaint](ref:complaint)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "attachment_id",
+                      "description": "(Required) The unique identifier of the attachment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"attachment_archived\",\n  \"complaint_id\": \"bf1ada91-eecb-4f47-9bfa-1258bb1e0055\",\n  \"created_at\": \"2017-10-13T09:37:48.947Z\",\n  \"requested_by\": {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"type\": \"user\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ca25330a-f631-45a0-8748-aafe197226d2",
+          "name": "Close a complaint",
+          "request": {
+            "name": "Close a complaint",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_id",
+                "close"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "830ec669-3ce6-43a2-8fd2-f825b54996a7",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_id",
+                    "close"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"complaint_id\": \"acd6c4af-108e-444d-a90f-e90b67786c74\",\n  \"created_at\": \"2017-10-16T10:12:02.872Z\",\n  \"policy_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n  \"policyholder_id\": \"3c74e595-48bc-4dd6-8ac7-2dee1c1f397b\",\n  \"member_id\": \"673b8081-9668-4136-97cc-6ae0debda083\",\n  \"complaint_status\": \"closed\",\n  \"app_data\": {\n    \"key1\": \"value 1\",\n    \"key2\": \"value 2\"\n  },\n  \"created_by\": {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"type\": \"user\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bdb7710d-c525-43fd-abb3-5963ff11880e",
+          "name": "List complaint events",
+          "request": {
+            "name": "List complaint events",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_id",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_id",
+                  "description": "(Required) The unique identifier of the [complaint](ref:complaint)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "42d166c3-708d-48ed-927f-96999c925ff4",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_id",
+                      "description": "(Required) The unique identifier of the [complaint](ref:complaint)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"type\": \"complaint_opened\",\n    \"complaint_id\": \"acd6c4af-108e-444d-a90f-e90b67786c74\",\n    \"created_at\": \"2022-01-31T11:25:51.557Z\",\n    \"requested_by\": {\n      \"type\": \"user\",\n      \"id\": \"00000000-0000-0000-0000-000000000001\"\n    }\n  },\n  {\n    \"type\": \"attachment_created\",\n    \"complaint_id\": \"acd6c4af-108e-444d-a90f-e90b67786c74\",\n    \"created_at\": \"2022-01-31T12:30:00.000Z\",\n    \"requested_by\": {\n      \"type\": \"user\",\n      \"id\": \"00000000-0000-0000-0000-000000000001\"\n    },\n    \"file_name\": \"document.pdf\",\n    \"file_type\": \"application/pdf\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "740cda06-dc72-4b51-8009-9c0abe469aea",
+          "name": "Update the complainant",
+          "request": {
+            "name": "Update the complainant",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_id",
+                "complainant"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"<string,null>\",\n  \"last_name\": \"<string,null>\",\n  \"id_number\": \"<string,null>\",\n  \"email\": \"<string,null>\",\n  \"cellphone\": \"<string,null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c239d9c1-450a-424d-afba-3271d0ba4ccd",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_id",
+                    "complainant"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"Erlich\",\n  \"last_name\": \"Bachman\",\n  \"id_number\": \"9001015000000\",\n  \"email\": \"erlich@aviato.com\",\n  \"cellphone\": \"+27831234567\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"complaint_id\": \"acd6c4af-108e-444d-a90f-e90b67786c74\",\n  \"complaint_number\": \"CMP-000001\",\n  \"created_at\": \"2017-10-16T10:12:02.872Z\",\n  \"policy_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n  \"policyholder_id\": \"3c74e595-48bc-4dd6-8ac7-2dee1c1f397b\",\n  \"member_id\": \"673b8081-9668-4136-97cc-6ae0debda083\",\n  \"complaint_status\": \"open\",\n  \"app_data\": {\n    \"key1\": \"value 1\",\n    \"key2\": \"value 2\"\n  },\n  \"created_by\": {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"type\": \"user\"\n  },\n  \"complainant\": {\n    \"first_name\": \"Erlich\",\n    \"last_name\": \"Bachman\",\n    \"id_number\": \"9001015000000\",\n    \"email\": \"erlich@aviato.com\",\n    \"cellphone\": \"+27831234567\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1944fb58-b8e8-4574-8f5a-f481947c6a5a",
+          "name": "List complaint notes",
+          "request": {
+            "name": "List complaint notes",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_id",
+                "notes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_id",
+                  "description": "(Required) The unique identifier of the [complaint](ref:complaint)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ce8fadc5-e2d4-4b19-a7f0-98367edc2409",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_id",
+                    "notes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_id",
+                      "description": "(Required) The unique identifier of the [complaint](ref:complaint)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The total number of notes for the complaint.",
+                  "key": "X-Total-Count",
+                  "value": "3894"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"text\": \"Customer spoke to Erlich previously\",\n    \"created_at\": \"2018-05-25T08:51:20.317Z\",\n    \"requested_by\": {\n      \"id\": \"00000000-0000-0000-0000-000000000001\",\n      \"type\": \"user\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d1b8a31d-2496-4b30-ab96-f9390920ecdb",
+          "name": "Add a note",
+          "request": {
+            "name": "Add a note",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_id",
+                "notes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9db53b0e-aa73-4d8b-968f-13eb7e19cb03",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_id",
+                    "notes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Customer spoke to Erlich previously\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"text_note_created\",\n  \"complaint_id\": \"02ca3e8b-2033-4d91-9869-b1080052dc10\",\n  \"created_at\": \"2022-10-16T10:12:02.872Z\",\n  \"requested_by\": {\n    \"type\": \"user\",\n    \"id\": \"00000000-0000-0000-0000-000000000001\"\n  },\n  \"text\": \"Customer spoke to Erlich previously\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0b70d328-8c98-49d9-828a-ed7589285924",
+          "name": "Link a policy",
+          "request": {
+            "name": "Link a policy",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_id",
+                "policy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"policy_id\": \"<string>\",\n  \"member_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1f978474-eab1-4a09-80f3-4f2c5d3974bf",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_id",
+                    "policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policy_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n  \"member_id\": \"673b8081-9668-4136-97cc-6ae0debda083\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"complaint_id\": \"acd6c4af-108e-444d-a90f-e90b67786c74\",\n  \"complaint_number\": \"CMP-000001\",\n  \"created_at\": \"2017-10-16T10:12:02.872Z\",\n  \"policy_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n  \"policyholder_id\": \"3c74e595-48bc-4dd6-8ac7-2dee1c1f397b\",\n  \"member_id\": \"673b8081-9668-4136-97cc-6ae0debda083\",\n  \"complaint_status\": \"open\",\n  \"app_data\": {\n    \"key1\": \"value 1\",\n    \"key2\": \"value 2\"\n  },\n  \"created_by\": {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"type\": \"user\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5092dfe1-1ab6-4a8d-bb74-2a63fd76d31b",
+          "name": "Reopen a complaint",
+          "request": {
+            "name": "Reopen a complaint",
+            "description": {},
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_id",
+                "reopen"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_id",
+                  "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e68dda96-12cf-46a1-8794-3965db55366c",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_id",
+                    "reopen"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_id",
+                      "description": "(Required) Must be a UUID. The unique identifier of the [complaint](ref:complaint)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"Customer phoned in again with additional query on complaint\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"complaint_id\": \"acd6c4af-108e-444d-a90f-e90b67786c74\",\n  \"complaint_number\": \"CMP-000001\",\n  \"created_at\": \"2017-10-16T10:12:02.872Z\",\n  \"policy_id\": \"8349345c-a6c5-4bf9-8ebb-6bbfc1628715\",\n  \"policyholder_id\": \"3c74e595-48bc-4dd6-8ac7-2dee1c1f397b\",\n  \"member_id\": \"673b8081-9668-4136-97cc-6ae0debda083\",\n  \"complaint_status\": \"open\",\n  \"app_data\": {\n    \"key1\": \"value 1\",\n    \"key2\": \"value 2\"\n  },\n  \"created_by\": {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"type\": \"user\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.uk.rootplatform.com/v1/insurance",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "41773269-3aad-4dcb-85f3-2751c2cdc68e",
+    "name": "Root Applications Complaints API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.\n\nContact Support:\n Name: Root support team\n Email: support@root.co.za",
+      "type": "text/plain"
+    }
+  }
+}

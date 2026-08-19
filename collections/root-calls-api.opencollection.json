@@ -1,0 +1,134 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Root Applications Calls API",
+    "version": "1.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Calls",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/calls",
+            "params": [
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number of the entities to fetch. Must be a minimum of 1."
+              },
+              {
+                "name": "call_status",
+                "value": "completed,busy",
+                "type": "query",
+                "description": "Filter by call status. Accepts multiple values."
+              },
+              {
+                "name": "include",
+                "value": "policyholder",
+                "type": "query",
+                "description": "A comma-separated list of related objects to include in the response. Valid values: `policyholder`."
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of calls for the organization. Use the `include` parameter to include the related policyholder object."
+        },
+        {
+          "info": {
+            "name": "Create a call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/calls",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new call record with an associated recording. The recording must be provided as a base64-encoded string."
+        },
+        {
+          "info": {
+            "name": "Retrieve a call",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/calls/:call_id",
+            "params": [
+              {
+                "name": "call_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [call](ref:call)."
+              }
+            ]
+          },
+          "docs": "Retrieve a call"
+        },
+        {
+          "info": {
+            "name": "Retrieve call events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/calls/:call_id/events",
+            "params": [
+              {
+                "name": "call_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [call](ref:call)."
+              }
+            ]
+          },
+          "docs": "Returns a list of events associated with a specific call, sorted by creation time in descending order (most recent first). Events include call status changes, recordings added, and other call-related activities."
+        },
+        {
+          "info": {
+            "name": "Retrieve call playback URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.uk.rootplatform.com/v1/insurance/calls/:call_id/playback-url",
+            "params": [
+              {
+                "name": "call_id",
+                "value": "",
+                "type": "path",
+                "description": "Must be a UUID. The unique identifier of the [call](ref:call)."
+              }
+            ]
+          },
+          "docs": "Returns a signed URL for playing back the recording of a specific call. If the call has an associated attachment, a signed download URL is returned. Otherwise, the legacy recording URL is returned if available. Returns a 404 error if no recording exists for the call."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

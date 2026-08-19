@@ -1,0 +1,410 @@
+{
+  "item": [
+    {
+      "id": "519954cc-7056-40b5-8c46-ae0f4ca48f56",
+      "name": "Leads",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "85ab556e-0b51-4b05-8807-a0e28ec0187b",
+          "name": "List all leads",
+          "request": {
+            "name": "List all leads",
+            "description": {},
+            "url": {
+              "path": [
+                "leads"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number of the entities to fetch. Must be a minimum of 1."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6b96656d-bb45-4af9-a31a-1e584a17d4c5",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "leads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"lead_id\": \"bf1ada91-eecb-4f47-9bfa-1258bb1e0055\",\n    \"type\": \"individual\",\n    \"first_name\": \"Erlich\",\n    \"last_name\": \"Bachman\",\n    \"id\": {\n      \"type\": \"id\",\n      \"number\": \"6801015800084\",\n      \"country\": \"ZA\"\n    },\n    \"date_of_birth\": \"1968-01-01\",\n    \"gender\": \"male\",\n    \"email\": \"erlich@aviato.com\",\n    \"cellphone\": \"+27821234567\",\n    \"phone_other\": null,\n    \"app_data\": {\n      \"company\": \"Aviato\"\n    },\n    \"created_at\": \"2017-10-12T15:47:34.281Z\",\n    \"created_by\": {\n      \"id\": \"00000000-0000-0000-0000-000000000001\",\n      \"type\": \"user\"\n    },\n    \"address\": {\n      \"line_1\": \"5230 Penfield Avenue\",\n      \"suburb\": \"Woodland Hills\",\n      \"city\": \"Los Angeles\",\n      \"country\": \"US\",\n      \"area_code\": \"CA 91364\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "65163c75-8807-4ffd-ab6b-11095009a823",
+          "name": "Create a lead",
+          "request": {
+            "name": "Create a lead",
+            "description": {
+              "content": "This endpoint requires a single lead object defined as follows:",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "leads"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entity_type\": \"<string>\",\n  \"identification\": \"<object>\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<string>\",\n  \"app_data\": \"<object>\",\n  \"address\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9e7aa6dd-0af5-4cb5-9b68-87ac234a14a5",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "leads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity_type\": \"individual\",\n  \"identification\": {\n    \"type\": \"id\",\n    \"number\": \"6801015800084\",\n    \"country\": \"ZA\"\n  },\n  \"first_name\": \"Erlich\",\n  \"last_name\": \"Bachman\",\n  \"email\": \"erlich@avaito.com\",\n  \"app_data\": {\n    \"company\": \"Aviato\"\n  },\n  \"address\": {\n    \"line_1\": \"5230 Penfield Avenue\",\n    \"suburb\": \"Woodland Hills\",\n    \"city\": \"Los Angeles\",\n    \"country\": \"US\",\n    \"area_code\": \"91364\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"lead_id\": \"bf1ada91-eecb-4f47-9bfa-1258bb1e0055\",\n  \"type\": \"individual\",\n  \"first_name\": \"Erlich\",\n  \"last_name\": \"Bachman\",\n  \"id\": {\n    \"type\": \"id\",\n    \"number\": \"6801015800084\",\n    \"country\": \"ZA\"\n  },\n  \"email\": \"erlich@aviato.com\",\n  \"cellphone\": \"+27821234567\",\n  \"phone_other\": null,\n  \"created_at\": \"2017-10-12T15:47:34.281Z\",\n  \"app_data\": {\n    \"company\": \"Aviato\"\n  },\n  \"created_by\": {\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"type\": \"user\"\n  },\n  \"address\": {\n    \"line_1\": \"5230 Penfield Avenue\",\n    \"suburb\": \"Woodland Hills\",\n    \"city\": \"Los Angeles\",\n    \"country\": \"US\",\n    \"area_code\": \"91364\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f279b670-c1c2-4038-849b-d710dc4f2af8",
+          "name": "Create or update a lead",
+          "request": {
+            "name": "Create or update a lead",
+            "description": {
+              "content": "This endpoint requires a single lead object defined as follows:",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "leads"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entity_type\": \"<string>\",\n  \"identification\": \"<object>\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<string>\",\n  \"app_data\": \"<object>\",\n  \"address\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "59e4d6e2-4504-4d58-a4a3-01bb041f84c8",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "leads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity_type\": \"individual\",\n  \"identification\": {\n    \"type\": \"id\",\n    \"number\": \"6801015800084\",\n    \"country\": \"ZA\"\n  },\n  \"first_name\": \"Erlich\",\n  \"last_name\": \"Bachman\",\n  \"email\": \"erlich@avaito.com\",\n  \"app_data\": {\n    \"company\": \"Aviato\"\n  },\n  \"address\": {\n    \"line_1\": \"5230 Penfield Avenue\",\n    \"suburb\": \"Woodland Hills\",\n    \"city\": \"Los Angeles\",\n    \"country\": \"US\",\n    \"area_code\": \"91364\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"lead_id\": \"bf1ada91-eecb-4f47-9bfa-1258bb1e0055\",\n  \"type\": \"individual\",\n  \"first_name\": \"Erlich\",\n  \"last_name\": \"Bachman\",\n  \"id\": {\n    \"type\": \"id\",\n    \"number\": \"6801015800084\",\n    \"country\": \"ZA\"\n  },\n  \"email\": \"erlich@aviato.com\",\n  \"cellphone\": \"+27821234567\",\n  \"phone_other\": null,\n  \"created_at\": \"2017-10-12T15:47:34.281Z\",\n  \"app_data\": {\n    \"company\": \"Aviato\"\n  },\n  \"created_by\": {\n    \"owner_id\": \"00000000-0000-0000-0000-000000000001\",\n    \"id\": \"420df14d-b09d-4d89-84a8-8e3118c9ca23\",\n    \"type\": \"user\"\n  },\n  \"address\": {\n    \"line_1\": \"5230 Penfield Avenue\",\n    \"suburb\": \"Woodland Hills\",\n    \"city\": \"Los Angeles\",\n    \"country\": \"US\",\n    \"area_code\": \"91364\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b1728eb2-5d30-43b6-ac1d-fa62a4d7c611",
+          "name": "Archive leads",
+          "request": {
+            "name": "Archive leads",
+            "description": {
+              "content": "This archives all leads loaded for the organization. Returns a HTTP `200 OK` response on success.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "leads",
+                "archive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6ab3f010-81bf-4718-9161-482770453720",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "leads",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.uk.rootplatform.com/v1/insurance",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4ef2104d-ffef-488d-9778-6ee1e7b98d38",
+    "name": "Root Applications Leads API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.\n\nContact Support:\n Name: Root support team\n Email: support@root.co.za",
+      "type": "text/plain"
+    }
+  }
+}
