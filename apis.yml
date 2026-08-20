@@ -28,6 +28,15 @@ tags:
   - Policy Administration
   - Claims
   - Usage-Based Insurance
+  - Insurtech
+tags_raw:
+  - Insurance
+  - Auto Insurance
+  - Telematics
+  - Embedded Insurance
+  - Policy Administration
+  - Claims
+  - Usage-Based Insurance
   - InsurTech
 apis:
 - aid: root:root-bind-api
@@ -58,6 +67,8 @@ apis:
   humanURL: https://docs.rootplatform.com/docs/overview
   baseURL: https://api.rootplatform.com/
   tags:
+  - Application
+  tags_raw:
   - Applications
   properties:
   - type: OpenAPI
@@ -130,6 +141,8 @@ apis:
   humanURL: https://docs.rootplatform.com/docs/overview
   baseURL: https://api.rootplatform.com/
   tags:
+  - Data Exports
+  tags_raw:
   - Data exports
   properties:
   - type: OpenAPI
@@ -148,6 +161,8 @@ apis:
   humanURL: https://docs.rootplatform.com/docs/overview
   baseURL: https://api.rootplatform.com/
   tags:
+  - Datastores
+  tags_raw:
   - Data stores
   properties:
   - type: OpenAPI
@@ -184,6 +199,8 @@ apis:
   humanURL: https://docs.rootplatform.com/docs/overview
   baseURL: https://api.rootplatform.com/
   tags:
+  - File
+  tags_raw:
   - Files
   properties:
   - type: OpenAPI
@@ -220,6 +237,8 @@ apis:
   humanURL: https://docs.rootplatform.com/docs/overview
   baseURL: https://api.rootplatform.com/
   tags:
+  - Notification
+  tags_raw:
   - Notifications
   properties:
   - type: OpenAPI
@@ -346,6 +365,8 @@ apis:
   humanURL: https://docs.rootplatform.com/docs/overview
   baseURL: https://api.rootplatform.com/
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
