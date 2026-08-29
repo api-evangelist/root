@@ -392,6 +392,9 @@ apis:
   - type: StatusPage
     url: https://status.rootplatform.com/
 common:
+  - type: CapabilityMap
+    url: capabilities/root-capability-edges.yml
+    name: Root Insurance Business Capability Map
   - type: AgenticAccess
     url: agentic-access/root-agentic-access.yml
   - type: VulnerabilityDisclosure

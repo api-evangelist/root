@@ -1,0 +1,87 @@
+slug: root
+provider: Root Insurance
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Insurance
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 7
+edges:
+- tag: Claims
+  spec_file: root-claims-api-openapi.yml
+  capability_id: BC-2160
+  capability_id_l1: BC-2160
+  capability_name: Insurance Claims Management
+  confidence: 0.95
+  evidence: POST /claims create-claim 'Create a claim'; POST /claims/{claim_id}/approve 'Approve claim';
+    'Acknowledge repudiation'
+  reason: Operations create, list, update, approve and repudiate insurance claims with attachments and
+    notes — squarely insurance claims handling. Spans intake through decisioning, so the L1 is the honest
+    level.
+- tag: Policies
+  spec_file: root-policies-api-openapi.yml
+  capability_id: BC-2140
+  capability_id_l1: BC-2140
+  capability_name: Policy Administration Management
+  confidence: 0.95
+  evidence: POST /policies 'Issue a policy'; 'Bulk cancel policies'; 'Bulk lapse policies'; 'Apply alteration
+    package'
+  reason: Issuance, alteration, cancellation and lapse of in-force insurance contracts is policy administration;
+    operations span several sub-capabilities so L1 is the right level.
+- tag: Quotes
+  spec_file: root-quotes-api-openapi.yml
+  capability_id: BC-2110.60
+  capability_id_l1: BC-2110
+  capability_name: Quote & Submission Management
+  confidence: 0.85
+  evidence: 'POST /quotes  create-quote  Create a quote; schemas: quote-packages, quote-package'
+  reason: Operation creates insurance quotes on an end-to-end digital insurance platform, matching Quote
+    & Submission Management within Insurance Distribution.
+- tag: Payments
+  spec_file: root-payments-api-openapi.yml
+  capability_id: BC-2150.20
+  capability_id_l1: BC-2150
+  capability_name: Premium Collection Management
+  confidence: 0.78
+  evidence: POST /payments/async-create 'Create payments async'; 'Reschedule a scheduled payment'; schemas
+    premium-type, payment-charge-type, collection-type, policy
+  reason: Payment creation, batching and scheduling against policies with premium-type and collection-type
+    schemas is receipt and application of insurance premium payments.
+- tag: Applications
+  spec_file: root-applications-api-openapi.yml
+  capability_id: BC-2110.60
+  capability_id_l1: BC-2110
+  capability_name: Quote & Submission Management
+  confidence: 0.75
+  evidence: POST /applications  Create an application; PUT /applications/{application_id}  Requote an
+    application; schema 'quote-package', 'policyholder', 'beneficiaries'
+  reason: Insurance application intake and requoting on a digital insurance platform — submission capture
+    and quote generation prior to bind, matching Quote & Submission Management. Some overlap with underwriting
+    risk intake (BC-2130.10) and policyholder onboarding, hence 0.75.
+- tag: Payment Methods
+  spec_file: root-payment-methods-api-openapi.yml
+  capability_id: BC-2150.20
+  capability_id_l1: BC-2150
+  capability_name: Premium Collection Management
+  confidence: 0.72
+  evidence: GET /payment-methods 'List payment methods'; 'Create DebiCheck Mandate'; schemas policyholder,
+    policy, payment-charge-type
+  reason: Payment instrument and debit-order mandate management tied to policyholders and policies supports
+    collection of insurance premiums; sits in premium collection operations rather than generic payments.
+- tag: Policyholders
+  spec_file: root-policyholders-api-openapi.yml
+  capability_id: BC-2120.40
+  capability_id_l1: BC-2120
+  capability_name: Customer Information & Consent Management
+  confidence: 0.7
+  evidence: POST /policyholders 'Create a policyholder'; PUT /policyholders 'Upsert a policyholder'; 'List
+    policyholder's applications'
+  reason: Master record maintenance for insurance policyholders including profile upsert, notes, attachments
+    and linked payment methods maps to customer information management; some overlap with servicing keeps
+    confidence moderate at the L2.
