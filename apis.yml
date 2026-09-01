@@ -40,7 +40,7 @@ tags:
   - Policy Administration
   - Claims
   - Usage-Based Insurance
-  - InsurTech
+  - Insurtech
 tags_raw:
   - Insurance
   - Auto Insurance
@@ -153,7 +153,7 @@ apis:
   humanURL: https://docs.rootplatform.com/docs/overview
   baseURL: https://api.rootplatform.com/
   tags:
-  - Data exports
+  - Data Exports
   tags_raw:
   - Data exports
   properties:
@@ -173,7 +173,7 @@ apis:
   humanURL: https://docs.rootplatform.com/docs/overview
   baseURL: https://api.rootplatform.com/
   tags:
-  - Data stores
+  - Datastores
   tags_raw:
   - Data stores
   properties:
