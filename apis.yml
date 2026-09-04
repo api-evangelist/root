@@ -1,6 +1,10 @@
 aid: root
 name: Root Insurance
-description: Root Insurance is a usage-based auto insurance company that prices policies primarily based on driving behavior captured via smartphone telematics. Root provides a REST API platform for insurers, MGAs, and distribution partners to build, embed, and operate insurance products — covering quoting, policy administration, claims processing, premium collections, and data management. The Root Bind API enables partners to embed auto insurance quoting and checkout directly into their applications.
+description: Root Insurance is a usage-based auto insurance company that prices policies primarily based on driving
+  behavior captured via smartphone telematics. Root provides a REST API platform for insurers, MGAs, and distribution
+  partners to build, embed, and operate insurance products — covering quoting, policy administration, claims processing,
+  premium collections, and data management. The Root Bind API enables partners to embed auto insurance quoting and
+  checkout directly into their applications.
 deliveryModel:
   model: saas
   open_source: false
@@ -15,16 +19,17 @@ deliveryModel:
   method: derived
 accessModel:
   pricing: paid
-  onboarding: self-serve
+  onboarding: unknown
   trial: false
   try_now: false
   public: false
-  label: Paid · Self-serve signup
-  confidence: high
+  label: Paid
+  confidence: medium
   source:
   - plans
   - authentication
-  generated: '2026-07-22'
+  - security
+  generated: '2026-09-03'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/root.png
 url: https://raw.githubusercontent.com/api-evangelist/root/refs/heads/main/apis.yml
@@ -33,30 +38,29 @@ modified: '2026-06-13'
 specificationVersion: '0.23'
 type: Index
 tags:
-  - Insurance
-  - Auto Insurance
-  - Telematics
-  - Embedded Insurance
-  - Policy Administration
-  - Claims
-  - Usage-Based Insurance
-  - Insurtech
+- Insurance
+- Auto Insurance
+- Telematics
+- Embedded Insurance
+- Policy Administration
+- Claims
+- Usage-Based Insurance
+- Insurtech
 tags_raw:
-  - Insurance
-  - Auto Insurance
-  - Telematics
-  - Embedded Insurance
-  - Policy Administration
-  - Claims
-  - Usage-Based Insurance
-  - InsurTech
+- Insurance
+- Auto Insurance
+- Telematics
+- Embedded Insurance
+- Policy Administration
+- Claims
+- Usage-Based Insurance
+- InsurTech
 apis:
 - aid: root:root-bind-api
   name: Root Bind API
-  description: >-
-    The Root Bind API enables distribution partners to embed auto insurance quoting, checkout, and servicing
-    within their own applications. Supports both a hosted experience (Root-managed checkout) and a fully
-    embedded experience where partners control the entire customer journey through Root's APIs.
+  description: The Root Bind API enables distribution partners to embed auto insurance quoting, checkout, and servicing
+    within their own applications. Supports both a hosted experience (Root-managed checkout) and a fully embedded
+    experience where partners control the entire customer journey through Root's APIs.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://root-bind-api.readme.io/docs/embedded-insurance-101
   baseURL: https://production.joinroot.com/bind_api/v3/
@@ -391,40 +395,73 @@ apis:
     url: https://sandbox.rootplatform.com/
   - type: StatusPage
     url: https://status.rootplatform.com/
-common:
-  - type: CapabilityMap
-    url: capabilities/root-capability-edges.yml
-    name: Root Insurance Business Capability Map
-  - type: AgenticAccess
-    url: agentic-access/root-agentic-access.yml
-  - type: VulnerabilityDisclosure
-    url: security/root-vulnerability-disclosure.yml
-  - type: DomainSecurity
-    url: security/root-domain-security.yml
-  - type: Authentication
-    url: authentication/root-authentication.yml
-  - type: Website
+- aid: root:consumer-app
+  name: Root Consumer Mobile App
+  description: iOS and Android app that measures driving behavior via smartphone telematics, generates a usage-based
+    price, and handles enrollment, policy management, and claims (3-minute claim filing). Telematics is not used
+    in California or Maryland. No public API.
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.joinroot.com/
+  baseURL: https://www.joinroot.com
+  tags:
+  - Consumer
+  - Mobile
+  - Telematics
+  - Quotes
+  - Bind
+  - Claims
+  tags_raw:
+  - Consumer
+  - Mobile
+  - Telematics
+  - Quote
+  - Bind
+  - Claims
+  properties:
+  - type: ProductPage
     url: https://www.joinroot.com/
-  - type: Documentation
-    url: https://docs.rootplatform.com/
-  - type: GitHubOrg
-    url: https://github.com/Root-App
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/rootinsurance
-  - type: Blog
-    url: https://blog.joinroot.com/
-  - type: Pricing
-    url: https://rootplatform.com/plans
-  - type: StatusPage
-    url: https://status.rootplatform.com/
-  - type: X
-    url: https://x.com/joinroot
-  - type: Plans
-    url: plans/root-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/root-rate-limits.yml
-  - type: FinOps
-    url: finops/root-finops.yml
+  - type: HowItWorks
+    url: https://www.joinroot.com/how-it-works
+  - type: RoadsideAssistance
+    url: https://www.joinroot.com/roadside-assistance
+  - type: Renters
+    url: https://www.joinroot.com/renters
+common:
+- type: CapabilityMap
+  url: capabilities/root-capability-edges.yml
+  name: Root Insurance Business Capability Map
+- type: AgenticAccess
+  url: agentic-access/root-agentic-access.yml
+- type: VulnerabilityDisclosure
+  url: security/root-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/root-domain-security.yml
+- type: Authentication
+  url: authentication/root-authentication.yml
+- type: Website
+  url: https://www.joinroot.com/
+- type: Documentation
+  url: https://docs.rootplatform.com/
+- type: GitHubOrg
+  url: https://github.com/Root-App
+- type: LinkedIn
+  url: https://www.linkedin.com/company/rootinsurance
+- type: Blog
+  url: https://blog.joinroot.com/
+- type: Pricing
+  url: https://rootplatform.com/plans
+- type: StatusPage
+  url: https://status.rootplatform.com/
+- type: X
+  url: https://x.com/joinroot
+- type: Plans
+  url: plans/root-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/root-rate-limits.yml
+- type: FinOps
+  url: finops/root-finops.yml
+- url: https://www.joinroot.com/blog
+  type: Blog
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
