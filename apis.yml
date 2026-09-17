@@ -58,9 +58,10 @@ tags_raw:
 apis:
 - aid: root:root-bind-api
   name: Root Bind API
-  description: The Root Bind API enables distribution partners to embed auto insurance quoting, checkout, and servicing
-    within their own applications. Supports both a hosted experience (Root-managed checkout) and a fully embedded
-    experience where partners control the entire customer journey through Root's APIs.
+  description: >-
+    The Root Bind API enables distribution partners to embed auto insurance quoting, checkout, and servicing
+    within their own applications. Supports both a hosted experience (Root-managed checkout) and a fully
+    embedded experience where partners control the entire customer journey through Root's APIs.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://root-bind-api.readme.io/docs/embedded-insurance-101
   baseURL: https://production.joinroot.com/bind_api/v3/
@@ -163,26 +164,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/root-data-exports-api-openapi.yml
-  - type: Documentation
-    url: https://docs.rootplatform.com/docs/overview
-  - type: Authentication
-    url: https://docs.rootplatform.com/reference/getting-started-1
-  - type: Sandbox
-    url: https://sandbox.rootplatform.com/
-  - type: StatusPage
-    url: https://status.rootplatform.com/
-- aid: root:root-data-stores-api
-  name: Root Insurance Data stores API
-  description: The Data stores API from Root Insurance — 4 operation(s) for data stores.
-  humanURL: https://docs.rootplatform.com/docs/overview
-  baseURL: https://api.rootplatform.com/
-  tags:
-  - Datastores
-  tags_raw:
-  - Data stores
-  properties:
-  - type: OpenAPI
-    url: openapi/root-data-stores-api-openapi.yml
   - type: Documentation
     url: https://docs.rootplatform.com/docs/overview
   - type: Authentication
@@ -397,9 +378,10 @@ apis:
     url: https://status.rootplatform.com/
 - aid: root:consumer-app
   name: Root Consumer Mobile App
-  description: iOS and Android app that measures driving behavior via smartphone telematics, generates a usage-based
-    price, and handles enrollment, policy management, and claims (3-minute claim filing). Telematics is not used
-    in California or Maryland. No public API.
+  description: >-
+    iOS and Android app that measures driving behavior via smartphone telematics, generates a usage-based
+    price, and handles enrollment, policy management, and claims (3-minute claim filing). Telematics is
+    not used in California or Maryland. No public API.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://www.joinroot.com/
   baseURL: https://www.joinroot.com
@@ -426,6 +408,24 @@ apis:
     url: https://www.joinroot.com/roadside-assistance
   - type: Renters
     url: https://www.joinroot.com/renters
+- aid: root:root-datastores-api
+  name: Root Insurance Datastores API
+  description: The Datastores API from Root Insurance — 4 operation(s) for datastores.
+  humanURL: https://root-bind-api.readme.io/docs/embedded-insurance-101
+  baseURL: https://production.joinroot.com/bind_api/v3/
+  tags:
+  - Datastores
+  properties:
+  - type: OpenAPI
+    url: openapi/root-datastores-api-openapi.yml
+  - type: Documentation
+    url: https://docs.rootplatform.com/docs/overview
+  - type: Authentication
+    url: https://docs.rootplatform.com/reference/getting-started-1
+  - type: Sandbox
+    url: https://sandbox.rootplatform.com/
+  - type: StatusPage
+    url: https://status.rootplatform.com/
 common:
 - type: CapabilityMap
   url: capabilities/root-capability-edges.yml
