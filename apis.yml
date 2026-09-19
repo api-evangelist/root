@@ -158,7 +158,7 @@ apis:
   humanURL: https://docs.rootplatform.com/docs/overview
   baseURL: https://api.rootplatform.com/
   tags:
-  - Data Exports
+  - Data Export
   tags_raw:
   - Data exports
   properties:
