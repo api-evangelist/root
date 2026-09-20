@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 7
+edge_count: 9
 edges:
 - tag: Claims
   spec_file: root-claims-api-openapi.yml
@@ -34,6 +34,18 @@ edges:
     package'
   reason: Issuance, alteration, cancellation and lapse of in-force insurance contracts is policy administration;
     operations span several sub-capabilities so L1 is the right level.
+- tag: Complaints
+  spec_file: root-complaints-api-openapi.yml
+  capability_id: BC-430.20
+  capability_id_l1: BC-430
+  capability_name: Complaints & Issue Management
+  confidence: 0.85
+  evidence: POST /complaints  create-a-complaint  Create a complaint; POST /complaints/{complaint_id}/close  close-complaint  Close
+    a complaint; PATCH /complaints/{complaint_id}/complainant  Update the complainant
+  reason: Full complaint lifecycle — capture, complainant details, notes, attachments, events and closure
+    — which is exactly complaint capture and resolution. Generic cross-industry capability applies regardless
+    of the insurance context.
+  recovered_from: vertical-automotive-mobility-edges.json
 - tag: Quotes
   spec_file: root-quotes-api-openapi.yml
   capability_id: BC-2110.60
@@ -74,6 +86,18 @@ edges:
     policy, payment-charge-type
   reason: Payment instrument and debit-order mandate management tied to policyholders and policies supports
     collection of insurance premiums; sits in premium collection operations rather than generic payments.
+- tag: Leads
+  spec_file: root-leads-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.7
+  evidence: POST /leads  create-lead  Create a lead; PUT /leads  create-or-update-lead  Create or update
+    a lead; POST /leads/archive  archive-leads
+  reason: Lead capture, update and archival for prospective insurance customers — the lead stage of the
+    lead-to-opportunity pipeline. Confidence moderate as the surface is thin CRUD with only 'lead'/'leads'
+    schemas and no opportunity or stage semantics.
+  recovered_from: vertical-automotive-mobility-edges.json
 - tag: Policyholders
   spec_file: root-policyholders-api-openapi.yml
   capability_id: BC-2120.40
