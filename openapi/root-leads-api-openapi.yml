@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 1.0.1
-  title: Root Applications Leads API
+  title: Root Leads API
   description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
   termsOfService: https://rootplatform.com/about
   contact:
@@ -236,28 +236,6 @@ paths:
         '200':
           description: Success
 components:
-  parameters:
-    page_size:
-      name: page_size
-      in: query
-      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        example: 30
-        default: 30
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
   schemas:
     lead:
       type: object
@@ -420,6 +398,28 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/lead'
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
   securitySchemes:
     basicAuth:
       type: http

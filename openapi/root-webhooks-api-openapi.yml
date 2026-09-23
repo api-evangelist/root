@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 1.0.1
-  title: Root Applications Webhooks API
+  title: Root Webhooks API
   description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
   termsOfService: https://rootplatform.com/about
   contact:
@@ -223,9 +223,7 @@ paths:
     post:
       operationId: disable-webhook
       summary: Disable a webhook
-      description: 'When a webhook is disabled, queue events it is subscribed to will be marked as `failed` and will not be sent to the webhook''s URL.
-
-        '
+      description: When a webhook is disabled, queue events it is subscribed to will be marked as `failed` and will not be sent to the webhook's URL.
       tags:
       - Webhooks
       x-additional-tags:
@@ -254,9 +252,7 @@ paths:
     post:
       operationId: enable-webhook
       summary: Enable a webhook
-      description: 'When a webhook is enabled, Root will attempt to send queue events to the webhook''s URL.
-
-        '
+      description: When a webhook is enabled, Root will attempt to send queue events to the webhook's URL.
       tags:
       - Webhooks
       x-additional-tags:
@@ -285,7 +281,7 @@ paths:
     get:
       operationId: ping-webhook
       summary: Ping a webhook
-      description: In order to test that your webhook correctly receives and processes events, you can send a "ping" event on request. This endpoint dispatches a `webhook_ping` event to the specified webhook (see [webhook subscriptions](ref:webhooks#available-subscriptions) for more details).
+      description: In order to test that your webhook correctly receives and processes events, you can send a "ping" event on request. This endpoint dispatches a `webhook_ping` event to the specified webhook (see webhook subscriptions for more details).
       tags:
       - Webhooks
       x-additional-tags:
@@ -591,11 +587,107 @@ paths:
                   headers: '{"content-type": "application/json", "x-request-id": "abcd1234"}'
 components:
   schemas:
-    webhook-subscription-events:
-      type: array
-      description: An array of events that this webhook should subscribe to. If you want to  subscribe to an event not listed here, please submit an idea on  our [product roadmap portal](https://portal.productboard.com/root-platform/) describing your use case.
-      items:
-        $ref: '#/components/schemas/webhook-subscription-event'
+    webhook-queue-event:
+      type: object
+      required:
+      - webhook_queue_event_id
+      - organization_id
+      - environment
+      - webhook_id
+      - created_at
+      - status
+      - url
+      - subscription
+      - attempts_count
+      properties:
+        webhook_queue_event_id:
+          type: string
+          description: The identifier of the webhook queue event.
+        organization_id:
+          type: string
+          description: The identifier of the organization.
+        environment:
+          type: string
+          description: The environment in which the queue event occurred.
+          enum:
+          - production
+          - sandbox
+        webhook_id:
+          type: string
+          description: The identifier of the webhook associated with this queue event.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the webhook queue event was created.
+        status:
+          type: string
+          description: The current status of the webhook queue event.
+          enum:
+          - queued
+          - successful
+          - failed
+        subscription:
+          description: The subscription event type for this webhook queue event.
+          $ref: '#/components/schemas/webhook-subscription-event'
+        url:
+          type: string
+          description: The URL to which the webhook queue event will be sent via `POST`.
+        attempts_count:
+          type: integer
+          description: The number of attempts made to process this webhook queue event.
+        body:
+          type: object
+          description: The payload body of the webhook queue event.
+          properties:
+            webhook_id:
+              type: string
+              description: The unique ID of the webhook.
+            event:
+              type: object
+              description: The event data - see [webhook subscriptions](ref:webhooks#available-subscriptions) for available event types.
+            verification_token:
+              type: string
+              description: An optional verification token as provided during creating a webhook.
+            environment:
+              type: string
+              enum:
+              - sandbox
+              - production
+              description: The dataset used by the webhook. Either sandbox or production.
+          required:
+          - webhook_id
+          - event
+          - environment
+        last_attempt_at:
+          type: string
+          format: date-time
+          description: The timestamp of the last attempt to process this webhook queue event.
+        last_response_code:
+          type: integer
+          description: The HTTP response code from the last attempt to process this webhook queue event.
+        last_response_time_millis:
+          type: integer
+          description: The response time of the last attempt to send the webhook queue event to the URL in milliseconds.
+      example:
+        webhook_queue_event_id: 123e4567-e89b-12d3-a456-426614174000
+        organization_id: 2f26d0e1-9158-4685-83e8-1660c27e4c3f
+        environment: production
+        webhook_id: 274b2899-7957-464b-a609-49939039cd49
+        created_at: '2023-04-01T12:00:00Z'
+        status: queued
+        subscription: policy_issued
+        attempts_count: 1
+        last_attempt_at: '2023-04-01T12:00:02Z'
+        last_response_code: 500
+        last_response_time_millis: 123
+        body:
+          webhook_id: 274b2899-7957-464b-a609-49939039cd49
+          event:
+            type: policy_issued
+            policy_id: abc123
+          verification_token: optional_token_123
+          environment: production
+        url: http://yoururlhere.com
     webhook-subscription-event:
       type: string
       description: The key identifying the subscription event.
@@ -724,144 +816,20 @@ components:
         url: http://your.url.here
         subscriptions:
         - policyholder_created
+    webhook-subscription-events:
+      type: array
+      description: An array of events that this webhook should subscribe to. If you want to  subscribe to an event not listed here, please submit an idea on  our [product roadmap portal](https://portal.productboard.com/root-platform/) describing your use case.
+      items:
+        $ref: '#/components/schemas/webhook-subscription-event'
     webhooks:
       type: array
       items:
         $ref: '#/components/schemas/webhook'
-    webhook-queue-event:
-      type: object
-      required:
-      - webhook_queue_event_id
-      - organization_id
-      - environment
-      - webhook_id
-      - created_at
-      - status
-      - url
-      - subscription
-      - attempts_count
-      properties:
-        webhook_queue_event_id:
-          type: string
-          description: The identifier of the webhook queue event.
-        organization_id:
-          type: string
-          description: The identifier of the organization.
-        environment:
-          type: string
-          description: The environment in which the queue event occurred.
-          enum:
-          - production
-          - sandbox
-        webhook_id:
-          type: string
-          description: The identifier of the webhook associated with this queue event.
-        created_at:
-          type: string
-          format: date-time
-          description: The timestamp when the webhook queue event was created.
-        status:
-          type: string
-          description: The current status of the webhook queue event.
-          enum:
-          - queued
-          - successful
-          - failed
-        subscription:
-          description: The subscription event type for this webhook queue event.
-          $ref: '#/components/schemas/webhook-subscription-event'
-        url:
-          type: string
-          description: The URL to which the webhook queue event will be sent via `POST`.
-        attempts_count:
-          type: integer
-          description: The number of attempts made to process this webhook queue event.
-        body:
-          type: object
-          description: The payload body of the webhook queue event.
-          properties:
-            webhook_id:
-              type: string
-              description: The unique ID of the webhook.
-            event:
-              type: object
-              description: The event data - see [webhook subscriptions](ref:webhooks#available-subscriptions) for available event types.
-            verification_token:
-              type: string
-              description: An optional verification token as provided during creating a webhook.
-            environment:
-              type: string
-              enum:
-              - sandbox
-              - production
-              description: The dataset used by the webhook. Either sandbox or production.
-          required:
-          - webhook_id
-          - event
-          - environment
-        last_attempt_at:
-          type: string
-          format: date-time
-          description: The timestamp of the last attempt to process this webhook queue event.
-        last_response_code:
-          type: integer
-          description: The HTTP response code from the last attempt to process this webhook queue event.
-        last_response_time_millis:
-          type: integer
-          description: The response time of the last attempt to send the webhook queue event to the URL in milliseconds.
-      example:
-        webhook_queue_event_id: 123e4567-e89b-12d3-a456-426614174000
-        organization_id: 2f26d0e1-9158-4685-83e8-1660c27e4c3f
-        environment: production
-        webhook_id: 274b2899-7957-464b-a609-49939039cd49
-        created_at: '2023-04-01T12:00:00Z'
-        status: queued
-        subscription: policy_issued
-        attempts_count: 1
-        last_attempt_at: '2023-04-01T12:00:02Z'
-        last_response_code: 500
-        last_response_time_millis: 123
-        body:
-          webhook_id: 274b2899-7957-464b-a609-49939039cd49
-          event:
-            type: policy_issued
-            policy_id: abc123
-          verification_token: optional_token_123
-          environment: production
-        url: http://yoururlhere.com
   parameters:
-    webhook_id:
-      name: webhook_id
-      in: path
-      description: The unique identifier of the [webhook](ref:webhook).
-      required: true
-      schema:
-        type: string
-        example: 274b2899-7957-464b-a609-49939039cd49
-    webhook_queue_event_status:
-      name: status
+    webhook_queue_event_from:
+      name: from
       in: query
-      description: Filter queue events by status.
-      schema:
-        type: string
-        enum:
-        - queued
-        - successful
-        - failed
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
-    webhook_queue_event_to:
-      name: to
-      in: query
-      description: Filter for queue events created on or before this time (ISO 8601 format).
+      description: Filter for queue events created on or after this time (ISO 8601 format).
       schema:
         type: string
         format: date-time
@@ -872,13 +840,24 @@ components:
       schema:
         type: string
       example: policy_issued,claim_opened,complaint_opened
-    webhook_queue_event_from:
-      name: from
+    webhook_queue_event_status:
+      name: status
       in: query
-      description: Filter for queue events created on or after this time (ISO 8601 format).
+      description: Filter queue events by status.
       schema:
         type: string
-        format: date-time
+        enum:
+        - queued
+        - successful
+        - failed
+    webhook_id:
+      name: webhook_id
+      in: path
+      description: The unique identifier of the [webhook](ref:webhook).
+      required: true
+      schema:
+        type: string
+        example: 274b2899-7957-464b-a609-49939039cd49
     page_size:
       name: page_size
       in: query
@@ -890,6 +869,23 @@ components:
         maximum: 100
         example: 30
         default: 30
+    webhook_queue_event_to:
+      name: to
+      in: query
+      description: Filter for queue events created on or before this time (ISO 8601 format).
+      schema:
+        type: string
+        format: date-time
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
   securitySchemes:
     basicAuth:
       type: http

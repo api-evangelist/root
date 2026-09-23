@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 1.0.1
-  title: Root Applications Quotes API
+  title: Root Quotes API
   description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
   termsOfService: https://rootplatform.com/about
   contact:
@@ -26,7 +26,7 @@ paths:
     post:
       operationId: create-quote
       summary: Create a quote
-      description: Note that additional fields may be required based on the product module type being used. See [product modules](doc:product-modules-overview) for more details.
+      description: Note that additional fields may be required based on the product module type being used. See product modules for more details.
       tags:
       - Quotes
       x-additional-tags:
@@ -91,6 +91,10 @@ paths:
                   model: iPhone 6S 64GB LTE
 components:
   schemas:
+    quote-packages:
+      type: array
+      items:
+        $ref: '#/components/schemas/quote-package'
     quote-package:
       type: object
       description: Quote packages are designed to be low-fidelity and fast to generate,  and are used to generate and display new quotes rapidly on a customer-facing front-end.  They expire after one week. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide  and the [quote hook](https://docs.rootplatform.com/docs/quote-hook) guide for more details.
@@ -166,10 +170,6 @@ components:
         currency: ZAR
         billing_frequency: monthly
         product_module_definition_id: 4889a9e0-d5f9-4971-8ac2-2175a9d15477
-    quote-packages:
-      type: array
-      items:
-        $ref: '#/components/schemas/quote-package'
   securitySchemes:
     basicAuth:
       type: http

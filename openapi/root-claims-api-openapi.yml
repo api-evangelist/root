@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 1.0.1
-  title: Root Applications Claims API
+  title: Root Claims API
   description: Root is an end-to-end digital insurance platform that enables you to launch new products and digital engagement channels fast.
   termsOfService: https://rootplatform.com/about
   contact:
@@ -1063,7 +1063,7 @@ paths:
     patch:
       operationId: update-multiple-block-states
       summary: Update multiple block states
-      description: '**Note:** This endpoint is product module specific and depends on the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference) defined for the product module.'
+      description: '**Note:** This endpoint is product module specific and depends on the claims blocks schema defined for the product module.'
       tags:
       - Claims
       x-additional-tags:
@@ -1132,7 +1132,7 @@ paths:
     get:
       operationId: retrieve-a-block-state
       summary: Retrieve a block state
-      description: '**Note:** This endpoint is product module specific and depends on the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference) defined for the product module.'
+      description: '**Note:** This endpoint is product module specific and depends on the claims blocks schema defined for the product module.'
       tags:
       - Claims
       x-additional-tags:
@@ -1168,7 +1168,7 @@ paths:
     patch:
       operationId: updating-a-block-state
       summary: Update a block state
-      description: '**Note:** This endpoint is product module specific and depends on the [claims blocks schema](https://docs.rootplatform.com/docs/claims-blocks-reference) defined for the product module.'
+      description: '**Note:** This endpoint is product module specific and depends on the claims blocks schema defined for the product module.'
       tags:
       - Claims
       x-additional-tags:
@@ -2620,37 +2620,189 @@ paths:
                       account_number: '123456789'
                   relationship: other
 components:
-  parameters:
-    fulfillment_request_id:
-      name: fulfillment_request_id
-      in: path
-      description: Must be a UUID. The unique identifier of the fulfillment request.
-      required: true
-      schema:
-        type: string
-        example: f84b3856-1358-4e12-bcf6-6732bc8b9522
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
-    page_size:
-      name: page_size
-      in: query
-      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        example: 30
-        default: 30
   schemas:
+    notes:
+      type: array
+      items:
+        $ref: '#/components/schemas/note'
+    cellphone-string:
+      type:
+      - string
+      - 'null'
+      description: '`null` and `""` allowed. String containing the cellphone number in international format.'
+      example: '+27821234567'
+    attachment:
+      type: object
+      required:
+      - file_name
+      - description
+      - file_type
+      - file_url
+      - created_at
+      - requested_by
+      properties:
+        file_name:
+          type: string
+          description: The name of the file (with file extension).
+        description:
+          type: string
+          description: A tag describing what the document is about (e.g. affidavit, etc.).
+        file_type:
+          type: string
+          description: The mime type of the attachment (e.g. image/png).
+        file_url:
+          type: string
+          format: uri
+          description: The URL to download the attachment file.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the attachment was created.
+        requested_by:
+          type: object
+          description: An object indicating the user or API key that created the attachment. See [Authentication](#client-apps).
+          properties:
+            type:
+              type: string
+              description: The type of the creator (e.g., user, api_key).
+            id:
+              type: string
+              description: The identifier of the creator.
+            owner_id:
+              type: string
+              description: The identifier of the owner (only present for API key requests).
+          required:
+          - type
+        type:
+          type: string
+          description: The event type associated with the attachment (e.g., attachment_created). This field is only present when the attachment is returned as part of an event.
+      example:
+        file_name: report.pdf
+        file_type: application/pdf
+        file_url: https://sandbox.rootplatform.com/v1/files/download/00000000-0000-0000-0000-000000000001
+        description: quote
+        type: attachment_created
+        created_at: '2025-11-10T14:33:50.095Z'
+        requested_by:
+          type: api_key
+          id: 00000000-0000-0000-0000-000000000001
+          owner_id: 00000000-0000-0000-0000-000000000001
+    fulfillment-request:
+      type: object
+      required:
+      - fulfillment_request_id
+      - fulfillment_type_id
+      - policy_id
+      - claim_id
+      - status
+      - fulfillment_data
+      - created_at
+      - created_by
+      - environment
+      properties:
+        fulfillment_request_id:
+          type: string
+          description: Must be a UUID. The fulfillment request ID.
+        fulfillment_type_id:
+          type: string
+          description: Must be a UUID. The fulfillment type ID.
+        fulfillment_type:
+          type: object
+          description: The fulfillment type object containing type details.
+          properties:
+            fulfillment_type_id:
+              type: string
+              format: uuid
+              description: The unique identifier of the fulfillment type.
+            key:
+              type: string
+              description: The key identifier of the fulfillment type.
+            name:
+              type: string
+              description: The name of the fulfillment type.
+            description:
+              type: string
+              description: A description of the fulfillment type.
+        policy_id:
+          type: string
+          description: Must be a UUID. The ID of the policy linked to the claim.
+        claim_id:
+          type: string
+          description: Must be a UUID. The ID of the claim linked to the fulfillment request.
+        status:
+          type: string
+          enum:
+          - pending
+          - rejected
+          - successful
+          description: A string indicating the status of the fulfillment request.
+        fulfillment_data:
+          type: object
+          description: The fulfillment data as specified in the fulfillment type.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the fulfillment request was created.
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: An object indicating the user or API key that created the fulfillment request. See [Authentication](https://docs.rootplatform.com/reference/getting-started-1#created_by-field).
+        environment:
+          type: string
+          enum:
+          - sandbox
+          - production
+          description: Whether the payout request was created in Root's sandbox or production environment.
+        finalized_at:
+          type: string
+          format: date-time
+          description: The time at which the fulfillment request was finalized.
+        finalized_by:
+          type: object
+          description: An object indicating the user or API key that finalized the fulfillment request. See [Authentication](https://docs.rootplatform.com/reference/getting-started-1#created_by-field).
+      example:
+        fulfillment_request_id: 8f8b3469-82e9-4d5b-bcc5-f200af095a79
+        fulfillment_type_id: ad044686-6b6f-4ce6-878f-143039243f11
+        fulfillment_type:
+          fulfillment_type_id: ad044686-6b6f-4ce6-878f-143039243f11
+          key: repatriation
+          name: Repatriation
+          description: Cover for repatriation of remains
+        policy_id: 2800a20b-ce92-4463-a0de-75cd76d8bf22
+        claim_id: 80f8e67a-15e5-417c-9d29-dfc31a5b92bb
+        status: pending
+        fulfillment_data:
+          amount: '100000'
+          customer_account_number: 02870611321
+        created_at: '2022-06-07T12:52:55.014Z'
+        created_by:
+          type: user
+          id: 99ff4c56-577c-11e9-b47c-a3d0f3abd20c
+        environment: sandbox
+    attachments:
+      type: array
+      items:
+        $ref: '#/components/schemas/attachment'
+    note:
+      type: object
+      required:
+      - text
+      - created_at
+      properties:
+        text:
+          type: string
+          description: A string of text for the note.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the attachment was created.
+      example:
+        text: Customer spoke to Erlich previously
+        created_at: '2022-10-16T10:12:02.872Z'
+        requested_by:
+          type: user
+          id: 00000000-0000-0000-0000-000000000001
     claim:
       type: object
       required:
@@ -2848,37 +3000,10 @@ components:
         created_by:
           id: 00000000-0000-0000-0000-000000000001
           type: user
-    attachments:
-      type: array
-      items:
-        $ref: '#/components/schemas/attachment'
-    notes:
-      type: array
-      items:
-        $ref: '#/components/schemas/note'
     claims:
       type: array
       items:
         $ref: '#/components/schemas/claim'
-    note:
-      type: object
-      required:
-      - text
-      - created_at
-      properties:
-        text:
-          type: string
-          description: A string of text for the note.
-        created_at:
-          type: string
-          format: date-time
-          description: Time at which the attachment was created.
-      example:
-        text: Customer spoke to Erlich previously
-        created_at: '2022-10-16T10:12:02.872Z'
-        requested_by:
-          type: user
-          id: 00000000-0000-0000-0000-000000000001
     cellphone:
       type:
       - object
@@ -2897,161 +3022,36 @@ components:
       example:
         number: 0821234567
         country: ZA
-    attachment:
-      type: object
-      required:
-      - file_name
-      - description
-      - file_type
-      - file_url
-      - created_at
-      - requested_by
-      properties:
-        file_name:
-          type: string
-          description: The name of the file (with file extension).
-        description:
-          type: string
-          description: A tag describing what the document is about (e.g. affidavit, etc.).
-        file_type:
-          type: string
-          description: The mime type of the attachment (e.g. image/png).
-        file_url:
-          type: string
-          format: uri
-          description: The URL to download the attachment file.
-        created_at:
-          type: string
-          format: date-time
-          description: Time at which the attachment was created.
-        requested_by:
-          type: object
-          description: An object indicating the user or API key that created the attachment. See [Authentication](#client-apps).
-          properties:
-            type:
-              type: string
-              description: The type of the creator (e.g., user, api_key).
-            id:
-              type: string
-              description: The identifier of the creator.
-            owner_id:
-              type: string
-              description: The identifier of the owner (only present for API key requests).
-          required:
-          - type
-        type:
-          type: string
-          description: The event type associated with the attachment (e.g., attachment_created). This field is only present when the attachment is returned as part of an event.
-      example:
-        file_name: report.pdf
-        file_type: application/pdf
-        file_url: https://sandbox.rootplatform.com/v1/files/download/00000000-0000-0000-0000-000000000001
-        description: quote
-        type: attachment_created
-        created_at: '2025-11-10T14:33:50.095Z'
-        requested_by:
-          type: api_key
-          id: 00000000-0000-0000-0000-000000000001
-          owner_id: 00000000-0000-0000-0000-000000000001
-    fulfillment-request:
-      type: object
-      required:
-      - fulfillment_request_id
-      - fulfillment_type_id
-      - policy_id
-      - claim_id
-      - status
-      - fulfillment_data
-      - created_at
-      - created_by
-      - environment
-      properties:
-        fulfillment_request_id:
-          type: string
-          description: Must be a UUID. The fulfillment request ID.
-        fulfillment_type_id:
-          type: string
-          description: Must be a UUID. The fulfillment type ID.
-        fulfillment_type:
-          type: object
-          description: The fulfillment type object containing type details.
-          properties:
-            fulfillment_type_id:
-              type: string
-              format: uuid
-              description: The unique identifier of the fulfillment type.
-            key:
-              type: string
-              description: The key identifier of the fulfillment type.
-            name:
-              type: string
-              description: The name of the fulfillment type.
-            description:
-              type: string
-              description: A description of the fulfillment type.
-        policy_id:
-          type: string
-          description: Must be a UUID. The ID of the policy linked to the claim.
-        claim_id:
-          type: string
-          description: Must be a UUID. The ID of the claim linked to the fulfillment request.
-        status:
-          type: string
-          enum:
-          - pending
-          - rejected
-          - successful
-          description: A string indicating the status of the fulfillment request.
-        fulfillment_data:
-          type: object
-          description: The fulfillment data as specified in the fulfillment type.
-        created_at:
-          type: string
-          format: date-time
-          description: The time at which the fulfillment request was created.
-        created_by:
-          type:
-          - object
-          - 'null'
-          description: An object indicating the user or API key that created the fulfillment request. See [Authentication](https://docs.rootplatform.com/reference/getting-started-1#created_by-field).
-        environment:
-          type: string
-          enum:
-          - sandbox
-          - production
-          description: Whether the payout request was created in Root's sandbox or production environment.
-        finalized_at:
-          type: string
-          format: date-time
-          description: The time at which the fulfillment request was finalized.
-        finalized_by:
-          type: object
-          description: An object indicating the user or API key that finalized the fulfillment request. See [Authentication](https://docs.rootplatform.com/reference/getting-started-1#created_by-field).
-      example:
-        fulfillment_request_id: 8f8b3469-82e9-4d5b-bcc5-f200af095a79
-        fulfillment_type_id: ad044686-6b6f-4ce6-878f-143039243f11
-        fulfillment_type:
-          fulfillment_type_id: ad044686-6b6f-4ce6-878f-143039243f11
-          key: repatriation
-          name: Repatriation
-          description: Cover for repatriation of remains
-        policy_id: 2800a20b-ce92-4463-a0de-75cd76d8bf22
-        claim_id: 80f8e67a-15e5-417c-9d29-dfc31a5b92bb
-        status: pending
-        fulfillment_data:
-          amount: '100000'
-          customer_account_number: 02870611321
-        created_at: '2022-06-07T12:52:55.014Z'
-        created_by:
-          type: user
-          id: 99ff4c56-577c-11e9-b47c-a3d0f3abd20c
-        environment: sandbox
-    cellphone-string:
-      type:
-      - string
-      - 'null'
-      description: '`null` and `""` allowed. String containing the cellphone number in international format.'
-      example: '+27821234567'
+  parameters:
+    fulfillment_request_id:
+      name: fulfillment_request_id
+      in: path
+      description: Must be a UUID. The unique identifier of the fulfillment request.
+      required: true
+      schema:
+        type: string
+        example: f84b3856-1358-4e12-bcf6-6732bc8b9522
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
   securitySchemes:
     basicAuth:
       type: http

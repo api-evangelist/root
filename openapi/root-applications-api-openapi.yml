@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 1.0.1
   title: Root Applications API
@@ -26,7 +26,7 @@ paths:
     post:
       operationId: create-application
       summary: Create an application
-      description: '**Note:** Additional custom fields may be required depending on how the [application hook](https://docs.rootplatform.com/docs/application-hook) is configured for the product module.'
+      description: '**Note:** Additional custom fields may be required depending on how the application hook is configured for the product module.'
       tags:
       - Applications
       x-additional-tags:
@@ -198,7 +198,7 @@ paths:
     put:
       operationId: requote-application
       summary: Requote an application
-      description: Note that additional fields may be required based on the product module type being used. See [product modules](doc:product-modules-overview) for more details.
+      description: Note that additional fields may be required based on the product module type being used. See product modules for more details.
       tags:
       - Applications
       x-additional-tags:
@@ -670,7 +670,7 @@ paths:
     put:
       operationId: update-application-beneficiaries
       summary: Update beneficiaries
-      description: This endpoint accepts an array of beneficiary objects as the body. The entire array of beneficiaries will be replaced. The number of beneficiaries cannot exceed the max defined in the [general settings](doc:general-settings). The percentages must add up to 100%.
+      description: This endpoint accepts an array of beneficiary objects as the body. The entire array of beneficiaries will be replaced. The number of beneficiaries cannot exceed the max defined in the general settings. The percentages must add up to 100%.
       tags:
       - Applications
       x-additional-tags:
@@ -1070,122 +1070,37 @@ paths:
                   type: application_alteration
 components:
   schemas:
-    beneficiaries:
-      type: array
-      description: '`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some product modules may require adding beneficiaries to a policy for claims to be processed.'
-      items:
-        type: object
-        description: Details for a single beneficiary.
-        required:
-        - beneficiary_id
-        - relationship
-        - percentage
-        properties:
-          beneficiary_id:
-            type: string
-            description: Must be a UUID. The unique identifier of the beneficiary.
-          policyholder_id:
-            type: string
-            description: Must be a UUID. The unique identifier of the policyholder. Only relevant if `relationship` is `policyholder`.
-          type:
-            type: string
-            description: The type of beneficiary.
-            enum:
-            - individual
-            - company
-            default: individual
-          first_name:
-            type: string
-            description: The beneficiary's first name.
-          last_name:
-            type: string
-            description: The beneficiary's last name.
-          title:
-            type: string
-            description: The beneficiary's title.
-            enum:
-            - mr
-            - mrs
-            - miss
-            - mx
-            - sir
-            - dr
-            - adv
-            - ms
-            - prof
-          gender:
-            type: string
-            description: The beneficiary's gender.
-            enum:
-            - male
-            - female
-          id:
-            type: object
-            description: (Individual beneficiaries only) The beneficiary's identification number, type and country.
-            properties:
-              type:
-                type: string
-                description: The beneficiary's identification type.
-                enum:
-                - id
-                - passport
-                - custom
-              number:
-                type: string
-                description: Depending on the type selected, either an ID number, passport number or custom identifier.
-              country:
-                type: string
-                description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`.
-            required:
-            - type
-            - number
-            - country
-          date_of_birth:
-            type:
-            - string
-            - 'null'
-            format: date
-            description: '`null` is allowed. The beneficiary''s date of birth.'
-          percentage:
-            type: integer
-            description: An integer representing the percentage of a claim payout that the beneficiary should receive. Note that the percentages across all beneficiaries should add up to 100%.
-          cellphone:
-            $ref: '#/components/schemas/cellphone-string'
-          email:
-            type: string
-            description: The beneficiary's email address.
-          relationship:
-            $ref: '#/components/schemas/beneficiary-relationship'
-          company_name:
-            type: string
-            description: The name of the company that the beneficiary represents. Required when `type = company`.
-          registration_number:
-            type: string
-            description: The company's registration number. Required when `type = company`.
-          payment_details:
-            $ref: '#/components/schemas/payment-details'
-        example:
-          first_name: Jared
-          last_name: Dunn
-          id:
-            type: id
-            number: '8704094800082'
-            country: ZA
-          percentage: 100
-          relationship: cousin_or_relative
-      example:
-      - first_name: Jared
-        last_name: Dunn
-        id:
-          type: id
-          number: '8704094800082'
-          country: ZA
-        percentage: 100
-        relationship: cousin_or_relative
-    application-alteration-packages:
-      type: array
-      items:
-        $ref: '#/components/schemas/application-alteration-package'
+    bank-name:
+      type: string
+      description: The name of the bank
+      enum:
+      - absa
+      - access
+      - african_bank
+      - al_baraka
+      - bank_of_china
+      - bank_of_lisbon
+      - bank_zero
+      - bidvest
+      - bidvest_bank_alliances
+      - capitec
+      - discovery_bank
+      - finbond_mutual
+      - fnb
+      - hbz
+      - investec
+      - ithala
+      - mercantile
+      - nedbank
+      - old_mutual
+      - postbank
+      - sasfin
+      - standard_bank
+      - sure
+      - tyme_bank
+      - ubank
+      - vbc_mutual_bank
+      - wizzit
     policy:
       type: object
       description: Policies are issued from applications, and represent binding insurance agreements. Parameters stored on the policy can be referenced in custom notifications, policy documents, data exports and external integrations. <br/><br/> See the [issuing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook) guide for more details.
@@ -1483,194 +1398,556 @@ components:
             country: ZA
           percentage: 100
           relationship: cousin_or_relative
-    application:
-      type: object
-      description: An application represents a "draft" policy, with all information captured and validated. Applications persist on Root (they do not expire), and can be reviewed and managed on the Root management dashboard. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [application hook](https://docs.rootplatform.com/docs/application-hook) guide for more details.
-      required:
-      - application_id
-      - policyholder_id
-      - product_module_definition_id
-      - status
-      - package_name
-      - sum_assured
-      - base_premium
-      - monthly_premium
-      - module
-      - created_at
-      - created_by
-      - billing_day
+    beneficiaries:
+      type: array
+      description: '`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some product modules may require adding beneficiaries to a policy for claims to be processed.'
+      items:
+        type: object
+        description: Details for a single beneficiary.
+        required:
+        - beneficiary_id
+        - relationship
+        - percentage
+        properties:
+          beneficiary_id:
+            type: string
+            description: Must be a UUID. The unique identifier of the beneficiary.
+          policyholder_id:
+            type: string
+            description: Must be a UUID. The unique identifier of the policyholder. Only relevant if `relationship` is `policyholder`.
+          type:
+            type: string
+            description: The type of beneficiary.
+            enum:
+            - individual
+            - company
+            default: individual
+          first_name:
+            type: string
+            description: The beneficiary's first name.
+          last_name:
+            type: string
+            description: The beneficiary's last name.
+          title:
+            type: string
+            description: The beneficiary's title.
+            enum:
+            - mr
+            - mrs
+            - miss
+            - mx
+            - sir
+            - dr
+            - adv
+            - ms
+            - prof
+          gender:
+            type: string
+            description: The beneficiary's gender.
+            enum:
+            - male
+            - female
+          id:
+            type: object
+            description: (Individual beneficiaries only) The beneficiary's identification number, type and country.
+            properties:
+              type:
+                type: string
+                description: The beneficiary's identification type.
+                enum:
+                - id
+                - passport
+                - custom
+              number:
+                type: string
+                description: Depending on the type selected, either an ID number, passport number or custom identifier.
+              country:
+                type: string
+                description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`.
+            required:
+            - type
+            - number
+            - country
+          date_of_birth:
+            type:
+            - string
+            - 'null'
+            format: date
+            description: '`null` is allowed. The beneficiary''s date of birth.'
+          percentage:
+            type: integer
+            description: An integer representing the percentage of a claim payout that the beneficiary should receive. Note that the percentages across all beneficiaries should add up to 100%.
+          cellphone:
+            $ref: '#/components/schemas/cellphone-string'
+          email:
+            type: string
+            description: The beneficiary's email address.
+          relationship:
+            $ref: '#/components/schemas/beneficiary-relationship'
+          company_name:
+            type: string
+            description: The name of the company that the beneficiary represents. Required when `type = company`.
+          registration_number:
+            type: string
+            description: The company's registration number. Required when `type = company`.
+          payment_details:
+            $ref: '#/components/schemas/payment-details'
+        example:
+          first_name: Jared
+          last_name: Dunn
+          id:
+            type: id
+            number: '8704094800082'
+            country: ZA
+          percentage: 100
+          relationship: cousin_or_relative
+      example:
+      - first_name: Jared
+        last_name: Dunn
+        id:
+          type: id
+          number: '8704094800082'
+          country: ZA
+        percentage: 100
+        relationship: cousin_or_relative
+    beneficiaries-request:
+      type: array
+      description: '`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some modules may require adding beneficiaries to a policy for claims to be processed.'
+      items:
+        type: object
+        required:
+        - first_name
+        - last_name
+        - percentage
+        - relationship
+        properties:
+          type:
+            type: string
+            description: The type of beneficiary to be created.
+            enum:
+            - individual
+            - company
+            default: individual
+          first_name:
+            type: string
+            description: The beneficiary's first name.
+          last_name:
+            type: string
+            description: The beneficiary's last name.
+          title:
+            type: string
+            description: The beneficiary's title.
+            enum:
+            - mr
+            - mrs
+            - miss
+            - mx
+            - sir
+            - dr
+            - adv
+            - ms
+            - prof
+          gender:
+            type: string
+            description: The beneficiary's gender.
+            enum:
+            - male
+            - female
+          id:
+            type: object
+            description: (Individual beneficiaries only) Object containing beneficiary's identification number, type and country.
+            properties:
+              type:
+                type: string
+                description: The beneficiary's identification type.
+                enum:
+                - id
+                - passport
+                - custom
+              number:
+                type: string
+                description: Depending on the type selected, either an ID number, passport number or custom identifier.
+              country:
+                type: string
+                description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`.
+            required:
+            - type
+            - number
+            - country
+          date_of_birth:
+            type:
+            - string
+            - 'null'
+            format: date
+            description: '`null` is allowed. An optional string containing the beneficiary''s date of birth.'
+          percentage:
+            type: integer
+            description: An integer representing the percentage of a claim payout that the beneficiary should receive. Note that the percentages across all beneficiaries should add up to 100%.
+          cellphone:
+            oneOf:
+            - $ref: '#/components/schemas/cellphone'
+            - $ref: '#/components/schemas/cellphone-string'
+          email:
+            type: string
+            description: The beneficiary's email address.
+          relationship:
+            $ref: '#/components/schemas/beneficiary-relationship'
+          company_name:
+            type: string
+            description: The name of the company that the beneficiary represents. Required when `type = company`.
+          registration_number:
+            type: string
+            description: The company's registration number. Required when `type = company`.
+          payment_details:
+            $ref: '#/components/schemas/payment-details'
+          policyholder_id:
+            type: string
+            description: Must be a UUID. The unique identifier of an existing policyholder to link as a beneficiary.
+          address:
+            type: object
+            description: The beneficiary's physical address.
+            properties:
+              line_1:
+                type: string
+                description: First line of the beneficiary's address.
+              line_2:
+                type:
+                - string
+                - 'null'
+                description: '`null` is allowed. Optional second line of the beneficiary''s address.'
+              suburb:
+                type: string
+                description: The beneficiary's suburb.
+              city:
+                type: string
+                description: The beneficiary's city.
+              country:
+                type: string
+                description: The beneficiary's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format.
+              area_code:
+                type: string
+                description: The beneficiary's area code.
+            required:
+            - line_1
+            - city
+            - country
+            - area_code
+        example:
+          first_name: Jared
+          last_name: Dunn
+          id:
+            type: id
+            number: '8704094800082'
+            country: ZA
+          percentage: 100
+          relationship: cousin_or_relative
+          payment_details:
+            type: eft
+            details:
+              bank_name: absa
+              branch_code: '632005'
+              account_number: '23234342424'
+              account_type: cheque_account
+      example:
+      - first_name: Mary
+        last_name: Yang
+        percentage: 90
+        title: mrs
+        gender: female
+        id:
+          type: id
+          number: '9504014800082'
+          country: ZA
+        email: mary@piedpiper.com
+        relationship: spouse
+        cellphone: '+27821234567'
+        payment_details:
+          type: eft
+          details:
+            account_number: '01304055557'
+            account_type: cheque_account
+            bank_name: nedbank
+            branch_code: '20177778'
+        type: individual
+      - first_name: Erlich
+        last_name: Aviatio
+        percentage: 10
+        title: mr
+        email: erlich@aviatio.com
+        relationship: other
+        cellphone: '+27783456578'
+        payment_details:
+          type: eft
+          details:
+            account_number: '546767819'
+            account_type: cheque_account
+            bank_name: investec
+            branch_code: '201507'
+        company_name: Pied Piper
+        registration_number: CC1234
+        type: company
+    applications:
+      type: array
+      items:
+        $ref: '#/components/schemas/application'
+    cellphone:
+      type:
+      - object
+      - 'null'
+      description: '`null` and `""` allowed. Object containing the cellphone number in national format, and the corresponding alpha 2 country code.'
       properties:
-        application_id:
+        number:
           type: string
-          description: Must be a UUID. Unique identifier of the application.
-        policyholder_id:
+          description: The cellphone number.
+        country:
           type: string
-          description: Must be a UUID. The unique identifier of the policyholder linked to the application.
-        product_module_definition_id:
+          description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the cellphone number.
+      required:
+      - number
+      - country
+      example:
+        number: 0821234567
+        country: ZA
+    application-alteration-packages:
+      type: array
+      items:
+        $ref: '#/components/schemas/application-alteration-package'
+    policy-status:
+      type: string
+      description: The policy status. See the [managing policies](https://docs.rootplatform.com/docs/policy-administration#policy-lifecycle) guide for more details on the policy lifecycle.
+      enum:
+      - pending_initial_payment
+      - active
+      - cancelled
+      - expired
+      - lapsed
+      - not_taken_up
+    payment-method:
+      type: object
+      required:
+      - payment_method_id
+      - type
+      - created_at
+      - organization_id
+      - policyholder_id
+      properties:
+        payment_method_id:
           type: string
-          description: Must be a UUID. Unique identifier of the product module definition associated with the application. Determined by the product module definition associated with the quote from which the application was created.
-        status:
-          description: The status of the application. One of `pending`, `issued`, or `cancelled`.
+          description: Must be a UUID. The Unique identifier for the payment method.
+        type:
           type: string
-          enum:
-          - pending
-          - issued
-          - cancelled
-        package_name:
-          type: string
-          description: The package name.
-        sum_assured:
-          type: integer
-          description: The maximum insured value in cents.
-        base_premium:
-          type: integer
-          description: The combined risk and platform fee in cents. `monthly_premium` is calculated from this.
-        monthly_premium:
-          type: integer
-          description: The total monthly premium, in cents, of the application. This is the total premium that will be billed to the policyholder after the policy is issued.
-        module:
-          type: object
-          description: Custom, product-specific information saved to the application for later reference. These parameters are set in the [application hook](https://docs.rootplatform.com/docs/application-hook) in the product module code.
-          additionalProperties: true
-        restricted_data:
-          type: object
-          description: Optional restricted product-specific information saved to the application. This field is only returned when the requestee has access to restricted application module data.
-          additionalProperties: true
+          description: The payment method type. Except for external payment methods, must be one of `debit_order`, `card`, `eft`, `collection_module`. For external payment methods, will correspond to the custom `key` field.
         created_at:
           type: string
           format: date-time
-          description: The date at which the quote package was created..
-        created_by:
-          type:
-          - object
-          - 'null'
-          description: '`null` is allowed. An object indicating the user or API key that created the application.'
-        billing_day:
-          type:
-          - integer
-          - 'null'
-          description: '`null` is allowed. The day of month on which the policy to write will be billed on. Should be between 1 and 31, or `null`. If it falls on a day that does not exist in the month (for example, 31 in February) the policy to be written will be billed on the last day of that month. Setting this value to 31 will ensure that the policy to be written will be billed on the last day of every month.'
-        currency:
+          description: The date and time at which the payment method was created.
+        updated_at:
           type: string
-          description: The currency used for the quote package, in [ISO 4217] (https://en.wikipedia.org/wiki/ISO_4217) format.
-        billing_frequency:
+          format: date-time
+          description: The date and time at which the payment method was last updated.
+        organization_id:
           type: string
-          enum:
-          - monthly
-          - yearly
-          - once_off
-          description: The frequency at which the policy will be billed. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency.
-        beneficiaries:
-          $ref: '#/components/schemas/beneficiaries'
-        input_data:
-          type:
-          - object
-          - 'null'
-          description: Application input parameters as received over the [create an application](https://docs.rootplatform.com/reference/create-an-application) endpoint.
-          additionalProperties: true
-        payment_method_id:
+          description: Must be a UUID. The unique identifier of the related organisation.
+        policyholder_id:
           type: string
-          description: Must be a UUID. The unique identifier of the payment method linked to the application.
-        type:
-          type: string
-          description: The type of the application. One of `requote` or `new_policy`.
-          enum:
-          - requote
-          - new_policy
-        quote_package_id:
-          type: string
-          description: Must be a UUID. The unique identifier of the quote package from which the application was created.
-        policy:
-          $ref: '#/components/schemas/policy'
-          description: The policy object linked to the application. Only included when `?include=policy` is specified.
+          description: Must be a UUID. The unique identifier of the policyholder the payment method is linked to.
         policyholder:
           $ref: '#/components/schemas/policyholder'
-          description: The policyholder object linked to the application. Only included when `?include=policyholder` is specified.
-        quote_package:
-          $ref: '#/components/schemas/quote-package'
-          description: The quote package object from which the application was created. Only included when `?include=quote_package` is specified.
-        cancelled_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the application was cancelled, if applicable.
-        reason_cancelled:
-          type:
-          - string
-          - 'null'
-          description: Reason the application was cancelled.
-        cancellation_requestor:
-          type:
-          - string
-          - 'null'
-          description: Whether the customer (`client`) or insurer (`insurer`) initiated cancellation.
-        cancellation_type:
-          type:
-          - string
-          - 'null'
-          description: Cancellation reason code. Defaults are platform-defined; a product module may override allowed values when configured.
-      example:
-        application_id: 02e2ce3b-a235-48ea-8415-c58440f631bd
-        policyholder_id: 246ee082-9f88-44b7-b51c-22a1f1a9a19e
-        payment_method_id: 7c3e8f2a-1d4b-5e6f-9a0b-c1d2e3f4a5b6
-        package_name: Theft + comprehensive
-        sum_assured: 1199900
-        monthly_premium: 16999
-        base_premium: 16999
+          description: The policyholder object linked to the payment method. Only included when `?include=policyholder` is specified.
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/policy'
+          description: An array of policy objects linked to the payment method. Only included when `?include=policies` is specified.
+        bank_details:
+          type: object
+          description: Required if `type` is `debit_order`. Bank details for the debit order.
+          required:
+          - account_holder
+          - bank
+          - branch_code
+          - account_number
+          - account_type
+          properties:
+            account_holder:
+              type: string
+              description: Name of account holder.
+            account_holder_identification:
+              type:
+              - object
+              - 'null'
+              description: '`null` is allowed. An object containing the identification details of the account holder.'
+              required:
+              - type
+              - number
+              - country
+              properties:
+                type:
+                  type: string
+                  description: The type of identity document.
+                  enum:
+                  - id
+                  - passport
+                number:
+                  type: string
+                  description: The identity document number.
+                country:
+                  type: string
+                  description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the identification document.
+                expiration_date:
+                  type: string
+                  format: date-time
+                  description: The expiration date of the lead's passport.
+            bank:
+              $ref: '#/components/schemas/bank-name'
+            branch_code:
+              type: string
+              description: Branch code for bank account.
+            account_number:
+              type: string
+              description: Bank account number.
+            account_type:
+              type: string
+              description: Bank account type.
+              enum:
+              - cheque
+              - savings
+            banv_status:
+              type: string
+              description: The [bank account verification status](doc:account-verification-banvavs#reporting-on-payment-methods).
+              enum:
+              - pending
+              - processing
+              - verified
+              - failed_verification
+              - blocked
+            blocked_reason:
+              type:
+              - string
+              - 'null'
+              description: The reason the payment method is blocked. Only relevant if `banv_status` is `blocked`.
+            banv_response:
+              type:
+              - string
+              - 'null'
+              description: The response received when bank account verification was attempted.
+            payment_method_id:
+              type: string
+              description: Must be a UUID. The unique identifier of the payment method.
+        card:
+          type: object
+          description: Details of the payment card. Required if `type` is `card`.
+          required:
+          - bin
+          - holder
+          - brand
+          - expiry_month
+          - expiry_year
+          - last_4_digits
+          properties:
+            bin:
+              type: string
+              description: The bank identification number.
+            holder:
+              type: string
+              description: The name of the cardholder.
+            brand:
+              type: string
+              description: The brand of the card.
+            expiry_month:
+              type: string
+              description: The month of the card's exiry date.
+            expiry_year:
+              type: string
+              description: The year of the card's exiry date.
+            last_4_digits:
+              type: string
+              description: The last four digits of the card number.
+            registration:
+              type: string
+              description: The registration ID of the card.
+        external_reference:
+          type: string
+          description: The external identifier of the payment method. Required if `type` is `external`.
+        banv_status:
+          type: string
+          description: The [bank account verification status](doc:account-verification-banvavs#reporting-on-payment-methods). Only relevant if `type` is `external`.
+          enum:
+          - pending
+          - processing
+          - verified
+          - failed_verification
+          - blocked
+        blocked_reason:
+          type: string
+          description: The reason the payment method is blocked. Only relevant if `banv_status` is `blocked` and `type` is `external`.
+        collection_module_definition_id:
+          type: string
+          description: The unique identifier of the collection module definition that the payment method is linked to. Only relevant if `type` is `collection_module`.
+        collection_module_key:
+          type: string
+          description: The key of the collection module that the payment method is linked to. Only relevant if `type` is `collection_module`.
         module:
-          make: Apple
-          type: root_gadgets
-          model: iPhone 6S 64GB LTE
-          serial_number: 0123456789
-        restricted_data:
-          underwriting_score: 85
-        created_at: '2023-02-03T11:17:49.009Z'
-        created_by:
-          type: api_key
-          id: b6565862-cc6e-4563-85d3-659894338cda
-          owner_id: e17f06ce-2a6a-4864-b826-19a83270eab4
-        currency: ZAR
-        product_module_definition_id: 4889a9e0-d5f9-4971-8ac2-2175a9d15477
-        billing_frequency: monthly
-        billing_day: 1
-        status: pending
-        type: new_policy
-        beneficiaries:
-        - beneficiary_id: cd444567-10d5-47f5-a0cc-34e262266359
-          policyholder_id: 246ee082-9f88-44b7-b51c-22a1f1a9a19e
-          percentage: 100
-          relationship: policyholder
-        quote_package_id: 3822b8fb-43e7-43f7-94ad-63e94e6ce1e3
-    beneficiary-relationship:
-      type: string
-      description: The beneficiary's relationship to the policyholder.
-      enum:
-      - main_member
-      - spouse
-      - parent
-      - son
-      - daughter
-      - aunt_or_uncle
-      - grandparent
-      - cousin_or_relative
-      - brother
-      - sister
-      - employer
-      - policyholder
-      - credit_provider
-      - cessionary
-      - estate
-      - trust
-      - guardian_fund
-      - funeral_parlour
-      - son_in_law
-      - daughter_in_law
-      - mother_in_law
-      - father_in_law
-      - grandchild
-      - niece_or_nephew
-      - other
+          type: object
+          description: Custom module-specific data for collection module payment methods. Only relevant if `type` is `collection_module`.
+          additionalProperties: true
+        collection_module:
+          type: object
+          description: The collection module object linked to the payment method. Only included when `?include=collection_module` is specified and `type` is `collection_module`.
+          additionalProperties: true
+        updated_by:
+          type: object
+          description: An object indicating the user or API key that last updated the payment method. Only relevant if `type` is `collection_module`.
+      example:
+        payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
+        type: debit_order
+        organization_id: 952bfef5-7517-47ff-bf41-08c5a66c52db
+        policyholder_id: f91f4ea4-9c6d-459e-998b-a5711cbd8895
+        created_at: '2021-01-29T13:12:00.968Z'
+        updated_at: '2021-01-29T13:12:00.968Z'
+        bank_details:
+          account_holder: Erlich Bachman
+          bank: absa
+          branch_code: '12345'
+          account_number: '123456789'
+          account_type: cheque
+          banv_status: pending
+    payment-details:
+      type: object
+      description: Details of the account into which the payout should be made.
+      required:
+      - type
+      - details
+      properties:
+        type:
+          type: string
+          description: The type of account into which the payout should be made.  For a beneficiary, this must be `eft`.
+          enum:
+          - eft
+          - card
+        details:
+          type: object
+          description: The bank account details.
+          required:
+          - bank_name
+          - branch_code
+          - account_type
+          - account_number
+          properties:
+            bank_name:
+              $ref: '#/components/schemas/bank-name'
+            branch_code:
+              type: string
+              description: The branch code for the account.
+            account_type:
+              type: string
+              description: The account type.
+              enum:
+              - cheque_account
+              - savings
+            account_number:
+              type: string
+              description: The account number.
     application-alteration-hook:
       type: object
       required:
@@ -1756,57 +2033,120 @@ components:
             type: user
             id: 00000000-0000-0000-0000-000000000001
           type: application_alteration
-    notes:
-      type: array
-      items:
-        $ref: '#/components/schemas/note'
-    note:
+    beneficiary-relationship:
+      type: string
+      description: The beneficiary's relationship to the policyholder.
+      enum:
+      - main_member
+      - spouse
+      - parent
+      - son
+      - daughter
+      - aunt_or_uncle
+      - grandparent
+      - cousin_or_relative
+      - brother
+      - sister
+      - employer
+      - policyholder
+      - credit_provider
+      - cessionary
+      - estate
+      - trust
+      - guardian_fund
+      - funeral_parlour
+      - son_in_law
+      - daughter_in_law
+      - mother_in_law
+      - father_in_law
+      - grandchild
+      - niece_or_nephew
+      - other
+    quote-package:
       type: object
+      description: Quote packages are designed to be low-fidelity and fast to generate,  and are used to generate and display new quotes rapidly on a customer-facing front-end.  They expire after one week. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide  and the [quote hook](https://docs.rootplatform.com/docs/quote-hook) guide for more details.
       required:
-      - text
+      - quote_package_id
+      - package_name
+      - sum_assured
+      - base_premium
+      - suggested_premium
+      - module
       - created_at
+      - currency
+      - billing_frequency
+      - product_module_definition_id
       properties:
-        text:
+        quote_package_id:
           type: string
-          description: A string of text for the note.
+          description: Must be a UUID. Unique identifier of the quote package.
+        package_name:
+          type: string
+          description: The package name.
+        sum_assured:
+          type: integer
+          description: The maximum insured value in cents.
+        base_premium:
+          type: integer
+          description: The combined risk and platform fee in cents. `monthly_premium` should be calculated from this.
+        suggested_premium:
+          type: integer
+          description: The suggested `monthly_premium` amount in cents. This is the total premium for display to the customer.
+        module:
+          type: object
+          description: Custom, product-specific information saved to the quote for later reference.  These parameters are set in the [quote hook](https://docs.rootplatform.com/docs/quote-hook) in the product module code.
+          additionalProperties: true
+        restricted_data:
+          type: object
+          description: Optional restricted product-specific information saved to the quote. This field is only returned when the requestee has access to restricted quote module data.
+          additionalProperties: true
+        input_data:
+          type: object
+          description: Quote input parameters as received over the [create a quote](https://docs.rootplatform.com/reference/getting-a-quote-2) endpoint.
+          additionalProperties: true
         created_at:
           type: string
           format: date-time
-          description: Time at which the attachment was created.
+          description: The date/time at which the quote package was created.
+        currency:
+          type: string
+          description: The currency used for the quote package, in [ISO 4217] (https://en.wikipedia.org/wiki/ISO_4217) format.
+        billing_frequency:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          - once_off
+          description: The frequency at which the policy will be billed. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency.
+        product_module_definition_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the product module definition associated with this quote package. If a policy is issued from this quote, this product module definition will be associated with the policy.
       example:
-        text: Customer spoke to Erlich previously
-        created_at: '2022-10-16T10:12:02.872Z'
-        requested_by:
-          type: user
-          id: 00000000-0000-0000-0000-000000000001
-    cellphone:
+        quote_package_id: 3822b8fb-43e7-43f7-94ad-63e94e6ce1e3
+        package_name: Theft + comprehensive
+        sum_assured: 1199900
+        base_premium: 14999
+        suggested_premium: 18749
+        module:
+          type: root_gadgets
+          make: Apple
+          model: iPhone 6S 64GB LTE
+        restricted_data:
+          internal_commission_bps: 2500
+        created_at: '2023-02-03T11:17:09.747Z'
+        currency: ZAR
+        billing_frequency: monthly
+        product_module_definition_id: 4889a9e0-d5f9-4971-8ac2-2175a9d15477
+    cellphone-string:
       type:
-      - object
+      - string
       - 'null'
-      description: '`null` and `""` allowed. Object containing the cellphone number in national format, and the corresponding alpha 2 country code.'
-      properties:
-        number:
-          type: string
-          description: The cellphone number.
-        country:
-          type: string
-          description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the cellphone number.
-      required:
-      - number
-      - country
-      example:
-        number: 0821234567
-        country: ZA
-    policy-status:
-      type: string
-      description: The policy status. See the [managing policies](https://docs.rootplatform.com/docs/policy-administration#policy-lifecycle) guide for more details on the policy lifecycle.
-      enum:
-      - pending_initial_payment
-      - active
-      - cancelled
-      - expired
-      - lapsed
-      - not_taken_up
+      description: '`null` and `""` allowed. String containing the cellphone number in international format.'
+      example: '+27821234567'
+    application-alteration-hooks:
+      type: array
+      items:
+        $ref: '#/components/schemas/application-alteration-hook'
     policyholder:
       type: object
       required:
@@ -2012,493 +2352,25 @@ components:
           city: Los Angeles
           country: US
           area_code: CA 91364
-    application-alteration-hooks:
-      type: array
-      items:
-        $ref: '#/components/schemas/application-alteration-hook'
-    payment-method:
+    note:
       type: object
       required:
-      - payment_method_id
-      - type
+      - text
       - created_at
-      - organization_id
-      - policyholder_id
       properties:
-        payment_method_id:
+        text:
           type: string
-          description: Must be a UUID. The Unique identifier for the payment method.
-        type:
-          type: string
-          description: The payment method type. Except for external payment methods, must be one of `debit_order`, `card`, `eft`, `collection_module`. For external payment methods, will correspond to the custom `key` field.
+          description: A string of text for the note.
         created_at:
           type: string
           format: date-time
-          description: The date and time at which the payment method was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: The date and time at which the payment method was last updated.
-        organization_id:
-          type: string
-          description: Must be a UUID. The unique identifier of the related organisation.
-        policyholder_id:
-          type: string
-          description: Must be a UUID. The unique identifier of the policyholder the payment method is linked to.
-        policyholder:
-          $ref: '#/components/schemas/policyholder'
-          description: The policyholder object linked to the payment method. Only included when `?include=policyholder` is specified.
-        policies:
-          type: array
-          items:
-            $ref: '#/components/schemas/policy'
-          description: An array of policy objects linked to the payment method. Only included when `?include=policies` is specified.
-        bank_details:
-          type: object
-          description: Required if `type` is `debit_order`. Bank details for the debit order.
-          required:
-          - account_holder
-          - bank
-          - branch_code
-          - account_number
-          - account_type
-          properties:
-            account_holder:
-              type: string
-              description: Name of account holder.
-            account_holder_identification:
-              type:
-              - object
-              - 'null'
-              description: '`null` is allowed. An object containing the identification details of the account holder.'
-              required:
-              - type
-              - number
-              - country
-              properties:
-                type:
-                  type: string
-                  description: The type of identity document.
-                  enum:
-                  - id
-                  - passport
-                number:
-                  type: string
-                  description: The identity document number.
-                country:
-                  type: string
-                  description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the identification document.
-                expiration_date:
-                  type: string
-                  format: date-time
-                  description: The expiration date of the lead's passport.
-            bank:
-              $ref: '#/components/schemas/bank-name'
-            branch_code:
-              type: string
-              description: Branch code for bank account.
-            account_number:
-              type: string
-              description: Bank account number.
-            account_type:
-              type: string
-              description: Bank account type.
-              enum:
-              - cheque
-              - savings
-            banv_status:
-              type: string
-              description: The [bank account verification status](doc:account-verification-banvavs#reporting-on-payment-methods).
-              enum:
-              - pending
-              - processing
-              - verified
-              - failed_verification
-              - blocked
-            blocked_reason:
-              type:
-              - string
-              - 'null'
-              description: The reason the payment method is blocked. Only relevant if `banv_status` is `blocked`.
-            banv_response:
-              type:
-              - string
-              - 'null'
-              description: The response received when bank account verification was attempted.
-            payment_method_id:
-              type: string
-              description: Must be a UUID. The unique identifier of the payment method.
-        card:
-          type: object
-          description: Details of the payment card. Required if `type` is `card`.
-          required:
-          - bin
-          - holder
-          - brand
-          - expiry_month
-          - expiry_year
-          - last_4_digits
-          properties:
-            bin:
-              type: string
-              description: The bank identification number.
-            holder:
-              type: string
-              description: The name of the cardholder.
-            brand:
-              type: string
-              description: The brand of the card.
-            expiry_month:
-              type: string
-              description: The month of the card's exiry date.
-            expiry_year:
-              type: string
-              description: The year of the card's exiry date.
-            last_4_digits:
-              type: string
-              description: The last four digits of the card number.
-            registration:
-              type: string
-              description: The registration ID of the card.
-        external_reference:
-          type: string
-          description: The external identifier of the payment method. Required if `type` is `external`.
-        banv_status:
-          type: string
-          description: The [bank account verification status](doc:account-verification-banvavs#reporting-on-payment-methods). Only relevant if `type` is `external`.
-          enum:
-          - pending
-          - processing
-          - verified
-          - failed_verification
-          - blocked
-        blocked_reason:
-          type: string
-          description: The reason the payment method is blocked. Only relevant if `banv_status` is `blocked` and `type` is `external`.
-        collection_module_definition_id:
-          type: string
-          description: The unique identifier of the collection module definition that the payment method is linked to. Only relevant if `type` is `collection_module`.
-        collection_module_key:
-          type: string
-          description: The key of the collection module that the payment method is linked to. Only relevant if `type` is `collection_module`.
-        module:
-          type: object
-          description: Custom module-specific data for collection module payment methods. Only relevant if `type` is `collection_module`.
-          additionalProperties: true
-        collection_module:
-          type: object
-          description: The collection module object linked to the payment method. Only included when `?include=collection_module` is specified and `type` is `collection_module`.
-          additionalProperties: true
-        updated_by:
-          type: object
-          description: An object indicating the user or API key that last updated the payment method. Only relevant if `type` is `collection_module`.
+          description: Time at which the attachment was created.
       example:
-        payment_method_id: e0b7b222-772f-47ac-b08d-c7ba38aa1b25
-        type: debit_order
-        organization_id: 952bfef5-7517-47ff-bf41-08c5a66c52db
-        policyholder_id: f91f4ea4-9c6d-459e-998b-a5711cbd8895
-        created_at: '2021-01-29T13:12:00.968Z'
-        updated_at: '2021-01-29T13:12:00.968Z'
-        bank_details:
-          account_holder: Erlich Bachman
-          bank: absa
-          branch_code: '12345'
-          account_number: '123456789'
-          account_type: cheque
-          banv_status: pending
-    cellphone-string:
-      type:
-      - string
-      - 'null'
-      description: '`null` and `""` allowed. String containing the cellphone number in international format.'
-      example: '+27821234567'
-    beneficiaries-request:
-      type: array
-      description: '`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some modules may require adding beneficiaries to a policy for claims to be processed.'
-      items:
-        type: object
-        required:
-        - first_name
-        - last_name
-        - percentage
-        - relationship
-        properties:
-          type:
-            type: string
-            description: The type of beneficiary to be created.
-            enum:
-            - individual
-            - company
-            default: individual
-          first_name:
-            type: string
-            description: The beneficiary's first name.
-          last_name:
-            type: string
-            description: The beneficiary's last name.
-          title:
-            type: string
-            description: The beneficiary's title.
-            enum:
-            - mr
-            - mrs
-            - miss
-            - mx
-            - sir
-            - dr
-            - adv
-            - ms
-            - prof
-          gender:
-            type: string
-            description: The beneficiary's gender.
-            enum:
-            - male
-            - female
-          id:
-            type: object
-            description: (Individual beneficiaries only) Object containing beneficiary's identification number, type and country.
-            properties:
-              type:
-                type: string
-                description: The beneficiary's identification type.
-                enum:
-                - id
-                - passport
-                - custom
-              number:
-                type: string
-                description: Depending on the type selected, either an ID number, passport number or custom identifier.
-              country:
-                type: string
-                description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`.
-            required:
-            - type
-            - number
-            - country
-          date_of_birth:
-            type:
-            - string
-            - 'null'
-            format: date
-            description: '`null` is allowed. An optional string containing the beneficiary''s date of birth.'
-          percentage:
-            type: integer
-            description: An integer representing the percentage of a claim payout that the beneficiary should receive. Note that the percentages across all beneficiaries should add up to 100%.
-          cellphone:
-            oneOf:
-            - $ref: '#/components/schemas/cellphone'
-            - $ref: '#/components/schemas/cellphone-string'
-          email:
-            type: string
-            description: The beneficiary's email address.
-          relationship:
-            $ref: '#/components/schemas/beneficiary-relationship'
-          company_name:
-            type: string
-            description: The name of the company that the beneficiary represents. Required when `type = company`.
-          registration_number:
-            type: string
-            description: The company's registration number. Required when `type = company`.
-          payment_details:
-            $ref: '#/components/schemas/payment-details'
-          policyholder_id:
-            type: string
-            description: Must be a UUID. The unique identifier of an existing policyholder to link as a beneficiary.
-          address:
-            type: object
-            description: The beneficiary's physical address.
-            properties:
-              line_1:
-                type: string
-                description: First line of the beneficiary's address.
-              line_2:
-                type:
-                - string
-                - 'null'
-                description: '`null` is allowed. Optional second line of the beneficiary''s address.'
-              suburb:
-                type: string
-                description: The beneficiary's suburb.
-              city:
-                type: string
-                description: The beneficiary's city.
-              country:
-                type: string
-                description: The beneficiary's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format.
-              area_code:
-                type: string
-                description: The beneficiary's area code.
-            required:
-            - line_1
-            - city
-            - country
-            - area_code
-        example:
-          first_name: Jared
-          last_name: Dunn
-          id:
-            type: id
-            number: '8704094800082'
-            country: ZA
-          percentage: 100
-          relationship: cousin_or_relative
-          payment_details:
-            type: eft
-            details:
-              bank_name: absa
-              branch_code: '632005'
-              account_number: '23234342424'
-              account_type: cheque_account
-      example:
-      - first_name: Mary
-        last_name: Yang
-        percentage: 90
-        title: mrs
-        gender: female
-        id:
-          type: id
-          number: '9504014800082'
-          country: ZA
-        email: mary@piedpiper.com
-        relationship: spouse
-        cellphone: '+27821234567'
-        payment_details:
-          type: eft
-          details:
-            account_number: '01304055557'
-            account_type: cheque_account
-            bank_name: nedbank
-            branch_code: '20177778'
-        type: individual
-      - first_name: Erlich
-        last_name: Aviatio
-        percentage: 10
-        title: mr
-        email: erlich@aviatio.com
-        relationship: other
-        cellphone: '+27783456578'
-        payment_details:
-          type: eft
-          details:
-            account_number: '546767819'
-            account_type: cheque_account
-            bank_name: investec
-            branch_code: '201507'
-        company_name: Pied Piper
-        registration_number: CC1234
-        type: company
-    payment-details:
-      type: object
-      description: Details of the account into which the payout should be made.
-      required:
-      - type
-      - details
-      properties:
-        type:
-          type: string
-          description: The type of account into which the payout should be made.  For a beneficiary, this must be `eft`.
-          enum:
-          - eft
-          - card
-        details:
-          type: object
-          description: The bank account details.
-          required:
-          - bank_name
-          - branch_code
-          - account_type
-          - account_number
-          properties:
-            bank_name:
-              $ref: '#/components/schemas/bank-name'
-            branch_code:
-              type: string
-              description: The branch code for the account.
-            account_type:
-              type: string
-              description: The account type.
-              enum:
-              - cheque_account
-              - savings
-            account_number:
-              type: string
-              description: The account number.
-    quote-package:
-      type: object
-      description: Quote packages are designed to be low-fidelity and fast to generate,  and are used to generate and display new quotes rapidly on a customer-facing front-end.  They expire after one week. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide  and the [quote hook](https://docs.rootplatform.com/docs/quote-hook) guide for more details.
-      required:
-      - quote_package_id
-      - package_name
-      - sum_assured
-      - base_premium
-      - suggested_premium
-      - module
-      - created_at
-      - currency
-      - billing_frequency
-      - product_module_definition_id
-      properties:
-        quote_package_id:
-          type: string
-          description: Must be a UUID. Unique identifier of the quote package.
-        package_name:
-          type: string
-          description: The package name.
-        sum_assured:
-          type: integer
-          description: The maximum insured value in cents.
-        base_premium:
-          type: integer
-          description: The combined risk and platform fee in cents. `monthly_premium` should be calculated from this.
-        suggested_premium:
-          type: integer
-          description: The suggested `monthly_premium` amount in cents. This is the total premium for display to the customer.
-        module:
-          type: object
-          description: Custom, product-specific information saved to the quote for later reference.  These parameters are set in the [quote hook](https://docs.rootplatform.com/docs/quote-hook) in the product module code.
-          additionalProperties: true
-        restricted_data:
-          type: object
-          description: Optional restricted product-specific information saved to the quote. This field is only returned when the requestee has access to restricted quote module data.
-          additionalProperties: true
-        input_data:
-          type: object
-          description: Quote input parameters as received over the [create a quote](https://docs.rootplatform.com/reference/getting-a-quote-2) endpoint.
-          additionalProperties: true
-        created_at:
-          type: string
-          format: date-time
-          description: The date/time at which the quote package was created.
-        currency:
-          type: string
-          description: The currency used for the quote package, in [ISO 4217] (https://en.wikipedia.org/wiki/ISO_4217) format.
-        billing_frequency:
-          type: string
-          enum:
-          - monthly
-          - yearly
-          - once_off
-          description: The frequency at which the policy will be billed. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency.
-        product_module_definition_id:
-          type: string
-          description: Must be a UUID. Unique identifier of the product module definition associated with this quote package. If a policy is issued from this quote, this product module definition will be associated with the policy.
-      example:
-        quote_package_id: 3822b8fb-43e7-43f7-94ad-63e94e6ce1e3
-        package_name: Theft + comprehensive
-        sum_assured: 1199900
-        base_premium: 14999
-        suggested_premium: 18749
-        module:
-          type: root_gadgets
-          make: Apple
-          model: iPhone 6S 64GB LTE
-        restricted_data:
-          internal_commission_bps: 2500
-        created_at: '2023-02-03T11:17:09.747Z'
-        currency: ZAR
-        billing_frequency: monthly
-        product_module_definition_id: 4889a9e0-d5f9-4971-8ac2-2175a9d15477
+        text: Customer spoke to Erlich previously
+        created_at: '2022-10-16T10:12:02.872Z'
+        requested_by:
+          type: user
+          id: 00000000-0000-0000-0000-000000000001
     payment-charge-type:
       type: string
       description: Variable charges are applied as a proportion of the total payment amount. Fixed charges are applied as an absolute currency value in cents. The `balance` is the balance of the payment total after all charges have been applied.
@@ -2506,62 +2378,6 @@ components:
       - fixed
       - variable
       - balance
-    attachment:
-      type: object
-      required:
-      - file_name
-      - description
-      - file_type
-      - file_url
-      - created_at
-      - requested_by
-      properties:
-        file_name:
-          type: string
-          description: The name of the file (with file extension).
-        description:
-          type: string
-          description: A tag describing what the document is about (e.g. affidavit, etc.).
-        file_type:
-          type: string
-          description: The mime type of the attachment (e.g. image/png).
-        file_url:
-          type: string
-          format: uri
-          description: The URL to download the attachment file.
-        created_at:
-          type: string
-          format: date-time
-          description: Time at which the attachment was created.
-        requested_by:
-          type: object
-          description: An object indicating the user or API key that created the attachment. See [Authentication](#client-apps).
-          properties:
-            type:
-              type: string
-              description: The type of the creator (e.g., user, api_key).
-            id:
-              type: string
-              description: The identifier of the creator.
-            owner_id:
-              type: string
-              description: The identifier of the owner (only present for API key requests).
-          required:
-          - type
-        type:
-          type: string
-          description: The event type associated with the attachment (e.g., attachment_created). This field is only present when the attachment is returned as part of an event.
-      example:
-        file_name: report.pdf
-        file_type: application/pdf
-        file_url: https://sandbox.rootplatform.com/v1/files/download/00000000-0000-0000-0000-000000000001
-        description: quote
-        type: attachment_created
-        created_at: '2025-11-10T14:33:50.095Z'
-        requested_by:
-          type: api_key
-          id: 00000000-0000-0000-0000-000000000001
-          owner_id: 00000000-0000-0000-0000-000000000001
     application-alteration-package:
       type: object
       required:
@@ -2656,41 +2472,225 @@ components:
           spouse_cover: true
         application_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
         alteration_hook_key: update_cover_amount
-    bank-name:
-      type: string
-      description: The name of the bank
-      enum:
-      - absa
-      - access
-      - african_bank
-      - al_baraka
-      - bank_of_china
-      - bank_of_lisbon
-      - bank_zero
-      - bidvest
-      - bidvest_bank_alliances
-      - capitec
-      - discovery_bank
-      - finbond_mutual
-      - fnb
-      - hbz
-      - investec
-      - ithala
-      - mercantile
-      - nedbank
-      - old_mutual
-      - postbank
-      - sasfin
-      - standard_bank
-      - sure
-      - tyme_bank
-      - ubank
-      - vbc_mutual_bank
-      - wizzit
-    applications:
+    notes:
       type: array
       items:
-        $ref: '#/components/schemas/application'
+        $ref: '#/components/schemas/note'
+    attachment:
+      type: object
+      required:
+      - file_name
+      - description
+      - file_type
+      - file_url
+      - created_at
+      - requested_by
+      properties:
+        file_name:
+          type: string
+          description: The name of the file (with file extension).
+        description:
+          type: string
+          description: A tag describing what the document is about (e.g. affidavit, etc.).
+        file_type:
+          type: string
+          description: The mime type of the attachment (e.g. image/png).
+        file_url:
+          type: string
+          format: uri
+          description: The URL to download the attachment file.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the attachment was created.
+        requested_by:
+          type: object
+          description: An object indicating the user or API key that created the attachment. See [Authentication](#client-apps).
+          properties:
+            type:
+              type: string
+              description: The type of the creator (e.g., user, api_key).
+            id:
+              type: string
+              description: The identifier of the creator.
+            owner_id:
+              type: string
+              description: The identifier of the owner (only present for API key requests).
+          required:
+          - type
+        type:
+          type: string
+          description: The event type associated with the attachment (e.g., attachment_created). This field is only present when the attachment is returned as part of an event.
+      example:
+        file_name: report.pdf
+        file_type: application/pdf
+        file_url: https://sandbox.rootplatform.com/v1/files/download/00000000-0000-0000-0000-000000000001
+        description: quote
+        type: attachment_created
+        created_at: '2025-11-10T14:33:50.095Z'
+        requested_by:
+          type: api_key
+          id: 00000000-0000-0000-0000-000000000001
+          owner_id: 00000000-0000-0000-0000-000000000001
+    application:
+      type: object
+      description: An application represents a "draft" policy, with all information captured and validated. Applications persist on Root (they do not expire), and can be reviewed and managed on the Root management dashboard. <br/><br/> See the [issing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [application hook](https://docs.rootplatform.com/docs/application-hook) guide for more details.
+      required:
+      - application_id
+      - policyholder_id
+      - product_module_definition_id
+      - status
+      - package_name
+      - sum_assured
+      - base_premium
+      - monthly_premium
+      - module
+      - created_at
+      - created_by
+      - billing_day
+      properties:
+        application_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the application.
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the policyholder linked to the application.
+        product_module_definition_id:
+          type: string
+          description: Must be a UUID. Unique identifier of the product module definition associated with the application. Determined by the product module definition associated with the quote from which the application was created.
+        status:
+          description: The status of the application. One of `pending`, `issued`, or `cancelled`.
+          type: string
+          enum:
+          - pending
+          - issued
+          - cancelled
+        package_name:
+          type: string
+          description: The package name.
+        sum_assured:
+          type: integer
+          description: The maximum insured value in cents.
+        base_premium:
+          type: integer
+          description: The combined risk and platform fee in cents. `monthly_premium` is calculated from this.
+        monthly_premium:
+          type: integer
+          description: The total monthly premium, in cents, of the application. This is the total premium that will be billed to the policyholder after the policy is issued.
+        module:
+          type: object
+          description: Custom, product-specific information saved to the application for later reference. These parameters are set in the [application hook](https://docs.rootplatform.com/docs/application-hook) in the product module code.
+          additionalProperties: true
+        restricted_data:
+          type: object
+          description: Optional restricted product-specific information saved to the application. This field is only returned when the requestee has access to restricted application module data.
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          description: The date at which the quote package was created..
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the application.'
+        billing_day:
+          type:
+          - integer
+          - 'null'
+          description: '`null` is allowed. The day of month on which the policy to write will be billed on. Should be between 1 and 31, or `null`. If it falls on a day that does not exist in the month (for example, 31 in February) the policy to be written will be billed on the last day of that month. Setting this value to 31 will ensure that the policy to be written will be billed on the last day of every month.'
+        currency:
+          type: string
+          description: The currency used for the quote package, in [ISO 4217] (https://en.wikipedia.org/wiki/ISO_4217) format.
+        billing_frequency:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          - once_off
+          description: The frequency at which the policy will be billed. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#billing-frequency) guide for more details on the billing frequency.
+        beneficiaries:
+          $ref: '#/components/schemas/beneficiaries'
+        input_data:
+          type:
+          - object
+          - 'null'
+          description: Application input parameters as received over the [create an application](https://docs.rootplatform.com/reference/create-an-application) endpoint.
+          additionalProperties: true
+        payment_method_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the payment method linked to the application.
+        type:
+          type: string
+          description: The type of the application. One of `requote` or `new_policy`.
+          enum:
+          - requote
+          - new_policy
+        quote_package_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the quote package from which the application was created.
+        policy:
+          $ref: '#/components/schemas/policy'
+          description: The policy object linked to the application. Only included when `?include=policy` is specified.
+        policyholder:
+          $ref: '#/components/schemas/policyholder'
+          description: The policyholder object linked to the application. Only included when `?include=policyholder` is specified.
+        quote_package:
+          $ref: '#/components/schemas/quote-package'
+          description: The quote package object from which the application was created. Only included when `?include=quote_package` is specified.
+        cancelled_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the application was cancelled, if applicable.
+        reason_cancelled:
+          type:
+          - string
+          - 'null'
+          description: Reason the application was cancelled.
+        cancellation_requestor:
+          type:
+          - string
+          - 'null'
+          description: Whether the customer (`client`) or insurer (`insurer`) initiated cancellation.
+        cancellation_type:
+          type:
+          - string
+          - 'null'
+          description: Cancellation reason code. Defaults are platform-defined; a product module may override allowed values when configured.
+      example:
+        application_id: 02e2ce3b-a235-48ea-8415-c58440f631bd
+        policyholder_id: 246ee082-9f88-44b7-b51c-22a1f1a9a19e
+        payment_method_id: 7c3e8f2a-1d4b-5e6f-9a0b-c1d2e3f4a5b6
+        package_name: Theft + comprehensive
+        sum_assured: 1199900
+        monthly_premium: 16999
+        base_premium: 16999
+        module:
+          make: Apple
+          type: root_gadgets
+          model: iPhone 6S 64GB LTE
+          serial_number: 0123456789
+        restricted_data:
+          underwriting_score: 85
+        created_at: '2023-02-03T11:17:49.009Z'
+        created_by:
+          type: api_key
+          id: b6565862-cc6e-4563-85d3-659894338cda
+          owner_id: e17f06ce-2a6a-4864-b826-19a83270eab4
+        currency: ZAR
+        product_module_definition_id: 4889a9e0-d5f9-4971-8ac2-2175a9d15477
+        billing_frequency: monthly
+        billing_day: 1
+        status: pending
+        type: new_policy
+        beneficiaries:
+        - beneficiary_id: cd444567-10d5-47f5-a0cc-34e262266359
+          policyholder_id: 246ee082-9f88-44b7-b51c-22a1f1a9a19e
+          percentage: 100
+          relationship: policyholder
+        quote_package_id: 3822b8fb-43e7-43f7-94ad-63e94e6ce1e3
   parameters:
     page:
       name: page

@@ -1,23 +1,7 @@
 {
   "provider": "root",
   "sources": [
-    "root-applications-api-openapi.yml",
-    "root-calls-api-openapi.yml",
-    "root-claims-api-openapi.yml",
-    "root-complaints-api-openapi.yml",
-    "root-data-exports-api-openapi.yml",
-    "root-data-stores-api-openapi.yml",
-    "root-embed-api-openapi.yml",
-    "root-files-api-openapi.yml",
-    "root-leads-api-openapi.yml",
-    "root-notifications-api-openapi.yml",
-    "root-payment-methods-api-openapi.yml",
-    "root-payments-api-openapi.yml",
-    "root-policies-api-openapi.yml",
-    "root-policyholders-api-openapi.yml",
-    "root-quotes-api-openapi.yml",
-    "root-secret-keys-api-openapi.yml",
-    "root-webhooks-api-openapi.yml"
+    "_original/root-platform-api-openapi.json"
   ],
   "outputs": [
     "root-applications-api-openapi.yml",
@@ -38,9 +22,36 @@
     "root-secret-keys-api-openapi.yml",
     "root-webhooks-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "root-platform-api-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "root-platform-api-openapi.json: declared missing tag: Payment Methods",
+    "root-platform-api-openapi.json: declared missing tag: Secret keys",
+    "superseded outputs removed: root-datastores-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 19 total)"
+  ],
+  "skipped": [
+    "root-applications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-calls-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-claims-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-complaints-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-data-exports-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-datastores-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-embed-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-files-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-leads-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-notifications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-payment-methods-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-payments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-policies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-policyholders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-quotes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-secret-keys-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "root-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
