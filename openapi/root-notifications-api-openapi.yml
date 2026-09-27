@@ -446,28 +446,13 @@ paths:
                     type: application/pdf
 components:
   schemas:
-    notification-other-data:
+    notification-data:
       type: object
-      required:
-      - to
-      - content
-      - content_type
-      properties:
-        to:
-          type: string
-          description: An array containing phone numbers that the notification was sent to.
-        content:
-          type: string
-          description: Content for the SMS notification.
-        content_type:
-          type: string
-          description: Whether it was `text` or `html`.
-        app_data:
-          type:
-          - object
-          - 'null'
-          description: '`null` is allowed. An object containing additional custom data for the SMS notification.'
-          additionalProperties: true
+      description: An object containing additional data depending on whether the notification channel is `email`, `sms`, or `other`.
+      oneOf:
+      - $ref: '#/components/schemas/notification-email-data'
+      - $ref: '#/components/schemas/notification-sms-data'
+      - $ref: '#/components/schemas/notification-other-data'
     notification-email-data:
       type: object
       required:
@@ -515,6 +500,14 @@ components:
               name:
                 type: string
                 description: The recipient's name.
+    custom-event-type:
+      type: string
+      description: The type of custom event. Must match the type on the Root management dashboard.
+      enum:
+      - policy
+      - payment_method
+      - payment
+      - claim
     notification:
       type: object
       required:
@@ -622,25 +615,6 @@ components:
           to:
           - '+27811231234'
           content: Congratulations! Your  Cover has been activated from 01/06/2022.
-    notification-data:
-      type: object
-      description: An object containing additional data depending on whether the notification channel is `email`, `sms`, or `other`.
-      oneOf:
-      - $ref: '#/components/schemas/notification-email-data'
-      - $ref: '#/components/schemas/notification-sms-data'
-      - $ref: '#/components/schemas/notification-other-data'
-    notifications:
-      type: array
-      items:
-        $ref: '#/components/schemas/notification'
-    custom-event-type:
-      type: string
-      description: The type of custom event. Must match the type on the Root management dashboard.
-      enum:
-      - policy
-      - payment_method
-      - payment
-      - claim
     notification-sms-data:
       type: object
       required:
@@ -651,6 +625,32 @@ components:
           type: array
           items:
             type: string
+          description: An array containing phone numbers that the notification was sent to.
+        content:
+          type: string
+          description: Content for the SMS notification.
+        content_type:
+          type: string
+          description: Whether it was `text` or `html`.
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the SMS notification.'
+          additionalProperties: true
+    notifications:
+      type: array
+      items:
+        $ref: '#/components/schemas/notification'
+    notification-other-data:
+      type: object
+      required:
+      - to
+      - content
+      - content_type
+      properties:
+        to:
+          type: string
           description: An array containing phone numbers that the notification was sent to.
         content:
           type: string

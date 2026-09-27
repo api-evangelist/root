@@ -237,6 +237,10 @@ paths:
           description: Success
 components:
   schemas:
+    leads:
+      type: array
+      items:
+        $ref: '#/components/schemas/lead'
     lead:
       type: object
       required:
@@ -394,10 +398,6 @@ components:
           city: Los Angeles
           country: US
           area_code: CA 91364
-    leads:
-      type: array
-      items:
-        $ref: '#/components/schemas/lead'
   parameters:
     page:
       name: page

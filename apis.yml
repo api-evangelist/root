@@ -377,6 +377,7 @@ apis:
   - type: StatusPage
     url: https://status.rootplatform.com/
 - aid: root:consumer-app
+  x-published: false
   name: Root Consumer Mobile App
   description: >-
     iOS and Android app that measures driving behavior via smartphone telematics, generates a usage-based
@@ -384,7 +385,6 @@ apis:
     not used in California or Maryland. No public API.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://www.joinroot.com/
-  baseURL: https://www.joinroot.com
   tags:
   - Consumer
   - Mobile

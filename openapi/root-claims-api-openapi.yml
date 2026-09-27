@@ -2621,72 +2621,6 @@ paths:
                   relationship: other
 components:
   schemas:
-    notes:
-      type: array
-      items:
-        $ref: '#/components/schemas/note'
-    cellphone-string:
-      type:
-      - string
-      - 'null'
-      description: '`null` and `""` allowed. String containing the cellphone number in international format.'
-      example: '+27821234567'
-    attachment:
-      type: object
-      required:
-      - file_name
-      - description
-      - file_type
-      - file_url
-      - created_at
-      - requested_by
-      properties:
-        file_name:
-          type: string
-          description: The name of the file (with file extension).
-        description:
-          type: string
-          description: A tag describing what the document is about (e.g. affidavit, etc.).
-        file_type:
-          type: string
-          description: The mime type of the attachment (e.g. image/png).
-        file_url:
-          type: string
-          format: uri
-          description: The URL to download the attachment file.
-        created_at:
-          type: string
-          format: date-time
-          description: Time at which the attachment was created.
-        requested_by:
-          type: object
-          description: An object indicating the user or API key that created the attachment. See [Authentication](#client-apps).
-          properties:
-            type:
-              type: string
-              description: The type of the creator (e.g., user, api_key).
-            id:
-              type: string
-              description: The identifier of the creator.
-            owner_id:
-              type: string
-              description: The identifier of the owner (only present for API key requests).
-          required:
-          - type
-        type:
-          type: string
-          description: The event type associated with the attachment (e.g., attachment_created). This field is only present when the attachment is returned as part of an event.
-      example:
-        file_name: report.pdf
-        file_type: application/pdf
-        file_url: https://sandbox.rootplatform.com/v1/files/download/00000000-0000-0000-0000-000000000001
-        description: quote
-        type: attachment_created
-        created_at: '2025-11-10T14:33:50.095Z'
-        requested_by:
-          type: api_key
-          id: 00000000-0000-0000-0000-000000000001
-          owner_id: 00000000-0000-0000-0000-000000000001
     fulfillment-request:
       type: object
       required:
@@ -2780,10 +2714,16 @@ components:
           type: user
           id: 99ff4c56-577c-11e9-b47c-a3d0f3abd20c
         environment: sandbox
-    attachments:
+    claims:
       type: array
       items:
-        $ref: '#/components/schemas/attachment'
+        $ref: '#/components/schemas/claim'
+    cellphone-string:
+      type:
+      - string
+      - 'null'
+      description: '`null` and `""` allowed. String containing the cellphone number in international format.'
+      example: '+27821234567'
     note:
       type: object
       required:
@@ -2803,6 +2743,84 @@ components:
         requested_by:
           type: user
           id: 00000000-0000-0000-0000-000000000001
+    cellphone:
+      type:
+      - object
+      - 'null'
+      description: '`null` and `""` allowed. Object containing the cellphone number in national format, and the corresponding alpha 2 country code.'
+      properties:
+        number:
+          type: string
+          description: The cellphone number.
+        country:
+          type: string
+          description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the cellphone number.
+      required:
+      - number
+      - country
+      example:
+        number: 0821234567
+        country: ZA
+    attachments:
+      type: array
+      items:
+        $ref: '#/components/schemas/attachment'
+    attachment:
+      type: object
+      required:
+      - file_name
+      - description
+      - file_type
+      - file_url
+      - created_at
+      - requested_by
+      properties:
+        file_name:
+          type: string
+          description: The name of the file (with file extension).
+        description:
+          type: string
+          description: A tag describing what the document is about (e.g. affidavit, etc.).
+        file_type:
+          type: string
+          description: The mime type of the attachment (e.g. image/png).
+        file_url:
+          type: string
+          format: uri
+          description: The URL to download the attachment file.
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which the attachment was created.
+        requested_by:
+          type: object
+          description: An object indicating the user or API key that created the attachment. See [Authentication](#client-apps).
+          properties:
+            type:
+              type: string
+              description: The type of the creator (e.g., user, api_key).
+            id:
+              type: string
+              description: The identifier of the creator.
+            owner_id:
+              type: string
+              description: The identifier of the owner (only present for API key requests).
+          required:
+          - type
+        type:
+          type: string
+          description: The event type associated with the attachment (e.g., attachment_created). This field is only present when the attachment is returned as part of an event.
+      example:
+        file_name: report.pdf
+        file_type: application/pdf
+        file_url: https://sandbox.rootplatform.com/v1/files/download/00000000-0000-0000-0000-000000000001
+        description: quote
+        type: attachment_created
+        created_at: '2025-11-10T14:33:50.095Z'
+        requested_by:
+          type: api_key
+          id: 00000000-0000-0000-0000-000000000001
+          owner_id: 00000000-0000-0000-0000-000000000001
     claim:
       type: object
       required:
@@ -3000,29 +3018,21 @@ components:
         created_by:
           id: 00000000-0000-0000-0000-000000000001
           type: user
-    claims:
+    notes:
       type: array
       items:
-        $ref: '#/components/schemas/claim'
-    cellphone:
-      type:
-      - object
-      - 'null'
-      description: '`null` and `""` allowed. Object containing the cellphone number in national format, and the corresponding alpha 2 country code.'
-      properties:
-        number:
-          type: string
-          description: The cellphone number.
-        country:
-          type: string
-          description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the cellphone number.
-      required:
-      - number
-      - country
-      example:
-        number: 0821234567
-        country: ZA
+        $ref: '#/components/schemas/note'
   parameters:
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
     fulfillment_request_id:
       name: fulfillment_request_id
       in: path
@@ -3042,16 +3052,6 @@ components:
         maximum: 100
         example: 30
         default: 30
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
   securitySchemes:
     basicAuth:
       type: http
