@@ -737,15 +737,41 @@ paths:
                     id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
                     owner_id: 00000000-0000-0000-0000-000000000001
 components:
+  parameters:
+    data_store_key:
+      name: data_store_key
+      in: path
+      description: The unique key of the [data store](ref:data-store)
+      required: true
+      schema:
+        type: string
+        example: devices
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
   schemas:
     data-store-entities:
       type: array
       items:
         $ref: '#/components/schemas/data-store-entity'
-    data-stores:
-      type: array
-      items:
-        $ref: '#/components/schemas/data-store'
     data-store:
       type: object
       required:
@@ -903,36 +929,10 @@ components:
             type: api_key
             id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
             owner_id: 00000000-0000-0000-0000-000000000001
-  parameters:
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
-    page_size:
-      name: page_size
-      in: query
-      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        example: 30
-        default: 30
-    data_store_key:
-      name: data_store_key
-      in: path
-      description: The unique key of the [data store](ref:data-store)
-      required: true
-      schema:
-        type: string
-        example: devices
+    data-stores:
+      type: array
+      items:
+        $ref: '#/components/schemas/data-store'
   securitySchemes:
     basicAuth:
       type: http

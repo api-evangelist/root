@@ -300,14 +300,46 @@ paths:
           description: The schedule is not pending, or the supplied version is stale.
 components:
   schemas:
-    payment-type:
+    beneficiary-relationship:
       type: string
-      description: The type of the payment being created.
+      description: The beneficiary's relationship to the policyholder.
       enum:
-      - premium
-      - reversal
-      - claim_payout
-      - premium_refund
+      - main_member
+      - spouse
+      - parent
+      - son
+      - daughter
+      - aunt_or_uncle
+      - grandparent
+      - cousin_or_relative
+      - brother
+      - sister
+      - employer
+      - policyholder
+      - credit_provider
+      - cessionary
+      - estate
+      - trust
+      - guardian_fund
+      - funeral_parlour
+      - son_in_law
+      - daughter_in_law
+      - mother_in_law
+      - father_in_law
+      - grandchild
+      - niece_or_nephew
+      - other
+    collection-type:
+      type: string
+      description: The collection type of the payment being created.
+      enum:
+      - debit_order_same_day
+      - debit_order_two_day
+      - debit_order_one_day
+      - debit_order_debicheck
+      - card
+      - external
+      - collection_module
       - other
     payment-updates:
       type: array
@@ -324,38 +356,6 @@ components:
         failure_action: block_retry
       - payment_id: 96e06845-6d37-4dca-8859-9d8ed27dcf58
         status: failed
-        failure_reason: Account closed
-        failure_action: block_payment_method
-    payment-charge-type:
-      type: string
-      description: Variable charges are applied as a proportion of the total payment amount. Fixed charges are applied as an absolute currency value in cents. The `balance` is the balance of the payment total after all charges have been applied.
-      enum:
-      - fixed
-      - variable
-      - balance
-    payment-update:
-      type: object
-      required:
-      - payment_id
-      - status
-      properties:
-        payment_id:
-          type: string
-          description: Must be a UUID. The unique identifier of the payment.
-        status:
-          $ref: '#/components/schemas/payment-status'
-        failure_reason:
-          type: string
-          description: Required if `status` is `failed`. A description of the reason the payment failed.
-        failure_action:
-          $ref: '#/components/schemas/failure-action'
-        failure_code:
-          type: string
-          description: The failure error code. Required if `status` is `failed`.
-      example:
-        payment_id: 96e06845-6d37-4dca-8859-9d8ed27dcf58
-        status: failed
-        failure_code: 08
         failure_reason: Account closed
         failure_action: block_payment_method
     payment-response:
@@ -480,166 +480,249 @@ components:
           - object
           - 'null'
           description: '`null` is allowed. An object containing additional custom data for the payment.'
-    collection-type:
-      type: string
-      description: The collection type of the payment being created.
-      enum:
-      - debit_order_same_day
-      - debit_order_two_day
-      - debit_order_one_day
-      - debit_order_debicheck
-      - card
-      - external
-      - collection_module
-      - other
-    cellphone-string:
-      type:
-      - string
-      - 'null'
-      description: '`null` and `""` allowed. String containing the cellphone number in international format.'
-      example: '+27821234567'
-    premium-type:
-      type: string
-      description: The type of the payment being created.Required when `payment_type` is premium or reversal, optional when `payment_type` is premium_refund, forbidden otherwise.
-      enum:
-      - recurring
-      - arrears
-      - ad_hoc
-      - pro_rata
-      - cover_period
-      - collection_request
-      - manual_eft
-      - premium_refund
-    beneficiary-relationship:
-      type: string
-      description: The beneficiary's relationship to the policyholder.
-      enum:
-      - main_member
-      - spouse
-      - parent
-      - son
-      - daughter
-      - aunt_or_uncle
-      - grandparent
-      - cousin_or_relative
-      - brother
-      - sister
-      - employer
-      - policyholder
-      - credit_provider
-      - cessionary
-      - estate
-      - trust
-      - guardian_fund
-      - funeral_parlour
-      - son_in_law
-      - daughter_in_law
-      - mother_in_law
-      - father_in_law
-      - grandchild
-      - niece_or_nephew
-      - other
-    payment-create:
+    beneficiaries:
+      type: array
+      description: '`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some product modules may require adding beneficiaries to a policy for claims to be processed.'
+      items:
+        type: object
+        description: Details for a single beneficiary.
+        required:
+        - beneficiary_id
+        - relationship
+        - percentage
+        properties:
+          beneficiary_id:
+            type: string
+            description: Must be a UUID. The unique identifier of the beneficiary.
+          policyholder_id:
+            type: string
+            description: Must be a UUID. The unique identifier of the policyholder. Only relevant if `relationship` is `policyholder`.
+          type:
+            type: string
+            description: The type of beneficiary.
+            enum:
+            - individual
+            - company
+            default: individual
+          first_name:
+            type: string
+            description: The beneficiary's first name.
+          last_name:
+            type: string
+            description: The beneficiary's last name.
+          title:
+            type: string
+            description: The beneficiary's title.
+            enum:
+            - mr
+            - mrs
+            - miss
+            - mx
+            - sir
+            - dr
+            - adv
+            - ms
+            - prof
+          gender:
+            type: string
+            description: The beneficiary's gender.
+            enum:
+            - male
+            - female
+          id:
+            type: object
+            description: (Individual beneficiaries only) The beneficiary's identification number, type and country.
+            properties:
+              type:
+                type: string
+                description: The beneficiary's identification type.
+                enum:
+                - id
+                - passport
+                - custom
+              number:
+                type: string
+                description: Depending on the type selected, either an ID number, passport number or custom identifier.
+              country:
+                type: string
+                description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`.
+            required:
+            - type
+            - number
+            - country
+          date_of_birth:
+            type:
+            - string
+            - 'null'
+            format: date
+            description: '`null` is allowed. The beneficiary''s date of birth.'
+          percentage:
+            type: integer
+            description: An integer representing the percentage of a claim payout that the beneficiary should receive. Note that the percentages across all beneficiaries should add up to 100%.
+          cellphone:
+            $ref: '#/components/schemas/cellphone-string'
+          email:
+            type: string
+            description: The beneficiary's email address.
+          relationship:
+            $ref: '#/components/schemas/beneficiary-relationship'
+          company_name:
+            type: string
+            description: The name of the company that the beneficiary represents. Required when `type = company`.
+          registration_number:
+            type: string
+            description: The company's registration number. Required when `type = company`.
+          payment_details:
+            $ref: '#/components/schemas/payment-details'
+        example:
+          first_name: Jared
+          last_name: Dunn
+          id:
+            type: id
+            number: '8704094800082'
+            country: ZA
+          percentage: 100
+          relationship: cousin_or_relative
+      example:
+      - first_name: Jared
+        last_name: Dunn
+        id:
+          type: id
+          number: '8704094800082'
+          country: ZA
+        percentage: 100
+        relationship: cousin_or_relative
+    payment-batch:
       type: object
       required:
-      - amount
+      - organization_id
+      - payment_batch_id
       - status
-      - description
+      - action_date
+      - process_date
       - payment_type
-      - payment_date
-      - collection_type
-      - payment_method_id
+      - payment_method_type
+      - billing_config_id
+      - submitted_at
+      - submitted_by
+      - created_at
+      - failure_reason
+      - num_payments
+      - num_reviewed
+      - total_value
+      - external_reference
+      - updated_at
+      - updated_by
       properties:
+        organization_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the organization.
+        payment_batch_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the payment batch.
         status:
-          $ref: '#/components/schemas/payment-status'
-        payment_method_id:
           type: string
-          description: Payment method id of the payment being created. Must be a UUID.
+          description: The payment batch status, one of [`pending`, `submitting`, `submitted`, 'accepted', `failed`, `archived`].
+        action_date:
+          type: string
+          format: date-time
+          description: The time at which the payments in the batch will strike the accounts.
+        process_date:
+          type: string
+          format: date-time
+          description: The time at which the batch should be processed & submitted by.
         payment_type:
-          $ref: '#/components/schemas/payment-type'
-        premium_type:
-          $ref: '#/components/schemas/premium-type'
-        amount:
-          type: number
-          description: The payment amount. Required when `retry_of` is not provided; otherwise forbidden.
-        description:
           type: string
-          description: Description of the payment being submitted. Required when `retry_of` is not provided; otherwise forbidden.
-        payment_date:
+          description: The payment collection type, one of [`debit_order_same_day`, `debit_order_two_day`, `debit_order_naedo` (deprecated), `debit_order_debicheck`, `card`, `external`, `other`].
+        payment_method_type:
           type: string
-          format: date-time
-          description: Date the payment was created.
-        finalized_at:
+          description: The payment method type, one of [`debit_order`, `card`, `eft`, `external`].
+        billing_config_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the billing config to be used when processing this batch.
+        submitted_at:
           type: string
           format: date-time
-          description: Date the payment was finalized. Required when `status` is `failed` or `successful`.
-        collection_type:
-          $ref: '#/components/schemas/collection-type'
-        billing_date:
+          description: The time at which the batch was submitted.
+        submitted_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that submitted the batch. See [Authentication](#client-apps).'
+        created_at:
           type: string
           format: date-time
-          description: Date the payment should be processed.
-        external_reference:
-          type: string
-          description: Unique external reference of the payment.
-        retry_of:
-          type: string
-          description: Original payment id of the payment being retried. Must be a UUID.
+          description: The time at which the batch was created.
         failure_reason:
           type: string
-          description: A description of the reason the payment failed. Required if `status` is `failed`, forbidden otherwise.
-        failure_action:
-          $ref: '#/components/schemas/failure-action'
-        failure_code:
+          description: A description of the reason the payment batch failed.
+        num_payments:
+          type: integer
+          description: The number of payments included in this batch.
+        num_reviewed:
+          type: integer
+          description: The number of payments in this batch that have been reviewed.
+        total_value:
+          type: integer
+          description: The total amount of premium, in cents, of the all the payments in this batch.
+        external_reference:
+          type:
+          - string
+          - 'null'
+          description: External reference used for identifying the batch.
+        updated_at:
           type: string
-          description: Optional if `status` is `failed`, forbidden otherwise. The failure error code.
+          format: date-time
+          description: The time at which the batch was updated.
+        updated_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that updated the batch. See [Authentication](#client-apps).'
       example:
-        status: successful
-        description: Monthly premium
-        payment_type: premium
-        premium_type: pro_rata
-        amount: 1800
-        payment_date: '2022-09-08T00:00:00Z'
-        external_reference: B23423
-        collection_type: debit_order_same_day
-        finalized_at: '2022-09-08T00:00:00Z'
-        billing_date: '2022-09-08T00:00:00Z'
-    payment-details:
-      type: object
-      description: Details of the account into which the payout should be made.
-      required:
-      - type
-      - details
-      properties:
-        type:
-          type: string
-          description: The type of account into which the payout should be made.  For a beneficiary, this must be `eft`.
-          enum:
-          - eft
-          - card
-        details:
-          type: object
-          description: The bank account details.
-          required:
-          - bank_name
-          - branch_code
-          - account_type
-          - account_number
-          properties:
-            bank_name:
-              $ref: '#/components/schemas/bank-name'
-            branch_code:
-              type: string
-              description: The branch code for the account.
-            account_type:
-              type: string
-              description: The account type.
-              enum:
-              - cheque_account
-              - savings
-            account_number:
-              type: string
-              description: The account number.
+        payment_batch_id: 00000000-0000-0000-0000-000000000001
+        organization_id: 00000000-0000-0000-0000-000000000001
+        status: submitted
+        action_date: '2021-09-29T09:36:43.560Z'
+        process_date: '2021-09-29T09:36:43.560Z'
+        payment_type: debit_order_same_day
+        payment_method_type: debit_order
+        billing_config_id: 00000000-0000-0000-0000-000000000003
+        submitted_at: '2021-10-07T07:38:00.117Z'
+        submitted_by:
+          type: api_key
+          id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
+          owner_id: 00000000-0000-0000-0000-000000000001
+        created_at: '2021-09-29T09:36:43.560Z'
+        failure_reason: null
+        num_payments: 10
+        num_reviewed: 0
+        total_value: 1000000
+        external_reference: ABCDE12345
+        updated_at: '2021-10-07T07:38:00.117Z'
+        updated_by:
+          type: api_key
+          id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
+          owner_id: 00000000-0000-0000-0000-000000000001
+    policy-status:
+      type: string
+      description: The policy status. See the [managing policies](https://docs.rootplatform.com/docs/policy-administration#policy-lifecycle) guide for more details on the policy lifecycle.
+      enum:
+      - pending_initial_payment
+      - active
+      - cancelled
+      - expired
+      - lapsed
+      - not_taken_up
+    payment-type:
+      type: string
+      description: The type of the payment being created.
+      enum:
+      - premium
+      - reversal
+      - claim_payout
+      - premium_refund
+      - other
     payment-method:
       type: object
       required:
@@ -830,25 +913,16 @@ components:
           account_number: '123456789'
           account_type: cheque
           banv_status: pending
-    payment-create-async:
-      allOf:
-      - $ref: '#/components/schemas/payment-create'
-      - type: object
-        required:
-        - policy_id
-        properties:
-          policy_id:
-            type: string
-            description: Id of the policy the payment is for. Must be UUID.
-        example:
-          status: successful
-          description: Monthly premium
-          payment_type: premium
-          amount: 1800
-          payment_date: '2022-09-08T00:00:00Z'
-          external_reference: B
-          collection_type: debit_order_same_day
-          policy_id: 6ae5329f-d286-4d64-9345-af93eb03520c
+    payment-status:
+      type: string
+      enum:
+      - submitted
+      - pending
+      - processing
+      - successful
+      - failed
+      - cancelled
+      description: The status to which to create the payment.
     failure-action:
       type: string
       enum:
@@ -858,218 +932,6 @@ components:
       description: 'The additional action to perform when processing a failed payment. `block_payment_method`: Set the payment method''s verification status to `blocked`, and do not generate a retry. `block_retry`: Do not generate a retry payment (even if enabled in the [product module settings](doc:billing-settings)). `allow_retry`: Generate a retry payment (if enabled in the [product module settings](doc:billing-settings)). **Note:** The payment method will be blocked after 4 consecutive failed payments regardless. See the [billing settings](https://docs.rootplatform.com/docs/billing-settings#consecutive-failed-payments-allowed) guide for more details on the number of consecutive payments allowed. This field will be required if `status` is `failed`, forbidden otherwise.
 
         '
-    actor-type:
-      type: string
-      description: The actor who created the record.
-      enum:
-      - api_key
-      - system
-      - user
-    policyholder:
-      type: object
-      required:
-      - policyholder_id
-      - type
-      - id
-      - first_name
-      - last_name
-      - policy_ids
-      - created_at
-      - app_data
-      - created_by
-      properties:
-        policyholder_id:
-          type: string
-          description: Must be a UUID. The unique identifier of the policyholder.
-        type:
-          type: string
-          description: The policyholder type.
-          enum:
-          - individual
-          - company
-        id:
-          type: object
-          description: (Individual policyholders only) Object containing policyholder's identification information.
-          properties:
-            type:
-              type: string
-              description: The id type of the policyholder.
-              enum:
-              - id
-              - passport
-              - email
-              - cellphone
-              - custom
-            number:
-              type: string
-              description: The ID or passport number.
-            country:
-              type: string
-              description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the id/passport number.
-            expiration_date:
-              type: string
-              format: date-time
-              description: (Individual policyholders only) The expiration date of the policyholder's passport.
-          required:
-          - type
-          - number
-          - country
-        title:
-          type: string
-          description: The policyholders's title.
-          enum:
-          - mr
-          - mrs
-          - miss
-          - mx
-          - sir
-          - dr
-          - adv
-          - ms
-          - prof
-        date_of_birth:
-          type: string
-          description: (Individual policyholders only) The policyholder's date of birth in the format YYYYMMDD.
-        gender:
-          type: string
-          description: Null is allowed. (Individual policyholders only) The policyholder's gender.
-          enum:
-          - male
-          - female
-        initials:
-          type:
-          - string
-          - 'null'
-          description: '`null` is allowed. The policyholder or primary contact''s initials.'
-        first_name:
-          type: string
-          description: The policyholder or primary contact's legal first name.
-        middle_name:
-          type:
-          - string
-          - 'null'
-          description: '`null` is allowed. The policyholder or primary contact''s legal middle name.'
-        last_name:
-          type: string
-          description: The policyholder or primary contact's legal last name.
-        company_name:
-          type: string
-          description: (Company policyholders only) The name of the company that the policyholder represents.
-        registration_number:
-          type: string
-          description: (Company policyholders only) The company's registration number.
-        date_of_establishment:
-          type: string
-          description: (Company policyholders only) The company's date of establishment in the format YYYYMMDD.
-        company_website_url:
-          type: string
-          description: (Company policyholders only) The company's website URL.
-        contact_position:
-          type: string
-          description: (Company policyholders only) The position or role of the primary contact at the company.
-        subsidiary_companies:
-          type: array
-          items:
-            type: string
-          description: (Company policyholders only) An array of subsidiary company names.
-        email:
-          type:
-          - string
-          - 'null'
-          description: '`null` is allowed. The policyholder or primary contact''s contact email address.'
-        cellphone:
-          $ref: '#/components/schemas/cellphone-string'
-        phone_other:
-          $ref: '#/components/schemas/cellphone-string'
-        policy_ids:
-          type: array
-          items:
-            type: string
-          description: An array of ids of the policies linked to this policyholder.
-        policies:
-          type: array
-          items:
-            $ref: '#/components/schemas/policy'
-          description: An array of full [policy objects](#policy) owned by the policyholder. This is currently only included when [fetching all policyholders](#list-all-policyholders) or [fetching an individual policyholder](#retrieve-a-policyholder) with `?include=policies`.
-        created_at:
-          type: string
-          format: date-time
-          description: The time at which the policyholder was created.
-        app_data:
-          type:
-          - object
-          - 'null'
-          description: '`null` is allowed. An object containing additional custom data for the policy holder.'
-          additionalProperties: true
-        created_by:
-          type:
-          - object
-          - 'null'
-          description: '`null` is allowed. An object indicating the user or API key that created the policyholder. See [Authentication](#client-apps).'
-        updated_at:
-          type: string
-          format: date-time
-          description: The time at which the policyholder was last updated.
-        address:
-          type:
-          - object
-          - 'null'
-          description: '`null` is allowed. The policyholder''s physical address. See below for more details.'
-          properties:
-            line_1:
-              type: string
-              description: First line of the policyholder's address.
-            line_2:
-              type:
-              - string
-              - 'null'
-              description: '`null` is allowed. Optional second line of the policyholder''s address.'
-            suburb:
-              type: string
-              description: The policyholder's suburb.
-            city:
-              type: string
-              description: The policyholder's city.
-            country:
-              type: string
-              description: The policyholder's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format.
-            area_code:
-              type: string
-              description: The policyholder's area code must be 4 characters long for South African addresses.
-          required:
-          - line_1
-          - city
-          - country
-          - area_code
-      example:
-        policyholder_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
-        type: individual
-        initials: E
-        first_name: Erlich
-        middle_name: Aviato
-        last_name: Bachman
-        id:
-          type: id
-          number: '6801015800084'
-          country: ZA
-        date_of_birth: '19680101'
-        gender: male
-        email: erlich@aviato.com
-        cellphone: '+27821234567'
-        phone_other: '+27124101337'
-        created_at: '2017-10-12T15:47:34.281Z'
-        app_data:
-          company: Aviato
-        policy_ids: []
-        created_by:
-          id: 00000000-0000-0000-0000-000000000001
-          type: user
-        address:
-          line_1: 5230 Penfield Avenue
-          suburb: Woodland Hills
-          city: Los Angeles
-          country: US
-          area_code: CA 91364
     payment-creates-async-array:
       type: array
       items:
@@ -1093,261 +955,18 @@ components:
         external_reference: 202209084500
         collection_type: debit_order_same_day
         premium_type: recurring
-    beneficiaries:
-      type: array
-      description: '`null` is allowed. An array of beneficiaries. If null, the default beneficiary may be the policyholder if enabled in the product module settings. Some product modules may require adding beneficiaries to a policy for claims to be processed.'
-      items:
-        type: object
-        description: Details for a single beneficiary.
-        required:
-        - beneficiary_id
-        - relationship
-        - percentage
-        properties:
-          beneficiary_id:
-            type: string
-            description: Must be a UUID. The unique identifier of the beneficiary.
-          policyholder_id:
-            type: string
-            description: Must be a UUID. The unique identifier of the policyholder. Only relevant if `relationship` is `policyholder`.
-          type:
-            type: string
-            description: The type of beneficiary.
-            enum:
-            - individual
-            - company
-            default: individual
-          first_name:
-            type: string
-            description: The beneficiary's first name.
-          last_name:
-            type: string
-            description: The beneficiary's last name.
-          title:
-            type: string
-            description: The beneficiary's title.
-            enum:
-            - mr
-            - mrs
-            - miss
-            - mx
-            - sir
-            - dr
-            - adv
-            - ms
-            - prof
-          gender:
-            type: string
-            description: The beneficiary's gender.
-            enum:
-            - male
-            - female
-          id:
-            type: object
-            description: (Individual beneficiaries only) The beneficiary's identification number, type and country.
-            properties:
-              type:
-                type: string
-                description: The beneficiary's identification type.
-                enum:
-                - id
-                - passport
-                - custom
-              number:
-                type: string
-                description: Depending on the type selected, either an ID number, passport number or custom identifier.
-              country:
-                type: string
-                description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the `number`.
-            required:
-            - type
-            - number
-            - country
-          date_of_birth:
-            type:
-            - string
-            - 'null'
-            format: date
-            description: '`null` is allowed. The beneficiary''s date of birth.'
-          percentage:
-            type: integer
-            description: An integer representing the percentage of a claim payout that the beneficiary should receive. Note that the percentages across all beneficiaries should add up to 100%.
-          cellphone:
-            $ref: '#/components/schemas/cellphone-string'
-          email:
-            type: string
-            description: The beneficiary's email address.
-          relationship:
-            $ref: '#/components/schemas/beneficiary-relationship'
-          company_name:
-            type: string
-            description: The name of the company that the beneficiary represents. Required when `type = company`.
-          registration_number:
-            type: string
-            description: The company's registration number. Required when `type = company`.
-          payment_details:
-            $ref: '#/components/schemas/payment-details'
-        example:
-          first_name: Jared
-          last_name: Dunn
-          id:
-            type: id
-            number: '8704094800082'
-            country: ZA
-          percentage: 100
-          relationship: cousin_or_relative
-      example:
-      - first_name: Jared
-        last_name: Dunn
-        id:
-          type: id
-          number: '8704094800082'
-          country: ZA
-        percentage: 100
-        relationship: cousin_or_relative
-    bank-name:
+    premium-type:
       type: string
-      description: The name of the bank
+      description: The type of the payment being created.Required when `payment_type` is premium or reversal, optional when `payment_type` is premium_refund, forbidden otherwise.
       enum:
-      - absa
-      - access
-      - african_bank
-      - al_baraka
-      - bank_of_china
-      - bank_of_lisbon
-      - bank_zero
-      - bidvest
-      - bidvest_bank_alliances
-      - capitec
-      - discovery_bank
-      - finbond_mutual
-      - fnb
-      - hbz
-      - investec
-      - ithala
-      - mercantile
-      - nedbank
-      - old_mutual
-      - postbank
-      - sasfin
-      - standard_bank
-      - sure
-      - tyme_bank
-      - ubank
-      - vbc_mutual_bank
-      - wizzit
-    payment-batch:
-      type: object
-      required:
-      - organization_id
-      - payment_batch_id
-      - status
-      - action_date
-      - process_date
-      - payment_type
-      - payment_method_type
-      - billing_config_id
-      - submitted_at
-      - submitted_by
-      - created_at
-      - failure_reason
-      - num_payments
-      - num_reviewed
-      - total_value
-      - external_reference
-      - updated_at
-      - updated_by
-      properties:
-        organization_id:
-          type: string
-          description: Must be a UUID. The unique identifier of the organization.
-        payment_batch_id:
-          type: string
-          description: Must be a UUID. The unique identifier of the payment batch.
-        status:
-          type: string
-          description: The payment batch status, one of [`pending`, `submitting`, `submitted`, 'accepted', `failed`, `archived`].
-        action_date:
-          type: string
-          format: date-time
-          description: The time at which the payments in the batch will strike the accounts.
-        process_date:
-          type: string
-          format: date-time
-          description: The time at which the batch should be processed & submitted by.
-        payment_type:
-          type: string
-          description: The payment collection type, one of [`debit_order_same_day`, `debit_order_two_day`, `debit_order_naedo` (deprecated), `debit_order_debicheck`, `card`, `external`, `other`].
-        payment_method_type:
-          type: string
-          description: The payment method type, one of [`debit_order`, `card`, `eft`, `external`].
-        billing_config_id:
-          type: string
-          description: Must be a UUID. The unique identifier of the billing config to be used when processing this batch.
-        submitted_at:
-          type: string
-          format: date-time
-          description: The time at which the batch was submitted.
-        submitted_by:
-          type:
-          - object
-          - 'null'
-          description: '`null` is allowed. An object indicating the user or API key that submitted the batch. See [Authentication](#client-apps).'
-        created_at:
-          type: string
-          format: date-time
-          description: The time at which the batch was created.
-        failure_reason:
-          type: string
-          description: A description of the reason the payment batch failed.
-        num_payments:
-          type: integer
-          description: The number of payments included in this batch.
-        num_reviewed:
-          type: integer
-          description: The number of payments in this batch that have been reviewed.
-        total_value:
-          type: integer
-          description: The total amount of premium, in cents, of the all the payments in this batch.
-        external_reference:
-          type:
-          - string
-          - 'null'
-          description: External reference used for identifying the batch.
-        updated_at:
-          type: string
-          format: date-time
-          description: The time at which the batch was updated.
-        updated_by:
-          type:
-          - object
-          - 'null'
-          description: '`null` is allowed. An object indicating the user or API key that updated the batch. See [Authentication](#client-apps).'
-      example:
-        payment_batch_id: 00000000-0000-0000-0000-000000000001
-        organization_id: 00000000-0000-0000-0000-000000000001
-        status: submitted
-        action_date: '2021-09-29T09:36:43.560Z'
-        process_date: '2021-09-29T09:36:43.560Z'
-        payment_type: debit_order_same_day
-        payment_method_type: debit_order
-        billing_config_id: 00000000-0000-0000-0000-000000000003
-        submitted_at: '2021-10-07T07:38:00.117Z'
-        submitted_by:
-          type: api_key
-          id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
-          owner_id: 00000000-0000-0000-0000-000000000001
-        created_at: '2021-09-29T09:36:43.560Z'
-        failure_reason: null
-        num_payments: 10
-        num_reviewed: 0
-        total_value: 1000000
-        external_reference: ABCDE12345
-        updated_at: '2021-10-07T07:38:00.117Z'
-        updated_by:
-          type: api_key
-          id: 420df14d-b09d-4d89-84a8-8e3118c9ca23
-          owner_id: 00000000-0000-0000-0000-000000000001
+      - recurring
+      - arrears
+      - ad_hoc
+      - pro_rata
+      - cover_period
+      - collection_request
+      - manual_eft
+      - premium_refund
     policy:
       type: object
       description: Policies are issued from applications, and represent binding insurance agreements. Parameters stored on the policy can be referenced in custom notifications, policy documents, data exports and external integrations. <br/><br/> See the [issuing policies](https://docs.rootplatform.com/docs/policy-issuing) guide and the [policy issue hook](https://docs.rootplatform.com/docs/policy-issue-hook) guide for more details.
@@ -1645,26 +1264,407 @@ components:
             country: ZA
           percentage: 100
           relationship: cousin_or_relative
-    payment-status:
+    payment-create-async:
+      allOf:
+      - $ref: '#/components/schemas/payment-create'
+      - type: object
+        required:
+        - policy_id
+        properties:
+          policy_id:
+            type: string
+            description: Id of the policy the payment is for. Must be UUID.
+        example:
+          status: successful
+          description: Monthly premium
+          payment_type: premium
+          amount: 1800
+          payment_date: '2022-09-08T00:00:00Z'
+          external_reference: B
+          collection_type: debit_order_same_day
+          policy_id: 6ae5329f-d286-4d64-9345-af93eb03520c
+    policyholder:
+      type: object
+      required:
+      - policyholder_id
+      - type
+      - id
+      - first_name
+      - last_name
+      - policy_ids
+      - created_at
+      - app_data
+      - created_by
+      properties:
+        policyholder_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the policyholder.
+        type:
+          type: string
+          description: The policyholder type.
+          enum:
+          - individual
+          - company
+        id:
+          type: object
+          description: (Individual policyholders only) Object containing policyholder's identification information.
+          properties:
+            type:
+              type: string
+              description: The id type of the policyholder.
+              enum:
+              - id
+              - passport
+              - email
+              - cellphone
+              - custom
+            number:
+              type: string
+              description: The ID or passport number.
+            country:
+              type: string
+              description: The [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) country code of the country of the id/passport number.
+            expiration_date:
+              type: string
+              format: date-time
+              description: (Individual policyholders only) The expiration date of the policyholder's passport.
+          required:
+          - type
+          - number
+          - country
+        title:
+          type: string
+          description: The policyholders's title.
+          enum:
+          - mr
+          - mrs
+          - miss
+          - mx
+          - sir
+          - dr
+          - adv
+          - ms
+          - prof
+        date_of_birth:
+          type: string
+          description: (Individual policyholders only) The policyholder's date of birth in the format YYYYMMDD.
+        gender:
+          type: string
+          description: Null is allowed. (Individual policyholders only) The policyholder's gender.
+          enum:
+          - male
+          - female
+        initials:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The policyholder or primary contact''s initials.'
+        first_name:
+          type: string
+          description: The policyholder or primary contact's legal first name.
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The policyholder or primary contact''s legal middle name.'
+        last_name:
+          type: string
+          description: The policyholder or primary contact's legal last name.
+        company_name:
+          type: string
+          description: (Company policyholders only) The name of the company that the policyholder represents.
+        registration_number:
+          type: string
+          description: (Company policyholders only) The company's registration number.
+        date_of_establishment:
+          type: string
+          description: (Company policyholders only) The company's date of establishment in the format YYYYMMDD.
+        company_website_url:
+          type: string
+          description: (Company policyholders only) The company's website URL.
+        contact_position:
+          type: string
+          description: (Company policyholders only) The position or role of the primary contact at the company.
+        subsidiary_companies:
+          type: array
+          items:
+            type: string
+          description: (Company policyholders only) An array of subsidiary company names.
+        email:
+          type:
+          - string
+          - 'null'
+          description: '`null` is allowed. The policyholder or primary contact''s contact email address.'
+        cellphone:
+          $ref: '#/components/schemas/cellphone-string'
+        phone_other:
+          $ref: '#/components/schemas/cellphone-string'
+        policy_ids:
+          type: array
+          items:
+            type: string
+          description: An array of ids of the policies linked to this policyholder.
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/policy'
+          description: An array of full [policy objects](#policy) owned by the policyholder. This is currently only included when [fetching all policyholders](#list-all-policyholders) or [fetching an individual policyholder](#retrieve-a-policyholder) with `?include=policies`.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the policyholder was created.
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the policy holder.'
+          additionalProperties: true
+        created_by:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object indicating the user or API key that created the policyholder. See [Authentication](#client-apps).'
+        updated_at:
+          type: string
+          format: date-time
+          description: The time at which the policyholder was last updated.
+        address:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. The policyholder''s physical address. See below for more details.'
+          properties:
+            line_1:
+              type: string
+              description: First line of the policyholder's address.
+            line_2:
+              type:
+              - string
+              - 'null'
+              description: '`null` is allowed. Optional second line of the policyholder''s address.'
+            suburb:
+              type: string
+              description: The policyholder's suburb.
+            city:
+              type: string
+              description: The policyholder's city.
+            country:
+              type: string
+              description: The policyholder's country code, in the [ISO Alpha-2](http://www.nationsonline.org/oneworld/country_code_list.htm) format.
+            area_code:
+              type: string
+              description: The policyholder's area code must be 4 characters long for South African addresses.
+          required:
+          - line_1
+          - city
+          - country
+          - area_code
+      example:
+        policyholder_id: bf1ada91-eecb-4f47-9bfa-1258bb1e0055
+        type: individual
+        initials: E
+        first_name: Erlich
+        middle_name: Aviato
+        last_name: Bachman
+        id:
+          type: id
+          number: '6801015800084'
+          country: ZA
+        date_of_birth: '19680101'
+        gender: male
+        email: erlich@aviato.com
+        cellphone: '+27821234567'
+        phone_other: '+27124101337'
+        created_at: '2017-10-12T15:47:34.281Z'
+        app_data:
+          company: Aviato
+        policy_ids: []
+        created_by:
+          id: 00000000-0000-0000-0000-000000000001
+          type: user
+        address:
+          line_1: 5230 Penfield Avenue
+          suburb: Woodland Hills
+          city: Los Angeles
+          country: US
+          area_code: CA 91364
+    payment-details:
+      type: object
+      description: Details of the account into which the payout should be made.
+      required:
+      - type
+      - details
+      properties:
+        type:
+          type: string
+          description: The type of account into which the payout should be made.  For a beneficiary, this must be `eft`.
+          enum:
+          - eft
+          - card
+        details:
+          type: object
+          description: The bank account details.
+          required:
+          - bank_name
+          - branch_code
+          - account_type
+          - account_number
+          properties:
+            bank_name:
+              $ref: '#/components/schemas/bank-name'
+            branch_code:
+              type: string
+              description: The branch code for the account.
+            account_type:
+              type: string
+              description: The account type.
+              enum:
+              - cheque_account
+              - savings
+            account_number:
+              type: string
+              description: The account number.
+    cellphone-string:
+      type:
+      - string
+      - 'null'
+      description: '`null` and `""` allowed. String containing the cellphone number in international format.'
+      example: '+27821234567'
+    payment-charge-type:
       type: string
+      description: Variable charges are applied as a proportion of the total payment amount. Fixed charges are applied as an absolute currency value in cents. The `balance` is the balance of the payment total after all charges have been applied.
       enum:
-      - submitted
-      - pending
-      - processing
-      - successful
-      - failed
-      - cancelled
-      description: The status to which to create the payment.
-    policy-status:
+      - fixed
+      - variable
+      - balance
+    bank-name:
       type: string
-      description: The policy status. See the [managing policies](https://docs.rootplatform.com/docs/policy-administration#policy-lifecycle) guide for more details on the policy lifecycle.
+      description: The name of the bank
       enum:
-      - pending_initial_payment
-      - active
-      - cancelled
-      - expired
-      - lapsed
-      - not_taken_up
+      - absa
+      - access
+      - african_bank
+      - al_baraka
+      - bank_of_china
+      - bank_of_lisbon
+      - bank_zero
+      - bidvest
+      - bidvest_bank_alliances
+      - capitec
+      - discovery_bank
+      - finbond_mutual
+      - fnb
+      - hbz
+      - investec
+      - ithala
+      - mercantile
+      - nedbank
+      - old_mutual
+      - postbank
+      - sasfin
+      - standard_bank
+      - sure
+      - tyme_bank
+      - ubank
+      - vbc_mutual_bank
+      - wizzit
+    payment-update:
+      type: object
+      required:
+      - payment_id
+      - status
+      properties:
+        payment_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the payment.
+        status:
+          $ref: '#/components/schemas/payment-status'
+        failure_reason:
+          type: string
+          description: Required if `status` is `failed`. A description of the reason the payment failed.
+        failure_action:
+          $ref: '#/components/schemas/failure-action'
+        failure_code:
+          type: string
+          description: The failure error code. Required if `status` is `failed`.
+      example:
+        payment_id: 96e06845-6d37-4dca-8859-9d8ed27dcf58
+        status: failed
+        failure_code: 08
+        failure_reason: Account closed
+        failure_action: block_payment_method
+    actor-type:
+      type: string
+      description: The actor who created the record.
+      enum:
+      - api_key
+      - system
+      - user
+    payment-create:
+      type: object
+      required:
+      - amount
+      - status
+      - description
+      - payment_type
+      - payment_date
+      - collection_type
+      - payment_method_id
+      properties:
+        status:
+          $ref: '#/components/schemas/payment-status'
+        payment_method_id:
+          type: string
+          description: Payment method id of the payment being created. Must be a UUID.
+        payment_type:
+          $ref: '#/components/schemas/payment-type'
+        premium_type:
+          $ref: '#/components/schemas/premium-type'
+        amount:
+          type: number
+          description: The payment amount. Required when `retry_of` is not provided; otherwise forbidden.
+        description:
+          type: string
+          description: Description of the payment being submitted. Required when `retry_of` is not provided; otherwise forbidden.
+        payment_date:
+          type: string
+          format: date-time
+          description: Date the payment was created.
+        finalized_at:
+          type: string
+          format: date-time
+          description: Date the payment was finalized. Required when `status` is `failed` or `successful`.
+        collection_type:
+          $ref: '#/components/schemas/collection-type'
+        billing_date:
+          type: string
+          format: date-time
+          description: Date the payment should be processed.
+        external_reference:
+          type: string
+          description: Unique external reference of the payment.
+        retry_of:
+          type: string
+          description: Original payment id of the payment being retried. Must be a UUID.
+        failure_reason:
+          type: string
+          description: A description of the reason the payment failed. Required if `status` is `failed`, forbidden otherwise.
+        failure_action:
+          $ref: '#/components/schemas/failure-action'
+        failure_code:
+          type: string
+          description: Optional if `status` is `failed`, forbidden otherwise. The failure error code.
+      example:
+        status: successful
+        description: Monthly premium
+        payment_type: premium
+        premium_type: pro_rata
+        amount: 1800
+        payment_date: '2022-09-08T00:00:00Z'
+        external_reference: B23423
+        collection_type: debit_order_same_day
+        finalized_at: '2022-09-08T00:00:00Z'
+        billing_date: '2022-09-08T00:00:00Z'
   parameters:
     idempotency:
       name: idempotency_key

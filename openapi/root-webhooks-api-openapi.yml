@@ -586,140 +586,68 @@ paths:
                   body: '{"message": "Webhook received successfully"}'
                   headers: '{"content-type": "application/json", "x-request-id": "abcd1234"}'
 components:
+  parameters:
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
+    webhook_queue_event_to:
+      name: to
+      in: query
+      description: Filter for queue events created on or before this time (ISO 8601 format).
+      schema:
+        type: string
+        format: date-time
+    webhook_queue_event_status:
+      name: status
+      in: query
+      description: Filter queue events by status.
+      schema:
+        type: string
+        enum:
+        - queued
+        - successful
+        - failed
+    webhook_queue_event_subscriptions:
+      name: subscriptions
+      in: query
+      description: Filter queue events by subscription (comma-separated list).
+      schema:
+        type: string
+      example: policy_issued,claim_opened,complaint_opened
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
+    webhook_queue_event_from:
+      name: from
+      in: query
+      description: Filter for queue events created on or after this time (ISO 8601 format).
+      schema:
+        type: string
+        format: date-time
+    webhook_id:
+      name: webhook_id
+      in: path
+      description: The unique identifier of the [webhook](ref:webhook).
+      required: true
+      schema:
+        type: string
+        example: 274b2899-7957-464b-a609-49939039cd49
   schemas:
-    webhook:
-      type: object
-      required:
-      - webhook_id
-      - name
-      - secret
-      - url
-      - subscriptions
-      - environment
-      - created_at
-      - updated_at
-      properties:
-        webhook_id:
-          type: string
-          description: The unique identifier of the webhook.
-        organization_id:
-          type: string
-          description: The unique identifier of the organization the webhook belongs to.
-        environment:
-          type: string
-          description: The environment associated with the webhook.
-          enum:
-          - sandbox
-          - production
-        name:
-          type: string
-          description: The webhook name.
-        description:
-          type: string
-          description: An optional description for the webhook.
-        secret:
-          type: string
-          description: The auto-generated webhook secret, used to verify the payload (see the [introduction](ref:webhooks) for more details).
-        verification_token:
-          type: string
-          description: An optional token to set on the webhook, used as an additional verification step for the payload (see the [introduction](ref:webhooks) for more details).
-        url:
-          type: string
-          description: The URL that the webhook will `POST` payloads to.
-        subscriptions:
-          $ref: '#/components/schemas/webhook-subscription-events'
-        priority:
-          type: integer
-          description: The priority of the webhook. Attempts for a webhook with lower value will be prioritized over a higher value.
-        enabled:
-          type: boolean
-          description: Whether the webhook is enabled or not. If `false`, all queue events are marked as `failed` without being attempted.
-        created_at:
-          type: string
-          format: date-time
-          description: The timestamp when the webhook was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: The timestamp when the webhook was last updated.
-        user_group_id:
-          type: string
-          format: uuid
-          description: The unique identifier of the user group associated with the webhook. When set, only events from entities belonging to this user group will trigger the webhook.
-      example:
-        webhook_id: 274b2899-7957-464b-a609-49939039cd49
-        organization_id: 3f4b2899-7957-464b-a609-49939039cd49
-        name: Example webhook
-        description: A webhook for receiving various events
-        secret: B3a8y1WotX7glI7OxZhX5EAd_6UJ7YEvTJBNQzano4dHjntn9_5AlyPg-dzpX76A
-        enabled: true
-        verification_token: 459106913AF9
-        url: http://your.url.here
-        subscriptions:
-        - policyholder_created
-    webhook-subscription-event:
-      type: string
-      description: The key identifying the subscription event.
-      enum:
-      - policy_issued
-      - policy_cancelled
-      - policy_cancel_failed
-      - policy_activated
-      - policy_lapsed
-      - policy_not_taken_up
-      - policy_expired
-      - policy_lapse_failed
-      - policy_updated
-      - policy_reactivated
-      - policy_requoted
-      - policy_beneficiaries_updated
-      - policy_covered_people_updated
-      - policyholder_created
-      - policyholder_updated
-      - quote_package_created
-      - application_created
-      - application_updated
-      - claim_opened
-      - claim_sent_to_review
-      - claim_approved
-      - claim_repudiated
-      - claim_paid_out
-      - claim_linked_to_policy
-      - claim_approval_acknowledged
-      - claim_goodwill_acknowledged
-      - claim_no_claim_acknowledged
-      - claim_repudiation_acknowledged
-      - text_note_created
-      - attachment_archived
-      - claim_checklist_item_checked
-      - attachment_created
-      - claim_fulfilled
-      - claim_fulfillment_requested
-      - claim_checklist_item_note_created
-      - claim_approval_not_acknowledged
-      - claim_goodwill_not_acknowledged
-      - claim_no_claim_not_acknowledged
-      - claim_repudiation_not_acknowledged
-      - claim_goodwill
-      - claim_no_claim
-      - claim_reopened
-      - claim_updated
-      - claimant_updated
-      - complaint_opened
-      - notification_created
-      - notification_sent
-      - payment_failed
-      - payment_succeeded
-      - payment_reversed
-      - payment_updates_succeeded
-      - payment_updates_failed
-      - payment_method_assigned
-      - policy_alteration_package_applied
-    webhook-subscription-events:
-      type: array
-      description: An array of events that this webhook should subscribe to. If you want to  subscribe to an event not listed here, please submit an idea on  our [product roadmap portal](https://portal.productboard.com/root-platform/) describing your use case.
-      items:
-        $ref: '#/components/schemas/webhook-subscription-event'
     webhook-queue-event:
       type: object
       required:
@@ -821,71 +749,143 @@ components:
           verification_token: optional_token_123
           environment: production
         url: http://yoururlhere.com
+    webhook:
+      type: object
+      required:
+      - webhook_id
+      - name
+      - secret
+      - url
+      - subscriptions
+      - environment
+      - created_at
+      - updated_at
+      properties:
+        webhook_id:
+          type: string
+          description: The unique identifier of the webhook.
+        organization_id:
+          type: string
+          description: The unique identifier of the organization the webhook belongs to.
+        environment:
+          type: string
+          description: The environment associated with the webhook.
+          enum:
+          - sandbox
+          - production
+        name:
+          type: string
+          description: The webhook name.
+        description:
+          type: string
+          description: An optional description for the webhook.
+        secret:
+          type: string
+          description: The auto-generated webhook secret, used to verify the payload (see the [introduction](ref:webhooks) for more details).
+        verification_token:
+          type: string
+          description: An optional token to set on the webhook, used as an additional verification step for the payload (see the [introduction](ref:webhooks) for more details).
+        url:
+          type: string
+          description: The URL that the webhook will `POST` payloads to.
+        subscriptions:
+          $ref: '#/components/schemas/webhook-subscription-events'
+        priority:
+          type: integer
+          description: The priority of the webhook. Attempts for a webhook with lower value will be prioritized over a higher value.
+        enabled:
+          type: boolean
+          description: Whether the webhook is enabled or not. If `false`, all queue events are marked as `failed` without being attempted.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the webhook was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the webhook was last updated.
+        user_group_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the user group associated with the webhook. When set, only events from entities belonging to this user group will trigger the webhook.
+      example:
+        webhook_id: 274b2899-7957-464b-a609-49939039cd49
+        organization_id: 3f4b2899-7957-464b-a609-49939039cd49
+        name: Example webhook
+        description: A webhook for receiving various events
+        secret: B3a8y1WotX7glI7OxZhX5EAd_6UJ7YEvTJBNQzano4dHjntn9_5AlyPg-dzpX76A
+        enabled: true
+        verification_token: 459106913AF9
+        url: http://your.url.here
+        subscriptions:
+        - policyholder_created
     webhooks:
       type: array
       items:
         $ref: '#/components/schemas/webhook'
-  parameters:
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
-    webhook_queue_event_subscriptions:
-      name: subscriptions
-      in: query
-      description: Filter queue events by subscription (comma-separated list).
-      schema:
-        type: string
-      example: policy_issued,claim_opened,complaint_opened
-    webhook_queue_event_status:
-      name: status
-      in: query
-      description: Filter queue events by status.
-      schema:
-        type: string
-        enum:
-        - queued
-        - successful
-        - failed
-    webhook_id:
-      name: webhook_id
-      in: path
-      description: The unique identifier of the [webhook](ref:webhook).
-      required: true
-      schema:
-        type: string
-        example: 274b2899-7957-464b-a609-49939039cd49
-    page_size:
-      name: page_size
-      in: query
-      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        example: 30
-        default: 30
-    webhook_queue_event_to:
-      name: to
-      in: query
-      description: Filter for queue events created on or before this time (ISO 8601 format).
-      schema:
-        type: string
-        format: date-time
-    webhook_queue_event_from:
-      name: from
-      in: query
-      description: Filter for queue events created on or after this time (ISO 8601 format).
-      schema:
-        type: string
-        format: date-time
+    webhook-subscription-events:
+      type: array
+      description: An array of events that this webhook should subscribe to. If you want to  subscribe to an event not listed here, please submit an idea on  our [product roadmap portal](https://portal.productboard.com/root-platform/) describing your use case.
+      items:
+        $ref: '#/components/schemas/webhook-subscription-event'
+    webhook-subscription-event:
+      type: string
+      description: The key identifying the subscription event.
+      enum:
+      - policy_issued
+      - policy_cancelled
+      - policy_cancel_failed
+      - policy_activated
+      - policy_lapsed
+      - policy_not_taken_up
+      - policy_expired
+      - policy_lapse_failed
+      - policy_updated
+      - policy_reactivated
+      - policy_requoted
+      - policy_beneficiaries_updated
+      - policy_covered_people_updated
+      - policyholder_created
+      - policyholder_updated
+      - quote_package_created
+      - application_created
+      - application_updated
+      - claim_opened
+      - claim_sent_to_review
+      - claim_approved
+      - claim_repudiated
+      - claim_paid_out
+      - claim_linked_to_policy
+      - claim_approval_acknowledged
+      - claim_goodwill_acknowledged
+      - claim_no_claim_acknowledged
+      - claim_repudiation_acknowledged
+      - text_note_created
+      - attachment_archived
+      - claim_checklist_item_checked
+      - attachment_created
+      - claim_fulfilled
+      - claim_fulfillment_requested
+      - claim_checklist_item_note_created
+      - claim_approval_not_acknowledged
+      - claim_goodwill_not_acknowledged
+      - claim_no_claim_not_acknowledged
+      - claim_repudiation_not_acknowledged
+      - claim_goodwill
+      - claim_no_claim
+      - claim_reopened
+      - claim_updated
+      - claimant_updated
+      - complaint_opened
+      - notification_created
+      - notification_sent
+      - payment_failed
+      - payment_succeeded
+      - payment_reversed
+      - payment_updates_succeeded
+      - payment_updates_failed
+      - payment_method_assigned
+      - policy_alteration_package_applied
   securitySchemes:
     basicAuth:
       type: http

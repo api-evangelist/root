@@ -936,11 +936,29 @@ paths:
                   id: 00000000-0000-0000-0000-000000000001
                   type: user
 components:
+  parameters:
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
   schemas:
-    complaints:
-      type: array
-      items:
-        $ref: '#/components/schemas/complaint'
     note:
       type: object
       required:
@@ -960,6 +978,10 @@ components:
         requested_by:
           type: user
           id: 00000000-0000-0000-0000-000000000001
+    complaints:
+      type: array
+      items:
+        $ref: '#/components/schemas/complaint'
     complaint:
       type: object
       required:
@@ -1069,28 +1091,6 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/note'
-  parameters:
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
-    page_size:
-      name: page_size
-      in: query
-      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        example: 30
-        default: 30
   securitySchemes:
     basicAuth:
       type: http

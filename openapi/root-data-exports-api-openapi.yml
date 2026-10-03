@@ -611,27 +611,14 @@ paths:
                 data_range: since_last_run
 components:
   schemas:
-    https-adapter:
+    daily-frequency:
       type: object
       required:
-      - type
-      - url
+      - time_of_day
       properties:
-        type:
+        time_of_day:
           type: string
-          description: The type of adapter. In this case, `https`.
-        url:
-          type: string
-          description: The HTTPS URL to send the export file to.
-        headers:
-          type: string
-          description: The HTTP headers for the request.
-        batch_size:
-          type: integer
-          description: The number of entities to include per request, if streaming is disabled. Defaults to `10000` if not provided.
-        stream_request:
-          type: boolean
-          description: Indicates whether the request should be batched (`false`) or streamed in one request (`true`).
+          description: The time of day to run the export, in `HH:mm` format.
     sftp-adapter:
       type: object
       required:
@@ -657,10 +644,6 @@ components:
         password:
           type: string
           description: The password to use when authenticating on the SFTP server. Defaults to anonymous authentication if not provided.
-    data-export-run-log-items:
-      type: array
-      items:
-        $ref: '#/components/schemas/data-export-run-log-item'
     monthly-frequency:
       type: object
       required:
@@ -673,6 +656,10 @@ components:
         day_of_month:
           type: integer
           description: The day of month to run the export on, from `1` to `31`. *Note:* if the day of month falls after month end (i.e., on the 31st in a month with only 30 days), the export will be run on the last day of the month.
+    data-export-run-log-items:
+      type: array
+      items:
+        $ref: '#/components/schemas/data-export-run-log-item'
     data-export-run-log-item:
       type: object
       required:
@@ -699,14 +686,35 @@ components:
         created_at: '2019-03-09T08:07:59.075Z'
         level: info
         content: Creating policy export file
-    daily-frequency:
+    data-export-runs:
+      type: array
+      items:
+        $ref: '#/components/schemas/data-export-run'
+    scheduled-data-exports:
+      type: array
+      items:
+        $ref: '#/components/schemas/scheduled-data-export'
+    https-adapter:
       type: object
       required:
-      - time_of_day
+      - type
+      - url
       properties:
-        time_of_day:
+        type:
           type: string
-          description: The time of day to run the export, in `HH:mm` format.
+          description: The type of adapter. In this case, `https`.
+        url:
+          type: string
+          description: The HTTPS URL to send the export file to.
+        headers:
+          type: string
+          description: The HTTP headers for the request.
+        batch_size:
+          type: integer
+          description: The number of entities to include per request, if streaming is disabled. Defaults to `10000` if not provided.
+        stream_request:
+          type: boolean
+          description: Indicates whether the request should be batched (`false`) or streamed in one request (`true`).
     scheduled-data-export:
       type: object
       required:
@@ -785,10 +793,6 @@ components:
           path: /some/path/
         export_type: policy_export
         data_range: since_last_run
-    scheduled-data-exports:
-      type: array
-      items:
-        $ref: '#/components/schemas/scheduled-data-export'
     s3-adapter:
       type: object
       required:
@@ -816,10 +820,6 @@ components:
         access_key_id:
           type: string
           description: An AWS access key ID with permission to read from and write to the bucket.
-    data-export-runs:
-      type: array
-      items:
-        $ref: '#/components/schemas/data-export-run'
     weekly-frequency:
       type: object
       required:
@@ -870,16 +870,6 @@ components:
         status: complete
         file_id: 74ce9562-4242-11e9-904a-7b14ba20f082
   parameters:
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
     page_size:
       name: page_size
       in: query
@@ -891,6 +881,16 @@ components:
         maximum: 100
         example: 30
         default: 30
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
   securitySchemes:
     basicAuth:
       type: http

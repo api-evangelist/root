@@ -446,60 +446,29 @@ paths:
                     type: application/pdf
 components:
   schemas:
-    notification-data:
-      type: object
-      description: An object containing additional data depending on whether the notification channel is `email`, `sms`, or `other`.
-      oneOf:
-      - $ref: '#/components/schemas/notification-email-data'
-      - $ref: '#/components/schemas/notification-sms-data'
-      - $ref: '#/components/schemas/notification-other-data'
-    notification-email-data:
+    notification-sms-data:
       type: object
       required:
-      - subject
-      - html
-      - attachments
       - to
+      - content
       properties:
-        from_email:
-          type: string
-          description: Email address of who sent the email notification.
-        from_name:
-          type: string
-          description: Name of who sent the email notification.
-        reply_to_email:
-          type: string
-          description: Recipient of who to respond to for the email notification.
-        subject:
-          type: string
-          description: Email subject.
-        html:
-          type: string
-          description: The HTML structure of the email body.
-        attachments:
-          type: array
-          description: An array of objects containing a list of `type` and `name` pairs for the attachments on the email notification.
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                description: Whether the file is a document or image.
-              name:
-                type: string
-                description: The name of the file
         to:
           type: array
-          description: An array of objects containing a list of `email` and `name` pairs of the recipients of the email notification.
           items:
-            type: object
-            properties:
-              email:
-                type: string
-                description: The desired recipient's email.
-              name:
-                type: string
-                description: The recipient's name.
+            type: string
+          description: An array containing phone numbers that the notification was sent to.
+        content:
+          type: string
+          description: Content for the SMS notification.
+        content_type:
+          type: string
+          description: Whether it was `text` or `html`.
+        app_data:
+          type:
+          - object
+          - 'null'
+          description: '`null` is allowed. An object containing additional custom data for the SMS notification.'
+          additionalProperties: true
     custom-event-type:
       type: string
       description: The type of custom event. Must match the type on the Root management dashboard.
@@ -615,33 +584,64 @@ components:
           to:
           - '+27811231234'
           content: Congratulations! Your  Cover has been activated from 01/06/2022.
-    notification-sms-data:
-      type: object
-      required:
-      - to
-      - content
-      properties:
-        to:
-          type: array
-          items:
-            type: string
-          description: An array containing phone numbers that the notification was sent to.
-        content:
-          type: string
-          description: Content for the SMS notification.
-        content_type:
-          type: string
-          description: Whether it was `text` or `html`.
-        app_data:
-          type:
-          - object
-          - 'null'
-          description: '`null` is allowed. An object containing additional custom data for the SMS notification.'
-          additionalProperties: true
     notifications:
       type: array
       items:
         $ref: '#/components/schemas/notification'
+    notification-data:
+      type: object
+      description: An object containing additional data depending on whether the notification channel is `email`, `sms`, or `other`.
+      oneOf:
+      - $ref: '#/components/schemas/notification-email-data'
+      - $ref: '#/components/schemas/notification-sms-data'
+      - $ref: '#/components/schemas/notification-other-data'
+    notification-email-data:
+      type: object
+      required:
+      - subject
+      - html
+      - attachments
+      - to
+      properties:
+        from_email:
+          type: string
+          description: Email address of who sent the email notification.
+        from_name:
+          type: string
+          description: Name of who sent the email notification.
+        reply_to_email:
+          type: string
+          description: Recipient of who to respond to for the email notification.
+        subject:
+          type: string
+          description: Email subject.
+        html:
+          type: string
+          description: The HTML structure of the email body.
+        attachments:
+          type: array
+          description: An array of objects containing a list of `type` and `name` pairs for the attachments on the email notification.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Whether the file is a document or image.
+              name:
+                type: string
+                description: The name of the file
+        to:
+          type: array
+          description: An array of objects containing a list of `email` and `name` pairs of the recipients of the email notification.
+          items:
+            type: object
+            properties:
+              email:
+                type: string
+                description: The desired recipient's email.
+              name:
+                type: string
+                description: The recipient's name.
     notification-other-data:
       type: object
       required:

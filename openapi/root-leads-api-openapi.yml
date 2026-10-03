@@ -399,16 +399,6 @@ components:
           country: US
           area_code: CA 91364
   parameters:
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
     page_size:
       name: page_size
       in: query
@@ -420,6 +410,16 @@ components:
         maximum: 100
         example: 30
         default: 30
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
   securitySchemes:
     basicAuth:
       type: http
