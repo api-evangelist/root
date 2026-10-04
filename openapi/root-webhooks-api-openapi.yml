@@ -586,67 +586,6 @@ paths:
                   body: '{"message": "Webhook received successfully"}'
                   headers: '{"content-type": "application/json", "x-request-id": "abcd1234"}'
 components:
-  parameters:
-    page_size:
-      name: page_size
-      in: query
-      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        example: 30
-        default: 30
-    webhook_queue_event_to:
-      name: to
-      in: query
-      description: Filter for queue events created on or before this time (ISO 8601 format).
-      schema:
-        type: string
-        format: date-time
-    webhook_queue_event_status:
-      name: status
-      in: query
-      description: Filter queue events by status.
-      schema:
-        type: string
-        enum:
-        - queued
-        - successful
-        - failed
-    webhook_queue_event_subscriptions:
-      name: subscriptions
-      in: query
-      description: Filter queue events by subscription (comma-separated list).
-      schema:
-        type: string
-      example: policy_issued,claim_opened,complaint_opened
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
-    webhook_queue_event_from:
-      name: from
-      in: query
-      description: Filter for queue events created on or after this time (ISO 8601 format).
-      schema:
-        type: string
-        format: date-time
-    webhook_id:
-      name: webhook_id
-      in: path
-      description: The unique identifier of the [webhook](ref:webhook).
-      required: true
-      schema:
-        type: string
-        example: 274b2899-7957-464b-a609-49939039cd49
   schemas:
     webhook-queue-event:
       type: object
@@ -749,6 +688,10 @@ components:
           verification_token: optional_token_123
           environment: production
         url: http://yoururlhere.com
+    webhooks:
+      type: array
+      items:
+        $ref: '#/components/schemas/webhook'
     webhook:
       type: object
       required:
@@ -819,10 +762,6 @@ components:
         url: http://your.url.here
         subscriptions:
         - policyholder_created
-    webhooks:
-      type: array
-      items:
-        $ref: '#/components/schemas/webhook'
     webhook-subscription-events:
       type: array
       description: An array of events that this webhook should subscribe to. If you want to  subscribe to an event not listed here, please submit an idea on  our [product roadmap portal](https://portal.productboard.com/root-platform/) describing your use case.
@@ -886,6 +825,67 @@ components:
       - payment_updates_failed
       - payment_method_assigned
       - policy_alteration_package_applied
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
+    webhook_queue_event_subscriptions:
+      name: subscriptions
+      in: query
+      description: Filter queue events by subscription (comma-separated list).
+      schema:
+        type: string
+      example: policy_issued,claim_opened,complaint_opened
+    webhook_queue_event_status:
+      name: status
+      in: query
+      description: Filter queue events by status.
+      schema:
+        type: string
+        enum:
+        - queued
+        - successful
+        - failed
+    webhook_queue_event_from:
+      name: from
+      in: query
+      description: Filter for queue events created on or after this time (ISO 8601 format).
+      schema:
+        type: string
+        format: date-time
+    webhook_id:
+      name: webhook_id
+      in: path
+      description: The unique identifier of the [webhook](ref:webhook).
+      required: true
+      schema:
+        type: string
+        example: 274b2899-7957-464b-a609-49939039cd49
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
+    webhook_queue_event_to:
+      name: to
+      in: query
+      description: Filter for queue events created on or before this time (ISO 8601 format).
+      schema:
+        type: string
+        format: date-time
   securitySchemes:
     basicAuth:
       type: http

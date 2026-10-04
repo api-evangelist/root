@@ -937,6 +937,16 @@ paths:
                   type: user
 components:
   parameters:
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
     page_size:
       name: page_size
       in: query
@@ -948,16 +958,6 @@ components:
         maximum: 100
         example: 30
         default: 30
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
   schemas:
     note:
       type: object
@@ -978,10 +978,10 @@ components:
         requested_by:
           type: user
           id: 00000000-0000-0000-0000-000000000001
-    complaints:
+    notes:
       type: array
       items:
-        $ref: '#/components/schemas/complaint'
+        $ref: '#/components/schemas/note'
     complaint:
       type: object
       required:
@@ -1087,10 +1087,10 @@ components:
         created_by:
           id: 00000000-0000-0000-0000-000000000001
           type: user
-    notes:
+    complaints:
       type: array
       items:
-        $ref: '#/components/schemas/note'
+        $ref: '#/components/schemas/complaint'
   securitySchemes:
     basicAuth:
       type: http

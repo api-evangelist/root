@@ -393,28 +393,6 @@ paths:
                 error: not_found
                 message: No recording url or attachment found for call with id d3d13c48-4dc3-4816-8d01-de3215878225
 components:
-  parameters:
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
-    page_size:
-      name: page_size
-      in: query
-      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        example: 30
-        default: 30
   schemas:
     calls:
       type: array
@@ -505,6 +483,28 @@ components:
         topic: general
         recording_url: https://sandbox.root.co.za/v1/files/download/ccbd249e-a404-11ea-8f4a-47e769474b83/Recording0001.mp3
         call_duration: '72'
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
   securitySchemes:
     basicAuth:
       type: http

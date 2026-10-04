@@ -610,15 +610,60 @@ paths:
                 export_type: policy_export
                 data_range: since_last_run
 components:
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The page number of the entities to fetch. Must be a minimum of 1.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+        default: 1
+    page_size:
+      name: page_size
+      in: query
+      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        example: 30
+        default: 30
   schemas:
-    daily-frequency:
+    s3-adapter:
       type: object
       required:
-      - time_of_day
+      - type
+      - region
+      - bucket_name
+      - secret_access_key
+      - access_key_id
       properties:
-        time_of_day:
+        type:
           type: string
-          description: The time of day to run the export, in `HH:mm` format.
+          description: The type of adapter. In this case, `s3`.
+        region:
+          type: string
+          description: The S3 bucket region.
+        bucket_name:
+          type: string
+          description: The name of the S3 bucket.
+        bucket_path:
+          type: string
+          description: The path of the S3 bucket to store the resulting export to, with a trailing slash. This is used to generate a bucket key e.g. `folder/subfolder/`.
+        secret_access_key:
+          type: string
+          description: An AWS secret access key with permission to read from and write to the bucket.
+        access_key_id:
+          type: string
+          description: An AWS access key ID with permission to read from and write to the bucket.
+    data-export-run-log-items:
+      type: array
+      items:
+        $ref: '#/components/schemas/data-export-run-log-item'
     sftp-adapter:
       type: object
       required:
@@ -644,22 +689,76 @@ components:
         password:
           type: string
           description: The password to use when authenticating on the SFTP server. Defaults to anonymous authentication if not provided.
-    monthly-frequency:
+    daily-frequency:
       type: object
       required:
       - time_of_day
-      - day_of_month
       properties:
         time_of_day:
           type: string
           description: The time of day to run the export, in `HH:mm` format.
-        day_of_month:
+    https-adapter:
+      type: object
+      required:
+      - type
+      - url
+      properties:
+        type:
+          type: string
+          description: The type of adapter. In this case, `https`.
+        url:
+          type: string
+          description: The HTTPS URL to send the export file to.
+        headers:
+          type: string
+          description: The HTTP headers for the request.
+        batch_size:
           type: integer
-          description: The day of month to run the export on, from `1` to `31`. *Note:* if the day of month falls after month end (i.e., on the 31st in a month with only 30 days), the export will be run on the last day of the month.
-    data-export-run-log-items:
+          description: The number of entities to include per request, if streaming is disabled. Defaults to `10000` if not provided.
+        stream_request:
+          type: boolean
+          description: Indicates whether the request should be batched (`false`) or streamed in one request (`true`).
+    data-export-run:
+      type: object
+      required:
+      - data_export_run_id
+      - scheduled_data_export_id
+      - created_at
+      - status
+      properties:
+        data_export_run_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the data export run.
+        scheduled_data_export_id:
+          type: string
+          description: Must be a UUID. The unique identifier of the scheduled data export that the run belongs to.
+        created_at:
+          type: string
+          format: date-time
+          description: The time at which the data export run was created.
+        completed_at:
+          type: string
+          format: date-time
+          description: The time at which the data export run completed.
+        status:
+          type: string
+          description: The current status of the data export run. One of `in_progress`, `failed`, or `complete`.
+        file_id:
+          type:
+          - string
+          - 'null'
+          description: The file created during the run, if successful.
+      example:
+        data_export_run_id: 34233912-c91f-4dc9-bfed-c10d16be26af
+        scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
+        created_at: '2019-03-09T08:07:59.044Z'
+        completed_at: '2019-03-09T08:08:02.178Z'
+        status: complete
+        file_id: 74ce9562-4242-11e9-904a-7b14ba20f082
+    scheduled-data-exports:
       type: array
       items:
-        $ref: '#/components/schemas/data-export-run-log-item'
+        $ref: '#/components/schemas/scheduled-data-export'
     data-export-run-log-item:
       type: object
       required:
@@ -690,31 +789,6 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/data-export-run'
-    scheduled-data-exports:
-      type: array
-      items:
-        $ref: '#/components/schemas/scheduled-data-export'
-    https-adapter:
-      type: object
-      required:
-      - type
-      - url
-      properties:
-        type:
-          type: string
-          description: The type of adapter. In this case, `https`.
-        url:
-          type: string
-          description: The HTTPS URL to send the export file to.
-        headers:
-          type: string
-          description: The HTTP headers for the request.
-        batch_size:
-          type: integer
-          description: The number of entities to include per request, if streaming is disabled. Defaults to `10000` if not provided.
-        stream_request:
-          type: boolean
-          description: Indicates whether the request should be batched (`false`) or streamed in one request (`true`).
     scheduled-data-export:
       type: object
       required:
@@ -793,33 +867,6 @@ components:
           path: /some/path/
         export_type: policy_export
         data_range: since_last_run
-    s3-adapter:
-      type: object
-      required:
-      - type
-      - region
-      - bucket_name
-      - secret_access_key
-      - access_key_id
-      properties:
-        type:
-          type: string
-          description: The type of adapter. In this case, `s3`.
-        region:
-          type: string
-          description: The S3 bucket region.
-        bucket_name:
-          type: string
-          description: The name of the S3 bucket.
-        bucket_path:
-          type: string
-          description: The path of the S3 bucket to store the resulting export to, with a trailing slash. This is used to generate a bucket key e.g. `folder/subfolder/`.
-        secret_access_key:
-          type: string
-          description: An AWS secret access key with permission to read from and write to the bucket.
-        access_key_id:
-          type: string
-          description: An AWS access key ID with permission to read from and write to the bucket.
     weekly-frequency:
       type: object
       required:
@@ -832,65 +879,18 @@ components:
         day_of_week:
           type: string
           description: The day of week to run the export. One of `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, or `sunday`.
-    data-export-run:
+    monthly-frequency:
       type: object
       required:
-      - data_export_run_id
-      - scheduled_data_export_id
-      - created_at
-      - status
+      - time_of_day
+      - day_of_month
       properties:
-        data_export_run_id:
+        time_of_day:
           type: string
-          description: Must be a UUID. The unique identifier of the data export run.
-        scheduled_data_export_id:
-          type: string
-          description: Must be a UUID. The unique identifier of the scheduled data export that the run belongs to.
-        created_at:
-          type: string
-          format: date-time
-          description: The time at which the data export run was created.
-        completed_at:
-          type: string
-          format: date-time
-          description: The time at which the data export run completed.
-        status:
-          type: string
-          description: The current status of the data export run. One of `in_progress`, `failed`, or `complete`.
-        file_id:
-          type:
-          - string
-          - 'null'
-          description: The file created during the run, if successful.
-      example:
-        data_export_run_id: 34233912-c91f-4dc9-bfed-c10d16be26af
-        scheduled_data_export_id: 4ab082f2-864e-4bcf-bc17-75664a25f2e1
-        created_at: '2019-03-09T08:07:59.044Z'
-        completed_at: '2019-03-09T08:08:02.178Z'
-        status: complete
-        file_id: 74ce9562-4242-11e9-904a-7b14ba20f082
-  parameters:
-    page_size:
-      name: page_size
-      in: query
-      description: The maximum number of items that will be contained in a single page, between 1 and 100 (inclusive).
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        example: 30
-        default: 30
-    page:
-      name: page
-      in: query
-      description: The page number of the entities to fetch. Must be a minimum of 1.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-        default: 1
+          description: The time of day to run the export, in `HH:mm` format.
+        day_of_month:
+          type: integer
+          description: The day of month to run the export on, from `1` to `31`. *Note:* if the day of month falls after month end (i.e., on the 31st in a month with only 30 days), the export will be run on the last day of the month.
   securitySchemes:
     basicAuth:
       type: http
