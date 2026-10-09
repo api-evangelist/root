@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 name: Root Insurance Plans and Pricing
 description: Root Insurance pricing is usage-based and contact-driven for both the Root Platform (B2B insurance infrastructure) and the Root Bind API (embedded insurance). No self-serve public pricing tiers are published; all plans require a sales engagement.
 url: https://rootplatform.com/plans
@@ -71,3 +75,33 @@ notes:
   - Bind API partnerships are structured as revenue-share or referral arrangements.
   - Contact email for platform inquiries: hello@rootplatform.com
   - Contact page for partnership inquiries: https://www.joinroot.com/partnerships/
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models: []
+  units: []
+  plans:
+  - name: Platform Standard
+    access: paid
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Platform Private Stack
+    access: paid
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Bind API - Hosted Experience
+    access: paid
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Bind API - Fully Embedded
+    access: paid
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
