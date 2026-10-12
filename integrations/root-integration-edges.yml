@@ -1,0 +1,18 @@
+generated: '2026-10-12'
+method: none
+source:
+- https://zapier.com/apps/root/integrations
+- https://zapier.com/apps/root-insurance/integrations
+- https://n8n.io/integrations/root/
+- https://composio.dev/toolkits/root
+- https://monid.ai/tools/root
+checked:
+- https://composio.dev/toolkits/root
+- https://monid.ai/tools/root
+- https://n8n.io/integrations/root/
+- https://zapier.com/apps/root-insurance/integrations
+- https://zapier.com/apps/root/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []
