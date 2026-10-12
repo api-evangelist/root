@@ -1,5 +1,5 @@
 generated: '2026-10-12'
-method: none
+method: searched
 source:
 - https://zapier.com/apps/root/integrations
 - https://zapier.com/apps/root-insurance/integrations
@@ -7,6 +7,7 @@ source:
 - https://composio.dev/toolkits/root
 - https://monid.ai/tools/root
 checked:
+- https://app.usecanopy.com/api/v1.0.0/carriers
 - https://composio.dev/toolkits/root
 - https://monid.ai/tools/root
 - https://n8n.io/integrations/root/
@@ -14,5 +15,17 @@ checked:
 - https://zapier.com/apps/root/integrations
 summary: null
 marketplace_apps: []
-edges: []
+edges:
+- partner_name: canopy
+  partner: canopy
+  partner_match: domain
+  type: coverage
+  channel: partner-built
+  relationship: carrier-coverage
+  direction: partner-built
+  evidence: https://app.usecanopy.com/api/v1.0.0/carriers
+  category: insurance-carrier
+  covered_as: root
+  detected_by: sweep-insurance.py
+  detected: '2026-10-13'
 templates: []
