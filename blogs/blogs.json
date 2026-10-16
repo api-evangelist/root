@@ -2,6 +2,13 @@
   "repo": "root",
   "feeds": [
     {
+      "source": "https://blog.joinroot.com/",
+      "feed_url": "https://blog.joinroot.com/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    },
+    {
       "source": "https://www.joinroot.com/blog",
       "feed_url": "https://www.joinroot.com/blog",
       "title": "",
@@ -16,7 +23,7 @@
       "method": "none"
     }
   ],
-  "fetched": "2026-10-03T12:30:02Z",
+  "fetched": "2026-10-10T13:15:00Z",
   "post_count": 0,
   "agent_pulled": "2026-07-04"
 }
